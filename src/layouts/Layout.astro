@@ -1,5 +1,5 @@
 ---
-import Nav from "../components/Nav.astro";
+import Nav from "../components/Nav/Nav.astro";
 interface Props {
 	title: string;
 }
@@ -8,7 +8,7 @@ const { title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="es">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content="Astro description" />
@@ -17,7 +17,7 @@ const { title } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body class="flex flex-col min-h-screen bg-primary text-white scrollbar scrollbar-thumb-primary scrollbar- scrollbar-w-2 scrollbar-corner-rounded-xl">
+	<body class="flex flex-col min-h-screen bg-primary text-white scrollbar scrollbar-thumb-primary scrollbar-w-2 scrollbar-corner-rounded-xl">
 	    <Nav />
 		<main class="flex-1">
 			<slot/>

@@ -2,10 +2,22 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Welcome to aitorevi-blog.">
-	<main>
-	</main>
+<Layout title="aitorevi-blog.">
+    <section class="mx-auto max-w-screen-xl flex flex-wrap pt-20 px-6 py-3 md:p-20 md:pb-3 md:pt-28 md:pb-16 justify-evenly md:justify-start lg:grid-cols-3 lg:gap-6">
+        <div class="md:flex pt-8 gap-8">
+        <figure class="w-full md:w-1/2">
+            <img src="/images/retrato.jpg" alt="aitorevi-blog." class="rounded-full" />
+        </figure>
+        <article class="w-full md:w-1/2 text-center md:text-start p-8 font-ibm">
+            <h1 class="text-4xl font-bold mb-4 text-tertiary">¡Hola! Soy Aitor Reviriego</h1>
+            <h2 class="text-2xl font-bold mb-4 text-tertiary">Desarrollador web</h2>
+            <p class="mb-4">Soy Aitor Reviriego, desarrollador web de Valencia. En este blog escribo sobre desarrollo web, tecnología y otras cosas que me interesan.</p>
+            <p class="mb-4">Puedes contactar conmigo en </p>
+        </article>
+        </div>
+    </section>
 </Layout>
+
 
 <style>
 	main {
