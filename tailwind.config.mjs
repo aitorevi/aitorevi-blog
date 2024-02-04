@@ -5,10 +5,11 @@ export default {
 		extend: {
 			colors: {
 				primary: '#151b27',
-				secondary: '#ff6b01',
+				secondary: '#5e3aee',
 				tertiary: '#d0edf5',
 				quaternary: '#aeb2bb',
 				baseLight: '#f1faff',
+				blueLight: '#7ad5f3',
 			},
 			fontFamily: {
 				ibm: ['IBM Plex Mono', 'monospace'],

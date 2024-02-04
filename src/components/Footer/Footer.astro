@@ -11,6 +11,12 @@ import EmailLinkToCopy from "../EmailLinkToCopy/EmailLinkToCopy.astro";
         <Icon name="github" class="p-0.5 w-[1.7rem] h-[1.7rem] md:w-[2rem] md:h-[2rem] inline-block hover:opacity-60 transition ease-linear delay-50 duration-200" />
     </a>
     <EmailLinkToCopy>
-        <Icon name="mail" class="w-[1.7rem] h-[1.7rem] md:w-[2.1rem] md:h-[2.1rem] inline-block hover:opacity-60 transition ease-linear delay-50 duration-200" aria-label="email icon"/>
+        <Icon name="mail" class="w-[1.7rem] h-[1.7rem] md:w-[2.1rem] md:h-[2.1rem] inline-block hover:text-tertiary transition ease-linear delay-50 duration-200" aria-label="email icon"/>
     </EmailLinkToCopy>
 </footer>
+
+<style>
+    .custom-icon:hover path {
+        fill: #7ad5f3;
+    }
+</style>
