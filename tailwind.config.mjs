@@ -4,10 +4,11 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				primary: '#212737',
+				primary: '#151b27',
 				secondary: '#ff6b01',
-				tertiary: '#eaedf3',
+				tertiary: '#d0edf5',
 				quaternary: '#aeb2bb',
+				baseLight: '#f1faff',
 			},
 			fontFamily: {
 				ibm: ['IBM Plex Mono', 'monospace'],
