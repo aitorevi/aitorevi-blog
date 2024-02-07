@@ -12,58 +12,62 @@ const path = Astro.url.pathname;
 ---
 <header class="flex w-full bg-white bg-opacity-95 fixed z-10 font-ibm">
     <Astronav>
-        <div class="flex w-full justify-between items-center text-gray-800">
-            <div class="flex">
-                <a href="/"
-                   class="cursor-pointer text-inherit text-4xl hover:opacity-60 transition ease-linear delay-50 duration-150">aitorevi</a>
-                <div class="md:hidden hover:text-secondary transition ease-linear delay-150 duration-300 h-8 mb-2">
-                    <MenuIcon>
-                        <OpenIcon>
-                            <div class="w-8 h-8">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"
-                                     stroke="currentColor">
-                                    <path d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"/>
-                                </svg>
-                            </div>
-                        </OpenIcon>
-                        <CloseIcon>
-                            <div class="w-8 h-8">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"
-                                     stroke="currentColor">
-                                    <path d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"/>
-                                </svg>
-                            </div>
-                        </CloseIcon>
-                    </MenuIcon>
-                </div>
-
-                <MenuItems class="hidden md:ml-20 md:flex text-lg items-center">
-                    <a href="/blog"
-                       class="text-primary hover:text-opacity-60 transition ease-linear delay-50 duration-200">Blog
+        <div class="flex items-center m-auto w-5/6">
+            <div>
+                <div class="flex">
+                    <a href="/" class="cursor-pointer text-inherit text-4xl hover:text-secondary transition ease-linear delay-50 duration-150">
+                        aitorevi
                     </a>
+                    <!--<div class="md:hidden hover:text-secondary transition ease-linear delay-150 duration-300 h-8 mb-2">
+                        <MenuIcon>
+                            <OpenIcon>
+                                <div class="w-8 h-8">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"
+                                         stroke="currentColor">
+                                        <path d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"/>
+                                    </svg>
+                                </div>
+                            </OpenIcon>
+                            <CloseIcon>
+                                <div class="w-8 h-8">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"
+                                         stroke="currentColor">
+                                        <path d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"/>
+                                    </svg>
+                                </div>
+                            </CloseIcon>
+                        </MenuIcon>
+                    </div>-->
                     <!--
-                    <a href="/katas"
-                       class="flex p-4 justify-center  hover:text-secondary transition ease-linear delay-150 hover:-translate-y-1 hover:scale-105 duration-300">Katas
-                    </a>
+                    <MenuItems class="hidden md:ml-20 md:flex text-lg items-center">
+                        <a href="/blog"
+                           class="text-primary hover:text-opacity-60 transition ease-linear delay-50 duration-200">Blog
+                        </a>
+
+                        <a href="/katas"
+                           class="flex p-4 justify-center  hover:text-secondary transition ease-linear delay-150 hover:-translate-y-1 hover:scale-105 duration-300">Katas
+                        </a>
+                    </MenuItems>
                     -->
-                </MenuItems>
+                </div>
             </div>
-        </div>
-        <div class="flex w-full h-24 bg-opacity-80 items-center justify-end gap-8 bg-white">
-            <a href="https://es.linkedin.com/in/aitor-reviriego-amor" target="_blank" rel="noopener noreferrer"
-               aria-label="linkedin icon">
-                <Icon name="linkedin"
-                      class="w-[1.7rem] h-[1.7rem] md:w-[2rem] md:h-[2rem] inline-block text-primary hover:text-secondary transition ease-linear delay-50 duration-200"/>
-            </a>
-            <a href="https://github.com/aitorevi" target="_blank" rel="noopener noreferrer" aria-label="github icon">
-                <Icon name="github"
-                      class="p-0.5 w-[1.7rem] h-[1.7rem] md:w-[2rem] md:h-[2rem] inline-block text-primary hover:text-secondary transition ease-linear delay-50 duration-200"/>
-            </a>
-            <!--<EmailLinkToCopy>
-                <Icon name="mail"
-                      class="w-[1.7rem] h-[1.7rem] md:w-[2.1rem] md:h-[2.1rem] text-primary hover:text-secondary inline-block transition ease-linear delay-50 duration-200"
-                      aria-label="email icon"/>
-            </EmailLinkToCopy>-->
+            <div class="flex w-full h-24 bg-opacity-80 items-center justify-end gap-8 bg-white">
+                <a href="https://es.linkedin.com/in/aitor-reviriego-amor" target="_blank" rel="noopener noreferrer"
+                   aria-label="linkedin icon">
+                    <Icon name="linkedin"
+                          class="w-[1.7rem] h-[1.7rem] md:w-[2rem] md:h-[2rem] inline-block hover:text-secondary transition ease-linear delay-50 duration-200"/>
+                </a>
+                <a href="https://github.com/aitorevi" target="_blank" rel="noopener noreferrer"
+                   aria-label="github icon">
+                    <Icon name="github"
+                          class="p-0.5 w-[1.7rem] h-[1.7rem] md:w-[2rem] md:h-[2rem] inline-block hover:text-secondary transition ease-linear delay-50 duration-200"/>
+                </a>
+                <!--<EmailLinkToCopy>
+                    <Icon name="mail"
+                          class="w-[1.7rem] h-[1.7rem] md:w-[2.1rem] md:h-[2.1rem] text-primary hover:text-secondary inline-block transition ease-linear delay-50 duration-200"
+                          aria-label="email icon"/>
+                </EmailLinkToCopy>-->
+            </div>
         </div>
     </Astronav>
 </header>
