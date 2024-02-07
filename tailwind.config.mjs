@@ -10,6 +10,11 @@ export default {
 				quaternary: '#aeb2bb',
 				baseLight: '#f1faff',
 				blueLight: '#7ad5f3',
+				grayLight: '#f9f9fc',
+			},
+			backgroundImage: {
+				'confetti': "url('/background/bg-confetti.svg')",
+				'custom': "url('/background/bg-custom.svg')",
 			},
 			fontFamily: {
 				ibm: ['IBM Plex Mono', 'monospace'],
