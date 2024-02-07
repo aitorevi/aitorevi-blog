@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import {Image} from "astro:assets";
 ---
 
 <Layout title="aitorevi-blog.">
@@ -29,9 +30,13 @@ import Layout from '../layouts/Layout.astro';
                     legendario.
                 </p>
             </article>
-            <figure class="w-1/2">
-                <img src="./public/images/retrato.webp" alt="aitorevi-blog"/>
-            </figure>
+                <Image
+                    src="/retrato.webp"
+                    alt="aitorevi-blog"
+                    width={64}
+                    height={64}
+                    class="w-1/2"
+                />
         </div>
     </section>
 </Layout>
