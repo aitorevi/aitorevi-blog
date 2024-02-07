@@ -3,30 +3,44 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="aitorevi-blog.">
-    <section class="mx-auto max-w-screen-xl flex flex-wrap pt-20 px-6 py-3 md:p-20 md:pb-3 md:pt-28 md:pb-16 justify-evenly md:justify-start lg:grid-cols-3 lg:gap-6">
-        <div class="flex flex-col md:flex-row pt-8 gap-8">
-        <figure class="flex justify-center w-full md:w-1/2">
-            <img src="./public/images/retrato.png" alt="aitorevi-blog." />
-        </figure>
-        <article class="w-full md:w-1/2 text-center md:text-start p-8 font-ibm">
-            <h1 class="text-4xl font-bold mb-4 text-tertiary">¡Hola! Soy Aitor Reviriego</h1>
-            <h2 class="text-2xl font-bold mb-4 text-tertiary">Desarrollador web</h2>
-            <p class="mb-4">Soy Aitor Reviriego, desarrollador web de Valencia. En este blog escribo sobre desarrollo web, tecnología y otras cosas que me interesan.</p>
-            <p class="mb-4">Puedes contactar conmigo en </p>
-        </article>
+    <section class="mx-auto max-w-screen-xl bg-grayLight bg-opacity-70 flex flex-wrap mt-28 md:p-20 justify-evenly md:justify-start lg:grid-cols-3 lg:gap-6 rounded">
+        <div class="flex flex-col md:flex-row gap-8">
+            <article class="w-full md:w-1/2 text-center text-primary md:text-start font-ibm">
+                <h1 class="text-7xl font-bold mb-4">¡Hola! Soy Aitor</h1>
+                <h2 class="text-secondary text-2xl font-bold mb-4 ">Desarrollador web</h2>
+                <p class="mb-4">
+                    Soy un superhéroe detrás del teclado, embarcándome en una épica aventura para desentrañar los
+                    misterios del Código de Calidad. No es cualquier código... es código para humanos. Mi misión es clara:
+                    escribir líneas que no solo funcionen, sino que bailen elegantes bajo la mirada de una rigurosa batería
+                    de tests.
+                </p>
+                <p class="mb-4">
+                    Pero, ¡espera! No todo es sobre mí. En este viaje, mi capa no solo vuela con el viento... también
+                    extiende sus pliegues para abrazar a la comunidad. Sí, estoy aquí para compartir, aprender y, por
+                    supuesto, aportar mi granito de arena, convirtiendo el vasto desierto de la programación en un fértil
+                    oasis de conocimiento.
+                </p>
+                <p class="mb-4">
+                    Así que, si te apasiona el código tanto como a mí, y sueñas con tests que pasan con elegancia mientras
+                    contribuyes a un mundo digital mejor, ¡únete a mi aventura! Juntos, podemos hacer de este un viaje
+                    legendario.
+                </p>
+            </article>
+            <figure class="flex justify-center w-full md:w-1/2">
+                <img src="./public/images/prueba.png" alt="aitorevi-blog."/>
+            </figure>
         </div>
     </section>
 </Layout>
 
-
 <style>
-	main {
-		margin: auto;
-		padding: 1rem;
-		width: 800px;
-		max-width: calc(100% - 2rem);
-		color: white;
-		font-size: 20px;
-		line-height: 1.6;
-	}
+    main {
+        margin: auto;
+        padding: 1rem;
+        width: 800px;
+        max-width: calc(100% - 2rem);
+        color: white;
+        font-size: 20px;
+        line-height: 1.6;
+    }
 </style>

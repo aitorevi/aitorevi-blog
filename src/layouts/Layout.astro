@@ -1,6 +1,8 @@
 ---
 import Nav from "../components/Nav/Nav.astro";
 import Footer from "../components/Footer/Footer.astro";
+import { ViewTransitions } from 'astro:transitions';
+
 interface Props {
 	title: string;
 }
@@ -17,8 +19,9 @@ const { title } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<ViewTransitions />
 	</head>
-	<body class="flex flex-col bg-primary text-white scrollbar scrollbar-thumb-primary scrollbar-w-2 scrollbar-corner-rounded-xl">
+	<body class="flex flex-col bg-white bg-custom bg-fixed text-white scrollbar scrollbar-thumb-primary scrollbar-w-2 scrollbar-corner-rounded-xl">
 	    <Nav />
 		<main class="min-h-screen">
 			<slot/>
@@ -37,16 +40,16 @@ const { title } = Astro.props;
 	}
 
 	::-webkit-scrollbar-track:hover {
-		background: rgba(33, 39, 55);
+		background: rgba(33, 39, 55, .6);
 	}
 
 	::-webkit-scrollbar-thumb {
-		background: rgba(255, 107, 1, .6);
+		background: rgba(135, 220, 244, .6);
 		border-radius: 0.25rem;
 	}
 
 	::-webkit-scrollbar-thumb:hover {
-		background: rgba(255, 107, 1);
+		background: rgba(122, 213, 243);
 		border-radius: 0.25rem;
 	}
 </style>

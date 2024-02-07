@@ -4,10 +4,17 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				primary: '#212737',
-				secondary: '#ff6b01',
-				tertiary: '#eaedf3',
+				primary: '#151b27',
+				secondary: '#5e3aee',
+				tertiary: '#d0edf5',
 				quaternary: '#aeb2bb',
+				baseLight: '#f1faff',
+				blueLight: '#7ad5f3',
+				grayLight: '#f9f9fc',
+			},
+			backgroundImage: {
+				'confetti': "url('/background/bg-confetti.svg')",
+				'custom': "url('/background/bg-custom.svg')",
 			},
 			fontFamily: {
 				ibm: ['IBM Plex Mono', 'monospace'],
