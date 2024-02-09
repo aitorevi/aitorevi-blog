@@ -12,46 +12,46 @@ const path = Astro.url.pathname;
 ---
 <header class="flex w-full bg-white bg-opacity-95 fixed z-10 font-ibm">
     <Astronav>
-        <div class="flex items-center m-auto w-5/6">
-            <div>
-                <div class="flex">
-                    <a href="/" class="cursor-pointer text-inherit text-4xl hover:text-secondary transition ease-linear delay-50 duration-150">
-                        aitorevi
+        <div class="flex w-[80rem] h-14 md:h-20 mx-auto justify-between bg-white items-center">
+            <div class="mx-10 xl:mx-0">
+                <a href="/"
+                   class="cursor-pointer text-inherit text-4xl hover:text-secondary transition ease-linear delay-50 duration-150">
+                    aitorevi
+                </a>
+                <!--<div class="md:hidden hover:text-secondary transition ease-linear delay-150 duration-300 h-8 mb-2">
+                    <MenuIcon>
+                        <OpenIcon>
+                            <div class="w-8 h-8">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"
+                                     stroke="currentColor">
+                                    <path d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"/>
+                                </svg>
+                            </div>
+                        </OpenIcon>
+                        <CloseIcon>
+                            <div class="w-8 h-8">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"
+                                     stroke="currentColor">
+                                    <path d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"/>
+                                </svg>
+                            </div>
+                        </CloseIcon>
+                    </MenuIcon>
+                </div>-->
+                <!--
+                <MenuItems class="hidden md:ml-20 md:flex text-lg items-center">
+                    <a href="/blog"
+                       class="text-primary hover:text-opacity-60 transition ease-linear delay-50 duration-200">Blog
                     </a>
-                    <!--<div class="md:hidden hover:text-secondary transition ease-linear delay-150 duration-300 h-8 mb-2">
-                        <MenuIcon>
-                            <OpenIcon>
-                                <div class="w-8 h-8">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"
-                                         stroke="currentColor">
-                                        <path d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"/>
-                                    </svg>
-                                </div>
-                            </OpenIcon>
-                            <CloseIcon>
-                                <div class="w-8 h-8">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"
-                                         stroke="currentColor">
-                                        <path d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"/>
-                                    </svg>
-                                </div>
-                            </CloseIcon>
-                        </MenuIcon>
-                    </div>-->
-                    <!--
-                    <MenuItems class="hidden md:ml-20 md:flex text-lg items-center">
-                        <a href="/blog"
-                           class="text-primary hover:text-opacity-60 transition ease-linear delay-50 duration-200">Blog
-                        </a>
 
-                        <a href="/katas"
-                           class="flex p-4 justify-center  hover:text-secondary transition ease-linear delay-150 hover:-translate-y-1 hover:scale-105 duration-300">Katas
-                        </a>
-                    </MenuItems>
-                    -->
-                </div>
+                    <a href="/katas"
+                       class="flex p-4 justify-center  hover:text-secondary transition ease-linear delay-150 hover:-translate-y-1 hover:scale-105 duration-300">Katas
+                    </a>
+                </MenuItems>
+                -->
+
             </div>
-            <div class="flex w-full h-24 bg-opacity-80 items-center justify-end gap-8 bg-white">
+            <div class="flex gap-8 mx-10 xl:mx-0">
                 <a href="https://es.linkedin.com/in/aitor-reviriego-amor" target="_blank" rel="noopener noreferrer"
                    aria-label="linkedin icon">
                     <Icon name="linkedin"
