@@ -1,21 +1,26 @@
 ---
 import {
     Astronav,
-    MenuItems,
-    MenuIcon,
-    OpenIcon,
-    CloseIcon
 } from "astro-navbar";
-import EmailLinkToCopy from "../EmailLinkToCopy/EmailLinkToCopy.astro";
 import {Icon} from "astro-icon/components";
+import EmailLinkToCopy from "../EmailLinkToCopy/EmailLinkToCopy.astro";
+import {Image} from "astro:assets";
+
 const path = Astro.url.pathname;
 ---
 <header class="flex w-full bg-white bg-opacity-95 fixed z-10 font-ibm">
     <Astronav>
         <div class="flex w-[80rem] h-14 md:h-20 mx-auto justify-between bg-white items-center">
-            <div class="mx-10 xl:mx-0">
+            <div class="flex mx-10 xl:mx-0 gap-2">
+                <a href="/">
+                    <Image src="/logo.webp"
+                           alt="logo"
+                           width={16}
+                           height={16}
+                           class="w-8 h-8 md:w-10 md:h-10"/>
+                </a>
                 <a href="/"
-                   class="cursor-pointer text-inherit text-4xl hover:text-secondary transition ease-linear delay-50 duration-150">
+                   class="hidden md:block cursor-pointer text-inherit text-4xl hover:text-secondary transition ease-linear delay-50 duration-150">
                     aitorevi
                 </a>
                 <!--<div class="md:hidden hover:text-secondary transition ease-linear delay-150 duration-300 h-8 mb-2">
@@ -62,11 +67,11 @@ const path = Astro.url.pathname;
                     <Icon name="github"
                           class="p-0.5 w-[1.7rem] h-[1.7rem] md:w-[2rem] md:h-[2rem] inline-block hover:text-secondary transition ease-linear delay-50 duration-200"/>
                 </a>
-                <!--<EmailLinkToCopy>
+                <EmailLinkToCopy position="navbar">
                     <Icon name="mail"
                           class="w-[1.7rem] h-[1.7rem] md:w-[2.1rem] md:h-[2.1rem] text-primary hover:text-secondary inline-block transition ease-linear delay-50 duration-200"
                           aria-label="email icon"/>
-                </EmailLinkToCopy>-->
+                </EmailLinkToCopy>
             </div>
         </div>
     </Astronav>

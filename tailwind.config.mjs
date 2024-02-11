@@ -21,6 +21,9 @@ export default {
 			},
 			width: {
 				'116': '29rem',
+			},
+			spacing: {
+				'30': '7.5rem',
 			}
 		},
 	},

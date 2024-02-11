@@ -1,16 +1,17 @@
 ---
 import {Icon} from "astro-icon/components";
-import EmailLinkToCopy from "../EmailLinkToCopy/EmailLinkToCopy.astro";
+import EmailLinkToCopy from '../EmailLinkToCopy/EmailLinkToCopy.astro';
+
 ---
 
 <footer class="flex w-full h-14 md:h-20 bg-opacity-80 items-center justify-center gap-8 bg-white">
     <a href="https://es.linkedin.com/in/aitor-reviriego-amor" target="_blank" rel="noopener noreferrer" aria-label="linkedin icon">
-        <Icon name="linkedin" class="w-[1.7rem] h-[1.7rem] md:w-[2rem] md:h-[2rem] inline-block hover:opacity-60 transition ease-linear delay-50 duration-200" />
+        <Icon name="linkedin" class="w-[1.7rem] h-[1.7rem] md:w-[2rem] md:h-[2rem] inline-block hover:text-secondary transition ease-linear delay-50 duration-200" />
     </a>
     <a href="https://github.com/aitorevi" target="_blank" rel="noopener noreferrer" aria-label="github icon">
         <Icon name="github" class="p-0.5 w-[1.7rem] h-[1.7rem] md:w-[2rem] md:h-[2rem] inline-block hover:text-secondary transition ease-linear delay-50 duration-200" />
     </a>
-    <!--<EmailLinkToCopy>
-        <Icon name="mail" class="w-[1.7rem] h-[1.7rem] md:w-[2.1rem] md:h-[2.1rem] hover:opacity-60 inline-block transition ease-linear delay-50 duration-200" aria-label="email icon"/>
-    </EmailLinkToCopy>-->
+    <EmailLinkToCopy position="footer">
+        <Icon name="mail" class="w-[1.7rem] h-[1.7rem] md:w-[2.1rem] md:h-[2.1rem] hover:text-secondary inline-block transition ease-linear delay-50 duration-200" aria-label="email icon"/>
+    </EmailLinkToCopy>
 </footer>

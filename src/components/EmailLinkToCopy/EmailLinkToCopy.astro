@@ -1,8 +1,9 @@
 ---
+import {EmailLinkToCopy} from "./EmailLinkToCopy";
+
+const {position} = Astro.props;
 ---
 
-<article class="relative">
-    <EmailLinkToCopy client:load>
-        <slot/>
-    </EmailLinkToCopy>
-</article>
+<EmailLinkToCopy client:load position={position}>
+    <slot/>
+</EmailLinkToCopy>
