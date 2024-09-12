@@ -2,8 +2,12 @@ export interface EmailLink {
     email: string
 }
 
-interface Window {
-  dataLayer: any[];
+declare global {
+  interface Window {
+    dataLayer: any[];
+  }
+  function gtag(...args: any[]): void;
 }
 
-declare function gtag(...args: any[]): void;
+export {};  // Esto asegura que TypeScript trate este archivo como un módulo global
+
