@@ -35,6 +35,7 @@ import Layout from '../../layouts/Layout.astro';
 import Tag from '../../components/atoms/Tag.astro';
 import DateDisplay from '../../components/atoms/DateDisplay.astro';
 import ReadingTime from '../../components/atoms/ReadingTime.astro';
+import CopyButton from '../../components/atoms/CopyButton.astro';
 import { calculateReadingTime, formatDateISO } from '../../lib/utils';
 
 // Astro 5: Generate static paths for all blog posts
@@ -208,11 +209,17 @@ const coverImageUrl = typeof data.coverImage === 'string' ? data.coverImage : da
 
     <!-- Article Content -->
     <div
-      class="prose prose-slate max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-blue-600 hover:prose-a:text-blue-700 prose-img:rounded-lg prose-pre:bg-slate-900 prose-pre:text-slate-100"
+      class="prose prose-slate max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-blue-600 hover:prose-a:text-blue-700 prose-img:rounded-lg"
       itemprop="articleBody"
+      id="article-content"
     >
       <Content />
     </div>
+
+    <!-- Copy Button Template (hidden, será clonado por el script) -->
+    <template id="copy-button-template">
+      <CopyButton />
+    </template>
 
     <!-- Article Footer -->
     <footer class="mt-12 border-t border-slate-200 pt-8">
@@ -306,4 +313,104 @@ const coverImageUrl = typeof data.coverImage === 'string' ? data.coverImage : da
   .prose pre code {
     @apply bg-transparent p-0;
   }
+
+  /* Code block wrapper con botón de copiar */
+  .code-block-wrapper {
+    @apply relative mb-6 rounded-xl bg-slate-50 border border-slate-200 shadow-sm;
+    overflow: hidden;
+  }
+
+  /* Header de ventana macOS */
+  .code-block-wrapper::before {
+    content: '';
+    @apply block h-10 bg-slate-100 border-b border-slate-200;
+  }
+
+  /* Círculos de macOS */
+  .code-block-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 13px;
+    left: 12px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ff5f56;
+    box-shadow:
+      20px 0 0 0 #ffbd2e,
+      40px 0 0 0 #27c93f,
+      0 0 0 1px rgba(0, 0, 0, 0.1) inset;
+    z-index: 10;
+  }
+
+  .code-block-wrapper pre {
+    @apply m-0 rounded-none bg-slate-50 p-4 pr-16 pt-4 overflow-x-auto;
+    border: none;
+  }
+
+  .code-block-wrapper .copy-button {
+    @apply absolute top-0.5 right-3 z-20;
+  }
+
+  /* Ajuste de hover más sutil */
+  .code-block-wrapper .copy-button:hover {
+    transform: scale(1.05);
+  }
+
+  /* Estilos para el código con tema light */
+  .prose pre {
+    @apply bg-slate-50 text-slate-800;
+  }
+
+  .prose code {
+    @apply text-slate-800;
+  }
+
+  /* Ajustar para código inline (no en bloques) */
+  .prose :not(pre) > code {
+    @apply bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded;
+  }
 </style>
+
+<script>
+  /**
+   * Script para envolver bloques de código con contenedor y botón de copiar
+   * Se ejecuta en el cliente para agregar interactividad
+   */
+  function wrapCodeBlocks() {
+    const content = document.getElementById('article-content');
+    if (!content) return;
+
+    const template = document.getElementById('copy-button-template') as HTMLTemplateElement;
+    if (!template) return;
+
+    // Encontrar todos los bloques <pre> que no estén ya envueltos
+    const preBlocks = content.querySelectorAll('pre:not(.code-block-wrapper pre)');
+
+    preBlocks.forEach((pre) => {
+      // Crear wrapper
+      const wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+
+      // Clonar el botón del template
+      const button = template.content.cloneNode(true) as DocumentFragment;
+
+      // Reemplazar el <pre> con el wrapper
+      pre.parentNode?.replaceChild(wrapper, pre);
+
+      // Agregar el <pre> y el botón al wrapper
+      wrapper.appendChild(pre);
+      wrapper.appendChild(button);
+    });
+  }
+
+  // Ejecutar cuando el DOM esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', wrapCodeBlocks);
+  } else {
+    wrapCodeBlocks();
+  }
+
+  // Re-ejecutar después de navegación con View Transitions
+  document.addEventListener('astro:page-load', wrapCodeBlocks);
+</script>
