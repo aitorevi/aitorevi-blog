@@ -38,13 +38,13 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
 ---
 
 <Layout
-  title="Blog | Aitor Evi"
+  title="Blog | aitorevi"
   description="Technical articles, tutorials, and insights on web development, Astro, TypeScript, and modern web technologies."
 >
   <!-- SEO: Additional metadata -->
   <Fragment slot="head">
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Blog | Aitor Evi" />
+    <meta property="og:title" content="Blog | aitorevi" />
     <meta property="og:description" content="Technical articles and insights on web development" />
     <link rel="canonical" href={new URL('/blog', Astro.site).href} />
 
@@ -52,12 +52,12 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
     <script is:inline type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Blog",
-      "name": "Aitor Evi Blog",
+      "name": "aitorevi Blog",
       "description": "Technical articles, tutorials, and insights on web development",
       "url": new URL('/blog', Astro.site).href,
       "author": {
         "@type": "Person",
-        "name": "Aitor Evi",
+        "name": "aitorevi",
       },
       "blogPost": publishedPosts.slice(0, 10).map(post => ({
         "@type": "BlogPosting",
@@ -70,7 +70,7 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
   </Fragment>
 
   <!-- Main Content -->
-  <main class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+  <main class="mx-auto max-w-7xl px-4 pt-24 pb-12 sm:px-6 lg:px-8">
     <!-- Page Header -->
     <header class="mb-12 text-center">
       <h1 class="mb-4 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
