@@ -32,7 +32,7 @@ const blogCollection = defineCollection({
 
     // Astro 5 image() helper - validates image paths at build time
     // Supports both local images and remote URLs
-    coverImage: image(),
+    coverImage: z.union([image(), z.string().url()]),
 
     coverImageAlt: z.string()
       .min(10, 'Alt text must be descriptive (minimum 10 characters)')
