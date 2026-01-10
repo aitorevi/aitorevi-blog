@@ -48,9 +48,10 @@ const blogCollection = defineCollection({
     updatedDate: z.coerce.date().optional(),
 
     author: z.object({
-      name: z.string().default('Aitor Evi'),
+      name: z.string().default('aitorevi'),
       url: z.string().url().optional(),
-    }).default({ name: 'Aitor Evi' }),
+      avatar: z.string().optional(),
+    }).default({ name: 'aitorevi' }),
 
     featured: z.boolean().default(false),
 

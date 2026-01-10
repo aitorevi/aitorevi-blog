@@ -77,7 +77,7 @@ const coverImageUrl = typeof data.coverImage === 'string' ? data.coverImage : da
 ---
 
 <Layout
-  title={`${data.title} | Aitor Evi Blog`}
+  title={`${data.title} | aitorevi Blog`}
   description={data.description}
 >
   <!-- SEO: Open Graph & Twitter Card -->
@@ -122,7 +122,7 @@ const coverImageUrl = typeof data.coverImage === 'string' ? data.coverImage : da
       },
       "publisher": {
         "@type": "Organization",
-        "name": "Aitor Evi",
+        "name": "aitorevi",
         "url": Astro.site?.href,
       },
       "mainEntityOfPage": {
@@ -226,9 +226,17 @@ const coverImageUrl = typeof data.coverImage === 'string' ? data.coverImage : da
       <div class="flex items-center justify-between">
         <!-- Author Info -->
         <div class="flex items-center gap-3">
-          <div class="h-12 w-12 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
-            {data.author.name.split(' ').map(n => n[0]).join('')}
-          </div>
+          {data.author.avatar ? (
+            <img
+              src={data.author.avatar}
+              alt={`${data.author.name} avatar`}
+              class="h-12 w-12 rounded-full object-cover"
+            />
+          ) : (
+            <div class="h-12 w-12 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
+              {data.author.name.split(' ').map(n => n[0]).join('')}
+            </div>
+          )}
           <div>
             <p class="font-medium text-slate-900">
               {data.author.url ? (
@@ -248,7 +256,7 @@ const coverImageUrl = typeof data.coverImage === 'string' ? data.coverImage : da
         <!-- Back to Blog Link -->
         <a
           href="/blog"
-          class="inline-flex items-center gap-2 rounded-lg bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-200"
+          class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-200"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -13,7 +13,8 @@ tags:
 draft: false
 featured: true
 author:
-  name: Aitor Evi
+  name: aitorevi
+  avatar: /avatar.webp
 ---
 
 ## Introducción
