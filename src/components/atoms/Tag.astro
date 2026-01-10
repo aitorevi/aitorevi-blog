@@ -1,0 +1,65 @@
+---
+/**
+ * Tag Atom Component
+ *
+ * A semantic, accessible tag/badge component for categorization.
+ * Zero JavaScript - Pure HTML/CSS with Tailwind utilities.
+ *
+ * Design Decisions:
+ * - Uses <span> with role="term" for semantic meaning
+ * - Keyboard-accessible when used as a link wrapper
+ * - High contrast ratios for WCAG AA compliance
+ * - Consistent padding/sizing based on design system
+ *
+ * Performance: Static HTML, no hydration needed
+ */
+
+interface Props {
+  /**
+   * Tag label text
+   */
+  label: string;
+
+  /**
+   * Visual variant for different contexts
+   * @default 'default'
+   */
+  variant?: 'default' | 'accent' | 'muted';
+
+  /**
+   * Additional CSS classes for customization
+   */
+  class?: string;
+}
+
+const { label, variant = 'default', class: className = '' } = Astro.props;
+
+// Variant styles mapping (mobile-first approach)
+const variantStyles = {
+  default: 'bg-grayLight text-quaternary hover:bg-gray-200',
+
+  // OPCIÓN 1: "Soft Accent" - RECOMENDADA
+  // Fondo morado suave con texto morado oscuro
+  // Contraste AAA, hover con fondo más saturado
+  accent: 'bg-secondary/10 text-secondary border border-secondary/20 hover:bg-secondary/15 hover:border-secondary/30',
+
+  // OPCIÓN 2: "Minimal Outlined" - Descomentar para probar
+  // accent: 'bg-white border border-secondary text-secondary hover:bg-secondary hover:text-white',
+
+  // OPCIÓN 3: "Glossy Modern" - Descomentar para probar (requiere backdrop-blur)
+  // accent: 'bg-secondary/[0.08] backdrop-blur-sm text-secondary border border-secondary/15 hover:bg-secondary/[0.12] hover:border-secondary/25 shadow-sm',
+
+  muted: 'bg-baseLight text-quaternary hover:bg-gray-100',
+};
+
+const baseStyles = 'inline-flex items-center px-3 py-1 text-xs font-medium rounded-full transition-all duration-200';
+const combinedClasses = `${baseStyles} ${variantStyles[variant]} ${className}`;
+---
+
+<span
+  role="term"
+  class={combinedClasses}
+  transition:name={`tag-${label}`}
+>
+  {label}
+</span>

@@ -1,0 +1,54 @@
+---
+/**
+ * ReadingTime Atom Component
+ *
+ * Displays estimated reading time for content.
+ * Zero JavaScript - Calculated at build time.
+ *
+ * Performance: Static calculation during SSG, no runtime cost.
+ */
+
+interface Props {
+  /**
+   * Reading time text (e.g., "5 min read")
+   */
+  text: string;
+
+  /**
+   * Show icon before text
+   * @default true
+   */
+  showIcon?: boolean;
+
+  /**
+   * Additional CSS classes
+   */
+  class?: string;
+}
+
+const { text, showIcon = true, class: className = '' } = Astro.props;
+---
+
+<span
+  class={`inline-flex items-center gap-1.5 text-sm text-quaternary ${className}`}
+  aria-label={`Estimated reading time: ${text}`}
+>
+  {showIcon && (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="w-4 h-4"
+      aria-hidden="true"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+      />
+    </svg>
+  )}
+  {text}
+</span>

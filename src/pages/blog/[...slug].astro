@@ -1,0 +1,309 @@
+---
+/**
+ * Dynamic Blog Post Page
+ *
+ * Handles individual blog post rendering using Astro 5's Content Layer API.
+ *
+ * Static Generation Strategy:
+ * - All routes generated at build time via getStaticPaths()
+ * - Zero runtime overhead (SSG)
+ * - Optimal Core Web Vitals (LCP, FID, CLS)
+ *
+ * SEO Optimizations:
+ * - Semantic HTML5 structure
+ * - Complete Open Graph metadata
+ * - Schema.org Article markup
+ * - Canonical URLs
+ * - Image optimization with proper alt text
+ *
+ * Performance:
+ * - Zero JavaScript by default
+ * - Optimized images via Astro Image
+ * - Minimal CSS (Tailwind utilities)
+ * - View Transitions for SPA-like navigation
+ *
+ * Accessibility:
+ * - Proper heading hierarchy (h1 → h2 → h3)
+ * - ARIA landmarks
+ * - High contrast ratios
+ * - Keyboard navigation
+ */
+
+import { getCollection, type CollectionEntry, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import Tag from '../../components/atoms/Tag.astro';
+import DateDisplay from '../../components/atoms/DateDisplay.astro';
+import ReadingTime from '../../components/atoms/ReadingTime.astro';
+import { calculateReadingTime, formatDateISO } from '../../lib/utils';
+
+// Astro 5: Generate static paths for all blog posts
+export async function getStaticPaths() {
+  const blogPosts = await getCollection('blog');
+
+  // Filter drafts in production
+  const publishedPosts = import.meta.env.PROD
+    ? blogPosts.filter((post) => !post.data.draft)
+    : blogPosts;
+
+  return publishedPosts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { data, body = '' } = post;
+
+// Astro 5: render() function for MDX/Markdown content
+const { Content } = await render(post);
+
+// Calculate reading time
+const readingTime = calculateReadingTime(body);
+
+// Construct canonical URL
+const canonicalUrl = data.canonicalUrl || new URL(Astro.url.pathname, Astro.site).href;
+
+// Open Graph image (use cover or dedicated OG image)
+const ogImage = data.ogImage || data.coverImage;
+// Handle both local images (with .src) and remote URLs (strings)
+const ogImageUrl = typeof ogImage === 'string' ? ogImage : ogImage.src;
+const coverImageUrl = typeof data.coverImage === 'string' ? data.coverImage : data.coverImage.src;
+---
+
+<Layout
+  title={`${data.title} | Aitor Evi Blog`}
+  description={data.description}
+>
+  <!-- SEO: Open Graph & Twitter Card -->
+  <Fragment slot="head">
+    <!-- Open Graph -->
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={data.title} />
+    <meta property="og:description" content={data.description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl.startsWith('http') ? ogImageUrl : new URL(ogImageUrl, Astro.site).href} />
+    <meta property="article:published_time" content={data.publishDate.toISOString()} />
+    {data.updatedDate && (
+      <meta property="article:modified_time" content={data.updatedDate.toISOString()} />
+    )}
+    <meta property="article:author" content={data.author.name} />
+    {data.tags.map((tag) => (
+      <meta property="article:tag" content={tag} />
+    ))}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={data.title} />
+    <meta name="twitter:description" content={data.description} />
+    <meta name="twitter:image" content={ogImageUrl.startsWith('http') ? ogImageUrl : new URL(ogImageUrl, Astro.site).href} />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Schema.org JSON-LD -->
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": data.title,
+      "description": data.description,
+      "image": coverImageUrl.startsWith('http') ? coverImageUrl : new URL(coverImageUrl, Astro.site).href,
+      "datePublished": data.publishDate.toISOString(),
+      "dateModified": data.updatedDate?.toISOString() || data.publishDate.toISOString(),
+      "author": {
+        "@type": "Person",
+        "name": data.author.name,
+        "url": data.author.url || Astro.site?.href,
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Aitor Evi",
+        "url": Astro.site?.href,
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": canonicalUrl,
+      },
+      "keywords": data.tags.join(", "),
+    })} />
+  </Fragment>
+
+  <!-- Main Article Content -->
+  <article
+    class="mx-auto max-w-4xl px-4 pt-24 pb-12 sm:px-6 lg:px-8"
+    itemscope
+    itemtype="https://schema.org/BlogPosting"
+  >
+    <!-- Article Header -->
+    <header class="mb-8 space-y-4">
+      <!-- Tags -->
+      <div class="flex flex-wrap gap-2" role="list" aria-label="Article tags">
+        {data.tags.map((tag) => (
+          <Tag label={tag} variant="accent" />
+        ))}
+      </div>
+
+      <!-- Title -->
+      <h1
+        class="text-4xl font-bold leading-tight text-slate-900 sm:text-5xl lg:text-6xl"
+        itemprop="headline"
+      >
+        {data.title}
+      </h1>
+
+      <!-- Subtitle/Description -->
+      <p
+        class="text-lg text-slate-600 sm:text-xl"
+        itemprop="description"
+      >
+        {data.description}
+      </p>
+
+      <!-- Metadata -->
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-b border-slate-200 py-4">
+        <DateDisplay date={data.publishDate} showIcon={true} />
+
+        <span class="text-slate-400" aria-hidden="true">•</span>
+
+        <ReadingTime text={readingTime.text} />
+
+        {data.updatedDate && (
+          <>
+            <span class="text-slate-400" aria-hidden="true">•</span>
+            <time
+              datetime={formatDateISO(data.updatedDate)}
+              class="text-sm text-slate-500"
+            >
+              Updated {new Date(data.updatedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            </time>
+          </>
+        )}
+      </div>
+    </header>
+
+    <!-- Cover Image -->
+    <figure class="mb-10 overflow-hidden rounded-xl">
+      <Image
+        src={data.coverImage}
+        alt={data.coverImageAlt}
+        width={1200}
+        height={630}
+        widths={[800, 1200, 1600]}
+        sizes="(min-width: 1024px) 896px, 100vw"
+        class="w-full"
+        loading="eager"
+        decoding="sync"
+        itemprop="image"
+      />
+      {data.coverImageAlt && (
+        <figcaption class="mt-2 text-center text-sm text-slate-500">
+          {data.coverImageAlt}
+        </figcaption>
+      )}
+    </figure>
+
+    <!-- Article Content -->
+    <div
+      class="prose prose-slate max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-blue-600 hover:prose-a:text-blue-700 prose-img:rounded-lg prose-pre:bg-slate-900 prose-pre:text-slate-100"
+      itemprop="articleBody"
+    >
+      <Content />
+    </div>
+
+    <!-- Article Footer -->
+    <footer class="mt-12 border-t border-slate-200 pt-8">
+      <div class="flex items-center justify-between">
+        <!-- Author Info -->
+        <div class="flex items-center gap-3">
+          <div class="h-12 w-12 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
+            {data.author.name.split(' ').map(n => n[0]).join('')}
+          </div>
+          <div>
+            <p class="font-medium text-slate-900">
+              {data.author.url ? (
+                <a href={data.author.url} class="hover:text-blue-600">
+                  {data.author.name}
+                </a>
+              ) : (
+                data.author.name
+              )}
+            </p>
+            <p class="text-sm text-slate-600">
+              Published on <DateDisplay date={data.publishDate} />
+            </p>
+          </div>
+        </div>
+
+        <!-- Back to Blog Link -->
+        <a
+          href="/blog"
+          class="inline-flex items-center gap-2 rounded-lg bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-200"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-4 h-4"
+            aria-hidden="true"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+          </svg>
+          Back to Blog
+        </a>
+      </div>
+    </footer>
+
+    <!-- Hidden Schema.org metadata -->
+    <meta itemprop="datePublished" content={data.publishDate.toISOString()} />
+    {data.updatedDate && (
+      <meta itemprop="dateModified" content={data.updatedDate.toISOString()} />
+    )}
+    <meta itemprop="author" content={data.author.name} />
+  </article>
+</Layout>
+
+<style is:global>
+  /**
+   * Prose Customizations
+   * Enhances @tailwindcss/typography with custom styles
+   */
+
+  /* Ensure code blocks have proper scrolling on mobile */
+  .prose pre {
+    @apply overflow-x-auto;
+  }
+
+  /* Improve heading spacing */
+  .prose h2 {
+    @apply mt-12 mb-4;
+  }
+
+  .prose h3 {
+    @apply mt-8 mb-3;
+  }
+
+  /* Enhance blockquote styling */
+  .prose blockquote {
+    @apply border-l-4 border-blue-600 bg-slate-50 py-1 italic;
+  }
+
+  /* Table responsiveness */
+  .prose table {
+    @apply block overflow-x-auto;
+  }
+
+  /* Code inline improvements */
+  .prose code {
+    @apply rounded bg-slate-100 px-1.5 py-0.5;
+  }
+
+  .prose pre code {
+    @apply bg-transparent p-0;
+  }
+</style>
