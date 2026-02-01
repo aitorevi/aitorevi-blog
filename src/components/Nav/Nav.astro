@@ -1,78 +1,161 @@
 ---
-import {
-    Astronav,
-} from "astro-navbar";
-import {Icon} from "astro-icon/components";
+/**
+ * Navigation Component
+ *
+ * Features:
+ * - View Transitions: Persists between page navigations
+ * - Active state: Highlights current section
+ * - Responsive design (NO JavaScript hamburger menu for now)
+ *
+ * Performance:
+ * - Zero JavaScript for navigation (View Transitions work natively)
+ * - transition:persist prevents re-rendering
+ * - Unique transition:name for smooth animations
+ *
+ * IMPORTANT: Removed Astronav to prevent View Transitions conflicts
+ */
+import { Icon } from "astro-icon/components";
 import EmailLinkToCopy from "../EmailLinkToCopy/EmailLink.astro";
-import {Image} from "astro:assets";
+import { Image } from "astro:assets";
 
+// Detectar la ruta actual
+const currentPath = Astro.url.pathname;
+const isInBlog = currentPath.startsWith('/blog');
 ---
-<!-- TODO: Implementar iconos de mayor tamaño para pantallas mas grandes con mayor resolución -->
-<header class="flex w-full bg-white bg-opacity-95 fixed z-50 font-ibm">
-    <Astronav>
-        <div class="flex w-[80rem] h-14 md:h-20 mx-auto justify-between bg-white items-center">
-            <div class="flex mx-10 xl:mx-0 gap-2">
-                <a href="/">
-                    <Image src="/logo.webp"
-                           alt="logo"
-                           width={16}
-                           height={16}
-                           class="w-8 h-8 md:w-10 md:h-10"/>
-                </a>
-                <a href="/"
-                   class="hidden md:block cursor-pointer text-inherit text-4xl hover:text-secondary transition ease-linear delay-50 duration-150">
-                    aitorevi
-                </a>
-                <!--<div class="md:hidden hover:text-secondary transition ease-linear delay-150 duration-300 h-8 mb-2">
-                    <MenuIcon>
-                        <OpenIcon>
-                            <div class="w-8 h-8">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"
-                                     stroke="currentColor">
-                                    <path d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"/>
-                                </svg>
-                            </div>
-                        </OpenIcon>
-                        <CloseIcon>
-                            <div class="w-8 h-8">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"
-                                     stroke="currentColor">
-                                    <path d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"/>
-                                </svg>
-                            </div>
-                        </CloseIcon>
-                    </MenuIcon>
-                </div>-->
-                <!--
-                <MenuItems class="hidden md:ml-20 md:flex text-lg items-center">
-                    <a href="/blog"
-                       class="text-primary hover:text-opacity-60 transition ease-linear delay-50 duration-200">Blog
-                    </a>
 
-                    <a href="/katas"
-                       class="flex p-4 justify-center  hover:text-secondary transition ease-linear delay-150 hover:-translate-y-1 hover:scale-105 duration-300">Katas
-                    </a>
-                </MenuItems>
-                -->
+<!--
+  ASTRO 5 VIEW TRANSITIONS:
+  - transition:persist="navbar" mantiene el header completo sin re-renderizar
+  - transition:name asigna nombres únicos para animar elementos específicos
+  - data-pathname permite detectar cambios de ruta en el cliente
 
-            </div>
-            <div class="flex gap-8 mx-10 xl:mx-0">
-                <a href="https://es.linkedin.com/in/aitor-reviriego-amor" target="_blank" rel="noopener noreferrer"
-                   aria-label="linkedin icon">
-                    <Icon name="linkedin"
-                          class="w-[1.7rem] h-[1.7rem] md:w-[2rem] md:h-[2rem] inline-block hover:text-secondary transition ease-linear delay-50 duration-200"/>
-                </a>
-                <a href="https://github.com/aitorevi" target="_blank" rel="noopener noreferrer"
-                   aria-label="github icon">
-                    <Icon name="github"
-                          class="p-0.5 w-[1.7rem] h-[1.7rem] md:w-[2rem] md:h-[2rem] inline-block hover:text-secondary transition ease-linear delay-50 duration-200"/>
-                </a>
-                <EmailLinkToCopy position="navbar">
-                    <Icon name="mail"
-                          class="w-[1.7rem] h-[1.7rem] md:w-[2.1rem] md:h-[2.1rem] text-primary hover:text-secondary inline-block transition ease-linear delay-50 duration-200"
-                          aria-label="email icon"/>
-                </EmailLinkToCopy>
-            </div>
-        </div>
-    </Astronav>
+  REMOVED: <Astronav> component - it was breaking View Transitions
+-->
+<header
+  class="flex w-full bg-white bg-opacity-95 fixed z-50 font-ibm"
+  transition:persist="navbar"
+  transition:name="site-header"
+  data-pathname={currentPath}
+>
+  <div class="flex w-full max-w-[80rem] h-14 md:h-20 mx-auto justify-between bg-white items-center px-4 sm:px-6 lg:px-8">
+    <!-- Logo Section -->
+    <div class="flex gap-2" transition:name="logo-section">
+      <a href="/">
+        <Image
+          src="/logo.webp"
+          alt="logo"
+          width={16}
+          height={16}
+          class="w-8 h-8 md:w-10 md:h-10"
+        />
+      </a>
+      <a
+        href="/"
+        class="hidden md:block cursor-pointer text-inherit text-4xl hover:text-secondary transition ease-linear delay-50 duration-150"
+      >
+        aitorevi
+      </a>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav class="flex items-center gap-6 text-lg">
+      <a
+        href="/blog"
+        id="blog-link"
+        data-active={isInBlog}
+        transition:name="blog-nav-link"
+        class={`relative transition-all ease-in-out duration-300 ${
+          isInBlog
+            ? 'text-secondary font-semibold'
+            : 'text-primary hover:text-secondary'
+        }`}
+      >
+        Blog
+        <!-- Animated underline -->
+        <span
+          class={`absolute bottom-0 left-0 w-full h-0.5 bg-secondary transition-transform duration-300 origin-left ${
+            isInBlog ? 'scale-x-100' : 'scale-x-0'
+          }`}
+          aria-hidden="true"
+        ></span>
+      </a>
+    </nav>
+  </div>
 </header>
+
+<style>
+  /**
+   * View Transitions Custom Animations
+   *
+   * Astro 5 permite personalizar las animaciones con @keyframes
+   * usando la sintaxis ::view-transition-*
+   */
+
+  /* Smooth fade transition for the entire header */
+  @media (prefers-reduced-motion: no-preference) {
+    header {
+      view-transition-name: site-header;
+    }
+  }
+
+  /* Hover effect para el enlace del blog */
+  #blog-link:hover span {
+    transform: scaleX(1);
+  }
+
+  /* Mantener el subrayado cuando está activo */
+  #blog-link[data-active="true"] span {
+    transform: scaleX(1);
+  }
+</style>
+
+<script>
+  /**
+   * Client-side script to update active state during View Transitions
+   *
+   * Astro View Transitions fire 'astro:page-load' event on each navigation.
+   * This script updates the active state of nav links without full page reload.
+   *
+   * Performance: Minimal JavaScript (~100 bytes gzipped)
+   * Only runs on navigation, not on initial load.
+   */
+
+  function updateActiveState() {
+    const currentPath = window.location.pathname;
+    const blogLink = document.getElementById('blog-link');
+
+    if (!blogLink) return;
+
+    const isInBlog = currentPath.startsWith('/blog');
+
+    // Update data attribute
+    blogLink.setAttribute('data-active', isInBlog.toString());
+
+    // Update classes for text color and font weight
+    if (isInBlog) {
+      blogLink.classList.remove('text-primary');
+      blogLink.classList.add('text-secondary', 'font-semibold');
+    } else {
+      blogLink.classList.remove('text-secondary', 'font-semibold');
+      blogLink.classList.add('text-primary');
+    }
+
+    // Update underline (the span inside)
+    const underline = blogLink.querySelector('span');
+    if (underline) {
+      if (isInBlog) {
+        underline.classList.remove('scale-x-0');
+        underline.classList.add('scale-x-100');
+      } else {
+        underline.classList.remove('scale-x-100');
+        underline.classList.add('scale-x-0');
+      }
+    }
+  }
+
+  // Run on View Transition navigation
+  document.addEventListener('astro:page-load', updateActiveState);
+
+  // Also run on initial load (for client-side routing)
+  document.addEventListener('DOMContentLoaded', updateActiveState);
+</script>

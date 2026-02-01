@@ -171,7 +171,7 @@ tags:
 draft: false
 featured: false
 author:
-  name: Aitor Evi
+  name: aitorevi
 ---
 
 ## Your Content Here

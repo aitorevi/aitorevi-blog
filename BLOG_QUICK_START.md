@@ -191,7 +191,7 @@ author:
   name: Your Name
   url: https://yourwebsite.com
 ```
-- Defaults to "Aitor Evi"
+- Defaults to "aitorevi"
 - URL is optional but recommended
 
 **ogImage** (path to image)

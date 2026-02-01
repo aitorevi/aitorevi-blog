@@ -11,7 +11,7 @@ tags:
   - Team Work
   - Pair Programming
 draft: false
-featured: true
+featured: false
 author:
   name: aitorevi
   avatar: /avatar.webp

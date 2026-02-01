@@ -332,9 +332,9 @@ const blogCollection = defineCollection({
     featured: z.boolean().default(false),
     updatedDate: z.coerce.date().optional(),
     author: z.object({
-      name: z.string().default('Aitor Evi'),
+      name: z.string().default('aitorevi'),
       url: z.string().url().optional(),
-    }).default({ name: 'Aitor Evi' }),
+    }).default({ name: 'aitorevi' }),
   }),
 });
 ```

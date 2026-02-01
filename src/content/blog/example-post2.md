@@ -10,7 +10,7 @@ tags:
   - Performance
   - TypeScript
 draft: false
-featured: false
+featured: true
 author:
   name: aitorevi
   avatar: /avatar.webp
