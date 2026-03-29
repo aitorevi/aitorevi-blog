@@ -1,0 +1,18 @@
+---
+import type { ExperienceEntry } from '../../data/cv';
+import CvExperienceItem from './CvExperienceItem.astro';
+
+interface Props {
+  label: string;
+  entries: ExperienceEntry[];
+}
+
+const { label, entries } = Astro.props;
+---
+
+<section class="mb-8 md:mb-10">
+  <h2 class="text-2xl font-bold mb-4 border-b-2 border-secondary pb-2">{label}</h2>
+  {entries.map((entry) => (
+    <CvExperienceItem entry={entry} />
+  ))}
+</section>
