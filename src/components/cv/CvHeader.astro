@@ -1,0 +1,32 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { ContactInfo } from '../../data/cv';
+
+interface Props {
+  contact: ContactInfo;
+}
+
+const { contact } = Astro.props;
+---
+
+<header class="text-center mb-8 md:mb-12">
+  <h1 class="text-3xl md:text-5xl font-bold mb-2">{contact.name}</h1>
+  <p class="text-lg md:text-2xl text-secondary font-bold mb-4">{contact.title}</p>
+  <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-quaternary">
+    <span class="flex items-center gap-1">
+      <Icon name="location" class="w-4 h-4" />
+      {contact.location}
+    </span>
+    {contact.links.map((link) => (
+      <a
+        href={link.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center gap-1 hover:text-secondary transition ease-linear duration-200"
+      >
+        <Icon name={link.icon} class="w-4 h-4" />
+        {link.label}
+      </a>
+    ))}
+  </div>
+</header>

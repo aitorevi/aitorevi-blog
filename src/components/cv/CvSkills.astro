@@ -1,0 +1,20 @@
+---
+import type { SkillCategoryData } from '../../data/cv';
+import CvSkillCategory from './CvSkillCategory.astro';
+
+interface Props {
+  label: string;
+  categories: SkillCategoryData[];
+}
+
+const { label, categories } = Astro.props;
+---
+
+<section class="mb-8 md:mb-10">
+  <h2 class="text-2xl font-bold mb-4 border-b-2 border-secondary pb-2">{label}</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {categories.map((cat) => (
+      <CvSkillCategory category={cat} />
+    ))}
+  </div>
+</section>

@@ -14,8 +14,6 @@
  *
  * IMPORTANT: Removed Astronav to prevent View Transitions conflicts
  */
-import { Icon } from "astro-icon/components";
-import EmailLinkToCopy from "../EmailLinkToCopy/EmailLink.astro";
 import { Image } from "astro:assets";
 
 // Detectar la ruta actual
@@ -78,6 +76,12 @@ const isInBlog = currentPath.startsWith('/blog');
           }`}
           aria-hidden="true"
         ></span>
+      </a>
+      <a
+        href="/cv"
+        class="hidden md:flex items-center cursor-pointer text-inherit hover:text-secondary transition ease-linear delay-50 duration-200"
+      >
+        Sobre mí
       </a>
     </nav>
   </div>

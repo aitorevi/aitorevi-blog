@@ -1,0 +1,20 @@
+---
+import type { SkillCategoryData } from '../../data/cv';
+
+interface Props {
+  category: SkillCategoryData;
+}
+
+const { category } = Astro.props;
+---
+
+<div>
+  <h3 class="font-bold mb-2 text-lg">{category.name}</h3>
+  <div class="flex flex-wrap gap-2">
+    {category.skills.map((skill) => (
+      <span class="px-3 py-1 bg-white border border-quaternary rounded-full text-sm hover:border-secondary hover:text-secondary transition ease-linear duration-150">
+        {skill}
+      </span>
+    ))}
+  </div>
+</div>
