@@ -32,7 +32,7 @@ const blogCollection = defineCollection({
 
     // Astro 5 image() helper - validates image paths at build time
     // Supports both local images and remote URLs
-    coverImage: z.union([image(), z.string().url()]),
+    coverImage: z.string(),
 
     coverImageAlt: z.string()
       .min(10, 'Alt text must be descriptive (minimum 10 characters)')
@@ -56,7 +56,7 @@ const blogCollection = defineCollection({
     featured: z.boolean().default(false),
 
     // SEO enhancements (optional)
-    ogImage: image().optional(),
+    ogImage: z.string().optional(),
 
     canonicalUrl: z.string().url().optional(),
   }),

@@ -30,8 +30,6 @@
  */
 
 import { getCollection, type CollectionEntry, render } from 'astro:content';
-import { Image } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
 import Layout from '../../layouts/Layout.astro';
 import Tag from '../../components/atoms/Tag.astro';
 import DateDisplay from '../../components/atoms/DateDisplay.astro';
@@ -71,13 +69,8 @@ const readingTime = calculateReadingTime(body);
 const canonicalUrl = data.canonicalUrl || new URL(Astro.url.pathname, Astro.site).href;
 
 // Open Graph image (use cover or dedicated OG image)
-const ogImage = data.ogImage || data.coverImage;
-// Handle both local images (with .src) and remote URLs (strings)
-const ogImageUrl = typeof ogImage === 'string' ? ogImage : ogImage.src;
-const coverImageUrl = typeof data.coverImage === 'string' ? data.coverImage : data.coverImage.src;
-
-// Type guard for cover image
-const isCoverImageRemote = typeof data.coverImage === 'string';
+const ogImageUrl = data.ogImage || data.coverImage;
+const coverImageUrl = data.coverImage;
 ---
 
 <Layout
@@ -192,31 +185,16 @@ const isCoverImageRemote = typeof data.coverImage === 'string';
 
     <!-- Cover Image -->
     <figure class="mb-10 overflow-hidden rounded-xl">
-      {isCoverImageRemote ? (
-        <img
-          src={data.coverImage as string}
-          alt={data.coverImageAlt}
-          width={1200}
-          height={630}
-          class="w-full"
-          loading="eager"
-          decoding="sync"
-          itemprop="image"
-        />
-      ) : (
-        <Image
-          src={data.coverImage as ImageMetadata}
-          alt={data.coverImageAlt}
-          width={1200}
-          height={630}
-          widths={[800, 1200, 1600]}
-          sizes="(min-width: 1024px) 896px, 100vw"
-          class="w-full"
-          loading="eager"
-          decoding="sync"
-          itemprop="image"
-        />
-      )}
+      <img
+        src={data.coverImage}
+        alt={data.coverImageAlt}
+        width={1200}
+        height={630}
+        class="w-full"
+        loading="eager"
+        decoding="sync"
+        itemprop="image"
+      />
       {data.coverImageAlt && (
         <figcaption class="mt-2 text-center text-sm text-slate-500">
           {data.coverImageAlt}
@@ -339,23 +317,29 @@ const isCoverImageRemote = typeof data.coverImage === 'string';
     @apply bg-transparent p-0;
   }
 
-  /* Code block wrapper con botón de copiar */
-  .code-block-wrapper {
-    @apply relative mb-6 rounded-xl bg-slate-50 border border-slate-200 shadow-sm;
+  /* Code block: macOS window effect via CSS, no JS wrapper needed */
+  .prose pre {
+    @apply relative mb-6 rounded-xl bg-slate-50 border border-slate-200 shadow-sm text-slate-800;
     overflow: hidden;
+    padding-top: 3rem;
   }
 
-  /* Header de ventana macOS */
-  .code-block-wrapper::before {
-    content: '';
-    @apply block h-10 bg-slate-100 border-b border-slate-200;
-  }
-
-  /* Círculos de macOS */
-  .code-block-wrapper::after {
+  /* macOS title bar */
+  .prose pre::before {
     content: '';
     position: absolute;
-    top: 13px;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2.5rem;
+    @apply bg-slate-100 border-b border-slate-200;
+  }
+
+  /* macOS dots */
+  .prose pre::after {
+    content: '';
+    position: absolute;
+    top: 14px;
     left: 12px;
     width: 12px;
     height: 12px;
@@ -368,30 +352,24 @@ const isCoverImageRemote = typeof data.coverImage === 'string';
     z-index: 10;
   }
 
+  .prose pre code {
+    @apply bg-transparent p-0 text-slate-800;
+  }
+
+  /* Code block wrapper (added by JS for copy button) */
+  .code-block-wrapper {
+    @apply relative mb-6;
+  }
+
   .code-block-wrapper pre {
-    @apply m-0 rounded-none bg-slate-50 p-4 pr-16 pt-4 overflow-x-auto;
-    border: none;
+    @apply mb-0;
   }
 
   .code-block-wrapper .copy-button {
     @apply absolute top-0.5 right-3 z-20;
   }
 
-  /* Ajuste de hover más sutil */
-  .code-block-wrapper .copy-button:hover {
-    transform: scale(1.05);
-  }
-
-  /* Estilos para el código con tema light */
-  .prose pre {
-    @apply bg-slate-50 text-slate-800;
-  }
-
-  .prose code {
-    @apply text-slate-800;
-  }
-
-  /* Ajustar para código inline (no en bloques) */
+  /* Inline code */
   .prose :not(pre) > code {
     @apply bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded;
   }

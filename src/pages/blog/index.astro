@@ -84,12 +84,6 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
     <!-- Featured Posts Section -->
     {featuredPosts.length > 0 && (
       <section class="mb-16" aria-labelledby="featured-heading">
-        <h2
-          id="featured-heading"
-          class="mb-6 text-2xl font-bold text-slate-900"
-        >
-          Featured Posts
-        </h2>
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {featuredPosts.slice(0, 3).map((post, index) => (
             <PostCard
