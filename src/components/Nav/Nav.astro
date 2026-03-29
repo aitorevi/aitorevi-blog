@@ -6,6 +6,7 @@ import {Image} from "astro:assets";
 
 const currentPath = Astro.url.pathname;
 const isInBlog = currentPath.startsWith('/blog');
+const isInCv = currentPath.startsWith('/cv');
 ---
 <header class="flex w-full bg-white bg-opacity-95 fixed z-10 font-ibm">
     <Astronav>
@@ -29,7 +30,7 @@ const isInBlog = currentPath.startsWith('/blog');
                     Blog
                 </a>
                 <a href="/cv"
-                   class="hidden md:flex items-center cursor-pointer text-inherit hover:text-secondary transition ease-linear delay-50 duration-200">
+                   class={`hidden md:flex items-center cursor-pointer transition ease-linear delay-50 duration-200 ${isInCv ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
                     Sobre mí
                 </a>
             </div>
