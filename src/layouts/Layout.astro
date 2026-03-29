@@ -1,7 +1,7 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
 import Nav from "../components/Nav/Nav.astro";
 import Footer from "../components/Footer/Footer.astro";
-import { ViewTransitions } from 'astro:transitions';
 
 interface Props {
 	title: string;
@@ -33,13 +33,14 @@ const {
 		)}
 		<title>{title}</title>
 		<ViewTransitions />
+		<slot name="head" />
 	</head>
 	<body class="flex flex-col bg-white bg-custom bg-fixed text-primary scrollbar scrollbar-thumb-primary scrollbar-w-2 scrollbar-corner-rounded-xl">
-			<Nav />
+		<Nav />
 		<main class="min-h-screen">
 			<slot/>
 		</main>
-	    <Footer />
+		<Footer />
 	</body>
 </html>
 <style is:global>
