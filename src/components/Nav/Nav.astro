@@ -2,8 +2,6 @@
 import {
     Astronav,
 } from "astro-navbar";
-import {Icon} from "astro-icon/components";
-import EmailLinkToCopy from "../EmailLinkToCopy/EmailLink.astro";
 import {Image} from "astro:assets";
 
 ---
@@ -56,22 +54,11 @@ import {Image} from "astro:assets";
                 -->
 
             </div>
-            <div class="flex gap-8 mx-10 xl:mx-0">
-                <a href="https://es.linkedin.com/in/aitor-reviriego-amor" target="_blank" rel="noopener noreferrer"
-                   aria-label="linkedin icon">
-                    <Icon name="linkedin"
-                          class="w-[1.7rem] h-[1.7rem] md:w-[2rem] md:h-[2rem] inline-block hover:text-secondary transition ease-linear delay-50 duration-200"/>
+            <div class="flex mx-10 xl:mx-0">
+                <a href="/cv"
+                   class="hidden md:flex items-center cursor-pointer text-inherit text-lg hover:text-secondary transition ease-linear delay-50 duration-200">
+                    Sobre mí
                 </a>
-                <a href="https://github.com/aitorevi" target="_blank" rel="noopener noreferrer"
-                   aria-label="github icon">
-                    <Icon name="github"
-                          class="p-0.5 w-[1.7rem] h-[1.7rem] md:w-[2rem] md:h-[2rem] inline-block hover:text-secondary transition ease-linear delay-50 duration-200"/>
-                </a>
-                <EmailLinkToCopy position="navbar">
-                    <Icon name="mail"
-                          class="w-[1.7rem] h-[1.7rem] md:w-[2.1rem] md:h-[2.1rem] text-primary hover:text-secondary inline-block transition ease-linear delay-50 duration-200"
-                          aria-label="email icon"/>
-                </EmailLinkToCopy>
             </div>
         </div>
     </Astronav>
