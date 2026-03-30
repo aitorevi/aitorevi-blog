@@ -26,11 +26,11 @@ const isInCv = currentPath.startsWith('/cv');
             </div>
             <div class="flex items-center gap-8 mx-10 xl:mx-0 text-lg">
                 <a href="/blog"
-                   class={`hidden md:flex items-center cursor-pointer transition ease-linear delay-50 duration-200 ${isInBlog ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
+                   class={`flex items-center cursor-pointer transition ease-linear delay-50 duration-200 ${isInBlog ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
                     Blog
                 </a>
                 <a href="/cv"
-                   class={`hidden md:flex items-center cursor-pointer transition ease-linear delay-50 duration-200 ${isInCv ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
+                   class={`flex items-center cursor-pointer transition ease-linear delay-50 duration-200 ${isInCv ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
                     Sobre mí
                 </a>
             </div>
