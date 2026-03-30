@@ -373,47 +373,226 @@ const coverImageUrl = data.coverImage;
   .prose :not(pre) > code {
     @apply bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded;
   }
+
+  /* Code group: language tabs */
+  .code-group {
+    @apply relative mb-6 rounded-xl border border-slate-200 shadow-sm overflow-hidden;
+  }
+
+  .code-group-tabs {
+    @apply flex gap-0 bg-slate-100 border-b border-slate-200;
+  }
+
+  .code-group-tabs button[role="tab"] {
+    @apply px-5 py-2.5 text-sm font-semibold text-slate-400 bg-transparent border-b-2 border-transparent transition-all duration-150 cursor-pointer;
+  }
+
+  .code-group-tabs button[role="tab"]:hover {
+    @apply text-slate-600 bg-slate-50;
+  }
+
+  .code-group-tabs button[role="tab"].active {
+    @apply text-secondary border-secondary bg-white;
+  }
+
+  .code-group-tabs .copy-button {
+    @apply ml-auto mr-2 relative top-0 right-0;
+  }
+
+  .code-group .code-block-wrapper {
+    @apply mb-0;
+  }
+
+  .code-group .code-block-wrapper[hidden] {
+    display: none;
+  }
+
+  .code-group .code-block-wrapper pre,
+  .code-group pre {
+    @apply mb-0 rounded-none border-0 shadow-none;
+  }
+
+  /* macOS dots in the tab bar instead of in each pre */
+  .code-group-tabs {
+    padding-left: 4.5rem;
+    position: relative;
+  }
+
+  .code-group-tabs::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ff5f56;
+    box-shadow:
+      20px 0 0 0 #ffbd2e,
+      40px 0 0 0 #27c93f,
+      0 0 0 1px rgba(0, 0, 0, 0.1) inset;
+  }
+
+  /* Hide the default macOS bar inside code-groups */
+  .code-group pre::before,
+  .code-group pre::after {
+    display: none;
+  }
+
+  .code-group pre {
+    padding-top: 1rem;
+  }
 </style>
 
 <script>
-  /**
-   * Script para envolver bloques de código con contenedor y botón de copiar
-   * Se ejecuta en el cliente para agregar interactividad
-   */
-  function wrapCodeBlocks() {
-    const content = document.getElementById('article-content');
-    if (!content) return;
+  const LANG_LABELS: Record<string, string> = {
+    java: 'Java',
+    typescript: 'TypeScript',
+    ts: 'TypeScript',
+    csharp: 'C#',
+    cs: 'C#',
+    javascript: 'JavaScript',
+    js: 'JavaScript',
+    python: 'Python',
+    py: 'Python',
+    kotlin: 'Kotlin',
+    go: 'Go',
+    rust: 'Rust',
+    swift: 'Swift',
+  };
 
+  function getLangFromPre(pre: Element): string {
+    const lang = pre.getAttribute('data-language');
+    if (!lang) return 'code';
+    return LANG_LABELS[lang] || lang;
+  }
+
+  function syncAllGroups(lang: string) {
+    document.querySelectorAll('.code-group').forEach(group => {
+      const tabs = group.querySelectorAll<HTMLButtonElement>('button[role="tab"]');
+      const wrappers = group.querySelectorAll<HTMLElement>(':scope > .code-block-wrapper');
+
+      // Find the index of the matching language in this group
+      let targetIndex = -1;
+      tabs.forEach((tab, i) => {
+        if (tab.getAttribute('data-lang') === lang) targetIndex = i;
+      });
+
+      // If this group doesn't have that language, do nothing
+      if (targetIndex === -1) return;
+
+      tabs.forEach(t => t.classList.remove('active'));
+      tabs[targetIndex]?.classList.add('active');
+      wrappers.forEach((w, i) => { w.hidden = i !== targetIndex; });
+    });
+  }
+
+  function processCodeGroups(content: HTMLElement) {
+    const walker = document.createTreeWalker(content, NodeFilter.SHOW_COMMENT);
+    const groupStarts: Comment[] = [];
+
+    while (walker.nextNode()) {
+      const comment = walker.currentNode as Comment;
+      if (comment.textContent?.trim() === 'code-group') {
+        groupStarts.push(comment);
+      }
+    }
+
+    groupStarts.forEach((startComment) => {
+      const preBlocks: Element[] = [];
+      let node = startComment.nextSibling;
+
+      while (node) {
+        if (node.nodeType === Node.COMMENT_NODE && (node as Comment).textContent?.trim() === '/code-group') {
+          const endComment = node;
+
+          // Build group container
+          const group = document.createElement('div');
+          group.className = 'code-group';
+
+          const tabs = document.createElement('div');
+          tabs.className = 'code-group-tabs';
+          tabs.setAttribute('role', 'tablist');
+          group.appendChild(tabs);
+
+          const template = document.getElementById('copy-button-template') as HTMLTemplateElement;
+
+          // Add copy button to the tab bar (right side)
+          if (template) {
+            const copyBtn = template.content.cloneNode(true) as DocumentFragment;
+            tabs.appendChild(copyBtn);
+          }
+
+          preBlocks.forEach((pre, i) => {
+            const lang = getLangFromPre(pre);
+            const rawLang = pre.getAttribute('data-language') || 'code';
+            const btn = document.createElement('button');
+            btn.textContent = lang;
+            btn.setAttribute('role', 'tab');
+            btn.setAttribute('data-lang', rawLang);
+            if (i === 0) btn.classList.add('active');
+            btn.addEventListener('click', () => {
+              syncAllGroups(rawLang);
+            });
+            tabs.appendChild(btn);
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'code-block-wrapper';
+            if (i > 0) wrapper.hidden = true;
+            wrapper.appendChild(pre);
+            group.appendChild(wrapper);
+          });
+
+          // Move copy button to end (after lang tabs) so it's on the right
+          const copyButton = tabs.querySelector('.copy-button');
+          if (copyButton) tabs.appendChild(copyButton);
+
+          startComment.parentNode?.insertBefore(group, startComment);
+          startComment.remove();
+          endComment.remove();
+          break;
+        }
+
+        const next = node.nextSibling;
+        if (node.nodeType === Node.ELEMENT_NODE && (node as Element).tagName === 'PRE') {
+          preBlocks.push(node as Element);
+          node.parentNode?.removeChild(node);
+        }
+        node = next;
+      }
+    });
+  }
+
+  function wrapStandaloneCodeBlocks(content: HTMLElement) {
     const template = document.getElementById('copy-button-template') as HTMLTemplateElement;
     if (!template) return;
 
-    // Encontrar todos los bloques <pre> que no estén ya envueltos
-    const preBlocks = content.querySelectorAll('pre:not(.code-block-wrapper pre)');
+    const preBlocks = content.querySelectorAll('pre:not(.code-block-wrapper pre):not(.code-group pre)');
 
     preBlocks.forEach((pre) => {
-      // Crear wrapper
       const wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
-
-      // Clonar el botón del template
       const button = template.content.cloneNode(true) as DocumentFragment;
-
-      // Reemplazar el <pre> con el wrapper
       pre.parentNode?.replaceChild(wrapper, pre);
-
-      // Agregar el <pre> y el botón al wrapper
       wrapper.appendChild(pre);
       wrapper.appendChild(button);
     });
   }
 
-  // Ejecutar cuando el DOM esté listo
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', wrapCodeBlocks);
-  } else {
-    wrapCodeBlocks();
+  function initCodeBlocks() {
+    const content = document.getElementById('article-content');
+    if (!content) return;
+
+    processCodeGroups(content);
+    wrapStandaloneCodeBlocks(content);
   }
 
-  // Re-ejecutar después de navegación con View Transitions
-  document.addEventListener('astro:page-load', wrapCodeBlocks);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCodeBlocks);
+  } else {
+    initCodeBlocks();
+  }
+
+  document.addEventListener('astro:page-load', initCodeBlocks);
 </script>
