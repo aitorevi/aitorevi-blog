@@ -8,25 +8,26 @@ interface Props {
 const { currentLang } = Astro.props;
 ---
 
-<div class="flex gap-2">
+<div class="flex justify-end gap-2 text-sm font-bold">
   <a
     href="/cv"
     class:list={[
-      'px-3 py-1 rounded text-sm font-bold transition ease-linear duration-150',
+      'transition ease-linear duration-150',
       currentLang === 'es'
-        ? 'bg-secondary text-white'
-        : 'border border-secondary text-secondary hover:bg-secondary hover:text-white',
+        ? 'text-secondary'
+        : 'text-quaternary hover:text-secondary',
     ]}
   >
     ES
   </a>
+  <span class="text-quaternary">|</span>
   <a
     href="/cv/en"
     class:list={[
-      'px-3 py-1 rounded text-sm font-bold transition ease-linear duration-150',
+      'transition ease-linear duration-150',
       currentLang === 'en'
-        ? 'bg-secondary text-white'
-        : 'border border-secondary text-secondary hover:bg-secondary hover:text-white',
+        ? 'text-secondary'
+        : 'text-quaternary hover:text-secondary',
     ]}
   >
     EN
