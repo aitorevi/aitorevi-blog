@@ -468,6 +468,26 @@ const coverImageUrl = data.coverImage;
     return LANG_LABELS[lang] || lang;
   }
 
+  function syncAllGroups(lang: string) {
+    document.querySelectorAll('.code-group').forEach(group => {
+      const tabs = group.querySelectorAll<HTMLButtonElement>('button[role="tab"]');
+      const wrappers = group.querySelectorAll<HTMLElement>(':scope > .code-block-wrapper');
+
+      // Find the index of the matching language in this group
+      let targetIndex = -1;
+      tabs.forEach((tab, i) => {
+        if (tab.getAttribute('data-lang') === lang) targetIndex = i;
+      });
+
+      // If this group doesn't have that language, do nothing
+      if (targetIndex === -1) return;
+
+      tabs.forEach(t => t.classList.remove('active'));
+      tabs[targetIndex]?.classList.add('active');
+      wrappers.forEach((w, i) => { w.hidden = i !== targetIndex; });
+    });
+  }
+
   function processCodeGroups(content: HTMLElement) {
     const walker = document.createTreeWalker(content, NodeFilter.SHOW_COMMENT);
     const groupStarts: Comment[] = [];
@@ -506,16 +526,14 @@ const coverImageUrl = data.coverImage;
 
           preBlocks.forEach((pre, i) => {
             const lang = getLangFromPre(pre);
+            const rawLang = pre.getAttribute('data-language') || 'code';
             const btn = document.createElement('button');
             btn.textContent = lang;
             btn.setAttribute('role', 'tab');
+            btn.setAttribute('data-lang', rawLang);
             if (i === 0) btn.classList.add('active');
             btn.addEventListener('click', () => {
-              tabs.querySelectorAll('button[role="tab"]').forEach(b => b.classList.remove('active'));
-              btn.classList.add('active');
-              group.querySelectorAll(':scope > .code-block-wrapper').forEach((w, j) => {
-                (w as HTMLElement).hidden = j !== i;
-              });
+              syncAllGroups(rawLang);
             });
             tabs.appendChild(btn);
 
