@@ -1,5 +1,6 @@
 ---
 import type { SkillCategoryData } from '../../data/cv';
+import Tag from '../atoms/Tag.astro';
 
 interface Props {
   category: SkillCategoryData;
@@ -12,9 +13,7 @@ const { category } = Astro.props;
   <h3 class="font-bold mb-2 text-lg">{category.name}</h3>
   <div class="flex flex-wrap gap-2">
     {category.skills.map((skill) => (
-      <span class="px-3 py-1 bg-white dark:bg-[#1a1f2e] border border-quaternary dark:border-[#334155] rounded-full text-sm hover:border-secondary hover:text-secondary transition ease-linear duration-150">
-        {skill}
-      </span>
+      <Tag label={skill} variant="accent" />
     ))}
   </div>
 </div>
