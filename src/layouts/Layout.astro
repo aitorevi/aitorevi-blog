@@ -76,12 +76,18 @@ const {
 	}
 </style>
 <script>
-	document.addEventListener('astro:after-swap', () => {
+	function applyTheme() {
 		const theme = localStorage.getItem('theme');
 		if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
 			document.documentElement.classList.add('dark');
 		} else {
 			document.documentElement.classList.remove('dark');
 		}
+	}
+
+	document.addEventListener('astro:after-swap', applyTheme);
+
+	window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+		if (!localStorage.getItem('theme')) applyTheme();
 	});
 </script>
