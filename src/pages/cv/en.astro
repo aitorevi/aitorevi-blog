@@ -34,6 +34,6 @@ const alternateUrl = getAlternateLangUrl(lang);
     <CvEducation label={data.labels.education} entries={data.education} />
     <CvCertifications label={data.labels.certifications} entries={data.certifications} />
     <CvSkills label={data.labels.skills} categories={data.skills} />
+    <CvPdfDownload pdfPath={pdfPath} label={data.labels.downloadPdf} />
   </section>
-  <CvPdfDownload pdfPath={pdfPath} label={data.labels.downloadPdf} />
 </Layout>
