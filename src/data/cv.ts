@@ -66,33 +66,45 @@ const sharedLinks = [
 export const cvES: CvData = {
   contact: {
     name: 'Aitor Reviriego Amor',
-    title: 'Software Developer | Full Stack & Code Quality',
+    title: 'Software Developer | Refactoring, TDD & Code Quality',
     location: 'Valencia, España',
     links: sharedLinks,
   },
   summary:
-    'Desarrollador de software con visión holística: desde la arquitectura y el backend hasta la experiencia de usuario. Combino una sólida disciplina de ingeniería (TDD, Clean Code) con tecnologías modernas (Next.js, TS) e IA para maximizar la productividad. Aporto una madurez profesional única gracias a más de 20 años de experiencia previa en gestión de negocios.',
+    'Desarrollador de Software enfocado en Calidad, Refactoring y TDD. Entiendo la ingeniería de software como un equilibrio constante entre la artesanía y la eficiencia: código limpio, tests honestos y sistemas sostenibles. Amplifico esa disciplina con el uso avanzado de IA como aliado para estabilizar código legacy y simplificar la complejidad del negocio. Base sólida en POO (Java/TS) y Patrones de Diseño, con transición fluida a C#/.NET. En el día a día, entiendo el desarrollo como un deporte de equipo, aportando claridad y transparencia. Aporto una madurez profesional única gracias a más de 20 años de experiencia previa en gestión de negocios.',
   experience: [
     {
       company: 'Lean Mind',
       role: 'Software Developer',
-      period: 'Sept 2023 - Presente',
+      period: 'Mar 2023 - Presente',
       bullets: [
         {
           heading: 'Desarrollo Full Stack & Calidad',
-          text: 'Entrega de software robusto aplicando TDD y metodologías ágiles.',
+          text: 'Entrega de software robusto aplicando TDD y metodologías ágiles. Arquitectura basada en SOLID para sistemas desacoplados y mantenibles.',
         },
         {
           heading: 'Modernización de Sistemas',
-          text: 'Refactorización de código legado (Legacy Rescue) sin detener el negocio.',
+          text: 'Refactorización de código legado (Legacy Rescue), estabilizando lógica de negocio y resolviendo deuda técnica en producción sin detener el negocio.',
         },
         {
-          heading: 'Innovación con IA',
-          text: 'Integración de agentes (Claude/Gemini) como multiplicador de productividad.',
+          heading: 'Desarrollo Potenciado por IA',
+          text: 'Orquestación de agentes y workflows complejos con Claude Code, Gemini y Copilot CLI para refactoring y testing automatizado.',
         },
         {
-          heading: 'Facilitador Técnico',
-          text: 'Speaker en talleres (Testing con Mocks) y mentoring activo.',
+          heading: 'Artesanía de Software',
+          text: 'Mentalidad "Boy Scout": dejar el código mejor de lo encontrado. Redes de seguridad con testing para desplegar sin miedo.',
+        },
+        {
+          heading: 'Infraestructura y DevOps',
+          text: 'Git, Docker, GitHub Actions, Google Cloud y Digital Ocean para integración y despliegue continuo.',
+        },
+        {
+          heading: 'Colaboración y Comunicación',
+          text: 'Documentación de hallazgos y deuda técnica. Enfoque analítico ante código no documentado, equilibrando investigación con colaboración. Comunicación transparente de avances y bloqueos.',
+        },
+        {
+          heading: 'Comunidad y Facilitación',
+          text: 'Speaker en talleres (Testing con Mocks). Asistente activo en conferencias: AOS, Nerdearla, JsConf, BilboStack, PulpoCon y CommitConf.',
         },
       ],
     },
@@ -122,16 +134,37 @@ export const cvES: CvData = {
   ],
   certifications: [
     {
+      name: 'Desarrollo de Software Guiado por IA',
+      institution: 'Lean Mind',
+      period: '2026',
+    },
+    {
       name: 'Sustainable Testing with TypeScript',
       institution: 'Software Crafters Academy',
+      period: '2025',
+    },
+    {
+      name: 'Refactoring Avanzado',
+      institution: 'Lean Mind',
+      period: '2025',
+    },
+    {
+      name: 'Código Sostenible',
+      institution: 'Lean Mind',
       period: '2024',
+    },
+    {
+      name: 'Curso Práctico de JavaScript',
+      institution: 'Platzi',
+      period: '2023',
     },
   ],
   skills: [
     { name: 'Fundamentos de Ingeniería', skills: ['TDD', 'Software Craftsmanship', 'Refactoring', 'Clean Architecture', 'SOLID'] },
     { name: 'Stack Tecnológico', skills: ['C# / .NET', 'Java', 'TypeScript / Node.js', 'SQL'] },
     { name: 'Frontend y UX', skills: ['Next.js', 'React', 'Astro', 'TailwindCSS', 'Accessibility (A11y)', 'CSS Architecture'] },
-    { name: 'Ingeniería de IA', skills: ['Prompt Engineering', 'Claude Code', 'GitHub Copilot', 'Open Source LLMs'] },
+    { name: 'Ingeniería de IA', skills: ['Prompt Engineering', 'Claude Code', 'Gemini', 'Copilot CLI', 'AI Agents & Workflows'] },
+    { name: 'Infraestructura', skills: ['Docker', 'GitHub Actions', 'Google Cloud', 'Digital Ocean', 'CI/CD'] },
     { name: 'Liderazgo', skills: ['Team Leadership', 'Business Vision', 'Transparent Communication', 'Mentoring'] },
   ],
   labels: {
@@ -143,40 +176,52 @@ export const cvES: CvData = {
     downloadPdf: 'Descargar CV',
     present: 'Presente',
     pageTitle: 'CV - Aitor Reviriego Amor',
-    pageDescription: 'Currículum vitae de Aitor Reviriego Amor - Software Developer | Full Stack & Code Quality',
+    pageDescription: 'Currículum vitae de Aitor Reviriego Amor - Software Developer | Refactoring, TDD & Code Quality',
   },
 };
 
 export const cvEN: CvData = {
   contact: {
     name: 'Aitor Reviriego Amor',
-    title: 'Software Developer | Full Stack & Code Quality',
+    title: 'Software Developer | Refactoring, TDD & Code Quality',
     location: 'Valencia, Spain',
     links: sharedLinks,
   },
   summary:
-    'Full-cycle Software Developer covering architecture, backend, and user experience. I combine strong engineering discipline (TDD, Clean Code) with modern technologies (Next.js, TS) and AI-driven productivity. My background of over 20 years in business management provides a unique professional maturity to every project.',
+    'Software Developer focused on Quality, Refactoring and TDD. I see software engineering as a constant balance between craftsmanship and efficiency: clean code, honest tests and sustainable systems. I amplify that discipline with advanced AI usage as an ally to stabilize legacy code and simplify business complexity. Strong foundation in OOP (Java/TS) and Design Patterns, with a smooth transition to C#/.NET. Day to day, I see development as a team sport, bringing clarity and transparency. I bring unique professional maturity from over 20 years of prior business management experience.',
   experience: [
     {
       company: 'Lean Mind',
       role: 'Software Developer',
-      period: 'Sept 2023 - Present',
+      period: 'Mar 2023 - Present',
       bullets: [
         {
-          heading: 'Full Stack & Quality',
-          text: 'Delivering robust software applying TDD and agile methodologies.',
+          heading: 'Full Stack Development & Quality',
+          text: 'Delivering robust software applying TDD and agile methodologies. SOLID-based architecture for decoupled, maintainable systems.',
         },
         {
           heading: 'System Modernization',
-          text: 'Refactoring legacy code (Legacy Rescue) to improve maintainability without stopping business.',
+          text: 'Refactoring legacy code (Legacy Rescue), stabilizing business logic and resolving technical debt in production without stopping business.',
         },
         {
-          heading: 'AI Innovation',
-          text: 'Integrating AI agents/workflows (Claude/Gemini) as a productivity multiplier.',
+          heading: 'AI-Powered Development',
+          text: 'Orchestrating agents and complex workflows with Claude Code, Gemini and Copilot CLI for automated refactoring and testing.',
         },
         {
-          heading: 'Technical Facilitator',
-          text: 'Speaker at workshops (Testing with Mocks) and active mentoring.',
+          heading: 'Software Craftsmanship',
+          text: '"Boy Scout Rule" mindset: leave code better than found. Safety nets through testing for fearless deployment.',
+        },
+        {
+          heading: 'Infrastructure & DevOps',
+          text: 'Git, Docker, GitHub Actions, Google Cloud and Digital Ocean for continuous integration and deployment.',
+        },
+        {
+          heading: 'Collaboration & Communication',
+          text: 'Documenting findings and technical debt. Analytical approach to undocumented code, balancing investigation with collaboration. Transparent communication of progress and blockers.',
+        },
+        {
+          heading: 'Community & Facilitation',
+          text: 'Speaker at workshops (Testing with Mocks). Active attendee at conferences: AOS, Nerdearla, JsConf, BilboStack, PulpoCon and CommitConf.',
         },
       ],
     },
@@ -206,16 +251,37 @@ export const cvEN: CvData = {
   ],
   certifications: [
     {
+      name: 'AI-Guided Software Development',
+      institution: 'Lean Mind',
+      period: '2026',
+    },
+    {
       name: 'Sustainable Testing with TypeScript',
       institution: 'Software Crafters Academy',
+      period: '2025',
+    },
+    {
+      name: 'Advanced Refactoring',
+      institution: 'Lean Mind',
+      period: '2025',
+    },
+    {
+      name: 'Sustainable Code',
+      institution: 'Lean Mind',
       period: '2024',
+    },
+    {
+      name: 'Practical JavaScript Course',
+      institution: 'Platzi',
+      period: '2023',
     },
   ],
   skills: [
     { name: 'Engineering Foundations', skills: ['TDD', 'Software Craftsmanship', 'Refactoring', 'Clean Architecture', 'SOLID'] },
     { name: 'Core Stack', skills: ['C# / .NET', 'Java', 'TypeScript / Node.js', 'SQL'] },
     { name: 'Frontend & UX', skills: ['Next.js', 'React', 'Astro', 'TailwindCSS', 'Accessibility (A11y)', 'CSS Architecture'] },
-    { name: 'AI Engineering', skills: ['Prompt Engineering', 'Claude Code', 'GitHub Copilot', 'Open Source LLMs'] },
+    { name: 'AI Engineering', skills: ['Prompt Engineering', 'Claude Code', 'Gemini', 'Copilot CLI', 'AI Agents & Workflows'] },
+    { name: 'Infrastructure', skills: ['Docker', 'GitHub Actions', 'Google Cloud', 'Digital Ocean', 'CI/CD'] },
     { name: 'Leadership', skills: ['Team Leadership', 'Business Vision', 'Transparent Communication', 'Mentoring'] },
   ],
   labels: {
@@ -227,7 +293,7 @@ export const cvEN: CvData = {
     downloadPdf: 'Download CV',
     present: 'Present',
     pageTitle: 'CV - Aitor Reviriego Amor',
-    pageDescription: 'Resume of Aitor Reviriego Amor - Software Developer | Full Stack & Code Quality',
+    pageDescription: 'Resume of Aitor Reviriego Amor - Software Developer | Refactoring, TDD & Code Quality',
   },
 };
 
