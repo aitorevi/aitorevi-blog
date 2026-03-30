@@ -71,7 +71,7 @@ El Switch está dependiendo de un *detalle de implementación*: una clase espec�
 
 El principio de Inversión de Dependencias dice exactamente lo contrario:
 
-> *"Los módulos de alto nivel no deben depender de los módulos de bajo nivel. Ambos deben depender de abstracciones."*
+> *Los módulos de alto nivel no deben depender de los módulos de bajo nivel. Ambos deben depender de abstracciones.*
 
 Traducido al mundo real: el Switch no debería saber que existe `ConcreteLight`. Solo debería saber que lo que controla *puede encenderse y apagarse*. Nada más.
 
