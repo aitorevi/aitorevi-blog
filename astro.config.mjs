@@ -10,9 +10,10 @@ export default defineConfig({
   site: "https://www.aitorevi.dev/",
   markdown: {
     shikiConfig: {
-      // Usar tema light que se integra con el diseño
-      theme: 'github-light',
-      // Agregar clases para poder agregar el botón de copiar
+      themes: {
+        light: 'github-light',
+        dark: 'github-dark',
+      },
       wrap: true,
     },
   },

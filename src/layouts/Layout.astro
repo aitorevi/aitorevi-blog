@@ -32,10 +32,18 @@ const {
 			<link rel="alternate" hreflang={alternateLang} href={alternateUrl} />
 		)}
 		<title>{title}</title>
+		<script is:inline>
+			(function() {
+				const theme = localStorage.getItem('theme');
+				if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+					document.documentElement.classList.add('dark');
+				}
+			})();
+		</script>
 		<ViewTransitions />
 		<slot name="head" />
 	</head>
-	<body class="flex flex-col bg-white bg-custom bg-fixed text-primary scrollbar scrollbar-thumb-primary scrollbar-w-2 scrollbar-corner-rounded-xl">
+	<body class="flex flex-col bg-white dark:bg-[#0f1419] bg-custom bg-fixed text-primary dark:text-[#f1f5f9] transition-colors duration-200 scrollbar scrollbar-thumb-primary scrollbar-w-2 scrollbar-corner-rounded-xl">
 		<Nav />
 		<main class="min-h-screen relative z-0">
 			<slot/>
@@ -67,3 +75,13 @@ const {
 		border-radius: 0.25rem;
 	}
 </style>
+<script>
+	document.addEventListener('astro:page-load', () => {
+		const theme = localStorage.getItem('theme');
+		if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+			document.documentElement.classList.add('dark');
+		} else {
+			document.documentElement.classList.remove('dark');
+		}
+	});
+</script>
