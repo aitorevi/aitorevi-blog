@@ -50,17 +50,11 @@ const isInCv = currentPath.startsWith('/cv');
     </Astronav>
 </header>
 
-<script>
-    function initThemeToggle() {
-        const btn = document.getElementById('theme-toggle');
+<script is:inline>
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('#theme-toggle');
         if (!btn) return;
-
-        btn.addEventListener('click', () => {
-            const isDark = document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        });
-    }
-
-    document.addEventListener('astro:page-load', initThemeToggle);
-    if (document.readyState !== 'loading') initThemeToggle();
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
 </script>
