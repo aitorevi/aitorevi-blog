@@ -43,7 +43,7 @@ const {
 		<ViewTransitions />
 		<slot name="head" />
 	</head>
-	<body class="flex flex-col bg-white dark:bg-[#0f1419] bg-custom bg-fixed text-primary dark:text-[#f1f5f9] transition-colors duration-200 scrollbar scrollbar-thumb-primary scrollbar-w-2 scrollbar-corner-rounded-xl">
+	<body class="flex flex-col bg-white dark:bg-[#0f1419] bg-custom bg-fixed text-primary dark:text-[#f1f5f9] scrollbar scrollbar-thumb-primary scrollbar-w-2 scrollbar-corner-rounded-xl">
 		<Nav />
 		<main class="min-h-screen relative z-0">
 			<slot/>
@@ -76,7 +76,7 @@ const {
 	}
 </style>
 <script>
-	document.addEventListener('astro:page-load', () => {
+	document.addEventListener('astro:after-swap', () => {
 		const theme = localStorage.getItem('theme');
 		if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
 			document.documentElement.classList.add('dark');
