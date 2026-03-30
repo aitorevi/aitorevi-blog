@@ -123,26 +123,26 @@ const { class: className = '' } = Astro.props;
   class CopyButton {
     constructor(button: HTMLButtonElement) {
       this.button = button;
-      this.codeBlock = this.findCodeBlock();
-
-      if (this.codeBlock) {
-        this.button.addEventListener('click', () => this.handleClick());
-      }
+      this.button.addEventListener('click', () => this.handleClick());
     }
 
     private button: HTMLButtonElement;
-    private codeBlock: HTMLElement | null;
     private resetTimeout: number | null = null;
 
     /**
      * Encuentra el bloque de código asociado a este botón
      */
     private findCodeBlock(): HTMLElement | null {
-      // Buscar el <pre> padre más cercano
+      // En code-groups, el botón está en la barra de tabs
+      const codeGroup = this.button.closest('.code-group');
+      if (codeGroup) {
+        const visibleWrapper = codeGroup.querySelector('.code-block-wrapper:not([hidden])');
+        return visibleWrapper?.querySelector('pre code') || null;
+      }
+
+      // En bloques sueltos, buscar dentro del wrapper
       const pre = this.button.closest('.code-block-wrapper')?.querySelector('pre');
       if (!pre) return null;
-
-      // Buscar el <code> dentro del <pre>
       return pre.querySelector('code');
     }
 
@@ -150,9 +150,10 @@ const { class: className = '' } = Astro.props;
      * Maneja el click en el botón
      */
     private async handleClick(): Promise<void> {
-      if (!this.codeBlock) return;
+      const codeBlock = this.findCodeBlock();
+      if (!codeBlock) return;
 
-      const code = this.codeBlock.textContent || '';
+      const code = codeBlock.textContent || '';
 
       try {
         await navigator.clipboard.writeText(code);
