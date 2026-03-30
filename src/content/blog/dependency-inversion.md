@@ -19,8 +19,6 @@ Hay un momento en la vida de todo desarrollador junior en el que escribe una cla
 
 Ese es el síntoma. La causa, muchas veces, es el acoplamiento. Y una de las herramientas más potentes para combatirlo se llama **Inversión de Dependencias**.
 
----
-
 ## El problema: cuando una clase sabe demasiado
 
 Imagina que estás modelando un interruptor de luz. Algo simple: pulsas, se enciende. Pulsas de nuevo, se apaga.
@@ -120,8 +118,6 @@ Funciona. Pero hay un problema oculto: **el Switch sabe que existe `ConcreteLigh
 
 Cada nuevo dispositivo = modificar código que ya funcionaba. Eso es frágil.
 
----
-
 ## La raíz del problema: depender de lo concreto
 
 El Switch está dependiendo de un *detalle de implementación*: una clase específica, con métodos con nombres específicos. Está acoplado a ella.
@@ -131,8 +127,6 @@ El principio de Inversión de Dependencias dice exactamente lo contrario:
 > *Los módulos de alto nivel no deben depender de los módulos de bajo nivel. Ambos deben depender de abstracciones.*
 
 Traducido al mundo real: el Switch no debería saber que existe `ConcreteLight`. Solo debería saber que lo que controla *puede encenderse y apagarse*. Nada más.
-
----
 
 ## La solución: depender de un contrato
 
@@ -352,8 +346,6 @@ class Switch
 
 La inversión ocurre en el constructor. En vez de `ConcreteLight`, el tipo es `Switchable`. El Switch ya no sabe qué hay al otro lado. Solo sabe que cumple el contrato.
 
----
-
 ## La inyección: quién conecta las piezas
 
 Ahora alguien tiene que decidir qué dispositivo va con qué Switch. Ese alguien es el **punto de composición**: el único lugar del código donde se conecta todo.
@@ -388,8 +380,6 @@ deskSwitch.Press(); // 🌀 Fan on
 <!-- /code-group -->
 
 El acto de pasarle el dispositivo al Switch desde fuera se llama **inyección de dependencias**. No es magia ni un framework: es simplemente que alguien de fuera decide qué entra, en vez de que la clase lo cree internamente.
-
----
 
 ## Añadir un dispositivo nuevo: el test real
 
@@ -472,8 +462,6 @@ livingRoomSwitch.Press(); // ❄️ Air conditioner on
 <!-- /code-group -->
 
 Ese es el poder real del principio. El sistema es **abierto a la extensión, cerrado a la modificación**.
-
----
 
 ## Conclusión
 
