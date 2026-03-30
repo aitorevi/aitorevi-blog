@@ -40,11 +40,11 @@ class ConcreteLight {
 }
 
 class Switch {
-    private ConcreteLight light;  // ← Switch knows ConcreteLight exists
+    private ConcreteLight light;  // ← Switch sabe que ConcreteLight existe
     private boolean isOn = false;
 
     public Switch() {
-        this.light = new ConcreteLight();  // ← Switch creates the light
+        this.light = new ConcreteLight();  // ← Switch crea la luz
     }
 
     public void press() {
@@ -71,11 +71,11 @@ class ConcreteLight {
 }
 
 class Switch {
-  private light: ConcreteLight; // ← Switch knows ConcreteLight exists
+  private light: ConcreteLight; // ← Switch sabe que ConcreteLight existe
   private isOn = false;
 
   constructor() {
-    this.light = new ConcreteLight(); // ← Switch creates the light
+    this.light = new ConcreteLight(); // ← Switch crea la luz
   }
 
   press(): void {
@@ -99,12 +99,12 @@ class ConcreteLight
 
 class Switch
 {
-    private readonly ConcreteLight _light; // ← Switch knows ConcreteLight exists
+    private readonly ConcreteLight _light; // ← Switch sabe que ConcreteLight existe
     private bool _isOn;
 
     public Switch()
     {
-        _light = new ConcreteLight(); // ← Switch creates the light
+        _light = new ConcreteLight(); // ← Switch crea la luz
     }
 
     public void Press()
@@ -148,6 +148,8 @@ interface Switchable {
 ```
 
 ```typescript
+// En TS el "implements" es opcional (tipado estructural),
+// pero usarlo da errores en compilación si no cumples el contrato
 interface Switchable {
   turnOn(): void;
   turnOff(): void;
@@ -156,10 +158,12 @@ interface Switchable {
 ```
 
 ```csharp
+// En .NET, las interfaces usan el prefijo "I" por convención
 interface ISwitchable
 {
     void TurnOn();
     void TurnOff();
+    // En C# se usa una property en vez de un método getter
     bool IsOn { get; }
 }
 ```
@@ -253,6 +257,7 @@ class Fan implements Switchable {
 ```csharp
 class Light : ISwitchable
 {
+    // Auto-property con setter privado: sustituye al campo + getter manual
     public bool IsOn { get; private set; }
 
     public void TurnOn()
@@ -292,7 +297,7 @@ Y el Switch ahora recibe la abstracción, no la clase concreta:
 <!-- code-group -->
 ```java
 class Switch {
-    private final Switchable device;  // ← here is the inversion
+    private final Switchable device;  // ← aquí está la inversión
 
     public Switch(Switchable device) {
         this.device = device;
@@ -310,7 +315,7 @@ class Switch {
 
 ```typescript
 class Switch {
-  private readonly device: Switchable; // ← here is the inversion
+  private readonly device: Switchable; // ← aquí está la inversión
 
   constructor(device: Switchable) {
     this.device = device;
@@ -329,7 +334,7 @@ class Switch {
 ```csharp
 class Switch
 {
-    private readonly ISwitchable _device; // ← here is the inversion
+    private readonly ISwitchable _device; // ← aquí está la inversión
 
     public Switch(ISwitchable device)
     {
@@ -355,7 +360,7 @@ Ahora alguien tiene que decidir qué dispositivo va con qué Switch. Ese alguien
 
 <!-- code-group -->
 ```java
-// Composition Root: the only place that knows the details
+// Composition Root: el único lugar que conoce los detalles
 Switch livingRoomSwitch = new Switch(new Light());
 livingRoomSwitch.press();  // 💡 Light on
 
@@ -364,7 +369,7 @@ deskSwitch.press();  // 🌀 Fan on
 ```
 
 ```typescript
-// Composition Root: the only place that knows the details
+// Composition Root: el único lugar que conoce los detalles
 const livingRoomSwitch = new Switch(new Light());
 livingRoomSwitch.press(); // 💡 Light on
 
@@ -373,7 +378,7 @@ deskSwitch.press(); // 🌀 Fan on
 ```
 
 ```csharp
-// Composition Root: the only place that knows the details
+// Composition Root: el único lugar que conoce los detalles
 var livingRoomSwitch = new Switch(new Light());
 livingRoomSwitch.Press(); // 💡 Light on
 
@@ -383,43 +388,6 @@ deskSwitch.Press(); // 🌀 Fan on
 <!-- /code-group -->
 
 El acto de pasarle el dispositivo al Switch desde fuera se llama **inyección de dependencias**. No es magia ni un framework: es simplemente que alguien de fuera decide qué entra, en vez de que la clase lo cree internamente.
-
----
-
-## Cómo queda la arquitectura
-
-```mermaid
-classDiagram
-    class Switchable {
-        <<interface>>
-        +turnOn() void
-        +turnOff() void
-        +isOn() boolean
-    }
-
-    class Switch {
-        -device: Switchable
-        +press() void
-    }
-
-    class Light {
-        +turnOn() void
-        +turnOff() void
-        +isOn() boolean
-    }
-
-    class Fan {
-        +turnOn() void
-        +turnOff() void
-        +isOn() boolean
-    }
-
-    Switch --> Switchable : uses
-    Light ..|> Switchable : implements
-    Fan ..|> Switchable : implements
-```
-
-Fíjate en lo que no hay: ninguna flecha directa entre `Switch` y `Light`. No se conocen. Solo se comunican a través del contrato.
 
 ---
 
@@ -450,7 +418,7 @@ class AirConditioner implements Switchable {
     }
 }
 
-// And you can use it right away:
+// Y puedes usarlo directamente:
 Switch livingRoomSwitch = new Switch(new AirConditioner());
 livingRoomSwitch.press();  // ❄️ Air conditioner on
 ```
@@ -474,7 +442,7 @@ class AirConditioner implements Switchable {
   }
 }
 
-// And you can use it right away:
+// Y puedes usarlo directamente:
 const livingRoomSwitch = new Switch(new AirConditioner());
 livingRoomSwitch.press(); // ❄️ Air conditioner on
 ```
@@ -497,7 +465,7 @@ class AirConditioner : ISwitchable
     }
 }
 
-// And you can use it right away:
+// Y puedes usarlo directamente:
 var livingRoomSwitch = new Switch(new AirConditioner());
 livingRoomSwitch.Press(); // ❄️ Air conditioner on
 ```
