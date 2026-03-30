@@ -6,7 +6,6 @@ coverImage: /images/blog/dependency-inversion-cover/dependency-inversion-cover.w
 coverImageAlt: "Ilustración de piezas conectándose a través de una interfaz abstracta"
 tags:
   - SOLID
-  - Java
   - Clean Code
   - Diseño
 draft: false
@@ -28,6 +27,7 @@ Imagina que estás modelando un interruptor de luz. Algo simple: pulsas, se enci
 
 Una primera implementación podría ser así:
 
+<!-- code-group -->
 ```java
 class ConcreteLight {
     public void turnOn() {
@@ -59,6 +59,63 @@ class Switch {
 }
 ```
 
+```typescript
+class ConcreteLight {
+  turnOn(): void {
+    console.log("Light on");
+  }
+
+  turnOff(): void {
+    console.log("Light off");
+  }
+}
+
+class Switch {
+  private light: ConcreteLight; // ← Switch knows ConcreteLight exists
+  private isOn = false;
+
+  constructor() {
+    this.light = new ConcreteLight(); // ← Switch creates the light
+  }
+
+  press(): void {
+    if (this.isOn) {
+      this.light.turnOff();
+      this.isOn = false;
+    } else {
+      this.light.turnOn();
+      this.isOn = true;
+    }
+  }
+}
+```
+
+```csharp
+class ConcreteLight
+{
+    public void TurnOn() => Console.WriteLine("Light on");
+    public void TurnOff() => Console.WriteLine("Light off");
+}
+
+class Switch
+{
+    private readonly ConcreteLight _light; // ← Switch knows ConcreteLight exists
+    private bool _isOn;
+
+    public Switch()
+    {
+        _light = new ConcreteLight(); // ← Switch creates the light
+    }
+
+    public void Press()
+    {
+        if (_isOn) { _light.TurnOff(); _isOn = false; }
+        else { _light.TurnOn(); _isOn = true; }
+    }
+}
+```
+<!-- /code-group -->
+
 Funciona. Pero hay un problema oculto: **el Switch sabe que existe `ConcreteLight`**. Está hardcodeado dentro. Si mañana quieres que ese mismo Switch controle un ventilador, tienes que modificar `Switch`. Si quieres una SmartTV, modificas `Switch` de nuevo.
 
 Cada nuevo dispositivo = modificar código que ya funcionaba. Eso es frágil.
@@ -81,6 +138,7 @@ Traducido al mundo real: el Switch no debería saber que existe `ConcreteLight`.
 
 Primero definimos la abstracción. Un contrato que dice: *"si implementas esto, puedes ser controlado por un Switch"*.
 
+<!-- code-group -->
 ```java
 interface Switchable {
     void turnOn();
@@ -89,8 +147,27 @@ interface Switchable {
 }
 ```
 
+```typescript
+interface Switchable {
+  turnOn(): void;
+  turnOff(): void;
+  isOn(): boolean;
+}
+```
+
+```csharp
+interface ISwitchable
+{
+    void TurnOn();
+    void TurnOff();
+    bool IsOn { get; }
+}
+```
+<!-- /code-group -->
+
 Ahora los dispositivos firman ese contrato:
 
+<!-- code-group -->
 ```java
 class Light implements Switchable {
     private boolean on = false;
@@ -135,8 +212,84 @@ class Fan implements Switchable {
 }
 ```
 
+```typescript
+class Light implements Switchable {
+  private on = false;
+
+  turnOn(): void {
+    this.on = true;
+    console.log("💡 Light on");
+  }
+
+  turnOff(): void {
+    this.on = false;
+    console.log("💡 Light off");
+  }
+
+  isOn(): boolean {
+    return this.on;
+  }
+}
+
+class Fan implements Switchable {
+  private on = false;
+
+  turnOn(): void {
+    this.on = true;
+    console.log("🌀 Fan on");
+  }
+
+  turnOff(): void {
+    this.on = false;
+    console.log("🌀 Fan off");
+  }
+
+  isOn(): boolean {
+    return this.on;
+  }
+}
+```
+
+```csharp
+class Light : ISwitchable
+{
+    public bool IsOn { get; private set; }
+
+    public void TurnOn()
+    {
+        IsOn = true;
+        Console.WriteLine("💡 Light on");
+    }
+
+    public void TurnOff()
+    {
+        IsOn = false;
+        Console.WriteLine("💡 Light off");
+    }
+}
+
+class Fan : ISwitchable
+{
+    public bool IsOn { get; private set; }
+
+    public void TurnOn()
+    {
+        IsOn = true;
+        Console.WriteLine("🌀 Fan on");
+    }
+
+    public void TurnOff()
+    {
+        IsOn = false;
+        Console.WriteLine("🌀 Fan off");
+    }
+}
+```
+<!-- /code-group -->
+
 Y el Switch ahora recibe la abstracción, no la clase concreta:
 
+<!-- code-group -->
 ```java
 class Switch {
     private final Switchable device;  // ← here is the inversion
@@ -155,6 +308,43 @@ class Switch {
 }
 ```
 
+```typescript
+class Switch {
+  private readonly device: Switchable; // ← here is the inversion
+
+  constructor(device: Switchable) {
+    this.device = device;
+  }
+
+  press(): void {
+    if (this.device.isOn()) {
+      this.device.turnOff();
+    } else {
+      this.device.turnOn();
+    }
+  }
+}
+```
+
+```csharp
+class Switch
+{
+    private readonly ISwitchable _device; // ← here is the inversion
+
+    public Switch(ISwitchable device)
+    {
+        _device = device;
+    }
+
+    public void Press()
+    {
+        if (_device.IsOn) _device.TurnOff();
+        else _device.TurnOn();
+    }
+}
+```
+<!-- /code-group -->
+
 La inversión ocurre en el constructor. En vez de `ConcreteLight`, el tipo es `Switchable`. El Switch ya no sabe qué hay al otro lado. Solo sabe que cumple el contrato.
 
 ---
@@ -163,6 +353,7 @@ La inversión ocurre en el constructor. En vez de `ConcreteLight`, el tipo es `S
 
 Ahora alguien tiene que decidir qué dispositivo va con qué Switch. Ese alguien es el **punto de composición**: el único lugar del código donde se conecta todo.
 
+<!-- code-group -->
 ```java
 // Composition Root: the only place that knows the details
 Switch livingRoomSwitch = new Switch(new Light());
@@ -171,6 +362,25 @@ livingRoomSwitch.press();  // 💡 Light on
 Switch deskSwitch = new Switch(new Fan());
 deskSwitch.press();  // 🌀 Fan on
 ```
+
+```typescript
+// Composition Root: the only place that knows the details
+const livingRoomSwitch = new Switch(new Light());
+livingRoomSwitch.press(); // 💡 Light on
+
+const deskSwitch = new Switch(new Fan());
+deskSwitch.press(); // 🌀 Fan on
+```
+
+```csharp
+// Composition Root: the only place that knows the details
+var livingRoomSwitch = new Switch(new Light());
+livingRoomSwitch.Press(); // 💡 Light on
+
+var deskSwitch = new Switch(new Fan());
+deskSwitch.Press(); // 🌀 Fan on
+```
+<!-- /code-group -->
 
 El acto de pasarle el dispositivo al Switch desde fuera se llama **inyección de dependencias**. No es magia ni un framework: es simplemente que alguien de fuera decide qué entra, en vez de que la clase lo cree internamente.
 
@@ -217,6 +427,7 @@ Fíjate en lo que no hay: ninguna flecha directa entre `Switch` y `Light`. No se
 
 ¿Quieres añadir un aire acondicionado? Solo creas la clase y firmas el contrato. No tocas `Switch`, no tocas `Light`, no tocas nada existente.
 
+<!-- code-group -->
 ```java
 class AirConditioner implements Switchable {
     private boolean on = false;
@@ -243,6 +454,54 @@ class AirConditioner implements Switchable {
 Switch livingRoomSwitch = new Switch(new AirConditioner());
 livingRoomSwitch.press();  // ❄️ Air conditioner on
 ```
+
+```typescript
+class AirConditioner implements Switchable {
+  private on = false;
+
+  turnOn(): void {
+    this.on = true;
+    console.log("❄️ Air conditioner on");
+  }
+
+  turnOff(): void {
+    this.on = false;
+    console.log("❄️ Air conditioner off");
+  }
+
+  isOn(): boolean {
+    return this.on;
+  }
+}
+
+// And you can use it right away:
+const livingRoomSwitch = new Switch(new AirConditioner());
+livingRoomSwitch.press(); // ❄️ Air conditioner on
+```
+
+```csharp
+class AirConditioner : ISwitchable
+{
+    public bool IsOn { get; private set; }
+
+    public void TurnOn()
+    {
+        IsOn = true;
+        Console.WriteLine("❄️ Air conditioner on");
+    }
+
+    public void TurnOff()
+    {
+        IsOn = false;
+        Console.WriteLine("❄️ Air conditioner off");
+    }
+}
+
+// And you can use it right away:
+var livingRoomSwitch = new Switch(new AirConditioner());
+livingRoomSwitch.Press(); // ❄️ Air conditioner on
+```
+<!-- /code-group -->
 
 Ese es el poder real del principio. El sistema es **abierto a la extensión, cerrado a la modificación**.
 
