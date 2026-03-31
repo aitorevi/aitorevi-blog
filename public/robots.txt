@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /katas/
+
+Sitemap: https://www.aitorevi.dev/sitemap-index.xml
