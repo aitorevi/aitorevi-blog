@@ -15,7 +15,7 @@ export interface ExperienceEntry {
   company: string;
   role: string;
   period: string;
-  bullets: { heading: string; text: string }[];
+  bullets: { heading: string; text: string; period?: string; tags?: string[] }[];
 }
 
 export interface EducationEntry {
@@ -71,7 +71,7 @@ export const cvES: CvData = {
     links: sharedLinks,
   },
   summary:
-    'Desarrollador de Software enfocado en Calidad, Refactoring y TDD. Entiendo la ingeniería de software como un equilibrio constante entre la artesanía y la eficiencia: código limpio, tests honestos y sistemas sostenibles. Amplifico esa disciplina con el uso avanzado de IA como aliado para estabilizar código legacy y simplificar la complejidad del negocio. Base sólida en POO (Java/TS) y Patrones de Diseño, con transición fluida a C#/.NET. En el día a día, entiendo el desarrollo como un deporte de equipo, aportando claridad y transparencia. Aporto una madurez profesional única gracias a más de 20 años de experiencia previa en gestión de negocios.',
+    'Desarrollador de Software enfocado en construir software sostenible. En Lean Mind he rotado por proyectos de distintos sectores (HVAC, Fintech, e-commerce), adaptándome a nuevos stacks (Java, TypeScript, C#/.NET) sin sacrificar calidad. Aplico TDD, Clean Architecture y Refactoring como base de todo mi trabajo, y amplifico esa disciplina con el uso avanzado de IA. Más de 20 años de experiencia previa en gestión de negocios aportan visión de producto y madurez al equipo.',
   experience: [
     {
       company: 'Lean Mind',
@@ -79,32 +79,28 @@ export const cvES: CvData = {
       period: 'Mar 2023 - Presente',
       bullets: [
         {
-          heading: 'Desarrollo Full Stack & Calidad',
-          text: 'Entrega de software robusto aplicando TDD y metodologías ágiles. Arquitectura basada en SOLID para sistemas desacoplados y mantenibles.',
+          heading: 'Enterprise Billing & Compliance Platform',
+          text: 'Integración en plataforma corporativa de facturación con cumplimiento normativo multi-país. Refactoring y estabilización de código legacy aplicando Clean Architecture, SOLID y TDD. Uso avanzado de IA como herramienta clave para analizar, comprender y evolucionar bases de código complejas.',
+          period: 'Mar 2026 - Presente',
+          tags: ['C#', '.NET', 'Jenkins', 'GitHub Copilot', 'Legacy Code', 'AI-Assisted Development'],
         },
         {
-          heading: 'Modernización de Sistemas',
-          text: 'Refactorización de código legado (Legacy Rescue), estabilizando lógica de negocio y resolviendo deuda técnica en producción sin detener el negocio.',
+          heading: 'Internal Projects & Automation',
+          text: 'Rediseño completo de web corporativa con foco en arquitectura limpia, diseño, accesibilidad y SEO. Integración e-commerce con Shopify. Desarrollo de herramienta de time tracking con desarrollo íntegramente guiado por IA. Migración de infraestructura cloud y despliegue continuo. Uso intensivo de agentes y workflows de IA como multiplicador de productividad en todos los proyectos.',
+          period: 'Oct 2024 - Feb 2026',
+          tags: ['Next.js', 'Shopify', 'Docker', 'Digital Ocean', 'Google Cloud', 'CI/CD', 'AI-Assisted Development'],
         },
         {
-          heading: 'Desarrollo Potenciado por IA',
-          text: 'Orquestación de agentes y workflows complejos con Claude Code, Gemini y Copilot CLI para refactoring y testing automatizado.',
+          heading: 'Global HVAC Distribution Platform',
+          text: 'Desarrollo frontend en plataforma internacional de distribución y venta de material de climatización. Aplicación a gran escala con monorepo, arquitectura hexagonal y cobertura de tests como red de seguridad para evolucionar el código con confianza.',
+          period: 'Ene 2024 - Oct 2024',
+          tags: ['Next.js', 'Turborepo', 'React', 'TypeScript', 'Tailwind', 'Testing', 'Hexagonal Arch'],
         },
         {
-          heading: 'Artesanía de Software',
-          text: 'Mentalidad "Boy Scout": dejar el código mejor de lo encontrado. Redes de seguridad con testing para desplegar sin miedo.',
-        },
-        {
-          heading: 'Infraestructura y DevOps',
-          text: 'Git, Docker, GitHub Actions, Google Cloud y Digital Ocean para integración y despliegue continuo.',
-        },
-        {
-          heading: 'Colaboración y Comunicación',
-          text: 'Documentación de hallazgos y deuda técnica. Enfoque analítico ante código no documentado, equilibrando investigación con colaboración. Comunicación transparente de avances y bloqueos.',
-        },
-        {
-          heading: 'Comunidad y Facilitación',
-          text: 'Speaker en talleres (Testing con Mocks). Asistente activo en conferencias: AOS, Nerdearla, JsConf, BilboStack, PulpoCon y CommitConf.',
+          heading: 'Software Craftsmanship & Internal Projects',
+          text: 'Formación intensiva en TDD, Refactoring y Clean Code. Desarrollo full stack en proyectos internos y e-commerce, priorizando código mantenible y escalable desde el inicio.',
+          period: 'Mar 2023 - Ene 2024',
+          tags: ['Hugo', 'Java', 'TypeScript', 'React', 'Pandoc', 'CSS', 'TDD'],
         },
       ],
     },
@@ -136,27 +132,27 @@ export const cvES: CvData = {
     {
       name: 'Desarrollo de Software Guiado por IA',
       institution: 'Lean Mind',
-      period: '2026',
+      period: '',
     },
     {
       name: 'Sustainable Testing with TypeScript',
       institution: 'Software Crafters Academy',
-      period: '2025',
+      period: '',
     },
     {
       name: 'Refactoring Avanzado',
       institution: 'Lean Mind',
-      period: '2025',
+      period: '',
     },
     {
       name: 'Código Sostenible',
       institution: 'Lean Mind',
-      period: '2024',
+      period: '',
     },
     {
       name: 'Curso Práctico de JavaScript',
       institution: 'Platzi',
-      period: '2023',
+      period: '',
     },
   ],
   skills: [
@@ -188,7 +184,7 @@ export const cvEN: CvData = {
     links: sharedLinks,
   },
   summary:
-    'Software Developer focused on Quality, Refactoring and TDD. I see software engineering as a constant balance between craftsmanship and efficiency: clean code, honest tests and sustainable systems. I amplify that discipline with advanced AI usage as an ally to stabilize legacy code and simplify business complexity. Strong foundation in OOP (Java/TS) and Design Patterns, with a smooth transition to C#/.NET. Day to day, I see development as a team sport, bringing clarity and transparency. I bring unique professional maturity from over 20 years of prior business management experience.',
+    'Software Developer focused on building sustainable software. At Lean Mind I have rotated through projects across different sectors (HVAC, Fintech, e-commerce), adapting to new stacks (Java, TypeScript, C#/.NET) without sacrificing quality. I apply TDD, Clean Architecture and Refactoring as the foundation of all my work, and amplify that discipline with advanced AI usage. Over 20 years of prior business management experience bring product vision and maturity to the team.',
   experience: [
     {
       company: 'Lean Mind',
@@ -196,32 +192,28 @@ export const cvEN: CvData = {
       period: 'Mar 2023 - Present',
       bullets: [
         {
-          heading: 'Full Stack Development & Quality',
-          text: 'Delivering robust software applying TDD and agile methodologies. SOLID-based architecture for decoupled, maintainable systems.',
+          heading: 'Enterprise Billing & Compliance Platform',
+          text: 'Integration in corporate billing platform with multi-country regulatory compliance. Refactoring and stabilization of legacy code applying Clean Architecture, SOLID and TDD. Advanced use of AI as a key tool to analyze, understand and evolve complex codebases.',
+          period: 'Mar 2026 - Present',
+          tags: ['C#', '.NET', 'Jenkins', 'GitHub Copilot', 'Legacy Code', 'AI-Assisted Development'],
         },
         {
-          heading: 'System Modernization',
-          text: 'Refactoring legacy code (Legacy Rescue), stabilizing business logic and resolving technical debt in production without stopping business.',
+          heading: 'Internal Projects & Automation',
+          text: 'Complete redesign of corporate website focused on clean architecture, design, accessibility and SEO. E-commerce integration with Shopify. Development of time tracking tool with fully AI-guided development. Cloud infrastructure migration and continuous deployment. Intensive use of AI agents and workflows as a productivity multiplier across all projects.',
+          period: 'Oct 2024 - Feb 2026',
+          tags: ['Next.js', 'Shopify', 'Docker', 'Digital Ocean', 'Google Cloud', 'CI/CD', 'AI-Assisted Development'],
         },
         {
-          heading: 'AI-Powered Development',
-          text: 'Orchestrating agents and complex workflows with Claude Code, Gemini and Copilot CLI for automated refactoring and testing.',
+          heading: 'Global HVAC Distribution Platform',
+          text: 'Frontend development on an international HVAC distribution and sales platform. Large-scale application with monorepo, hexagonal architecture and test coverage as a safety net to evolve code with confidence.',
+          period: 'Jan 2024 - Oct 2024',
+          tags: ['Next.js', 'Turborepo', 'React', 'TypeScript', 'Tailwind', 'Testing', 'Hexagonal Arch'],
         },
         {
-          heading: 'Software Craftsmanship',
-          text: '"Boy Scout Rule" mindset: leave code better than found. Safety nets through testing for fearless deployment.',
-        },
-        {
-          heading: 'Infrastructure & DevOps',
-          text: 'Git, Docker, GitHub Actions, Google Cloud and Digital Ocean for continuous integration and deployment.',
-        },
-        {
-          heading: 'Collaboration & Communication',
-          text: 'Documenting findings and technical debt. Analytical approach to undocumented code, balancing investigation with collaboration. Transparent communication of progress and blockers.',
-        },
-        {
-          heading: 'Community & Facilitation',
-          text: 'Speaker at workshops (Testing with Mocks). Active attendee at conferences: AOS, Nerdearla, JsConf, BilboStack, PulpoCon and CommitConf.',
+          heading: 'Software Craftsmanship & Internal Projects',
+          text: 'Intensive training in TDD, Refactoring and Clean Code. Full stack development on internal projects and e-commerce, prioritizing maintainable and scalable code from the start.',
+          period: 'Mar 2023 - Jan 2024',
+          tags: ['Hugo', 'Java', 'TypeScript', 'React', 'Pandoc', 'CSS', 'TDD'],
         },
       ],
     },
@@ -253,27 +245,27 @@ export const cvEN: CvData = {
     {
       name: 'AI-Guided Software Development',
       institution: 'Lean Mind',
-      period: '2026',
+      period: '',
     },
     {
       name: 'Sustainable Testing with TypeScript',
       institution: 'Software Crafters Academy',
-      period: '2025',
+      period: '',
     },
     {
       name: 'Advanced Refactoring',
       institution: 'Lean Mind',
-      period: '2025',
+      period: '',
     },
     {
       name: 'Sustainable Code',
       institution: 'Lean Mind',
-      period: '2024',
+      period: '',
     },
     {
       name: 'Practical JavaScript Course',
       institution: 'Platzi',
-      period: '2023',
+      period: '',
     },
   ],
   skills: [

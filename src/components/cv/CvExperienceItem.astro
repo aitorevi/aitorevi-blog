@@ -1,5 +1,6 @@
 ---
 import type { ExperienceEntry } from '../../data/cv';
+import Tag from '../atoms/Tag.astro';
 
 interface Props {
   entry: ExperienceEntry;
@@ -16,11 +17,24 @@ const { entry } = Astro.props;
     </div>
     <p class="text-sm text-quaternary mt-1 md:mt-0">{entry.period}</p>
   </div>
-  <ul class="space-y-2 ml-1">
+  <ul class="space-y-3 ml-1">
     {entry.bullets.map((bullet) => (
       <li class="flex gap-2">
         <span class="text-secondary mt-1 shrink-0">*</span>
-        <span><strong>{bullet.heading}:</strong> {bullet.text}</span>
+        <div>
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <strong>{bullet.heading}</strong>
+            {bullet.period && <span class="text-sm text-quaternary">{bullet.period}</span>}
+          </div>
+          {bullet.text && <p class="text-sm text-tertiary mt-1">{bullet.text}</p>}
+          {bullet.tags && bullet.tags.length > 0 && (
+            <div class="flex flex-wrap gap-1.5 mt-1.5">
+              {bullet.tags.map((tag) => (
+                <Tag label={tag} variant="accent" />
+              ))}
+            </div>
+          )}
+        </div>
       </li>
     ))}
   </ul>
