@@ -1,5 +1,6 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
+import Analytics from '@vercel/analytics/astro';
 import Nav from "../components/Nav/Nav.astro";
 import Footer from "../components/Footer/Footer.astro";
 
@@ -49,6 +50,7 @@ const {
 			<slot/>
 		</main>
 		<Footer />
+		<Analytics />
 	</body>
 </html>
 <style is:global>
