@@ -60,48 +60,55 @@ function startServer() {
   });
 }
 
+async function launchBrowser() {
+  if (process.env.VERCEL) {
+    const { default: sparticuzChromium } = await import('@sparticuz/chromium');
+    return chromium.launch({
+      args: sparticuzChromium.args,
+      executablePath: await sparticuzChromium.executablePath(),
+      headless: true,
+    });
+  }
+  return chromium.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  });
+}
+
+async function generatePdf(url, output) {
+  const browser = await launchBrowser();
+  try {
+    const page = await browser.newPage();
+    const fullUrl = `http://localhost:${PORT}${url}`;
+    console.log(`Navigating to ${fullUrl}`);
+
+    await page.goto(fullUrl, { waitUntil: 'networkidle' });
+    await page.evaluate(() => document.fonts.ready);
+
+    const outputPath = join(DIST_DIR, output);
+    await page.pdf({
+      path: outputPath,
+      format: 'A4',
+      printBackground: true,
+      preferCSSPageSize: true,
+      margin: { top: '0', bottom: '0', left: '0', right: '0' },
+    });
+
+    console.log(`Generated: ${output}`);
+  } finally {
+    await browser.close();
+  }
+}
+
 async function generatePdfs() {
   console.log('Starting CV PDF generation...');
 
   const server = await startServer();
 
-  let browser;
-  if (process.env.VERCEL) {
-    const { default: sparticuzChromium } = await import('@sparticuz/chromium');
-    browser = await chromium.launch({
-      args: sparticuzChromium.args,
-      executablePath: await sparticuzChromium.executablePath(),
-      headless: true,
-    });
-  } else {
-    browser = await chromium.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    });
-  }
-
   try {
     for (const { url, output } of CV_PAGES) {
-      const page = await browser.newPage();
-      const fullUrl = `http://localhost:${PORT}${url}`;
-      console.log(`Navigating to ${fullUrl}`);
-
-      await page.goto(fullUrl, { waitUntil: 'networkidle' });
-      await page.evaluate(() => document.fonts.ready);
-
-      const outputPath = join(DIST_DIR, output);
-      await page.pdf({
-        path: outputPath,
-        format: 'A4',
-        printBackground: true,
-        preferCSSPageSize: true,
-        margin: { top: '0', bottom: '0', left: '0', right: '0' },
-      });
-
-      console.log(`Generated: ${output}`);
-      await page.close();
+      await generatePdf(url, output);
     }
   } finally {
-    await browser.close();
     server.close();
   }
 
