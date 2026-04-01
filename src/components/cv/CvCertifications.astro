@@ -1,6 +1,8 @@
 ---
 import type { CertificationEntry } from '../../data/cv';
 
+import CvSectionTitle from './CvSectionTitle.astro';
+
 interface Props {
   label: string;
   entries: CertificationEntry[];
@@ -10,7 +12,7 @@ const { label, entries } = Astro.props;
 ---
 
 <section class="mb-8 md:mb-10">
-  <h2 class="text-2xl font-bold mb-6 border-b-2 border-secondary pb-2">{label}</h2>
+  <CvSectionTitle label={label} />
 
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     {entries.map((entry) => (

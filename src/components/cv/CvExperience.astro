@@ -2,6 +2,7 @@
 import type { ExperienceEntry } from '../../data/cv';
 import CvExperienceItem from './CvExperienceItem.astro';
 import Tag from '../atoms/Tag.astro';
+import CvSectionTitle from './CvSectionTitle.astro';
 
 interface Props {
   label: string;
@@ -24,7 +25,7 @@ const items = entries.flatMap((entry) =>
 ---
 
 <section class="mb-8 md:mb-10">
-  <h2 class="text-2xl font-bold mb-8 border-b-2 border-secondary pb-2">{label}</h2>
+  <CvSectionTitle label={label} />
 
   <!-- Mobile: linear timeline (same as before) -->
   <div class="md:hidden">

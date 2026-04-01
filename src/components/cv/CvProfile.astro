@@ -1,4 +1,6 @@
 ---
+import CvSectionTitle from './CvSectionTitle.astro';
+
 interface Props {
   label: string;
   summary: string;
@@ -8,6 +10,6 @@ const { label, summary } = Astro.props;
 ---
 
 <section class="mb-8 md:mb-10">
-  <h2 class="text-2xl font-bold mb-4 border-b-2 border-secondary pb-2">{label}</h2>
+  <CvSectionTitle label={label} />
   <p class="leading-relaxed">{summary}</p>
 </section>

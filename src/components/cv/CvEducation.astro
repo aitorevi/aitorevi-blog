@@ -1,6 +1,8 @@
 ---
 import type { EducationEntry } from '../../data/cv';
 
+import CvSectionTitle from './CvSectionTitle.astro';
+
 interface Props {
   label: string;
   entries: EducationEntry[];
@@ -10,7 +12,7 @@ const { label, entries } = Astro.props;
 ---
 
 <section class="mb-8 md:mb-10">
-  <h2 class="text-2xl font-bold mb-6 border-b-2 border-secondary pb-2">{label}</h2>
+  <CvSectionTitle label={label} />
 
   <!-- Mobile: linear timeline -->
   <div class="md:hidden">
