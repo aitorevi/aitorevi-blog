@@ -36,27 +36,37 @@ import DateDisplay from '../../components/atoms/DateDisplay.astro';
 import ReadingTime from '../../components/atoms/ReadingTime.astro';
 import CopyButton from '../../components/atoms/CopyButton.astro';
 import { calculateReadingTime, formatDateISO } from '../../lib/utils';
+import { getBlogSlugFromId } from '../../i18n/utils';
 
-// Astro 5: Generate static paths for all blog posts
+// Astro 5: Generate static paths for Spanish blog posts
 export async function getStaticPaths() {
   const blogPosts = await getCollection('blog');
 
-  // Filter drafts in production
   const publishedPosts = import.meta.env.PROD
     ? blogPosts.filter((post) => !post.data.draft)
     : blogPosts;
 
-  return publishedPosts.map((post) => ({
-    params: { slug: post.id },
-    props: { post },
-  }));
+  const esPosts = publishedPosts.filter((post) => post.id.startsWith('es/'));
+  const enSlugs = new Set(
+    publishedPosts.filter((p) => p.id.startsWith('en/')).map((p) => getBlogSlugFromId(p.id))
+  );
+
+  return esPosts.map((post) => {
+    const slug = getBlogSlugFromId(post.id);
+    const hasTranslation = enSlugs.has(slug);
+    return {
+      params: { slug },
+      props: { post, alternateUrl: hasTranslation ? `/en/blog/${slug}` : '/en/blog' },
+    };
+  });
 }
 
 interface Props {
   post: CollectionEntry<'blog'>;
+  alternateUrl: string;
 }
 
-const { post } = Astro.props;
+const { post, alternateUrl } = Astro.props;
 const { data, body = '' } = post;
 
 // Astro 5: render() function for MDX/Markdown content
@@ -76,6 +86,7 @@ const coverImageUrl = data.coverImage;
 <Layout
   title={`${data.title} | aitorevi Blog`}
   description={data.description}
+  alternateUrl={`https://www.aitorevi.dev${alternateUrl}`}
 >
   <!-- SEO: Open Graph & Twitter Card -->
   <Fragment slot="head">

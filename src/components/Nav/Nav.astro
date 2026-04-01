@@ -1,60 +1,169 @@
 ---
-import {
-    Astronav,
-} from "astro-navbar";
 import {Image} from "astro:assets";
+import { getLangFromUrl, getLocalePath, t } from '../../i18n/utils';
 
+interface Props {
+  alternateUrl: string;
+}
+
+const { alternateUrl } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
 const currentPath = Astro.url.pathname;
-const isInBlog = currentPath.startsWith('/blog');
-const isInCv = currentPath.startsWith('/cv');
+const isInBlog = currentPath.startsWith('/blog') || currentPath.startsWith('/en/blog');
+const isInCv = currentPath.startsWith('/cv') || currentPath.startsWith('/en/cv');
+const homePath = getLocalePath('/', lang);
+const blogPath = getLocalePath('/blog', lang);
+const cvPath = getLocalePath('/cv', lang);
 ---
 <header class="flex w-full bg-white dark:bg-[#1a1f2e] bg-opacity-95 dark:bg-opacity-95 fixed z-10 font-ibm transition-colors duration-200">
-    <Astronav>
-        <div class="flex w-[80rem] h-14 md:h-20 mx-auto justify-between items-center">
-            <div class="flex mx-10 xl:mx-0 gap-2">
-                <a href="/">
-                    <Image src="/logo.webp"
-                           alt="logo"
-                           width={16}
-                           height={16}
-                           class="w-8 h-8 md:w-10 md:h-10"/>
-                </a>
-                <a href="/"
-                   class="hidden md:block cursor-pointer text-inherit text-4xl hover:text-secondary transition ease-linear delay-50 duration-150">
-                    aitorevi
-                </a>
-            </div>
-            <div class="flex items-center gap-8 mx-10 xl:mx-0 text-lg">
-                <a href="/blog"
-                   class={`flex items-center cursor-pointer transition ease-linear delay-50 duration-200 ${isInBlog ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
-                    Blog
-                </a>
-                <a href="/cv"
-                   class={`flex items-center cursor-pointer transition ease-linear delay-50 duration-200 ${isInCv ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
-                    Sobre mí
-                </a>
-                <button
-                    id="theme-toggle"
-                    class="p-2 text-inherit hover:text-secondary transition-colors duration-200 cursor-pointer"
-                    aria-label="Toggle dark mode"
-                >
-                    <svg class="w-5 h-5 dark:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
-                    </svg>
-                    <svg class="w-5 h-5 hidden dark:block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
-                    </svg>
-                </button>
-            </div>
+    <div class="flex w-[80rem] h-14 md:h-20 mx-auto justify-between items-center">
+        <div class="flex mx-6 md:mx-10 xl:mx-0 gap-2">
+            <a href={homePath}>
+                <Image src="/logo.webp"
+                       alt="logo"
+                       width={16}
+                       height={16}
+                       class="w-8 h-8 md:w-10 md:h-10"/>
+            </a>
+            <a href={homePath}
+               class="cursor-pointer text-inherit text-2xl md:text-4xl hover:text-secondary transition ease-linear delay-50 duration-150">
+                aitorevi
+            </a>
         </div>
-    </Astronav>
+
+        <!-- Desktop nav -->
+        <div class="hidden md:flex items-center gap-8 mx-10 xl:mx-0 text-lg">
+            <a href={blogPath}
+               class={`flex items-center cursor-pointer transition ease-linear delay-50 duration-200 ${isInBlog ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
+                {t(lang, 'nav.blog')}
+            </a>
+            <a href={cvPath}
+               class={`flex items-center cursor-pointer transition ease-linear delay-50 duration-200 ${isInCv ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
+                {t(lang, 'nav.about')}
+            </a>
+            <div class="flex items-center gap-1 text-sm font-semibold">
+                <a href={lang === 'es' ? currentPath : alternateUrl}
+                   class={`cursor-pointer transition ease-linear delay-50 duration-200 ${lang === 'es' ? 'text-secondary' : 'text-quaternary hover:text-secondary'}`}>
+                    ES
+                </a>
+                <span class="text-quaternary">|</span>
+                <a href={lang === 'en' ? currentPath : alternateUrl}
+                   class={`cursor-pointer transition ease-linear delay-50 duration-200 ${lang === 'en' ? 'text-secondary' : 'text-quaternary hover:text-secondary'}`}>
+                    EN
+                </a>
+            </div>
+            <button
+                id="theme-toggle"
+                class="p-2 text-inherit hover:text-secondary transition-colors duration-200 cursor-pointer"
+                aria-label="Toggle dark mode"
+            >
+                <svg class="w-5 h-5 dark:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+                </svg>
+                <svg class="w-5 h-5 hidden dark:block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile: theme toggle + hamburger -->
+        <div class="flex md:hidden items-center gap-2 mx-6">
+            <button
+                id="theme-toggle-mobile"
+                class="p-2 text-inherit hover:text-secondary transition-colors duration-200 cursor-pointer"
+                aria-label="Toggle dark mode"
+            >
+                <svg class="w-5 h-5 dark:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+                </svg>
+                <svg class="w-5 h-5 hidden dark:block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+                </svg>
+            </button>
+            <button
+                id="hamburger-toggle"
+                class="p-2 text-inherit hover:text-secondary transition-colors duration-200 cursor-pointer"
+                aria-label="Toggle menu"
+                aria-expanded="false"
+            >
+                <!-- Hamburger icon -->
+                <svg id="hamburger-open" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+                <!-- Close icon -->
+                <svg id="hamburger-close" class="w-6 h-6 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="md:hidden absolute top-14 left-0 w-full bg-white dark:bg-[#1a1f2e] border-t border-gray-200 dark:border-[#334155] shadow-lg transition-all duration-300 ease-in-out overflow-hidden max-h-0 opacity-0">
+        <nav class="flex flex-col p-8 gap-6 text-xl text-center">
+            <a href={blogPath}
+               class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isInBlog ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
+                {t(lang, 'nav.blog')}
+            </a>
+            <a href={cvPath}
+               class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isInCv ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
+                {t(lang, 'nav.about')}
+            </a>
+            <div class="flex items-center justify-center gap-1 text-sm font-semibold">
+                <a href={lang === 'es' ? currentPath : alternateUrl}
+                   class={`cursor-pointer transition ease-linear delay-50 duration-200 ${lang === 'es' ? 'text-secondary' : 'text-quaternary hover:text-secondary'}`}>
+                    ES
+                </a>
+                <span class="text-quaternary">|</span>
+                <a href={lang === 'en' ? currentPath : alternateUrl}
+                   class={`cursor-pointer transition ease-linear delay-50 duration-200 ${lang === 'en' ? 'text-secondary' : 'text-quaternary hover:text-secondary'}`}>
+                    EN
+                </a>
+            </div>
+        </nav>
+    </div>
 </header>
 
 <script is:inline>
     document.addEventListener('click', function(e) {
-        const btn = e.target.closest('#theme-toggle');
-        if (!btn) return;
-        const isDark = document.documentElement.classList.toggle('dark');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        // Theme toggle (desktop + mobile)
+        const btn = e.target.closest('#theme-toggle, #theme-toggle-mobile');
+        if (btn) {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            return;
+        }
+
+        // Hamburger toggle
+        const hamburger = e.target.closest('#hamburger-toggle');
+        if (hamburger) {
+            const menu = document.getElementById('mobile-menu');
+            const openIcon = document.getElementById('hamburger-open');
+            const closeIcon = document.getElementById('hamburger-close');
+            const isOpen = menu.classList.contains('max-h-0');
+
+            if (isOpen) {
+                menu.classList.remove('max-h-0', 'opacity-0');
+                menu.classList.add('max-h-80', 'opacity-100');
+            } else {
+                menu.classList.remove('max-h-80', 'opacity-100');
+                menu.classList.add('max-h-0', 'opacity-0');
+            }
+            openIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+            hamburger.setAttribute('aria-expanded', String(isOpen));
+            return;
+        }
+
+        // Close menu when clicking outside
+        const menu = document.getElementById('mobile-menu');
+        const hamburgerBtn = document.getElementById('hamburger-toggle');
+        if (menu && menu.classList.contains('max-h-80') && !menu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+            menu.classList.remove('max-h-80', 'opacity-100');
+            menu.classList.add('max-h-0', 'opacity-0');
+            document.getElementById('hamburger-open').classList.remove('hidden');
+            document.getElementById('hamburger-close').classList.add('hidden');
+            hamburgerBtn.setAttribute('aria-expanded', 'false');
+        }
     });
 </script>

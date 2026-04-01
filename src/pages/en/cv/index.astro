@@ -1,33 +1,26 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import CvHeader from '../../components/cv/CvHeader.astro';
-import CvProfile from '../../components/cv/CvProfile.astro';
-import CvExperience from '../../components/cv/CvExperience.astro';
-import CvSkills from '../../components/cv/CvSkills.astro';
-import CvEducation from '../../components/cv/CvEducation.astro';
-import CvCertifications from '../../components/cv/CvCertifications.astro';
-import CvLanguageToggle from '../../components/cv/CvLanguageToggle.astro';
-import CvPdfDownload from '../../components/cv/CvPdfDownload.astro';
-import { getCvData, getPdfPath, getAlternateLangUrl } from '../../data/cv';
-import type { Lang } from '../../data/cv';
+import Layout from '../../../layouts/Layout.astro';
+import CvHeader from '../../../components/cv/CvHeader.astro';
+import CvProfile from '../../../components/cv/CvProfile.astro';
+import CvExperience from '../../../components/cv/CvExperience.astro';
+import CvSkills from '../../../components/cv/CvSkills.astro';
+import CvEducation from '../../../components/cv/CvEducation.astro';
+import CvCertifications from '../../../components/cv/CvCertifications.astro';
+import CvPdfDownload from '../../../components/cv/CvPdfDownload.astro';
+import { getCvData, getPdfPath } from '../../../data/cv';
+import type { Lang } from '../../../data/cv';
 
 const lang: Lang = 'en';
 const data = getCvData(lang);
 const pdfPath = getPdfPath(lang);
-const alternateUrl = getAlternateLangUrl(lang);
 ---
 
 <Layout
   title={data.labels.pageTitle}
   lang={lang}
   description={data.labels.pageDescription}
-  alternateUrl={alternateUrl}
-  alternateLang="es"
 >
   <section class="mx-auto max-w-screen-xl bg-grayLight bg-opacity-70 dark:bg-[#1a1f2e] dark:bg-opacity-70 mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:p-20 rounded font-ibm">
-    <div class="mb-4">
-      <CvLanguageToggle currentLang={lang} />
-    </div>
     <CvHeader contact={data.contact} />
     <CvProfile label={data.labels.profile} summary={data.summary} />
     <CvExperience label={data.labels.experience} entries={data.experience} />

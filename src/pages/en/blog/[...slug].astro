@@ -1,0 +1,215 @@
+---
+import { getCollection, type CollectionEntry, render } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import Tag from '../../../components/atoms/Tag.astro';
+import DateDisplay from '../../../components/atoms/DateDisplay.astro';
+import ReadingTime from '../../../components/atoms/ReadingTime.astro';
+import CopyButton from '../../../components/atoms/CopyButton.astro';
+import { calculateReadingTime, formatDateISO } from '../../../lib/utils';
+import { t, getBlogSlugFromId } from '../../../i18n/utils';
+
+const lang = 'en';
+
+export async function getStaticPaths() {
+  const blogPosts = await getCollection('blog');
+
+  const publishedPosts = import.meta.env.PROD
+    ? blogPosts.filter((post) => !post.data.draft)
+    : blogPosts;
+
+  const enPosts = publishedPosts.filter((post) => post.id.startsWith('en/'));
+  const esSlugs = new Set(
+    publishedPosts.filter((p) => p.id.startsWith('es/')).map((p) => getBlogSlugFromId(p.id))
+  );
+
+  return enPosts.map((post) => {
+    const slug = getBlogSlugFromId(post.id);
+    const hasTranslation = esSlugs.has(slug);
+    return {
+      params: { slug },
+      props: { post, alternateUrl: hasTranslation ? `/blog/${slug}` : '/blog' },
+    };
+  });
+}
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  alternateUrl: string;
+}
+
+const { post, alternateUrl } = Astro.props;
+const { data, body = '' } = post;
+const { Content } = await render(post);
+const readingTime = calculateReadingTime(body);
+const canonicalUrl = data.canonicalUrl || new URL(Astro.url.pathname, Astro.site).href;
+const ogImageUrl = data.ogImage || data.coverImage;
+const coverImageUrl = data.coverImage;
+---
+
+<Layout
+  title={`${data.title} | aitorevi Blog`}
+  description={data.description}
+  alternateUrl={`https://www.aitorevi.dev${alternateUrl}`}
+>
+  <Fragment slot="head">
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={data.title} />
+    <meta property="og:description" content={data.description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl.startsWith('http') ? ogImageUrl : new URL(ogImageUrl, Astro.site).href} />
+    <meta property="article:published_time" content={data.publishDate.toISOString()} />
+    {data.updatedDate && (
+      <meta property="article:modified_time" content={data.updatedDate.toISOString()} />
+    )}
+    <meta property="article:author" content={data.author.name} />
+    {data.tags.map((tag) => (
+      <meta property="article:tag" content={tag} />
+    ))}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={data.title} />
+    <meta name="twitter:description" content={data.description} />
+    <meta name="twitter:image" content={ogImageUrl.startsWith('http') ? ogImageUrl : new URL(ogImageUrl, Astro.site).href} />
+    <link rel="canonical" href={canonicalUrl} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": data.title,
+      "description": data.description,
+      "image": coverImageUrl.startsWith('http') ? coverImageUrl : new URL(coverImageUrl, Astro.site).href,
+      "datePublished": data.publishDate.toISOString(),
+      "dateModified": data.updatedDate?.toISOString() || data.publishDate.toISOString(),
+      "author": {
+        "@type": "Person",
+        "name": data.author.name,
+        "url": data.author.url || Astro.site?.href,
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "aitorevi",
+        "url": Astro.site?.href,
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": canonicalUrl,
+      },
+      "keywords": data.tags.join(", "),
+    })} />
+  </Fragment>
+
+  <article
+    class="mx-auto max-w-screen-xl bg-grayLight bg-opacity-70 dark:bg-[#1a1f2e] dark:bg-opacity-70 mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:p-20 rounded"
+    itemscope
+    itemtype="https://schema.org/BlogPosting"
+  >
+    <header class="mb-8 space-y-4">
+      <div class="flex flex-wrap gap-2" role="list" aria-label="Article tags">
+        {data.tags.map((tag) => (
+          <Tag label={tag} variant="accent" />
+        ))}
+      </div>
+      <h1
+        class="text-4xl font-bold leading-tight text-slate-900 dark:text-[#f1f5f9] sm:text-5xl lg:text-6xl"
+        itemprop="headline"
+      >
+        {data.title}
+      </h1>
+      <p
+        class="text-lg text-slate-600 dark:text-[#cbd5e1] sm:text-xl"
+        itemprop="description"
+      >
+        {data.description}
+      </p>
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-b border-slate-200 dark:border-[#334155] py-4">
+        <DateDisplay date={data.publishDate} showIcon={true} locale="en-US" />
+        <span class="text-slate-400" aria-hidden="true">&bull;</span>
+        <ReadingTime text={readingTime.text} />
+        {data.updatedDate && (
+          <>
+            <span class="text-slate-400" aria-hidden="true">&bull;</span>
+            <time
+              datetime={formatDateISO(data.updatedDate)}
+              class="text-sm text-slate-500"
+            >
+              Updated {new Date(data.updatedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            </time>
+          </>
+        )}
+      </div>
+    </header>
+
+    <figure class="mb-10 overflow-hidden rounded-xl">
+      <img
+        src={data.coverImage}
+        alt={data.coverImageAlt}
+        width={1200}
+        height={630}
+        class="w-full"
+        loading="eager"
+        decoding="sync"
+        itemprop="image"
+      />
+      {data.coverImageAlt && (
+        <figcaption class="mt-2 text-center text-sm text-slate-500">
+          {data.coverImageAlt}
+        </figcaption>
+      )}
+    </figure>
+
+    <div
+      class="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:text-blue-700 dark:hover:prose-a:text-blue-300 prose-img:rounded-lg"
+      itemprop="articleBody"
+      id="article-content"
+    >
+      <Content />
+    </div>
+
+    <template id="copy-button-template">
+      <CopyButton />
+    </template>
+
+    <footer class="mt-12 border-t border-slate-200 dark:border-[#334155] pt-8">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          {data.author.avatar ? (
+            <img
+              src={data.author.avatar}
+              alt={`${data.author.name} avatar`}
+              class="h-12 w-12 rounded-full object-cover"
+            />
+          ) : (
+            <div class="h-12 w-12 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
+              {data.author.name.split(' ').map(n => n[0]).join('')}
+            </div>
+          )}
+          <div>
+            <p class="font-medium text-slate-900 dark:text-[#f1f5f9]">
+              {data.author.url ? (
+                <a href={data.author.url} class="hover:text-blue-600">{data.author.name}</a>
+              ) : (
+                data.author.name
+              )}
+            </p>
+            <p class="text-sm text-slate-600">
+              {t(lang, 'blog.publishedOn')} <DateDisplay date={data.publishDate} locale="en-US" />
+            </p>
+          </div>
+        </div>
+        <a
+          href="/en/blog"
+          class="inline-flex items-center gap-2 rounded-full bg-slate-100 dark:bg-[#334155] px-4 py-2 text-sm font-medium text-slate-700 dark:text-[#cbd5e1] transition-colors hover:bg-slate-200 dark:hover:bg-[#475569]"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+          </svg>
+          {t(lang, 'blog.backToBlog')}
+        </a>
+      </div>
+    </footer>
+
+    <meta itemprop="datePublished" content={data.publishDate.toISOString()} />
+    {data.updatedDate && (
+      <meta itemprop="dateModified" content={data.updatedDate.toISOString()} />
+    )}
+    <meta itemprop="author" content={data.author.name} />
+  </article>
+</Layout>

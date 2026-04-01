@@ -12,6 +12,14 @@ export default defineConfig({
   site: "https://www.aitorevi.dev/",
   redirects: {
     '/sitemap.xml': '/sitemap-index.xml',
+    '/cv/en': '/en/cv',
+  },
+  i18n: {
+    defaultLocale: 'es',
+    locales: ['es', 'en'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
   },
   markdown: {
     shikiConfig: {

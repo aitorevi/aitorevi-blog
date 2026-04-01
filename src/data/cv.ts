@@ -149,11 +149,6 @@ export const cvES: CvData = {
       institution: 'Lean Mind',
       period: '',
     },
-    {
-      name: 'Curso Práctico de JavaScript',
-      institution: 'Platzi',
-      period: '',
-    },
   ],
   skills: [
     { name: 'Fundamentos de Ingeniería', skills: ['TDD', 'Software Craftsmanship', 'Refactoring', 'Clean Architecture', 'SOLID'] },
@@ -262,11 +257,6 @@ export const cvEN: CvData = {
       institution: 'Lean Mind',
       period: '',
     },
-    {
-      name: 'Practical JavaScript Course',
-      institution: 'Platzi',
-      period: '',
-    },
   ],
   skills: [
     { name: 'Engineering Foundations', skills: ['TDD', 'Software Craftsmanship', 'Refactoring', 'Clean Architecture', 'SOLID'] },
@@ -300,5 +290,5 @@ export function getPdfPath(lang: Lang): string {
 }
 
 export function getAlternateLangUrl(lang: Lang): string {
-  return lang === 'en' ? '/cv' : '/cv/en';
+  return lang === 'en' ? '/cv' : '/en/cv';
 }

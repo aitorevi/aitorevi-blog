@@ -34,6 +34,7 @@ import Tag from '../atoms/Tag.astro';
 import DateDisplay from '../atoms/DateDisplay.astro';
 import ReadingTime from '../atoms/ReadingTime.astro';
 import { calculateReadingTime } from '../../lib/utils';
+import { getBlogSlugFromId } from '../../i18n/utils';
 
 interface Props {
   /**
@@ -55,6 +56,12 @@ interface Props {
   showFeaturedBadge?: boolean;
 
   /**
+   * Language for locale-aware URLs
+   * @default 'es'
+   */
+  lang?: 'es' | 'en';
+
+  /**
    * Additional CSS classes
    */
   class?: string;
@@ -64,14 +71,16 @@ const {
   post,
   priority = false,
   showFeaturedBadge = true,
+  lang = 'es',
   class: className = '',
 } = Astro.props;
 
 const { data, id, body = '' } = post;
 const readingTime = calculateReadingTime(body);
 
-// Generate post URL (Astro 5 uses 'id' instead of 'slug')
-const postUrl = `/blog/${id}`;
+// Generate post URL - strip language prefix from content ID
+const slug = getBlogSlugFromId(id);
+const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
 
 ---
 

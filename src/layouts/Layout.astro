@@ -3,22 +3,27 @@ import { ViewTransitions } from 'astro:transitions';
 import Analytics from '@vercel/analytics/astro';
 import Nav from "../components/Nav/Nav.astro";
 import Footer from "../components/Footer/Footer.astro";
+import { getLangFromUrl, getAlternateUrl, t } from '../i18n/utils';
+import type { Lang } from '../data/cv';
 
 interface Props {
 	title: string;
-	lang?: 'es' | 'en';
+	lang?: Lang;
 	description?: string;
 	alternateUrl?: string;
-	alternateLang?: 'es' | 'en';
+	alternateLang?: Lang;
 }
 
+const currentLang = getLangFromUrl(Astro.url);
 const {
 	title,
-	lang = 'es',
-	description = 'aitorevi.dev - Desarrollador de software',
-	alternateUrl,
-	alternateLang,
+	lang = currentLang,
+	description = t(lang, 'site.description'),
+	alternateUrl = `https://www.aitorevi.dev${getAlternateUrl(Astro.url.pathname, lang)}`,
+	alternateLang = lang === 'es' ? 'en' : 'es',
 } = Astro.props;
+
+const alternatePath = alternateUrl.replace('https://www.aitorevi.dev', '');
 ---
 
 <!doctype html>
@@ -45,7 +50,7 @@ const {
 		<slot name="head" />
 	</head>
 	<body class="flex flex-col min-h-dvh bg-white dark:bg-[#0f1419] bg-custom bg-fixed text-primary dark:text-[#f1f5f9] scrollbar scrollbar-thumb-primary scrollbar-w-2 scrollbar-corner-rounded-xl">
-		<Nav />
+		<Nav alternateUrl={alternatePath} />
 		<main class="flex-1 relative z-0">
 			<slot/>
 		</main>
