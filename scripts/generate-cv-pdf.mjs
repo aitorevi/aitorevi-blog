@@ -64,7 +64,9 @@ async function generatePdfs() {
   console.log('Starting CV PDF generation...');
 
   const server = await startServer();
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  });
 
   try {
     for (const { url, output } of CV_PAGES) {
