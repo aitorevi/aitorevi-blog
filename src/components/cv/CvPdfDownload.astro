@@ -10,11 +10,11 @@ interface Props {
 const { pdfPath, jsonPath, label } = Astro.props;
 ---
 
-<div class="flex justify-end gap-4 mt-6">
+<div class="flex justify-center gap-12 mt-16">
   <a
     href={pdfPath}
     download
-    class="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-secondary transition ease-linear duration-150 text-sm font-bold"
+    class="flex items-center gap-2 text-quaternary hover:text-secondary transition ease-linear duration-150 text-sm font-bold"
   >
     <Icon name="download" class="w-5 h-5" />
     <span>{label} (PDF)</span>
@@ -22,7 +22,7 @@ const { pdfPath, jsonPath, label } = Astro.props;
   <a
     href={jsonPath}
     download
-    class="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-secondary transition ease-linear duration-150 text-sm font-bold"
+    class="flex items-center gap-2 text-quaternary hover:text-secondary transition ease-linear duration-150 text-sm font-bold"
   >
     <Icon name="download" class="w-5 h-5" />
     <span>{label} (JSON)</span>
