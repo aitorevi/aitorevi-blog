@@ -1,4 +1,4 @@
-import { chromium } from '@playwright/test';
+import { chromium } from 'playwright-core';
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { join, extname } from 'node:path';
@@ -64,9 +64,20 @@ async function generatePdfs() {
   console.log('Starting CV PDF generation...');
 
   const server = await startServer();
-  const browser = await chromium.launch({
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
-  });
+
+  let browser;
+  if (process.env.VERCEL) {
+    const { default: sparticuzChromium } = await import('@sparticuz/chromium');
+    browser = await chromium.launch({
+      args: sparticuzChromium.args,
+      executablePath: await sparticuzChromium.executablePath(),
+      headless: true,
+    });
+  } else {
+    browser = await chromium.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
+  }
 
   try {
     for (const { url, output } of CV_PAGES) {
