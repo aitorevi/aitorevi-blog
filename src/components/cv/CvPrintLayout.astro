@@ -237,20 +237,25 @@ const contactItems = [
     gap: 10pt;
   }
 
-  /* Each skill category: title on its own line, tags below */
+  /* Each skill category card: simplify borders for print */
   .cv-print div[class*="grid"] > div {
     display: flex;
     flex-direction: column;
+    border: 0.5pt solid #cbd5e1 !important;
+    border-radius: 4pt;
+    padding: 6pt;
+    background: transparent !important;
   }
 
   .cv-print div[class*="grid"] h3 {
     font-size: 10pt;
     margin-bottom: 4pt;
     white-space: nowrap;
+    color: #475569 !important;
   }
 
-  /* Education & Certifications entries */
-  .cv-print section > div[class*="mb-4"] {
+  /* Education & Certifications timeline entries */
+  .cv-print section > div[class*="flex"][class*="gap-3"] {
     margin-bottom: 6pt;
     page-break-inside: avoid;
   }
