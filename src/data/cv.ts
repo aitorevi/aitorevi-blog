@@ -106,7 +106,7 @@ export const cvES: CvData = {
     },
     {
       company: 'Tiendas Zulima C.B.',
-      role: 'Fundador y Responsable Tecnológico',
+      role: 'Founder & Technology Lead',
       period: '',
       bullets: [
         {

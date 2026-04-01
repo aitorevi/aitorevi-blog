@@ -256,8 +256,19 @@ const contactItems = [
   }
 
   /* Experience item container */
-  .cv-print section > div[class*="mb-8"] {
+  .cv-print section > div[class*="mb-8"],
+  .cv-print section > div[class*="mb-0"] {
     margin-bottom: 10pt;
+  }
+
+  /* Hide timeline track column in print (dots + line segments) */
+  .cv-print div[class*="flex"][class*="gap-3"] > div[class*="w-4"] {
+    display: none !important;
+  }
+
+  /* Remove flex gap from timeline rows in print */
+  .cv-print div[class*="flex"][class*="gap-3"] {
+    gap: 0 !important;
   }
 
   /* Links should show URL for ATS */
