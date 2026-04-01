@@ -11,8 +11,12 @@ const { label, entries } = Astro.props;
 ---
 
 <section class="mb-8 md:mb-10">
-  <h2 class="text-2xl font-bold mb-4 border-b-2 border-secondary pb-2">{label}</h2>
-  {entries.map((entry) => (
-    <CvExperienceItem entry={entry} />
+  <h2 class="text-2xl font-bold mb-6 border-b-2 border-secondary pb-2">{label}</h2>
+  {entries.map((entry, i) => (
+    <CvExperienceItem
+      entry={entry}
+      isFirst={i === 0}
+      isLast={i === entries.length - 1}
+    />
   ))}
 </section>
