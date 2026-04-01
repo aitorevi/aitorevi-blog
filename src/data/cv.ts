@@ -76,7 +76,7 @@ export const cvES: CvData = {
     {
       company: 'Lean Mind',
       role: 'Software Developer',
-      period: 'Mar 2023 - Presente',
+      period: '',
       bullets: [
         {
           heading: 'Enterprise Billing & Compliance Platform',
@@ -107,11 +107,12 @@ export const cvES: CvData = {
     {
       company: 'Tiendas Zulima C.B.',
       role: 'Fundador y Responsable Tecnológico',
-      period: '1998 - 2023',
+      period: '',
       bullets: [
         {
           heading: 'Gestión Integral & Digitalización',
           text: '25 años liderando el negocio y sistemas IT, alineando tecnología con objetivos de venta.',
+          period: '1998 - 2023',
         },
       ],
     },
@@ -184,7 +185,7 @@ export const cvEN: CvData = {
     {
       company: 'Lean Mind',
       role: 'Software Developer',
-      period: 'Mar 2023 - Present',
+      period: '',
       bullets: [
         {
           heading: 'Enterprise Billing & Compliance Platform',
@@ -215,11 +216,12 @@ export const cvEN: CvData = {
     {
       company: 'Tiendas Zulima C.B.',
       role: 'Founder & Technology Lead',
-      period: '1998 - 2023',
+      period: '',
       bullets: [
         {
           heading: 'Comprehensive Management & Digitalization',
           text: '25 years leading business operations and IT systems, aligning technology with sales goals.',
+          period: '1998 - 2023',
         },
       ],
     },
@@ -287,6 +289,10 @@ export function getPdfPath(lang: Lang): string {
   return lang === 'en'
     ? '/cv/aitor-reviriego-cv-ats-en.pdf'
     : '/cv/aitor-reviriego-cv-ats-es.pdf';
+}
+
+export function getJsonPath(lang: Lang): string {
+  return lang === 'en' ? '/en/cv/resume.json' : '/cv/resume.json';
 }
 
 export function getAlternateLangUrl(lang: Lang): string {

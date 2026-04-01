@@ -7,7 +7,7 @@ import react from "@astrojs/react";
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind(), icon(), react(), sitemap({
-    filter: (page) => !page.includes('/katas/'),
+    filter: (page) => !page.includes('/katas/') && !page.includes('/print'),
   })],
   site: "https://www.aitorevi.dev/",
   redirects: {

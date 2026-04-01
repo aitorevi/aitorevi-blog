@@ -1,0 +1,8 @@
+---
+import CvPrintLayout from '../../components/cv/CvPrintLayout.astro';
+import { getCvData } from '../../data/cv';
+
+const data = getCvData('es');
+---
+
+<CvPrintLayout data={data} lang="es" />

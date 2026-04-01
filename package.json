@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build",
+    "build": "astro check && astro build && node scripts/generate-cv-pdf.mjs",
+    "vercel-build": "npx playwright install --with-deps chromium && astro check && astro build && node scripts/generate-cv-pdf.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest"
@@ -29,6 +30,7 @@
   },
   "devDependencies": {
     "@heroicons/react": "^2.1.1",
+    "@playwright/test": "^1.59.0",
     "@tailwindcss/typography": "^0.5.19",
     "vitest": "^1.1.1"
   }

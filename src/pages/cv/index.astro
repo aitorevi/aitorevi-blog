@@ -7,12 +7,13 @@ import CvSkills from '../../components/cv/CvSkills.astro';
 import CvEducation from '../../components/cv/CvEducation.astro';
 import CvCertifications from '../../components/cv/CvCertifications.astro';
 import CvPdfDownload from '../../components/cv/CvPdfDownload.astro';
-import { getCvData, getPdfPath } from '../../data/cv';
+import { getCvData, getPdfPath, getJsonPath } from '../../data/cv';
 import type { Lang } from '../../data/cv';
 
 const lang: Lang = 'es';
 const data = getCvData(lang);
 const pdfPath = getPdfPath(lang);
+const jsonPath = getJsonPath(lang);
 ---
 
 <Layout
@@ -27,6 +28,6 @@ const pdfPath = getPdfPath(lang);
     <CvEducation label={data.labels.education} entries={data.education} />
     <CvCertifications label={data.labels.certifications} entries={data.certifications} />
     <CvSkills label={data.labels.skills} categories={data.skills} />
-    <CvPdfDownload pdfPath={pdfPath} label={data.labels.downloadPdf} />
+    <CvPdfDownload pdfPath={pdfPath} jsonPath={jsonPath} label={data.labels.downloadPdf} />
   </section>
 </Layout>

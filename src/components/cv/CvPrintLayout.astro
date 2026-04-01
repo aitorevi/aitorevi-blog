@@ -1,0 +1,288 @@
+---
+import type { CvData, Lang } from '../../data/cv';
+import CvProfile from './CvProfile.astro';
+import CvExperience from './CvExperience.astro';
+import CvEducation from './CvEducation.astro';
+import CvCertifications from './CvCertifications.astro';
+import CvSkills from './CvSkills.astro';
+
+interface Props {
+  data: CvData;
+  lang: Lang;
+}
+
+const { data, lang } = Astro.props;
+const { contact } = data;
+
+// Build contact items with URLs visible for ATS
+const contactItems = [
+  contact.location,
+  ...contact.links.map((link) =>
+    link.url.startsWith('mailto:') ? link.url.replace('mailto:', '') : link.url.replace('https://', '')
+  ),
+];
+---
+
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{data.labels.pageTitle}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="cv-print">
+      <header class="print-header">
+        <h1>{contact.name}</h1>
+        <p class="print-title">{contact.title}</p>
+        <div class="print-contact">
+          {contactItems.map((item, i) => (
+            <>
+              {i > 0 && <span class="print-sep">|</span>}
+              <span>{item}</span>
+            </>
+          ))}
+        </div>
+      </header>
+      <CvProfile label={data.labels.profile} summary={data.summary} />
+      <CvExperience label={data.labels.experience} entries={data.experience} />
+      <CvEducation label={data.labels.education} entries={data.education} />
+      <CvCertifications label={data.labels.certifications} entries={data.certifications} />
+      <CvSkills label={data.labels.skills} categories={data.skills} />
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  @page {
+    size: A4;
+    margin: 10mm 14mm;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10pt;
+    line-height: 1.4;
+    color: #1e293b;
+    background: white;
+  }
+
+  .cv-print {
+    max-width: 100%;
+  }
+
+  /* Print header */
+  .print-header {
+    text-align: center;
+    margin-bottom: 16pt;
+  }
+
+  .print-header h1 {
+    font-size: 20pt;
+    font-weight: 700;
+    margin-bottom: 4pt;
+    color: #0f172a;
+  }
+
+  .print-title {
+    font-size: 11pt;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 6pt;
+  }
+
+  .print-contact {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6pt;
+    font-size: 8.5pt;
+    color: #64748b;
+  }
+
+  .print-sep {
+    color: #cbd5e1;
+  }
+
+  /* Hide SVG icons in print (for reused components) */
+  .cv-print svg,
+  .cv-print [data-icon] {
+    display: none !important;
+  }
+
+  /* Sections */
+  .cv-print section {
+    margin-bottom: 14pt;
+  }
+
+  .cv-print section h2 {
+    font-size: 13pt;
+    font-weight: 700;
+    border-bottom: 1.5pt solid #334155;
+    padding-bottom: 3pt;
+    margin-bottom: 8pt;
+    color: #0f172a;
+  }
+
+  /* Experience */
+  .cv-print section > div {
+    page-break-inside: avoid;
+  }
+
+  .cv-print section > div > div:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .cv-print h3 {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  /* Role text (text-secondary in web) */
+  .cv-print .text-secondary {
+    color: #475569 !important;
+    font-weight: 600;
+  }
+
+  /* Period text */
+  .cv-print .text-slate-500,
+  .cv-print .dark\:text-slate-400 {
+    color: #64748b !important;
+    font-size: 9pt;
+  }
+
+  /* Bullet lists */
+  .cv-print ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .cv-print ul li {
+    display: flex;
+    gap: 6pt;
+    margin-bottom: 6pt;
+    page-break-inside: avoid;
+  }
+
+  .cv-print ul li > span:first-child {
+    color: #475569;
+    flex-shrink: 0;
+    margin-top: 1pt;
+  }
+
+  .cv-print ul li strong {
+    font-size: 10pt;
+    color: #0f172a;
+  }
+
+  .cv-print ul li p {
+    font-size: 9pt;
+    color: #334155;
+    margin-top: 2pt;
+    line-height: 1.4;
+  }
+
+  /* Bullet heading + period row */
+  .cv-print ul li > div {
+    flex: 1;
+  }
+
+  .cv-print ul li > div > div:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+  }
+
+  /* Tags - plain text with subtle border for ATS readability */
+  .cv-print [role="term"],
+  .cv-print span[class*="tag"] {
+    display: inline-flex;
+    align-items: center;
+    padding: 1pt 5pt;
+    font-size: 8pt;
+    font-weight: 500;
+    border: 0.5pt solid #cbd5e1;
+    border-radius: 3pt;
+    color: #475569;
+    background: transparent;
+    margin: 1pt;
+  }
+
+  /* Tags container */
+  .cv-print div[class*="flex-wrap"] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3pt;
+    margin-top: 3pt;
+  }
+
+  /* Skills grid */
+  .cv-print div[class*="grid"] {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10pt;
+  }
+
+  /* Each skill category: title on its own line, tags below */
+  .cv-print div[class*="grid"] > div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cv-print div[class*="grid"] h3 {
+    font-size: 10pt;
+    margin-bottom: 4pt;
+    white-space: nowrap;
+  }
+
+  /* Education & Certifications entries */
+  .cv-print section > div[class*="mb-4"] {
+    margin-bottom: 6pt;
+    page-break-inside: avoid;
+  }
+
+  /* Experience item container */
+  .cv-print section > div[class*="mb-8"] {
+    margin-bottom: 10pt;
+  }
+
+  /* Links should show URL for ATS */
+  .cv-print a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Override any dark mode classes */
+  .dark .cv-print,
+  .cv-print .dark\:bg-\[#1a1f2e\],
+  .cv-print .dark\:text-\[\#f1f5f9\],
+  .cv-print .dark\:text-\[\#cbd5e1\] {
+    background: white !important;
+    color: #1e293b !important;
+  }
+
+  /* Override responsive breakpoints - always use full layout */
+  .cv-print .md\:flex-row { flex-direction: row; }
+  .cv-print .md\:items-baseline { align-items: baseline; }
+  .cv-print .md\:justify-between { justify-content: space-between; }
+  .cv-print .md\:mt-0 { margin-top: 0; }
+  .cv-print .sm\:flex-row { flex-direction: row; }
+  .cv-print .sm\:items-baseline { align-items: baseline; }
+  .cv-print .sm\:justify-between { justify-content: space-between; }
+  .cv-print .sm\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .cv-print .lg\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+</style>
