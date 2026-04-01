@@ -9,9 +9,9 @@ interface Props {
 const { category } = Astro.props;
 ---
 
-<div>
-  <h3 class="font-bold mb-2 text-lg">{category.name}</h3>
-  <div class="flex flex-wrap gap-2">
+<div class="border border-secondary/15 dark:border-secondary/20 rounded-lg p-4 bg-slate-50/30 dark:bg-slate-800/20 hover:border-secondary/30 dark:hover:border-secondary/35 transition-colors">
+  <h3 class="font-bold mb-3 text-base text-secondary">{category.name}</h3>
+  <div class="flex flex-wrap gap-1.5">
     {category.skills.map((skill) => (
       <Tag label={skill} variant="accent" />
     ))}

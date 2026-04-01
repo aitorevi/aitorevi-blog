@@ -11,13 +11,26 @@ const { label, entries } = Astro.props;
 
 <section class="mb-8 md:mb-10">
   <h2 class="text-2xl font-bold mb-4 border-b-2 border-secondary pb-2">{label}</h2>
-  {entries.map((entry) => (
-    <div class="mb-4 last:mb-0">
-      <div class="flex flex-col md:flex-row md:items-baseline md:justify-between mb-1">
-        <h3 class="text-lg font-bold">{entry.degree}</h3>
-        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 md:mt-0">{entry.period}</p>
+  {entries.map((entry, i) => {
+    const isLast = i === entries.length - 1;
+    return (
+      <div class="flex gap-3 md:gap-5">
+        {/* Timeline track */}
+        <div class="flex flex-col items-center shrink-0 w-4">
+          <div class="mt-[9px] h-2.5 w-2.5 rounded-full bg-secondary/30 dark:bg-secondary/40 border border-secondary/40 dark:border-secondary/50 shrink-0 z-10"></div>
+          {!isLast && (
+            <div class="flex-1 w-0 border-l-2 border-dotted border-secondary/20 dark:border-secondary/30"></div>
+          )}
+        </div>
+        {/* Content */}
+        <div class:list={["flex-1", isLast ? "pb-0" : "pb-5"]}>
+          <div class="flex flex-col md:flex-row md:items-baseline md:justify-between mb-1">
+            <h3 class="text-lg font-bold">{entry.degree}</h3>
+            <span class="text-xs text-slate-500 dark:text-slate-400 font-mono tracking-tight">{entry.period}</span>
+          </div>
+          <p class="text-secondary font-semibold text-sm">{entry.institution}</p>
+        </div>
       </div>
-      <p class="text-secondary font-semibold">{entry.institution}</p>
-    </div>
-  ))}
+    );
+  })}
 </section>
