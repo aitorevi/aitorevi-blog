@@ -66,7 +66,7 @@ const sharedLinks = [
 export const cvES: CvData = {
   contact: {
     name: 'Aitor Reviriego Amor',
-    title: 'Software Developer | Refactoring, TDD & Code Quality',
+    title: 'Full Stack Developer | Refactoring, TDD & Code Quality',
     location: 'Valencia, España',
     links: sharedLinks,
   },
@@ -175,7 +175,7 @@ export const cvES: CvData = {
 export const cvEN: CvData = {
   contact: {
     name: 'Aitor Reviriego Amor',
-    title: 'Software Developer | Refactoring, TDD & Code Quality',
+    title: 'Full Stack Developer | Refactoring, TDD & Code Quality',
     location: 'Valencia, Spain',
     links: sharedLinks,
   },
