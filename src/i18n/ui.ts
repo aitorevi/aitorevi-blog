@@ -8,9 +8,10 @@ export const ui: Record<Lang, Record<string, string>> = {
     'home.greeting': '¡Hola! Soy',
     'home.name': 'Aitor Reviriego',
     'home.role': 'Desarrollador web',
+    'home.roleLabel': 'Full Stack Developer',
     'home.roles': 'Full Stack Developer,TDD Practitioner,Clean Architecture,Advanced AI Engineer',
     'home.p1':
-      'Soy un superhéroe detrás del teclado, embarcándome en una épica aventura para desentrañar los misterios del Código de Calidad. No es cualquier código... es código para humanos. Mi misión es clara: escribir líneas que no solo funcionen, sino que bailen elegantes bajo la mirada de una rigurosa batería de tests.',
+      'Soy un superhéroe detrás del teclado, embarcándome en una épica aventura para desentrañar los misterios del Código de Calidad. No es cualquier código... es código para humanos.',
     'home.p2':
       'Pero, ¡espera! No todo es sobre mí. En este viaje, mi capa no solo vuela con el viento... también extiende sus pliegues para abrazar a la comunidad. Sí, estoy aquí para compartir, aprender y, por supuesto, aportar mi granito de arena, convirtiendo el vasto desierto de la programación en un fértil oasis de conocimiento.',
     'home.p3':
@@ -32,9 +33,10 @@ export const ui: Record<Lang, Record<string, string>> = {
     'home.greeting': 'Hi! I am',
     'home.name': 'Aitor Reviriego',
     'home.role': 'Web Developer',
+    'home.roleLabel': 'Full Stack Developer',
     'home.roles': 'Full Stack Developer,TDD Practitioner,Clean Architecture,Advanced AI Engineer',
     'home.p1':
-      "I'm a keyboard superhero, embarking on an epic adventure to unravel the mysteries of Quality Code. Not just any code... code for humans. My mission is clear: write lines that don't just work, but dance elegantly under the watchful eye of a rigorous test suite.",
+      "I'm a keyboard superhero, embarking on an epic adventure to unravel the mysteries of Quality Code. Not just any code... code for humans. My mission is clear: writing elegant code.",
     'home.p2':
       "But wait! It's not all about me. On this journey, my cape doesn't just fly in the wind... it also extends its folds to embrace the community. Yes, I'm here to share, learn and, of course, do my bit, turning the vast desert of programming into a fertile oasis of knowledge.",
     'home.p3':
