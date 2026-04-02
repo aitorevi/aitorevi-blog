@@ -1,0 +1,101 @@
+---
+interface Props {
+  texts: string[];
+  class?: string;
+}
+
+const { texts, class: className = '' } = Astro.props;
+---
+
+<span
+  class:list={["scramble-text", className]}
+  data-texts={JSON.stringify(texts)}
+  aria-label={texts[0]}
+>
+  {texts[0]}
+</span>
+
+<style>
+  .scramble-text {
+    display: inline-block;
+    min-width: 3ch;
+  }
+
+  @media print {
+    .scramble-text::after {
+      content: none;
+    }
+  }
+</style>
+
+<script>
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*!?';
+  const SCRAMBLE_SPEED = 30;   // ms between each frame
+  const RESOLVE_SPEED = 2;     // frames per letter resolved
+  const PAUSE_BETWEEN = 2500;  // ms to hold the resolved word
+
+  function scrambleTo(el: HTMLElement, target: string, onDone: () => void) {
+    let frame = 0;
+    const length = target.length;
+
+    const interval = setInterval(() => {
+      const resolved = Math.floor(frame / RESOLVE_SPEED);
+
+      if (resolved >= length) {
+        clearInterval(interval);
+        el.textContent = target;
+        onDone();
+        return;
+      }
+
+      let output = '';
+      for (let i = 0; i < length; i++) {
+        if (i < resolved) {
+          output += target[i];
+        } else if (target[i] === ' ') {
+          output += ' ';
+        } else {
+          output += CHARS[Math.floor(Math.random() * CHARS.length)];
+        }
+      }
+
+      el.textContent = output;
+      frame++;
+    }, SCRAMBLE_SPEED);
+
+    return interval;
+  }
+
+  function initScramble() {
+    const elements = document.querySelectorAll<HTMLElement>('.scramble-text');
+
+    elements.forEach((el) => {
+      const texts: string[] = JSON.parse(el.dataset.texts ?? '[]');
+      if (texts.length === 0) return;
+
+      // Clean up previous cycle if re-navigating
+      const prevTimer = (el as any).__scrambleTimer;
+      const prevInterval = (el as any).__scrambleInterval;
+      if (prevTimer) clearTimeout(prevTimer);
+      if (prevInterval) clearInterval(prevInterval);
+
+      let index = 0;
+      el.textContent = texts[0];
+      el.setAttribute('aria-label', texts[0]);
+
+      function cycle() {
+        index = (index + 1) % texts.length;
+        const target = texts[index];
+        el.setAttribute('aria-label', target);
+
+        (el as any).__scrambleInterval = scrambleTo(el, target, () => {
+          (el as any).__scrambleTimer = setTimeout(cycle, PAUSE_BETWEEN);
+        });
+      }
+
+      (el as any).__scrambleTimer = setTimeout(cycle, PAUSE_BETWEEN);
+    });
+  }
+
+  document.addEventListener('astro:page-load', initScramble);
+</script>
