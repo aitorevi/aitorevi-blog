@@ -8,6 +8,7 @@ export const ui: Record<Lang, Record<string, string>> = {
     'home.greeting': '¡Hola! Soy',
     'home.name': 'Aitor Reviriego',
     'home.role': 'Desarrollador web',
+    'home.roles': 'Full Stack Developer,TDD Practitioner,Clean Architecture,Advanced AI Engineer',
     'home.p1':
       'Soy un superhéroe detrás del teclado, embarcándome en una épica aventura para desentrañar los misterios del Código de Calidad. No es cualquier código... es código para humanos. Mi misión es clara: escribir líneas que no solo funcionen, sino que bailen elegantes bajo la mirada de una rigurosa batería de tests.',
     'home.p2':
@@ -31,6 +32,7 @@ export const ui: Record<Lang, Record<string, string>> = {
     'home.greeting': 'Hi! I am',
     'home.name': 'Aitor Reviriego',
     'home.role': 'Web Developer',
+    'home.roles': 'Full Stack Developer,TDD Practitioner,Clean Architecture,Advanced AI Engineer',
     'home.p1':
       "I'm a keyboard superhero, embarking on an epic adventure to unravel the mysteries of Quality Code. Not just any code... code for humans. My mission is clear: write lines that don't just work, but dance elegantly under the watchful eye of a rigorous test suite.",
     'home.p2':
