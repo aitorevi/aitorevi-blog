@@ -36,26 +36,26 @@ const { label, entries } = Astro.props;
   </div>
 
   <!-- Desktop: dates left | dot | content right -->
-  <div class="hidden md:block relative">
+  <div class="hidden md:block relative reveal-group">
     {entries.map((entry, i) => {
       const isLast = i === entries.length - 1;
       return (
-        <div class="flex items-stretch">
+        <div class="reveal-row flex items-stretch">
           {/* Date column */}
-          <div class="w-44 shrink-0 text-right pr-6 pt-1">
+          <div class="reveal-left w-44 shrink-0 text-right pr-6 pt-1">
             <span class="text-sm text-slate-500 dark:text-slate-400 font-mono tracking-tight">{entry.period}</span>
           </div>
 
           {/* Timeline track */}
           <div class="flex flex-col items-center shrink-0 w-5">
-            <div class="mt-0.5 h-3 w-3 rounded-full border-2 border-secondary/50 bg-white dark:bg-[#1a1f2e] shrink-0 z-10"></div>
+            <div class="reveal-scale mt-0.5 h-3 w-3 rounded-full border-2 border-secondary/50 bg-white dark:bg-[#1a1f2e] shrink-0 z-10"></div>
             {!isLast && (
-              <div class="flex-1 w-0 border-l-2 border-dotted border-secondary/20 dark:border-secondary/30"></div>
+              <div class="reveal-grow-y flex-1 w-0 border-l-2 border-dotted border-secondary/20 dark:border-secondary/30"></div>
             )}
           </div>
 
           {/* Content column */}
-          <div class:list={["flex-1 pl-6", isLast ? "pb-0" : "pb-6"]}>
+          <div class:list={["reveal-right flex-1 pl-6", isLast ? "pb-0" : "pb-6"]}>
             <h3 class="text-lg font-bold">{entry.degree}</h3>
             <p class="text-secondary font-semibold text-sm">{entry.institution}</p>
           </div>
