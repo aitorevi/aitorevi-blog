@@ -10,9 +10,9 @@ const { contact } = Astro.props;
 ---
 
 <header class="text-center mb-8 md:mb-12">
-  <h1 class="text-3xl md:text-5xl font-bold mb-2">{contact.name}</h1>
-  <p class="text-lg md:text-2xl text-secondary font-bold mb-4">{contact.title}</p>
-  <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-slate-500 dark:text-slate-400">
+  <h1 class="text-3xl md:text-5xl font-bold mb-2 reveal-fade">{contact.name}</h1>
+  <p class="text-lg md:text-2xl text-secondary font-bold mb-4 reveal-fade">{contact.title}</p>
+  <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-slate-500 dark:text-slate-400 reveal-fade">
     <span class="flex items-center gap-1">
       <Icon name="location" class="w-4 h-4" />
       {contact.location}

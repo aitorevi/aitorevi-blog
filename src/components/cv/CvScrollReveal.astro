@@ -1,0 +1,161 @@
+---
+/**
+ * Drop this component once on the CV page.
+ * Provides reveal-on-scroll styles + Intersection Observer.
+ *
+ * All CSS is scoped under .cv-page to avoid conflicts with ViewTransitions.
+ * Add class="cv-page" to the CV page wrapper.
+ */
+---
+
+<style is:global>
+  /* ---- Base hidden states (GPU-only: transform + opacity) ---- */
+  .cv-page .reveal-fade {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+    transition:
+      opacity 600ms ease,
+      transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--stagger, 0ms);
+  }
+
+  .cv-page .reveal-left {
+    opacity: 0;
+    transform: translate3d(-60px, 12px, 0) rotateY(25deg);
+    transition:
+      opacity 600ms ease,
+      transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--stagger, 0ms);
+  }
+
+  .cv-page .reveal-right {
+    opacity: 0;
+    transform: translate3d(80px, 12px, 0) rotateY(-15deg);
+    transition:
+      opacity 600ms ease,
+      transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--stagger, 0ms);
+  }
+
+  .cv-page .reveal-scale {
+    opacity: 0;
+    transform: scale3d(0, 0, 1);
+    transition:
+      opacity 200ms ease,
+      transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition-delay: var(--stagger, 0ms);
+  }
+
+  .cv-page .reveal-grow-y {
+    transform: scaleY(0);
+    transform-origin: top center;
+    transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--stagger, 0ms);
+  }
+
+  /* ---- Visible states ---- */
+  .cv-page .is-visible.reveal-fade,
+  .cv-page .is-visible .reveal-fade,
+  .cv-page .is-visible.reveal-left,
+  .cv-page .is-visible .reveal-left,
+  .cv-page .is-visible.reveal-right,
+  .cv-page .is-visible .reveal-right {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotateY(0deg);
+  }
+
+  .cv-page .is-visible.reveal-scale,
+  .cv-page .is-visible .reveal-scale {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+
+  .cv-page .is-visible.reveal-grow-y,
+  .cv-page .is-visible .reveal-grow-y {
+    transform: scaleY(1);
+  }
+
+  /* ---- Inner stagger for timeline rows ---- */
+  .cv-page .reveal-row .reveal-scale   { transition-delay: calc(var(--stagger, 0ms) + 0ms); }
+  .cv-page .reveal-row .reveal-left    { transition-delay: calc(var(--stagger, 0ms) + 80ms); }
+  .cv-page .reveal-row .reveal-right   { transition-delay: calc(var(--stagger, 0ms) + 160ms); }
+  .cv-page .reveal-row .reveal-grow-y  { transition-delay: calc(var(--stagger, 0ms) + 250ms); }
+
+  /* ---- Accessibility ---- */
+  @media (prefers-reduced-motion: reduce) {
+    .cv-page .reveal-fade,
+    .cv-page .reveal-left,
+    .cv-page .reveal-right,
+    .cv-page .reveal-scale,
+    .cv-page .reveal-grow-y {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  }
+
+  @media print {
+    .cv-page .reveal-fade,
+    .cv-page .reveal-left,
+    .cv-page .reveal-right,
+    .cv-page .reveal-scale,
+    .cv-page .reveal-grow-y {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>
+
+<script>
+  function initReveals() {
+    const page = document.querySelector('.cv-page');
+    if (!page) return;
+
+    const groups = page.querySelectorAll<HTMLElement>('.reveal-group');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+        visible.forEach((entry, i) => {
+          const el = entry.target as HTMLElement;
+          el.style.setProperty('--stagger', `${i * 60}ms`);
+
+          requestAnimationFrame(() => {
+            el.classList.add('is-visible');
+          });
+
+          observer.unobserve(el);
+        });
+      },
+      { threshold: 0.08 }
+    );
+
+    groups.forEach((group) => {
+      const items = group.querySelectorAll<HTMLElement>(
+        ':scope > [class*="reveal-"], :scope > .reveal-row'
+      );
+
+      items.forEach((item) => {
+        item.classList.remove('is-visible');
+        item.style.removeProperty('--stagger');
+        observer.observe(item);
+      });
+    });
+
+    // Standalone reveal elements inside .cv-page but not inside a group
+    const standalones = page.querySelectorAll<HTMLElement>(
+      '.reveal-fade:not(.reveal-group *), .reveal-left:not(.reveal-group *), .reveal-right:not(.reveal-group *), .reveal-scale:not(.reveal-group *)'
+    );
+
+    standalones.forEach((el) => {
+      el.classList.remove('is-visible');
+      el.style.removeProperty('--stagger');
+      observer.observe(el);
+    });
+  }
+
+  document.addEventListener('astro:page-load', initReveals);
+</script>

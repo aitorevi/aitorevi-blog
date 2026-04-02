@@ -1,6 +1,8 @@
 ---
 import type { ExperienceEntry } from '../../data/cv';
 import CvExperienceItem from './CvExperienceItem.astro';
+import Tag from '../atoms/Tag.astro';
+import CvSectionTitle from './CvSectionTitle.astro';
 
 interface Props {
   label: string;
@@ -8,15 +10,84 @@ interface Props {
 }
 
 const { label, entries } = Astro.props;
+
+const items = entries.flatMap((entry) =>
+  entry.bullets.map((bullet) => ({
+    company: entry.company,
+    role: entry.role,
+    heading: bullet.heading,
+    text: bullet.text,
+    period: bullet.period,
+    tags: bullet.tags,
+  }))
+);
 ---
 
 <section class="mb-8 md:mb-10">
-  <h2 class="text-2xl font-bold mb-6 border-b-2 border-secondary pb-2">{label}</h2>
-  {entries.map((entry, i) => (
-    <CvExperienceItem
-      entry={entry}
-      isFirst={i === 0}
-      isLast={i === entries.length - 1}
-    />
-  ))}
+  <CvSectionTitle label={label} />
+
+  <!-- Mobile: linear timeline -->
+  <div class="md:hidden">
+    {entries.map((entry, i) => (
+      <CvExperienceItem
+        entry={entry}
+        isFirst={i === 0}
+        isLast={i === entries.length - 1}
+      />
+    ))}
+  </div>
+
+  <!-- Desktop: scroll reveal timeline -->
+  <div class="hidden md:block relative reveal-group" style="perspective: 800px;">
+    {items.map((item, i) => {
+      const isFirst = i === 0;
+      const isLast = i === items.length - 1;
+
+      return (
+        <div class="reveal-row flex items-stretch">
+          {/* Date column */}
+          <div class="reveal-left w-44 shrink-0 text-right pr-6 pt-1">
+            {item.period && (
+              <span class="text-sm text-slate-500 dark:text-slate-400 font-mono tracking-tight">{item.period}</span>
+            )}
+          </div>
+
+          {/* Timeline track */}
+          <div class="flex flex-col items-center shrink-0 w-5">
+            <div
+              class:list={[
+                "reveal-scale relative rounded-full shrink-0 z-10",
+                isFirst
+                  ? "h-4 w-4 border-2 border-secondary bg-secondary shadow-[0_0_10px_rgba(94,58,238,0.5)]"
+                  : "mt-0.5 h-3 w-3 border-2 border-secondary/50 bg-white dark:bg-[#1a1f2e]"
+              ]}
+            >
+              {isFirst && (
+                <span class="absolute -inset-1 rounded-full bg-secondary/20 animate-pulse"></span>
+              )}
+            </div>
+            {!isLast && (
+              <div class="reveal-grow-y w-0.5 flex-1 bg-secondary/25 dark:bg-secondary/35 shadow-[0_0_4px_rgba(94,58,238,0.15)] dark:shadow-[0_0_6px_rgba(94,58,238,0.25)]"></div>
+            )}
+          </div>
+
+          {/* Content column */}
+          <div class:list={["reveal-right flex-1 pl-6", isLast ? "pb-0" : "pb-8"]}>
+            <span class="text-xs text-secondary/70 dark:text-secondary/80 font-semibold uppercase tracking-wider">{item.company} · {item.role}</span>
+            <strong class="block text-[0.95rem] leading-snug mt-0.5">{item.heading}</strong>
+            {item.text && (
+              <p class="text-sm text-slate-600 dark:text-slate-300 mt-1.5 leading-relaxed">{item.text}</p>
+            )}
+            {item.tags && item.tags.length > 0 && (
+              <div class="flex flex-wrap gap-1.5 mt-2">
+                {item.tags.map((tag) => (
+                  <Tag label={tag} variant="accent" />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    })}
+  </div>
 </section>
