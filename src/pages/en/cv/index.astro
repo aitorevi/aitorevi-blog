@@ -22,14 +22,26 @@ const jsonPath = getJsonPath(lang);
   lang={lang}
   description={data.labels.pageDescription}
 >
-  <section class="cv-page mx-auto max-w-screen-xl bg-grayLight bg-opacity-70 dark:bg-[#1a1f2e] dark:bg-opacity-70 mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:p-20 pb-8 sm:pb-10 md:pb-12 lg:pb-12 rounded font-ibm">
-    <CvScrollReveal />
-    <CvHeader contact={data.contact} />
-    <CvProfile label={data.labels.profile} summary={data.summary} />
-    <CvExperience label={data.labels.experience} entries={data.experience} />
-    <CvEducation label={data.labels.education} entries={data.education} />
-    <CvCertifications label={data.labels.certifications} entries={data.certifications} />
-    <CvSkills label={data.labels.skills} categories={data.skills} />
-    <CvPdfDownload pdfPath={pdfPath} jsonPath={jsonPath} label={data.labels.downloadPdf} />
-  </section>
+  <!-- Ambient wrapper: stays neutral in light mode, becomes dark-ink in dark mode
+       to bridge smoothly with the home's visual language. -->
+  <div class="relative isolate min-h-[calc(100vh-3.5rem)] md:min-h-[calc(100vh-5rem)]">
+    <!-- Dark-mode-only decorative backdrop (dot field + violet glow) -->
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 hidden dark:block">
+      <div class="absolute inset-0 bg-ink-900"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(167,139,250,0.12),transparent_55%)]"></div>
+      <div class="absolute inset-0 opacity-[0.18] bg-[radial-gradient(rgba(203,213,225,0.35)_1px,transparent_1px)] [background-size:24px_24px]"></div>
+    </div>
+
+    <section class="cv-page mx-auto max-w-screen-xl mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:p-16 pb-8 sm:pb-10 md:pb-12 lg:pb-12 rounded-2xl font-ibm
+                    bg-grayLight/70 dark:bg-white/[0.03] dark:backdrop-blur-md dark:border dark:border-white/10 dark:shadow-[0_0_80px_rgba(96,165,250,0.05)]">
+      <CvScrollReveal />
+      <CvHeader contact={data.contact} />
+      <CvProfile label={data.labels.profile} summary={data.summary} />
+      <CvExperience label={data.labels.experience} entries={data.experience} />
+      <CvEducation label={data.labels.education} entries={data.education} />
+      <CvCertifications label={data.labels.certifications} entries={data.certifications} />
+      <CvSkills label={data.labels.skills} categories={data.skills} />
+      <CvPdfDownload pdfPath={pdfPath} jsonPath={jsonPath} label={data.labels.downloadPdf} />
+    </section>
+  </div>
 </Layout>

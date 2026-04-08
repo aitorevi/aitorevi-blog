@@ -10,21 +10,26 @@ interface Props {
 const { pdfPath, jsonPath, label } = Astro.props;
 ---
 
-<div class="flex justify-center gap-12 mt-16 reveal-fade">
-  <a
-    href={pdfPath}
-    download
-    class="flex items-center gap-2 text-slate-500 dark:text-quaternary hover:text-secondary transition ease-linear duration-150 text-sm font-bold"
-  >
-    <Icon name="download" class="w-5 h-5" />
-    <span>{label} (PDF)</span>
-  </a>
-  <a
-    href={jsonPath}
-    download
-    class="flex items-center gap-2 text-slate-500 dark:text-quaternary hover:text-secondary transition ease-linear duration-150 text-sm font-bold"
-  >
-    <Icon name="download" class="w-5 h-5" />
-    <span>{label} (JSON)</span>
-  </a>
+<div class="reveal-fade mt-16">
+  <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+    <a
+      href={pdfPath}
+      download
+      class="group inline-flex items-center justify-center gap-2 rounded-lg border border-secondary/40 dark:border-accent-blue/40 bg-gradient-to-r from-secondary/5 to-secondary/10 dark:from-accent-blue/15 dark:to-accent-violet/15 px-6 py-3 font-mono text-sm font-semibold text-secondary dark:text-accent-blue tracking-wide transition-all duration-300 hover:border-secondary/80 dark:hover:border-accent-blue/80 hover:from-secondary/10 hover:to-secondary/15 dark:hover:from-accent-blue/25 dark:hover:to-accent-violet/25 hover:shadow-[0_0_30px_rgba(94,58,238,0.2)] dark:hover:shadow-[0_0_40px_rgba(96,165,250,0.3)]"
+    >
+      <Icon name="download" class="w-4 h-4 transition-transform group-hover:-translate-y-0.5" />
+      <span>{label} · PDF</span>
+    </a>
+    <a
+      href={jsonPath}
+      download
+      class="group inline-flex items-center justify-center gap-2 rounded-lg border border-quaternary/40 dark:border-white/10 bg-transparent dark:bg-white/[0.03] px-6 py-3 font-mono text-sm font-semibold text-quaternary dark:text-slate-400 tracking-wide transition-all duration-300 hover:border-secondary/60 dark:hover:border-accent-violet/50 hover:text-secondary dark:hover:text-accent-violet"
+    >
+      <Icon name="download" class="w-4 h-4 transition-transform group-hover:-translate-y-0.5" />
+      <span>{label} · JSON</span>
+    </a>
+  </div>
+  <p class="mt-6 text-center font-mono text-[10px] uppercase tracking-[0.25em] text-slate-500 dark:text-slate-500">
+    ATS-friendly · Json Resume schema
+  </p>
 </div>
