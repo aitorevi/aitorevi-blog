@@ -1,0 +1,205 @@
+---
+/**
+ * ContactSection — simple contact form section at the bottom of the home.
+ *
+ * Deliberately backend-free: the submit handler constructs a mailto: URL
+ * from the form fields so the user's default email client opens with a
+ * pre-filled draft. This keeps the site fully static and dependency-free.
+ *
+ * The section doubles as the anchor target for the hero's 'Contact' CTA
+ * (id="contact").
+ */
+import type { Lang } from '../../data/cv';
+import { t } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<section
+  id="contact"
+  class="relative bg-ink-900 py-24 text-slate-100 sm:py-32"
+  aria-labelledby="contact-heading"
+  data-contact-email="aitorevi@gmail.com"
+>
+  <div class="mx-auto max-w-2xl px-6">
+    <div class="text-center">
+      <h2
+        id="contact-heading"
+        class="font-display text-3xl font-bold tracking-tight text-slate-200 sm:text-4xl"
+      >
+        {t(lang, 'home.contact.title')}
+      </h2>
+      <p class="mx-auto mt-3 max-w-xl font-mono text-xs uppercase tracking-[0.3em] text-accent-blue/50">
+        {t(lang, 'home.contact.subtitle')}
+      </p>
+      <p class="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-slate-400">
+        {t(lang, 'home.contact.intro')}
+      </p>
+    </div>
+
+    <form
+      class="mt-12 rounded-2xl border border-white/10 bg-white/[0.04] p-6 shadow-2xl backdrop-blur-md sm:p-8"
+      data-contact-form
+      novalidate
+    >
+      <div class="grid gap-5 sm:grid-cols-2">
+        <label class="block">
+          <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-accent-blue/60">
+            {t(lang, 'home.contact.name')}
+          </span>
+          <input
+            type="text"
+            name="name"
+            required
+            autocomplete="name"
+            class="w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-slate-100 placeholder-slate-600 transition-colors focus:border-accent-blue/60 focus:outline-none focus:ring-0"
+            placeholder="Jane Doe"
+          />
+        </label>
+        <label class="block">
+          <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-accent-blue/60">
+            {t(lang, 'home.contact.email')}
+          </span>
+          <input
+            type="email"
+            name="email"
+            required
+            autocomplete="email"
+            class="w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-slate-100 placeholder-slate-600 transition-colors focus:border-accent-blue/60 focus:outline-none focus:ring-0"
+            placeholder="jane@example.com"
+          />
+        </label>
+      </div>
+
+      <label class="mt-5 block">
+        <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-accent-blue/60">
+          {t(lang, 'home.contact.subject')}
+        </span>
+        <input
+          type="text"
+          name="subject"
+          required
+          class="w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-slate-100 placeholder-slate-600 transition-colors focus:border-accent-blue/60 focus:outline-none focus:ring-0"
+          placeholder={t(lang, 'home.contact.subjectPlaceholder')}
+        />
+      </label>
+
+      <label class="mt-5 block">
+        <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-accent-blue/60">
+          {t(lang, 'home.contact.message')}
+        </span>
+        <textarea
+          name="message"
+          required
+          rows="5"
+          class="w-full resize-y rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-slate-100 placeholder-slate-600 transition-colors focus:border-accent-blue/60 focus:outline-none focus:ring-0"
+          placeholder={t(lang, 'home.contact.messagePlaceholder')}
+        ></textarea>
+      </label>
+
+      <div class="mt-6 flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center">
+        <p class="text-xs text-slate-500" data-contact-note>
+          {t(lang, 'home.contact.note')}
+        </p>
+        <button
+          type="submit"
+          class="group inline-flex items-center justify-center gap-2 rounded-lg border border-accent-blue/40 bg-gradient-to-r from-accent-blue/15 to-accent-violet/15 px-6 py-3 font-mono text-sm font-semibold text-accent-blue transition-all duration-300 hover:border-accent-blue/80 hover:from-accent-blue/25 hover:to-accent-violet/25 hover:shadow-[0_0_40px_rgba(96,165,250,0.3)]"
+        >
+          <span>{t(lang, 'home.contact.submit')}</span>
+          <span
+            aria-hidden="true"
+            class="transition-transform duration-300 group-hover:translate-x-1"
+          >→</span>
+        </button>
+      </div>
+
+      <p
+        class="mt-4 hidden text-center text-xs text-accent-blue"
+        data-contact-status
+        role="status"
+        aria-live="polite"
+      >
+      </p>
+    </form>
+
+    <div class="mt-12 flex flex-wrap items-center justify-center gap-4 text-[11px] uppercase tracking-[0.2em] text-slate-500 font-mono">
+      <a
+        href="mailto:aitorevi@gmail.com"
+        class="transition-colors hover:text-accent-blue"
+      >
+        aitorevi@gmail.com
+      </a>
+      <span class="text-slate-700">·</span>
+      <a
+        href="https://github.com/aitorevi"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="transition-colors hover:text-accent-blue"
+      >
+        GitHub
+      </a>
+      <span class="text-slate-700">·</span>
+      <a
+        href="https://www.linkedin.com/in/aitorevi/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="transition-colors hover:text-accent-blue"
+      >
+        LinkedIn
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  /**
+   * Contact form controller — constructs a mailto: URL from the form
+   * fields and opens the user's email client. Zero backend required.
+   */
+  function initContactForm() {
+    const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+    if (!form) return;
+    const section = form.closest<HTMLElement>('#contact');
+    const email = section?.dataset.contactEmail || 'aitorevi@gmail.com';
+    const status = form.querySelector<HTMLElement>('[data-contact-status]');
+
+    const onSubmit = (e: SubmitEvent) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const name = (data.get('name') || '').toString().trim();
+      const senderEmail = (data.get('email') || '').toString().trim();
+      const subject = (data.get('subject') || '').toString().trim();
+      const message = (data.get('message') || '').toString().trim();
+
+      if (!name || !senderEmail || !subject || !message) {
+        if (status) {
+          status.textContent = status.dataset.errMissing || 'Completa todos los campos.';
+          status.classList.remove('hidden');
+          status.classList.add('text-rose-400');
+        }
+        return;
+      }
+
+      const body = `${message}\n\n—\n${name}\n${senderEmail}`;
+      const mailto = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailto;
+
+      if (status) {
+        status.textContent =
+          status.dataset.okMessage ||
+          'Abriendo tu cliente de correo…';
+        status.classList.remove('hidden', 'text-rose-400');
+        status.classList.add('text-accent-blue');
+      }
+    };
+
+    form.addEventListener('submit', onSubmit);
+  }
+
+  document.addEventListener('astro:page-load', initContactForm);
+  document.addEventListener('astro:after-swap', initContactForm);
+</script>
