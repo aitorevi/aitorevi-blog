@@ -20,7 +20,7 @@
  */
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 
-type Group = 'core' | 'frontend' | 'infra' | 'practice' | 'ai';
+type Group = 'backend' | 'frontend' | 'infra' | 'practice' | 'ai';
 
 interface TechNode {
   id: string;
@@ -33,13 +33,14 @@ interface TechNode {
 }
 
 const TECH_NODES: TechNode[] = [
-  // Ring 1 — core languages
-  { id: 'ts', label: 'TypeScript', group: 'core', angle: 0, ring: 1, color: '#3178c6', size: 44 },
-  { id: 'react', label: 'React', group: 'core', angle: 60, ring: 1, color: '#61dafb', size: 42 },
-  { id: 'next', label: 'Next.js', group: 'core', angle: 120, ring: 1, color: '#e2e8f0', size: 40 },
-  { id: 'java', label: 'Java', group: 'core', angle: 180, ring: 1, color: '#f89820', size: 38 },
-  { id: 'csharp', label: 'C#', group: 'core', angle: 240, ring: 1, color: '#9a67b3', size: 38 },
-  { id: 'node', label: 'Node.js', group: 'core', angle: 300, ring: 1, color: '#68a063', size: 36 },
+  // Ring 1 — languages (backend + frontend), 7 nodes at ~51.4° spacing
+  { id: 'ts', label: 'TypeScript', group: 'frontend', angle: 0, ring: 1, color: '#3178c6', size: 44 },
+  { id: 'react', label: 'React', group: 'frontend', angle: 51, ring: 1, color: '#61dafb', size: 42 },
+  { id: 'next', label: 'Next.js', group: 'frontend', angle: 103, ring: 1, color: '#e2e8f0', size: 40 },
+  { id: 'java', label: 'Java', group: 'backend', angle: 154, ring: 1, color: '#f89820', size: 38 },
+  { id: 'csharp', label: 'C#', group: 'backend', angle: 206, ring: 1, color: '#9a67b3', size: 38 },
+  { id: 'node', label: 'Node.js', group: 'backend', angle: 257, ring: 1, color: '#68a063', size: 36 },
+  { id: 'sql', label: 'SQL', group: 'backend', angle: 309, ring: 1, color: '#e48e00', size: 36 },
 
   // Ring 2 — frontend / infra / practices / ai
   { id: 'astro', label: 'Astro', group: 'frontend', angle: 30, ring: 2, color: '#ff5d01', size: 32 },
@@ -52,7 +53,7 @@ const TECH_NODES: TechNode[] = [
   // Ring 3 — specialisations
   { id: 'hexarch', label: 'Hexagonal', group: 'practice', angle: 15, ring: 3, color: '#a78bfa', size: 26 },
   { id: 'solid', label: 'SOLID', group: 'practice', angle: 75, ring: 3, color: '#c084fc', size: 24 },
-  { id: 'dotnet', label: '.NET', group: 'core', angle: 135, ring: 3, color: '#7c3aed', size: 26 },
+  { id: 'dotnet', label: '.NET', group: 'backend', angle: 135, ring: 3, color: '#7c3aed', size: 26 },
   { id: 'copilot', label: 'Copilot', group: 'ai', angle: 195, ring: 3, color: '#d4a574', size: 24 },
   { id: 'gcloud', label: 'Google Cloud', group: 'infra', angle: 255, ring: 3, color: '#4285f4', size: 26 },
   { id: 'do', label: 'DigitalOcean', group: 'infra', angle: 315, ring: 3, color: '#0080ff', size: 24 },
@@ -69,9 +70,13 @@ const CONNECTIONS: Array<[string, string]> = [
   ['next', 'docker'],
   ['java', 'tdd'],
   ['java', 'hexarch'],
+  ['java', 'sql'],
   ['csharp', 'dotnet'],
   ['csharp', 'solid'],
+  ['csharp', 'sql'],
+  ['dotnet', 'sql'],
   ['node', 'docker'],
+  ['node', 'sql'],
   ['docker', 'ghactions'],
   ['tdd', 'hexarch'],
   ['tdd', 'solid'],
@@ -82,7 +87,7 @@ const CONNECTIONS: Array<[string, string]> = [
 ];
 
 const GROUP_LABELS: Record<Group, { es: string; en: string }> = {
-  core: { es: 'Lenguajes', en: 'Languages' },
+  backend: { es: 'Backend', en: 'Backend' },
   frontend: { es: 'Frontend', en: 'Frontend' },
   infra: { es: 'Infraestructura', en: 'Infrastructure' },
   practice: { es: 'Prácticas', en: 'Practices' },

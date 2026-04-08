@@ -35,11 +35,15 @@ const { lang } = Astro.props;
     <div class="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[10px] uppercase tracking-[0.2em] text-slate-600 dark:text-slate-500 font-mono">
       <span class="flex items-center gap-2">
         <span class="inline-block h-2 w-2 rounded-full bg-accent-blue"></span>
-        {t(lang, 'home.stack.legend.core')}
+        {t(lang, 'home.stack.legend.backend')}
       </span>
       <span class="flex items-center gap-2">
         <span class="inline-block h-2 w-2 rounded-full bg-accent-sky"></span>
         {t(lang, 'home.stack.legend.frontend')}
+      </span>
+      <span class="flex items-center gap-2">
+        <span class="inline-block h-2 w-2 rounded-full bg-sky-400"></span>
+        {t(lang, 'home.stack.legend.infra')}
       </span>
       <span class="flex items-center gap-2">
         <span class="inline-block h-2 w-2 rounded-full bg-accent-violet"></span>
