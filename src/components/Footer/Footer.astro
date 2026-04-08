@@ -4,14 +4,19 @@ import EmailLinkToCopy from '../EmailLinkToCopy/EmailLink.astro';
 
 ---
 <!-- TODO: Implementar iconos de mayor tamaño para pantallas mas grandes con mayor resolución -->
-<footer class="flex w-full h-14 md:h-20 bg-opacity-80 items-center justify-center gap-8 bg-white dark:bg-[#1a1f2e] transition-colors duration-200">
-    <a href="https://es.linkedin.com/in/aitor-reviriego-amor" target="_blank" rel="noopener noreferrer" aria-label="linkedin icon">
-        <Icon name="linkedin" class="w-[1.7rem] h-[1.7rem] md:w-[2rem] md:h-[2rem] inline-block hover:text-secondary transition ease-linear delay-50 duration-200" />
-    </a>
-    <a href="https://github.com/aitorevi" target="_blank" rel="noopener noreferrer" aria-label="github icon">
-        <Icon name="github" class="p-0.5 w-[1.7rem] h-[1.7rem] md:w-[2rem] md:h-[2rem] inline-block hover:text-secondary transition ease-linear delay-50 duration-200" />
-    </a>
-    <EmailLinkToCopy position="footer">
-        <Icon name="mail" class="w-[1.7rem] h-[1.7rem] md:w-[2.1rem] md:h-[2.1rem] hover:text-secondary inline-block transition ease-linear delay-50 duration-200" aria-label="email icon"/>
-    </EmailLinkToCopy>
+<footer class="relative flex flex-col w-full items-center justify-center gap-2 py-5 md:py-6 bg-white/90 dark:bg-ink-900/90 backdrop-blur-md border-t border-gray-200 dark:border-white/5 transition-colors duration-200">
+    <div class="flex items-center justify-center gap-8">
+        <a href="https://es.linkedin.com/in/aitor-reviriego-amor" target="_blank" rel="noopener noreferrer" aria-label="linkedin icon">
+            <Icon name="linkedin" class="w-[1.6rem] h-[1.6rem] md:w-[1.8rem] md:h-[1.8rem] inline-block text-quaternary hover:text-secondary transition ease-linear delay-50 duration-200" />
+        </a>
+        <a href="https://github.com/aitorevi" target="_blank" rel="noopener noreferrer" aria-label="github icon">
+            <Icon name="github" class="p-0.5 w-[1.6rem] h-[1.6rem] md:w-[1.8rem] md:h-[1.8rem] inline-block text-quaternary hover:text-secondary transition ease-linear delay-50 duration-200" />
+        </a>
+        <EmailLinkToCopy position="footer">
+            <Icon name="mail" class="w-[1.6rem] h-[1.6rem] md:w-[1.9rem] md:h-[1.9rem] text-quaternary hover:text-secondary inline-block transition ease-linear delay-50 duration-200" aria-label="email icon"/>
+        </EmailLinkToCopy>
+    </div>
+    <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-quaternary/70 dark:text-slate-500">
+        &copy; {new Date().getFullYear()} aitorevi · Crafted with Astro
+    </p>
 </footer>
