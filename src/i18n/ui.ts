@@ -25,6 +25,12 @@ export const ui: Record<Lang, Record<string, string>> = {
     'home.stats.years': 'Años de experiencia',
     'home.stats.stacks': 'Stacks dominados',
     'home.stats.passion': 'Pasión por el código',
+    'home.stack.title': 'Tech Stack',
+    'home.stack.hint': '// Pasa el cursor para explorar las conexiones',
+    'home.stack.legend.core': 'Lenguajes',
+    'home.stack.legend.frontend': 'Frontend',
+    'home.stack.legend.practice': 'Prácticas',
+    'home.stack.legend.ai': 'IA',
     'home.p1':
       'Soy un superhéroe detrás del teclado, embarcándome en una épica aventura para desentrañar los misterios del Código de Calidad. No es cualquier código... es código para humanos.',
     'home.p2':
@@ -65,6 +71,12 @@ export const ui: Record<Lang, Record<string, string>> = {
     'home.stats.years': 'Years of experience',
     'home.stats.stacks': 'Stacks mastered',
     'home.stats.passion': 'Passion for code',
+    'home.stack.title': 'Tech Stack',
+    'home.stack.hint': '// Hover a node to reveal the connections',
+    'home.stack.legend.core': 'Languages',
+    'home.stack.legend.frontend': 'Frontend',
+    'home.stack.legend.practice': 'Practices',
+    'home.stack.legend.ai': 'AI',
     'home.p1':
       "I'm a keyboard superhero, embarking on an epic adventure to unravel the mysteries of Quality Code. Not just any code... code for humans. My mission is clear: writing elegant code.",
     'home.p2':
