@@ -21,7 +21,7 @@ const { lang } = Astro.props;
 
 <section
   id="contact"
-  class="relative bg-ink-900 py-24 text-slate-100 sm:py-32"
+  class="relative bg-slate-50 py-24 text-ink-900 dark:bg-ink-900 dark:text-slate-100 sm:py-32"
   aria-labelledby="contact-heading"
   data-contact-email="aitorevi@gmail.com"
 >
@@ -29,26 +29,26 @@ const { lang } = Astro.props;
     <div class="text-center">
       <h2
         id="contact-heading"
-        class="font-display text-3xl font-bold tracking-tight text-slate-200 sm:text-4xl"
+        class="font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
       >
         {t(lang, 'home.contact.title')}
       </h2>
-      <p class="mx-auto mt-3 max-w-xl font-mono text-xs uppercase tracking-[0.3em] text-accent-blue/50">
+      <p class="mx-auto mt-3 max-w-xl font-mono text-xs uppercase tracking-[0.3em] text-secondary/70 dark:text-accent-blue/50">
         {t(lang, 'home.contact.subtitle')}
       </p>
-      <p class="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-slate-400">
+      <p class="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-slate-600 dark:text-slate-400">
         {t(lang, 'home.contact.intro')}
       </p>
     </div>
 
     <form
-      class="mt-12 rounded-2xl border border-white/10 bg-white/[0.04] p-6 shadow-2xl backdrop-blur-md sm:p-8"
+      class="mt-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-lg sm:p-8 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:backdrop-blur-md"
       data-contact-form
       novalidate
     >
       <div class="grid gap-5 sm:grid-cols-2">
         <label class="block">
-          <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-accent-blue/60">
+          <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary/80 dark:text-accent-blue/60">
             {t(lang, 'home.contact.name')}
           </span>
           <input
@@ -56,12 +56,12 @@ const { lang } = Astro.props;
             name="name"
             required
             autocomplete="name"
-            class="w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-slate-100 placeholder-slate-600 transition-colors focus:border-accent-blue/60 focus:outline-none focus:ring-0"
+            class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus:ring-0 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
             placeholder="Jane Doe"
           />
         </label>
         <label class="block">
-          <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-accent-blue/60">
+          <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary/80 dark:text-accent-blue/60">
             {t(lang, 'home.contact.email')}
           </span>
           <input
@@ -69,34 +69,34 @@ const { lang } = Astro.props;
             name="email"
             required
             autocomplete="email"
-            class="w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-slate-100 placeholder-slate-600 transition-colors focus:border-accent-blue/60 focus:outline-none focus:ring-0"
+            class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus:ring-0 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
             placeholder="jane@example.com"
           />
         </label>
       </div>
 
       <label class="mt-5 block">
-        <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-accent-blue/60">
+        <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary/80 dark:text-accent-blue/60">
           {t(lang, 'home.contact.subject')}
         </span>
         <input
           type="text"
           name="subject"
           required
-          class="w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-slate-100 placeholder-slate-600 transition-colors focus:border-accent-blue/60 focus:outline-none focus:ring-0"
+          class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus:ring-0 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
           placeholder={t(lang, 'home.contact.subjectPlaceholder')}
         />
       </label>
 
       <label class="mt-5 block">
-        <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-accent-blue/60">
+        <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary/80 dark:text-accent-blue/60">
           {t(lang, 'home.contact.message')}
         </span>
         <textarea
           name="message"
           required
           rows="5"
-          class="w-full resize-y rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-slate-100 placeholder-slate-600 transition-colors focus:border-accent-blue/60 focus:outline-none focus:ring-0"
+          class="w-full resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus:ring-0 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
           placeholder={t(lang, 'home.contact.messagePlaceholder')}
         ></textarea>
       </label>
@@ -107,7 +107,7 @@ const { lang } = Astro.props;
         </p>
         <button
           type="submit"
-          class="group inline-flex items-center justify-center gap-2 rounded-lg border border-accent-blue/40 bg-gradient-to-r from-accent-blue/15 to-accent-violet/15 px-6 py-3 font-mono text-sm font-semibold text-accent-blue transition-all duration-300 hover:border-accent-blue/80 hover:from-accent-blue/25 hover:to-accent-violet/25 hover:shadow-[0_0_40px_rgba(96,165,250,0.3)]"
+          class="group inline-flex items-center justify-center gap-2 rounded-lg border border-secondary/50 bg-gradient-to-r from-secondary/10 to-accent-violet/10 px-6 py-3 font-mono text-sm font-semibold text-secondary transition-all duration-300 hover:border-secondary/80 hover:from-secondary/20 hover:to-accent-violet/20 hover:shadow-[0_10px_30px_-10px_rgba(94,58,238,0.4)] dark:border-accent-blue/40 dark:from-accent-blue/15 dark:to-accent-violet/15 dark:text-accent-blue dark:hover:border-accent-blue/80 dark:hover:from-accent-blue/25 dark:hover:to-accent-violet/25 dark:hover:shadow-[0_0_40px_rgba(96,165,250,0.3)]"
         >
           <span>{t(lang, 'home.contact.submit')}</span>
           <span
@@ -118,7 +118,7 @@ const { lang } = Astro.props;
       </div>
 
       <p
-        class="mt-4 hidden text-center text-xs text-accent-blue"
+        class="mt-4 hidden text-center text-xs text-secondary dark:text-accent-blue"
         data-contact-status
         role="status"
         aria-live="polite"
@@ -126,28 +126,28 @@ const { lang } = Astro.props;
       </p>
     </form>
 
-    <div class="mt-12 flex flex-wrap items-center justify-center gap-4 text-[11px] uppercase tracking-[0.2em] text-slate-500 font-mono">
+    <div class="mt-12 flex flex-wrap items-center justify-center gap-4 text-[11px] uppercase tracking-[0.2em] text-slate-600 dark:text-slate-500 font-mono">
       <a
         href="mailto:aitorevi@gmail.com"
-        class="transition-colors hover:text-accent-blue"
+        class="transition-colors hover:text-secondary dark:hover:text-accent-blue"
       >
         aitorevi@gmail.com
       </a>
-      <span class="text-slate-700">·</span>
+      <span class="text-slate-400 dark:text-slate-700">·</span>
       <a
         href="https://github.com/aitorevi"
         target="_blank"
         rel="noopener noreferrer"
-        class="transition-colors hover:text-accent-blue"
+        class="transition-colors hover:text-secondary dark:hover:text-accent-blue"
       >
         GitHub
       </a>
-      <span class="text-slate-700">·</span>
+      <span class="text-slate-400 dark:text-slate-700">·</span>
       <a
         href="https://www.linkedin.com/in/aitorevi/"
         target="_blank"
         rel="noopener noreferrer"
-        class="transition-colors hover:text-accent-blue"
+        class="transition-colors hover:text-secondary dark:hover:text-accent-blue"
       >
         LinkedIn
       </a>

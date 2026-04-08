@@ -2,10 +2,10 @@
 /**
  * HomeContent — orchestrator for the redesigned home page.
  *
- * Composes the home sections in order and wraps everything in a single
- * dark container so the page has a continuous background regardless of
- * the site-wide light/dark theme toggle. Individual sections handle
- * their own animations, parallax and IntersectionObservers.
+ * Composes the home sections in order. The home respects the site-wide
+ * light/dark theme toggle: every section declares both light and dark
+ * variants, and the Layout/Nav behave normally over the top. Individual
+ * sections handle their own animations, parallax and IntersectionObservers.
  */
 import type { Lang } from '../data/cv';
 import HeroParallax from './home/HeroParallax.astro';
@@ -22,7 +22,7 @@ interface Props {
 const { lang } = Astro.props;
 ---
 
-<div class="home-redesign relative isolate bg-ink-900 text-slate-100">
+<div class="home-redesign relative isolate bg-slate-50 text-ink-900 dark:bg-ink-900 dark:text-slate-100">
   <HeroParallax lang={lang} />
   <WhatIDo lang={lang} />
   <StatsCounter lang={lang} />
@@ -32,33 +32,18 @@ const { lang } = Astro.props;
 </div>
 
 <style is:global>
-  /* Keep the page background dark under the home, even when the site is
-     in light mode. This is intentional: the home has its own dark aesthetic. */
+  /* Make the page background follow the theme on the home. Layout.astro
+     already applies `bg-white dark:bg-[#0f1419]` to the body, but we tune
+     it on the home so the transition between sections feels continuous. */
   body:has(.home-redesign) {
-    background-color: #020617;
+    background-color: #f8fafc;
     background-image: none;
   }
   body:has(.home-redesign) main {
+    background-color: #f8fafc;
+  }
+  html.dark body:has(.home-redesign),
+  html.dark body:has(.home-redesign) main {
     background-color: #020617;
-  }
-
-  /* Make the fixed Nav blend with the dark home regardless of the
-     site-wide light/dark theme. We keep the background forced, but we
-     only override the *inherited* text colour — we intentionally do
-     NOT touch text-secondary (active state / brand hover) nor
-     text-accent-violet (wordmark dot) so the language switcher, the
-     active section link and the brand accent stay visible. */
-  body:has(.home-redesign) header {
-    background-color: rgba(2, 6, 23, 0.85) !important;
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  }
-  /* Default nav text (brand wordmark, section links, theme toggle icon). */
-  body:has(.home-redesign) header .text-inherit {
-    color: #e2e8f0;
-  }
-  /* Inactive ES / EN separator and the inactive language label. */
-  body:has(.home-redesign) header .text-quaternary {
-    color: #64748b;
   }
 </style>

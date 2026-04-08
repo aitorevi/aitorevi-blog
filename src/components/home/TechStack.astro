@@ -15,15 +15,15 @@ interface Props {
 const { lang } = Astro.props;
 ---
 
-<section class="relative bg-ink-900 py-24 text-slate-100 sm:py-32" aria-labelledby="tech-stack-heading">
+<section class="relative bg-slate-50 py-24 text-ink-900 dark:bg-ink-900 dark:text-slate-100 sm:py-32" aria-labelledby="tech-stack-heading">
   <div class="mx-auto max-w-4xl px-6">
     <h2
       id="tech-stack-heading"
-      class="text-center font-display text-3xl font-bold tracking-tight text-slate-200 sm:text-4xl"
+      class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
     >
       {t(lang, 'home.stack.title')}
     </h2>
-    <p class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-accent-blue/50">
+    <p class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary/70 dark:text-accent-blue/50">
       {t(lang, 'home.stack.hint')}
     </p>
 
@@ -32,21 +32,21 @@ const { lang } = Astro.props;
     </div>
 
     <!-- Legend -->
-    <div class="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[10px] uppercase tracking-[0.2em] text-slate-500 font-mono">
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[10px] uppercase tracking-[0.2em] text-slate-600 dark:text-slate-500 font-mono">
       <span class="flex items-center gap-2">
-        <span class="inline-block h-2 w-2 rounded-full bg-accent-blue/60"></span>
+        <span class="inline-block h-2 w-2 rounded-full bg-accent-blue"></span>
         {t(lang, 'home.stack.legend.core')}
       </span>
       <span class="flex items-center gap-2">
-        <span class="inline-block h-2 w-2 rounded-full bg-accent-sky/60"></span>
+        <span class="inline-block h-2 w-2 rounded-full bg-accent-sky"></span>
         {t(lang, 'home.stack.legend.frontend')}
       </span>
       <span class="flex items-center gap-2">
-        <span class="inline-block h-2 w-2 rounded-full bg-accent-violet/60"></span>
+        <span class="inline-block h-2 w-2 rounded-full bg-accent-violet"></span>
         {t(lang, 'home.stack.legend.practice')}
       </span>
       <span class="flex items-center gap-2">
-        <span class="inline-block h-2 w-2 rounded-full bg-amber-400/60"></span>
+        <span class="inline-block h-2 w-2 rounded-full bg-amber-500"></span>
         {t(lang, 'home.stack.legend.ai')}
       </span>
     </div>

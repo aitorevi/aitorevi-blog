@@ -41,11 +41,11 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
 <section
   transition:persist="hero-section"
   data-parallax-root
-  class="hero-parallax relative w-full overflow-hidden bg-home-radial text-slate-100"
+  class="hero-parallax relative w-full overflow-hidden bg-home-radial-light text-ink-900 dark:bg-home-radial dark:text-slate-100"
 >
   <!-- Layer 1: dot field (slowest) -->
   <div
-    class="pointer-events-none absolute inset-0 will-change-transform"
+    class="pointer-events-none absolute inset-0 will-change-transform text-accent-blue/60 dark:text-accent-blue"
     data-parallax-layer
     data-speed="0.08"
     aria-hidden="true"
@@ -53,7 +53,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
     {
       dots.map((d) => (
         <span
-          class="absolute rounded-full bg-accent-blue"
+          class="absolute rounded-full bg-current"
           style={`left:${d.x}%;top:${d.y}%;width:${d.size}px;height:${d.size}px;opacity:${d.opacity};`}
         />
       ))
@@ -62,7 +62,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
 
   <!-- Layer 2: subtle grid -->
   <div
-    class="pointer-events-none absolute inset-0 opacity-[0.09] will-change-transform"
+    class="pointer-events-none absolute inset-0 opacity-[0.14] text-accent-blue dark:opacity-[0.22] will-change-transform"
     data-parallax-layer
     data-speed="0.18"
     aria-hidden="true"
@@ -75,7 +75,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
             y1={i * 70}
             x2="1200"
             y2={i * 70}
-            stroke="#60a5fa"
+            stroke="currentColor"
             stroke-width="0.6"
           />
         ))
@@ -87,7 +87,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
             y1="0"
             x2={i * 80}
             y2="900"
-            stroke="#60a5fa"
+            stroke="currentColor"
             stroke-width="0.6"
           />
         ))
@@ -97,7 +97,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
 
   <!-- Layer 3: orbit ring accent -->
   <div
-    class="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent-blue/10 will-change-transform"
+    class="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent-blue/20 dark:border-accent-blue/30 will-change-transform"
     data-parallax-layer
     data-speed="0.25"
     data-rotate="0.02"
@@ -112,7 +112,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
     data-speed="0.35"
   >
     <p
-      class="mb-6 text-[11px] uppercase tracking-[0.5em] text-accent-blue/70 font-mono"
+      class="mb-6 text-[11px] uppercase tracking-[0.5em] text-secondary/80 dark:text-accent-blue/70 font-mono"
       data-hero-reveal
       style="--reveal-delay: 0ms"
     >
@@ -120,7 +120,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
     </p>
 
     <h1
-      class="font-display font-black leading-[0.95] tracking-tight text-slate-100 hero-title-glow"
+      class="font-display font-black leading-[0.95] tracking-tight text-ink-900 dark:text-slate-100 hero-title-glow"
       style="font-size: clamp(2.75rem, 9vw, 6.5rem);"
       data-hero-reveal
       data-hero-reveal-delay="120"
@@ -129,7 +129,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
     </h1>
 
     <p
-      class="mt-5 text-[11px] uppercase tracking-[0.4em] text-accent-violet/70 font-mono"
+      class="mt-5 text-[11px] uppercase tracking-[0.4em] text-accent-violet dark:text-accent-violet/70 font-mono"
       data-hero-reveal
       data-hero-reveal-delay="260"
     >
@@ -137,7 +137,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
     </p>
 
     <p
-      class="mt-8 max-w-xl text-base leading-relaxed text-slate-400 sm:text-lg"
+      class="mt-8 max-w-xl text-base leading-relaxed text-slate-600 dark:text-slate-400 sm:text-lg"
       data-hero-reveal
       data-hero-reveal-delay="400"
     >
@@ -150,10 +150,10 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
       data-hero-scroll-hint
       aria-hidden="true"
     >
-      <span class="text-[10px] uppercase tracking-[0.3em] text-accent-blue/40 font-mono">
+      <span class="text-[10px] uppercase tracking-[0.3em] text-secondary/50 dark:text-accent-blue/40 font-mono">
         Scroll
       </span>
-      <span class="block h-10 w-px bg-gradient-to-b from-accent-blue/50 to-transparent"></span>
+      <span class="block h-10 w-px bg-gradient-to-b from-secondary/50 to-transparent dark:from-accent-blue/50"></span>
     </div>
   </div>
 </section>
@@ -164,7 +164,12 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
     min-height: 100svh;
   }
 
+  /* Glow is strictly a dark-mode flourish — in light mode the crisp
+     ink-900 title reads better without any halo. */
   .hero-title-glow {
+    text-shadow: none;
+  }
+  :global(html.dark) .hero-title-glow {
     text-shadow:
       0 0 40px rgba(96, 165, 250, 0.35),
       0 0 80px rgba(96, 165, 250, 0.12);

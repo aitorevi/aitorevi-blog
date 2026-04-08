@@ -99,6 +99,19 @@ export default function TechConstellation({ lang = 'es' }: Props) {
   const [hovered, setHovered] = useState<string | null>(null);
   const [scrollY, setScrollY] = useState(0);
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+
+  // Track the site-wide dark class on <html> so ring / edge / idle label
+  // colours adapt to the current theme (accent-blue at 0.08 alpha is
+  // invisible over slate-50 and too strong over ink-900).
+  useEffect(() => {
+    const html = document.documentElement;
+    const update = () => setIsDark(html.classList.contains('dark'));
+    update();
+    const observer = new MutationObserver(update);
+    observer.observe(html, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, []);
 
   // Measure container on mount and resize.
   useEffect(() => {
@@ -202,8 +215,8 @@ export default function TechConstellation({ lang = 'es' }: Props) {
             cy={cy}
             r={ringRadii[ring]}
             fill="none"
-            stroke="rgba(96,165,250,0.06)"
-            strokeWidth={1}
+            stroke={isDark ? 'rgba(96,165,250,0.28)' : 'rgba(94,58,238,0.22)'}
+            strokeWidth={isDark ? 1.2 : 1}
             strokeDasharray="4 8"
           />
         ))}
@@ -214,6 +227,8 @@ export default function TechConstellation({ lang = 'es' }: Props) {
           const nb = nodeMap[b];
           if (!na || !nb) return null;
           const active = hovered === a || hovered === b;
+          const idleStroke = isDark ? 'rgba(96,165,250,0.22)' : 'rgba(94,58,238,0.18)';
+          const activeStroke = isDark ? 'rgba(96,165,250,0.65)' : 'rgba(94,58,238,0.65)';
           return (
             <line
               key={`${a}-${b}`}
@@ -221,8 +236,8 @@ export default function TechConstellation({ lang = 'es' }: Props) {
               y1={na.pos.y}
               x2={nb.pos.x}
               y2={nb.pos.y}
-              stroke={active ? 'rgba(96,165,250,0.5)' : 'rgba(96,165,250,0.08)'}
-              strokeWidth={active ? 1.5 : 0.5}
+              stroke={active ? activeStroke : idleStroke}
+              strokeWidth={active ? 1.8 : isDark ? 0.8 : 0.6}
               style={{ transition: 'all 0.4s ease' }}
             />
           );
@@ -239,7 +254,7 @@ export default function TechConstellation({ lang = 'es' }: Props) {
           <button
             type="button"
             key={node.id}
-            className="absolute flex cursor-pointer flex-col items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue focus-visible:ring-offset-2 focus-visible:ring-offset-ink-900"
+            className="absolute flex cursor-pointer flex-col items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50 dark:focus-visible:ring-offset-ink-900"
             style={{
               left: pos.x,
               top: pos.y,
@@ -294,7 +309,11 @@ export default function TechConstellation({ lang = 'es' }: Props) {
               className="mt-1 whitespace-nowrap font-mono"
               style={{
                 fontSize: active ? 11 : 9,
-                color: active ? node.color : 'rgba(148,163,184,0.7)',
+                color: active
+                  ? node.color
+                  : isDark
+                    ? 'rgba(148,163,184,0.7)'
+                    : 'rgba(71,85,105,0.75)',
                 fontWeight: active ? 600 : 400,
                 transition: 'all 0.3s',
                 textShadow: active ? `0 0 10px ${node.color}60` : 'none',
@@ -331,7 +350,7 @@ export default function TechConstellation({ lang = 'es' }: Props) {
         }}
       >
         <span
-          className="font-display font-black uppercase tracking-[0.2em] text-slate-500"
+          className="font-display font-black uppercase tracking-[0.2em] text-slate-600 dark:text-slate-500"
           style={{ fontSize: 14 }}
         >
           Stack

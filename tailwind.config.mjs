@@ -29,7 +29,9 @@ export default {
 				'confetti': "url('/background/bg-confetti.svg')",
 				'custom': "url('/background/bg-custom.svg')",
 				'home-radial': 'radial-gradient(ellipse at 30% 20%, #0f172a 0%, #020617 55%, #000 100%)',
+				'home-radial-light': 'radial-gradient(ellipse at 30% 20%, #eef2ff 0%, #f8fafc 55%, #e2e8f0 100%)',
 				'home-gradient-text': 'linear-gradient(135deg, #60a5fa, #a78bfa, #60a5fa)',
+				'home-gradient-text-light': 'linear-gradient(135deg, #2563eb, #7c3aed, #2563eb)',
 			},
 			fontFamily: {
 				ibm: ['IBM Plex Mono', 'monospace'],
