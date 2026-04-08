@@ -12,20 +12,50 @@ export default {
 				baseLight: '#f1faff',
 				blueLight: '#7ad5f3',
 				grayLight: '#f9f9fc',
+				// Home redesign palette — dark slate base + violet accents
+				ink: {
+					900: '#020617',
+					800: '#0b1120',
+					700: '#0f172a',
+					600: '#111827',
+				},
+				accent: {
+					blue: '#60a5fa',
+					violet: '#a78bfa',
+					sky: '#38bdf8',
+				},
 			},
 			backgroundImage: {
 				'confetti': "url('/background/bg-confetti.svg')",
 				'custom': "url('/background/bg-custom.svg')",
+				'home-radial': 'radial-gradient(ellipse at 30% 20%, #0f172a 0%, #020617 55%, #000 100%)',
+				'home-gradient-text': 'linear-gradient(135deg, #60a5fa, #a78bfa, #60a5fa)',
 			},
 			fontFamily: {
 				ibm: ['IBM Plex Mono', 'monospace'],
+				mono: ['"JetBrains Mono"', '"Fira Code"', 'ui-monospace', 'monospace'],
+				display: ['Outfit', 'system-ui', 'sans-serif'],
 			},
 			width: {
 				'116': '29rem',
 			},
 			spacing: {
 				'30': '7.5rem',
-			}
+			},
+			keyframes: {
+				'home-rise': {
+					'0%': { opacity: '0', transform: 'translateY(20px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' },
+				},
+				'home-pulse': {
+					'0%, 100%': { opacity: '0.4' },
+					'50%': { opacity: '1' },
+				},
+			},
+			animation: {
+				'home-rise': 'home-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both',
+				'home-pulse': 'home-pulse 2.4s ease-in-out infinite',
+			},
 		},
 	},
 	plugins: [
