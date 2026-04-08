@@ -120,7 +120,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
     </p>
 
     <h1
-      class="font-display font-black leading-[0.95] tracking-tight text-slate-100 [text-shadow:0_0_40px_rgba(96,165,250,0.35),0_0_80px_rgba(96,165,250,0.12)]"
+      class="font-display font-black leading-[0.95] tracking-tight text-slate-100 hero-title-glow"
       style="font-size: clamp(2.75rem, 9vw, 6.5rem);"
       data-hero-reveal
       data-hero-reveal-delay="120"
@@ -162,6 +162,12 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
   .hero-parallax {
     /* Small-screen safe height — use svh so iOS Safari chrome doesn't jump */
     min-height: 100svh;
+  }
+
+  .hero-title-glow {
+    text-shadow:
+      0 0 40px rgba(96, 165, 250, 0.35),
+      0 0 80px rgba(96, 165, 250, 0.12);
   }
 
   [data-hero-reveal] {
