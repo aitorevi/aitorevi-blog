@@ -65,7 +65,7 @@ function parseProfiles(links: CvData['contact']['links']): JsonResumeBasics['pro
     }));
 }
 
-function parseLocation(location: string, lang: Lang): JsonResumeBasics['location'] {
+function parseLocation(location: string): JsonResumeBasics['location'] {
   const [city, region] = location.split(',').map((s) => s.trim());
   return { city, countryCode: 'ES', region: region || '' };
 }
@@ -104,7 +104,7 @@ export function cvDataToJsonResume(data: CvData, lang: Lang): JsonResume {
     email: parseEmail(data.contact.links),
     url: 'https://www.aitorevi.dev',
     summary: data.summary,
-    location: parseLocation(data.contact.location, lang),
+    location: parseLocation(data.contact.location),
     profiles: parseProfiles(data.contact.links),
   };
 

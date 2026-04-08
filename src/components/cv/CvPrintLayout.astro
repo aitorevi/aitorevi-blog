@@ -283,10 +283,11 @@ const contactItems = [
   }
 
   /* Override any dark mode classes */
+  /* Attribute selectors avoid CSS-syntax issues with escaped `#` inside
+     Tailwind arbitrary-value class names (esbuild minifier warning). */
   .dark .cv-print,
-  .cv-print .dark\:bg-\[#1a1f2e\],
-  .cv-print .dark\:text-\[\#f1f5f9\],
-  .cv-print .dark\:text-\[\#cbd5e1\] {
+  .cv-print [class*="dark:bg-["],
+  .cv-print [class*="dark:text-["] {
     background: white !important;
     color: #1e293b !important;
   }

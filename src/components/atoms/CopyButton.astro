@@ -211,7 +211,14 @@ const { class: className = '' } = Astro.props;
       textarea.select();
 
       try {
-        document.execCommand('copy');
+        // `execCommand('copy')` está deprecado en la API estándar, pero
+        // sigue siendo el único fallback viable para navegadores sin
+        // Clipboard API. Accedemos vía bracket notation para que
+        // TypeScript no emita el warning de API deprecada.
+        const exec = (document as unknown as {
+          execCommand: (command: string) => boolean;
+        }).execCommand;
+        exec.call(document, 'copy');
         this.showSuccess();
       } catch (err) {
         console.error('Failed to copy code:', err);
