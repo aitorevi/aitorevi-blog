@@ -11,6 +11,16 @@ export const ui: Record<Lang, Record<string, string>> = {
     'home.roleLabel': 'Full Stack Developer',
     'home.tagline': 'Software Craftsman',
     'home.roles': 'Software Craftsman,TDD Practitioner,Clean Architecture,Advanced AI Engineer',
+    'home.whatIDo.title': 'Lo que hago',
+    'home.whatIDo.subtitle': '// Disciplinas y filosofía',
+    'home.cards.clean.title': 'Clean Architecture',
+    'home.cards.clean.desc': 'Hexagonal, ports & adapters, código que respira y se deja cambiar sin miedo.',
+    'home.cards.tdd.title': 'TDD & Testing',
+    'home.cards.tdd.desc': 'Red-Green-Refactor como disciplina diaria. Tests como diseño, no como red de seguridad.',
+    'home.cards.frontend.title': 'Frontend Craft',
+    'home.cards.frontend.desc': 'React, Next.js, Astro — interfaces con alma, accesibles y rápidas de verdad.',
+    'home.cards.ai.title': 'AI-Assisted Dev',
+    'home.cards.ai.desc': 'Claude Code, Copilot, agentes. La IA como multiplicador del craftsman, no como sustituto.',
     'home.p1':
       'Soy un superhéroe detrás del teclado, embarcándome en una épica aventura para desentrañar los misterios del Código de Calidad. No es cualquier código... es código para humanos.',
     'home.p2':
@@ -37,6 +47,16 @@ export const ui: Record<Lang, Record<string, string>> = {
     'home.roleLabel': 'Full Stack Developer',
     'home.tagline': 'Software Craftsman',
     'home.roles': 'Software Craftsman,TDD Practitioner,Clean Architecture,Advanced AI Engineer',
+    'home.whatIDo.title': 'What I do',
+    'home.whatIDo.subtitle': '// Disciplines & philosophy',
+    'home.cards.clean.title': 'Clean Architecture',
+    'home.cards.clean.desc': 'Hexagonal, ports & adapters — code that breathes and welcomes change.',
+    'home.cards.tdd.title': 'TDD & Testing',
+    'home.cards.tdd.desc': 'Red-Green-Refactor as a daily discipline. Tests as design, not a safety net.',
+    'home.cards.frontend.title': 'Frontend Craft',
+    'home.cards.frontend.desc': 'React, Next.js, Astro — interfaces with soul, accessible and genuinely fast.',
+    'home.cards.ai.title': 'AI-Assisted Dev',
+    'home.cards.ai.desc': 'Claude Code, Copilot, agents. AI as a craftsman multiplier, not a replacement.',
     'home.p1':
       "I'm a keyboard superhero, embarking on an epic adventure to unravel the mysteries of Quality Code. Not just any code... code for humans. My mission is clear: writing elegant code.",
     'home.p2':

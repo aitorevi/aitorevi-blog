@@ -1,0 +1,153 @@
+---
+/**
+ * WhatIDo — four glassmorphism cards that reveal with a stagger as the
+ * section enters the viewport.
+ *
+ * Uses IntersectionObserver + CSS custom properties (--stagger-delay) to
+ * avoid JS animation loops. Respects prefers-reduced-motion.
+ */
+import type { Lang } from '../../data/cv';
+import { t } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const cards = [
+  {
+    icon: '◆',
+    titleKey: 'home.cards.clean.title',
+    descKey: 'home.cards.clean.desc',
+    accent: 'from-accent-blue/20 to-transparent',
+  },
+  {
+    icon: '▲',
+    titleKey: 'home.cards.tdd.title',
+    descKey: 'home.cards.tdd.desc',
+    accent: 'from-accent-violet/20 to-transparent',
+  },
+  {
+    icon: '●',
+    titleKey: 'home.cards.frontend.title',
+    descKey: 'home.cards.frontend.desc',
+    accent: 'from-accent-sky/20 to-transparent',
+  },
+  {
+    icon: '◇',
+    titleKey: 'home.cards.ai.title',
+    descKey: 'home.cards.ai.desc',
+    accent: 'from-amber-400/20 to-transparent',
+  },
+];
+---
+
+<section
+  class="relative bg-ink-900 py-24 text-slate-100 sm:py-32"
+  aria-labelledby="what-i-do-heading"
+>
+  <div class="mx-auto max-w-5xl px-6">
+    <h2
+      id="what-i-do-heading"
+      class="text-center font-display text-3xl font-bold tracking-tight text-slate-200 sm:text-4xl"
+    >
+      {t(lang, 'home.whatIDo.title')}
+    </h2>
+    <p
+      class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-accent-blue/50"
+    >
+      {t(lang, 'home.whatIDo.subtitle')}
+    </p>
+
+    <ul
+      class="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2"
+      data-stagger-root
+    >
+      {
+        cards.map((card, i) => (
+          <li
+            class={`group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] p-6 shadow-2xl backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:border-accent-blue/40 hover:bg-white/[0.07] hover:shadow-[0_0_60px_rgba(96,165,250,0.15)]`}
+            data-stagger-item
+            style={`--stagger-delay:${i * 120}ms`}
+          >
+            <div
+              class={`pointer-events-none absolute -top-px left-0 h-32 w-full bg-gradient-to-b ${card.accent} opacity-0 transition-opacity duration-500 group-hover:opacity-100`}
+              aria-hidden="true"
+            />
+
+            <div class="relative">
+              <span
+                class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-accent-blue/20 bg-accent-blue/5 font-mono text-lg text-accent-blue transition-colors duration-300 group-hover:border-accent-blue/60 group-hover:text-accent-violet"
+                aria-hidden="true"
+              >
+                {card.icon}
+              </span>
+              <h3 class="mt-4 font-display text-lg font-semibold text-slate-100">
+                {t(lang, card.titleKey)}
+              </h3>
+              <p class="mt-2 text-sm leading-relaxed text-slate-400">
+                {t(lang, card.descKey)}
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  [data-stagger-item] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--stagger-delay, 0ms);
+  }
+  [data-stagger-item].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-stagger-item] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  function initStagger() {
+    const root = document.querySelector('[data-stagger-root]');
+    if (!root) return;
+    const items = Array.from(
+      root.querySelectorAll<HTMLElement>('[data-stagger-item]')
+    );
+    if (items.length === 0) return;
+
+    // If reduced motion, just show everything and bail out.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      items.forEach((el) => el.classList.add('is-visible'));
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    items.forEach((el) => io.observe(el));
+  }
+
+  document.addEventListener('astro:page-load', initStagger);
+  document.addEventListener('astro:after-swap', initStagger);
+</script>
