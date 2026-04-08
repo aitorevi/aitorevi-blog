@@ -9,7 +9,15 @@
  *     IntersectionObserver to pause updates when the hero is out of viewport.
  *   - Respects `prefers-reduced-motion`: layers stay static.
  *   - Reinitialised on Astro View Transitions (`astro:page-load` + swap).
- *   - Uses `transition:persist` so the hero survives navigations.
+ *
+ * View-transition persistence strategy:
+ *   - The decorative layers (dot field, grid SVG, orbit ring) are
+ *     language-independent, so they use fixed `transition:persist` names
+ *     and survive ES ↔ EN navigations in place — no re-creation of the
+ *     60 dots, no re-mount of the grid SVG.
+ *   - The main content layer has no persist and is fully re-rendered so
+ *     the role label, tagline and paragraph pick up the new locale (and
+ *     replay their reveal animation).
  *
  * Dot field positions are generated at build time for stability across renders.
  */
@@ -39,12 +47,12 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
 ---
 
 <section
-  transition:persist={`hero-section-${lang}`}
   data-parallax-root
   class="hero-parallax relative w-full overflow-hidden bg-home-radial-light text-ink-900 dark:bg-home-radial dark:text-slate-100"
 >
-  <!-- Layer 1: dot field (slowest) -->
+  <!-- Layer 1: dot field (slowest) — language-independent, persisted across nav -->
   <div
+    transition:persist="hero-dots"
     class="pointer-events-none absolute inset-0 will-change-transform text-accent-blue/60 dark:text-accent-blue"
     data-parallax-layer
     data-speed="0.08"
@@ -60,8 +68,9 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
     }
   </div>
 
-  <!-- Layer 2: subtle grid -->
+  <!-- Layer 2: subtle grid — language-independent, persisted across nav -->
   <div
+    transition:persist="hero-grid"
     class="pointer-events-none absolute inset-0 opacity-[0.14] text-accent-blue dark:opacity-[0.22] will-change-transform"
     data-parallax-layer
     data-speed="0.18"
@@ -95,8 +104,9 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
     </svg>
   </div>
 
-  <!-- Layer 3: orbit ring accent -->
+  <!-- Layer 3: orbit ring accent — language-independent, persisted across nav -->
   <div
+    transition:persist="hero-orbit"
     class="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent-blue/20 dark:border-accent-blue/30 will-change-transform"
     data-parallax-layer
     data-speed="0.25"
