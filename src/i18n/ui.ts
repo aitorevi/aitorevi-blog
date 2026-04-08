@@ -31,6 +31,9 @@ export const ui: Record<Lang, Record<string, string>> = {
     'home.stack.legend.frontend': 'Frontend',
     'home.stack.legend.practice': 'Prácticas',
     'home.stack.legend.ai': 'IA',
+    'home.posts.title': 'Últimos del blog',
+    'home.posts.subtitle': '// Notas, aprendizajes y experimentos',
+    'home.posts.cta': 'Leer todo el blog',
     'home.p1':
       'Soy un superhéroe detrás del teclado, embarcándome en una épica aventura para desentrañar los misterios del Código de Calidad. No es cualquier código... es código para humanos.',
     'home.p2':
@@ -77,6 +80,9 @@ export const ui: Record<Lang, Record<string, string>> = {
     'home.stack.legend.frontend': 'Frontend',
     'home.stack.legend.practice': 'Practices',
     'home.stack.legend.ai': 'AI',
+    'home.posts.title': 'Latest from the blog',
+    'home.posts.subtitle': '// Notes, learnings and experiments',
+    'home.posts.cta': 'Read the full blog',
     'home.p1':
       "I'm a keyboard superhero, embarking on an epic adventure to unravel the mysteries of Quality Code. Not just any code... code for humans. My mission is clear: writing elegant code.",
     'home.p2':
