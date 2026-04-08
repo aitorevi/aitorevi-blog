@@ -41,18 +41,24 @@ const { lang } = Astro.props;
   body:has(.home-redesign) main {
     background-color: #020617;
   }
-  /* Make the fixed Nav blend with the dark home (both in light and dark site themes). */
+
+  /* Make the fixed Nav blend with the dark home regardless of the
+     site-wide light/dark theme. We keep the background forced, but we
+     only override the *inherited* text colour — we intentionally do
+     NOT touch text-secondary (active state / brand hover) nor
+     text-accent-violet (wordmark dot) so the language switcher, the
+     active section link and the brand accent stay visible. */
   body:has(.home-redesign) header {
-    background-color: rgba(2, 6, 23, 0.75) !important;
+    background-color: rgba(2, 6, 23, 0.85) !important;
     backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
-  body:has(.home-redesign) header a,
-  body:has(.home-redesign) header button {
+  /* Default nav text (brand wordmark, section links, theme toggle icon). */
+  body:has(.home-redesign) header .text-inherit {
     color: #e2e8f0;
   }
-  body:has(.home-redesign) header a:hover,
-  body:has(.home-redesign) header button:hover {
-    color: #a78bfa;
+  /* Inactive ES / EN separator and the inactive language label. */
+  body:has(.home-redesign) header .text-quaternary {
+    color: #64748b;
   }
 </style>
