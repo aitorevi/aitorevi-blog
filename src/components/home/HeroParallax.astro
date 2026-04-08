@@ -39,7 +39,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
 ---
 
 <section
-  transition:persist="hero-section"
+  transition:persist={`hero-section-${lang}`}
   data-parallax-root
   class="hero-parallax relative w-full overflow-hidden bg-home-radial-light text-ink-900 dark:bg-home-radial dark:text-slate-100"
 >
