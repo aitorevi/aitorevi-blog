@@ -21,6 +21,10 @@ export const ui: Record<Lang, Record<string, string>> = {
     'home.cards.frontend.desc': 'React, Next.js, Astro — interfaces con alma, accesibles y rápidas de verdad.',
     'home.cards.ai.title': 'AI-Assisted Dev',
     'home.cards.ai.desc': 'Claude Code, Copilot, agentes. La IA como multiplicador del craftsman, no como sustituto.',
+    'home.stats.title': 'Estadísticas',
+    'home.stats.years': 'Años de experiencia',
+    'home.stats.stacks': 'Stacks dominados',
+    'home.stats.passion': 'Pasión por el código',
     'home.p1':
       'Soy un superhéroe detrás del teclado, embarcándome en una épica aventura para desentrañar los misterios del Código de Calidad. No es cualquier código... es código para humanos.',
     'home.p2':
@@ -57,6 +61,10 @@ export const ui: Record<Lang, Record<string, string>> = {
     'home.cards.frontend.desc': 'React, Next.js, Astro — interfaces with soul, accessible and genuinely fast.',
     'home.cards.ai.title': 'AI-Assisted Dev',
     'home.cards.ai.desc': 'Claude Code, Copilot, agents. AI as a craftsman multiplier, not a replacement.',
+    'home.stats.title': 'Stats',
+    'home.stats.years': 'Years of experience',
+    'home.stats.stacks': 'Stacks mastered',
+    'home.stats.passion': 'Passion for code',
     'home.p1':
       "I'm a keyboard superhero, embarking on an epic adventure to unravel the mysteries of Quality Code. Not just any code... code for humans. My mission is clear: writing elegant code.",
     'home.p2':

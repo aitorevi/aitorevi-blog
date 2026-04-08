@@ -1,0 +1,152 @@
+---
+/**
+ * StatsCounter — three animated metrics triggered when the section enters
+ * the viewport.
+ *
+ * Numeric values count from 0 to target over ~1400ms with an ease-out curve.
+ * Non-numeric values (e.g. "∞") pulse into place.
+ *
+ * Single IntersectionObserver, one rAF loop per counter, cleans itself up.
+ * Respects prefers-reduced-motion (shows final value immediately).
+ */
+import type { Lang } from '../../data/cv';
+import { t } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const stats = [
+  { value: '20', suffix: '+', labelKey: 'home.stats.years' },
+  { value: '4', suffix: '+', labelKey: 'home.stats.stacks' },
+  { value: '∞', suffix: '', labelKey: 'home.stats.passion' },
+];
+---
+
+<section
+  class="relative bg-ink-900 pb-24 text-slate-100"
+  aria-labelledby="stats-heading"
+>
+  <h2 id="stats-heading" class="sr-only">
+    {t(lang, 'home.stats.title')}
+  </h2>
+  <div
+    class="mx-auto grid max-w-4xl grid-cols-1 gap-4 px-6 sm:grid-cols-3 sm:gap-6"
+    data-stats-root
+  >
+    {
+      stats.map((stat) => (
+        <div
+          class="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] px-6 py-10 text-center shadow-2xl backdrop-blur-md"
+          data-stat
+          data-stat-target={stat.value}
+          data-stat-suffix={stat.suffix}
+        >
+          <div
+            class="pointer-events-none absolute inset-x-0 -top-20 h-40 bg-gradient-to-b from-accent-blue/10 to-transparent opacity-60"
+            aria-hidden="true"
+          />
+          <div
+            class="relative bg-home-gradient-text bg-clip-text font-display text-5xl font-black leading-none text-transparent sm:text-6xl"
+            data-stat-value
+          >
+            {stat.suffix ? '0' : stat.value}
+          </div>
+          <div class="relative mt-3 font-mono text-[11px] uppercase tracking-[0.25em] text-accent-blue/60">
+            {t(lang, stat.labelKey)}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  type StatEl = HTMLElement & {
+    __animated?: boolean;
+  };
+
+  const EASE_OUT_CUBIC = (t: number) => 1 - Math.pow(1 - t, 3);
+  const DURATION_MS = 1400;
+
+  function animateNumeric(valueEl: HTMLElement, target: number, suffix: string) {
+    const start = performance.now();
+    const step = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(1, elapsed / DURATION_MS);
+      const eased = EASE_OUT_CUBIC(progress);
+      const current = Math.floor(target * eased);
+      valueEl.textContent = `${current}${suffix}`;
+      if (progress < 1) requestAnimationFrame(step);
+      else valueEl.textContent = `${target}${suffix}`;
+    };
+    requestAnimationFrame(step);
+  }
+
+  function animateSymbol(valueEl: HTMLElement, symbol: string) {
+    // Pulse scale for non-numeric values like "∞".
+    valueEl.textContent = symbol;
+    valueEl.animate(
+      [
+        { transform: 'scale(0.6)', opacity: 0 },
+        { transform: 'scale(1.15)', opacity: 1, offset: 0.7 },
+        { transform: 'scale(1)', opacity: 1 },
+      ],
+      { duration: 900, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'forwards' }
+    );
+  }
+
+  function runStat(stat: StatEl) {
+    if (stat.__animated) return;
+    stat.__animated = true;
+    const valueEl = stat.querySelector<HTMLElement>('[data-stat-value]');
+    if (!valueEl) return;
+    const rawTarget = stat.dataset.statTarget || '0';
+    const suffix = stat.dataset.statSuffix || '';
+    const numeric = Number(rawTarget);
+
+    if (Number.isFinite(numeric) && !Number.isNaN(numeric)) {
+      animateNumeric(valueEl, numeric, suffix);
+    } else {
+      animateSymbol(valueEl, rawTarget);
+    }
+  }
+
+  function initStats() {
+    const root = document.querySelector('[data-stats-root]');
+    if (!root) return;
+    const stats = Array.from(
+      root.querySelectorAll<StatEl>('[data-stat]')
+    );
+    if (stats.length === 0) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduced) {
+      stats.forEach((stat) => {
+        const valueEl = stat.querySelector<HTMLElement>('[data-stat-value]');
+        if (!valueEl) return;
+        valueEl.textContent = `${stat.dataset.statTarget || ''}${stat.dataset.statSuffix || ''}`;
+      });
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            runStat(entry.target as StatEl);
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+    stats.forEach((stat) => io.observe(stat));
+  }
+
+  document.addEventListener('astro:page-load', initStats);
+  document.addEventListener('astro:after-swap', initStats);
+</script>
