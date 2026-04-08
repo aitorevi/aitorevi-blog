@@ -80,6 +80,36 @@ const contactItems = [
     max-width: 100%;
   }
 
+  /* Force IBM Plex Mono on every element in print — the public CV uses
+     font-display (Outfit) and font-mono (JetBrains Mono) for visual coherence
+     with the home, but the ATS PDF must stay on IBM Plex Mono for consistency
+     across sections and for matching the tuned line-heights below. */
+  .cv-print,
+  .cv-print *,
+  .cv-print h1,
+  .cv-print h2,
+  .cv-print h3,
+  .cv-print p,
+  .cv-print span,
+  .cv-print a {
+    font-family: 'IBM Plex Mono', monospace !important;
+  }
+
+  /* Neutralize the home's accent palette in print — ATS readers expect
+     neutral slate colors, not violet/blue accents. */
+  .cv-print .dark\:text-accent-violet,
+  .cv-print .dark\:text-accent-blue,
+  .cv-print .text-accent-violet,
+  .cv-print .text-accent-blue {
+    color: #475569 !important;
+  }
+
+  /* Reset any text-shadow glow that CvHeader adds to the name in dark mode. */
+  .cv-print h1,
+  .cv-print .cv-name-glow {
+    text-shadow: none !important;
+  }
+
   /* Print header */
   .print-header {
     text-align: center;
