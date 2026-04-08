@@ -12,8 +12,7 @@ export const EmailLinkToCopy: React.FC<Props> = ({children, position="footer"}) 
         navbar: "mt-6 ml-24 md:mt-8 ml-24",
         footer: "-mt-10 ml-30 md:-mt-12 md:ml-40",
     }
-    const stylesPosition = dictionary[position];
-    const handleClick = (e: any) => {
+    const handleClick = () => {
         navigator.clipboard.writeText("info@aitorevi.dev");
         setIsCopied(true);
         setTimeout(() => {

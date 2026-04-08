@@ -15,7 +15,7 @@ const blogCollection = defineCollection({
     base: './src/content/blog'
   }),
 
-  schema: ({ image }) => z.object({
+  schema: () => z.object({
     // Required fields
     title: z.string()
       .min(1, 'Title is required')
