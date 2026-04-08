@@ -121,7 +121,18 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
     data-parallax-layer
     data-speed="0.35"
   >
+    <!--
+      Role label, h1 title, tagline and scroll hint are all
+      language-independent (the i18n strings for roleLabel and tagline
+      are identical in ES and EN, and the title + Scroll text are
+      hardcoded). Persisting them keeps the same DOM nodes across
+      ES ↔ EN navigations so they don't replay their reveal animation
+      and there's no visible flicker. Only home.p1 actually changes
+      between locales and is therefore the only element in this layer
+      without `transition:persist`.
+    -->
     <p
+      transition:persist="hero-role-label"
       class="mb-6 text-[11px] uppercase tracking-[0.5em] text-secondary/80 dark:text-accent-blue/70 font-mono"
       data-hero-reveal
       style="--reveal-delay: 0ms"
@@ -130,6 +141,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
     </p>
 
     <h1
+      transition:persist="hero-title"
       class="font-display font-black leading-[0.95] tracking-tight text-ink-900 dark:text-slate-100 hero-title-glow"
       style="font-size: clamp(2.75rem, 9vw, 6.5rem);"
       data-hero-reveal
@@ -139,6 +151,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
     </h1>
 
     <p
+      transition:persist="hero-tagline"
       class="mt-5 text-[11px] uppercase tracking-[0.4em] text-accent-violet dark:text-accent-violet/70 font-mono"
       data-hero-reveal
       data-hero-reveal-delay="260"
@@ -154,8 +167,9 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
       {t(lang, 'home.p1')}
     </p>
 
-    <!-- Scroll hint -->
+    <!-- Scroll hint — language-independent, persisted across nav -->
     <div
+      transition:persist="hero-scroll-hint"
       class="absolute bottom-10 flex flex-col items-center gap-3"
       data-hero-scroll-hint
       aria-hidden="true"

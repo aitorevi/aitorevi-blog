@@ -23,11 +23,12 @@ const cvPath = getLocalePath('/cv', lang);
                        alt="logo"
                        width={16}
                        height={16}
+                       transition:persist="brand-logo"
                        class="w-8 h-8 md:w-10 md:h-10"/>
             </a>
             <a href={homePath}
                class="group cursor-pointer text-inherit font-display text-2xl md:text-3xl font-black tracking-tight transition ease-linear delay-50 duration-150 hover:text-secondary">
-                aitorevi<span class="text-accent-violet group-hover:text-accent-blue transition-colors">.</span>
+                <span transition:persist="brand-wordmark">aitorevi<span class="text-accent-violet group-hover:text-accent-blue transition-colors">.</span></span>
             </a>
         </div>
 
