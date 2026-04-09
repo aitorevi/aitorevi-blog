@@ -15,7 +15,7 @@ const { pdfPath, jsonPath, label } = Astro.props;
     <a
       href={pdfPath}
       download
-      class="group inline-flex items-center justify-center gap-2 rounded-lg border border-secondary/40 dark:border-accent-blue/40 bg-gradient-to-r from-secondary/5 to-secondary/10 dark:from-accent-blue/15 dark:to-accent-violet/15 px-6 py-3 font-mono text-sm font-semibold text-secondary dark:text-accent-blue tracking-wide transition-all duration-300 hover:border-secondary/80 dark:hover:border-accent-blue/80 hover:from-secondary/10 hover:to-secondary/15 dark:hover:from-accent-blue/25 dark:hover:to-accent-violet/25 hover:shadow-[0_0_30px_rgba(94,58,238,0.2)] dark:hover:shadow-[0_0_40px_rgba(96,165,250,0.3)]"
+      class="group inline-flex items-center justify-center gap-2 rounded-lg border border-accent-blue/40 bg-accent-blue/5 dark:bg-accent-blue/10 px-6 py-3 font-mono text-sm font-semibold text-accent-blue tracking-wide transition-all duration-300 hover:border-accent-blue/70 hover:bg-accent-blue/10 dark:hover:bg-accent-blue/20 hover:shadow-[0_0_30px_rgba(96,165,250,0.2)] dark:hover:shadow-[0_0_40px_rgba(96,165,250,0.3)]"
     >
       <Icon name="download" class="w-4 h-4 transition-transform group-hover:-translate-y-0.5" />
       <span>{label} · PDF</span>
@@ -23,7 +23,7 @@ const { pdfPath, jsonPath, label } = Astro.props;
     <a
       href={jsonPath}
       download
-      class="group inline-flex items-center justify-center gap-2 rounded-lg border border-quaternary/40 dark:border-white/10 bg-transparent dark:bg-white/[0.03] px-6 py-3 font-mono text-sm font-semibold text-quaternary dark:text-slate-400 tracking-wide transition-all duration-300 hover:border-secondary/60 dark:hover:border-accent-violet/50 hover:text-secondary dark:hover:text-accent-violet"
+      class="group inline-flex items-center justify-center gap-2 rounded-lg border border-accent-violet/40 bg-accent-violet/5 dark:bg-accent-violet/10 px-6 py-3 font-mono text-sm font-semibold text-accent-violet tracking-wide transition-all duration-300 hover:border-accent-violet/70 hover:bg-accent-violet/10 dark:hover:bg-accent-violet/20 hover:shadow-[0_0_30px_rgba(167,139,250,0.2)] dark:hover:shadow-[0_0_40px_rgba(167,139,250,0.3)]"
     >
       <Icon name="download" class="w-4 h-4 transition-transform group-hover:-translate-y-0.5" />
       <span>{label} · JSON</span>

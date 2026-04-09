@@ -20,9 +20,9 @@ const { label, entries } = Astro.props;
       return (
         <div class="flex gap-3">
           <div class="flex flex-col items-center shrink-0 w-4">
-            <div class="mt-[9px] h-2.5 w-2.5 rounded-full bg-secondary/30 dark:bg-secondary/40 border border-secondary/40 dark:border-secondary/50 shrink-0 z-10"></div>
+            <div class="mt-[9px] h-2.5 w-2.5 rounded-full bg-secondary/30 dark:bg-accent-violet/35 border border-secondary/40 dark:border-accent-violet/45 shrink-0 z-10"></div>
             {!isLast && (
-              <div class="flex-1 w-0 border-l-2 border-dotted border-secondary/20 dark:border-secondary/30"></div>
+              <div class="flex-1 w-0 border-l-2 border-dotted border-secondary/20 dark:border-accent-violet/25"></div>
             )}
           </div>
           <div class:list={["flex-1", isLast ? "pb-0" : "pb-5"]}>
@@ -48,9 +48,9 @@ const { label, entries } = Astro.props;
 
           {/* Timeline track */}
           <div class="flex flex-col items-center shrink-0 w-5">
-            <div class="reveal-scale mt-0.5 h-3 w-3 rounded-full border-2 border-secondary/50 bg-white dark:bg-[#1a1f2e] shrink-0 z-10"></div>
+            <div class="reveal-scale mt-0.5 h-3 w-3 rounded-full border-2 border-secondary/50 dark:border-accent-violet/40 bg-white dark:bg-ink-800 shrink-0 z-10"></div>
             {!isLast && (
-              <div class="reveal-grow-y flex-1 w-0 border-l-2 border-dotted border-secondary/20 dark:border-secondary/30"></div>
+              <div class="reveal-grow-y flex-1 w-0 border-l-2 border-dotted border-secondary/20 dark:border-accent-violet/25"></div>
             )}
           </div>
 
