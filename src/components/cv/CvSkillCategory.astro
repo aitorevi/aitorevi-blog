@@ -9,7 +9,7 @@ interface Props {
 const { category } = Astro.props;
 ---
 
-<div class="reveal-fade group relative rounded-xl p-4 border border-secondary/15 bg-slate-50/30 dark:border-accent-violet/20 dark:bg-ink-800 hover:border-secondary/30 dark:hover:border-accent-violet/40 dark:hover:shadow-[0_0_30px_rgba(167,139,250,0.15)] transition-all duration-300">
+<div data-tilt class="reveal-fade group relative rounded-xl p-4 border border-secondary/15 bg-slate-50/30 dark:border-accent-violet/20 dark:bg-ink-800 hover:border-secondary/30 dark:hover:border-accent-violet/40 dark:hover:shadow-[0_0_30px_rgba(167,139,250,0.15)] transition-all duration-300">
   <h3 class="font-display font-bold mb-3 text-base text-secondary dark:text-slate-100 tracking-tight">{category.name}</h3>
   <div class="flex flex-wrap gap-1.5">
     {category.skills.map((skill) => (

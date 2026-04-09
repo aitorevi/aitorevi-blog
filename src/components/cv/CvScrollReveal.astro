@@ -94,6 +94,19 @@
     }
   }
 
+  /* ---- Tilt 3D cards ---- */
+  .cv-page [data-tilt] {
+    will-change: transform;
+  }
+  /* Quitar transform de la transición de reveal para que el RAF pueda controlarlo */
+  .cv-page .is-visible[data-tilt],
+  .cv-page .is-visible [data-tilt] {
+    transition: opacity 500ms ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cv-page [data-tilt] { will-change: auto; }
+  }
+
   @media print {
     .cv-page .reveal-fade,
     .cv-page .reveal-left,
@@ -157,5 +170,75 @@
     });
   }
 
-  document.addEventListener('astro:page-load', initReveals);
+  function initTilt() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const LERP = 0.08;   // suavidad: más bajo = más inercia
+    const MAX_ROT = 8;   // grados máximos de rotación
+    const MAX_LIFT = 6;  // px de elevación Z
+
+    const cards = document.querySelectorAll<HTMLElement>('.cv-page [data-tilt]');
+
+    cards.forEach(card => {
+      let targetX = 0, targetY = 0, targetZ = 0;
+      let currentX = 0, currentY = 0, currentZ = 0;
+      let rafId = 0;
+      let isHovered = false;
+
+      function lerp(a: number, b: number, t: number) {
+        return a + (b - a) * t;
+      }
+
+      function tick() {
+        currentX = lerp(currentX, targetX, LERP);
+        currentY = lerp(currentY, targetY, LERP);
+        currentZ = lerp(currentZ, targetZ, LERP);
+
+        card.style.transform = `perspective(800px) rotateX(${currentX}deg) rotateY(${currentY}deg) translateZ(${currentZ}px)`;
+
+        const settled =
+          Math.abs(currentX - targetX) < 0.01 &&
+          Math.abs(currentY - targetY) < 0.01 &&
+          Math.abs(currentZ - targetZ) < 0.1;
+
+        if (!settled) {
+          rafId = requestAnimationFrame(tick);
+        } else {
+          rafId = 0;
+          if (!isHovered) card.style.transform = '';
+        }
+      }
+
+      function startRaf() {
+        if (!rafId) rafId = requestAnimationFrame(tick);
+      }
+
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        targetY =  ((x / rect.width)  - 0.5) * 2 * MAX_ROT;
+        targetX = -((y / rect.height) - 0.5) * 2 * (MAX_ROT * 0.75);
+        targetZ = MAX_LIFT;
+        startRaf();
+      });
+
+      card.addEventListener('mouseenter', () => {
+        isHovered = true;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        isHovered = false;
+        targetX = 0;
+        targetY = 0;
+        targetZ = 0;
+        startRaf();
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    initReveals();
+    initTilt();
+  });
 </script>

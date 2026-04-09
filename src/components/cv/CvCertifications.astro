@@ -15,7 +15,7 @@ const { label, entries } = Astro.props;
 
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 reveal-group">
     {entries.map((entry) => (
-      <div class="reveal-fade group relative rounded-xl p-4 border border-secondary/15 bg-slate-50/30 dark:border-accent-violet/20 dark:bg-ink-800 hover:border-secondary/40 dark:hover:border-accent-violet/40 hover:shadow-[0_0_12px_rgba(94,58,238,0.08)] dark:hover:shadow-[0_0_30px_rgba(167,139,250,0.15)] transition-all duration-300">
+      <div data-tilt class="reveal-fade group relative rounded-xl p-4 border border-secondary/15 bg-slate-50/30 dark:border-accent-violet/20 dark:bg-ink-800 hover:border-secondary/40 dark:hover:border-accent-violet/40 hover:shadow-[0_0_12px_rgba(94,58,238,0.08)] dark:hover:shadow-[0_0_30px_rgba(167,139,250,0.15)] transition-all duration-300">
         <div class="flex items-start gap-3">
           <div class="mt-1 h-2.5 w-2.5 rounded-full bg-secondary/30 dark:bg-accent-violet/50 border border-secondary/40 dark:border-accent-violet/60 shrink-0 group-hover:dark:bg-accent-violet/70 group-hover:dark:border-accent-violet/80 transition-colors"></div>
           <div>
