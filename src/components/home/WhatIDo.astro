@@ -1,7 +1,10 @@
 ---
 /**
- * WhatIDo — four glassmorphism cards that reveal with a stagger as the
- * section enters the viewport.
+ * WhatIDo — six glassmorphism cards that reveal with a stagger as the
+ * section enters the viewport. The first row covers technical areas
+ * (backend, frontend, infra) and the second row covers craft practices
+ * (clean architecture, TDD, AI-assisted dev), making explicit that I work
+ * across the whole stack.
  *
  * Uses IntersectionObserver + CSS custom properties (--stagger-delay) to
  * avoid JS animation loops. Respects prefers-reduced-motion.
@@ -15,7 +18,31 @@ interface Props {
 
 const { lang } = Astro.props;
 
+// First row = technical areas (what I build with), second row = practices
+// (how I build). Six cards land as 1×6 on mobile, 2×3 on tablet, 3×2 on
+// desktop. Gradients step through the palette so adjacent cards stay
+// visually distinct.
 const cards = [
+  // Row 1 — areas
+  {
+    icon: '■',
+    titleKey: 'home.cards.backend.title',
+    descKey: 'home.cards.backend.desc',
+    accent: 'from-emerald-400/20 to-transparent',
+  },
+  {
+    icon: '●',
+    titleKey: 'home.cards.frontend.title',
+    descKey: 'home.cards.frontend.desc',
+    accent: 'from-accent-sky/20 to-transparent',
+  },
+  {
+    icon: '⬡',
+    titleKey: 'home.cards.infra.title',
+    descKey: 'home.cards.infra.desc',
+    accent: 'from-cyan-400/20 to-transparent',
+  },
+  // Row 2 — practices
   {
     icon: '◆',
     titleKey: 'home.cards.clean.title',
@@ -27,12 +54,6 @@ const cards = [
     titleKey: 'home.cards.tdd.title',
     descKey: 'home.cards.tdd.desc',
     accent: 'from-accent-violet/20 to-transparent',
-  },
-  {
-    icon: '●',
-    titleKey: 'home.cards.frontend.title',
-    descKey: 'home.cards.frontend.desc',
-    accent: 'from-accent-sky/20 to-transparent',
   },
   {
     icon: '◇',
@@ -61,7 +82,7 @@ const cards = [
     </p>
 
     <ul
-      class="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2"
+      class="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
       data-stagger-root
     >
       {
