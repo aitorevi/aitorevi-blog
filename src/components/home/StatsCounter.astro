@@ -18,10 +18,16 @@ interface Props {
 
 const { lang } = Astro.props;
 
+// The years stat is split into two honest buckets: professional software
+// development (Lean Mind, Mar 2023 → today) and prior business leadership
+// (Tiendas Zulima, 1998–2023). A single "20+ years of experience" card on a
+// dev portfolio was being read as "20+ years coding", which misrepresented
+// the actual timeline. Splitting the number tells the real story: a dev
+// with a long product/business background underneath.
 const stats = [
-  { value: '20', suffix: '+', labelKey: 'home.stats.years' },
+  { value: '3', suffix: '+', labelKey: 'home.stats.dev' },
+  { value: '25', suffix: '+', labelKey: 'home.stats.product' },
   { value: '4', suffix: '+', labelKey: 'home.stats.stacks' },
-  { value: '∞', suffix: '', labelKey: 'home.stats.passion' },
 ];
 ---
 
