@@ -65,7 +65,7 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
 
   <main class="blog-page mx-auto max-w-7xl mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:p-20">
     <header class="mb-12 text-center">
-      <h1 class="mb-4 text-4xl font-bold tracking-tight text-slate-900 dark:text-[#f1f5f9] sm:text-5xl lg:text-6xl">
+      <h1 class="mb-4 text-4xl font-display font-bold tracking-tight text-ink-900 dark:text-slate-100 sm:text-5xl lg:text-6xl">
         Blog
       </h1>
       <p class="mx-auto max-w-3xl text-2xl font-ibm font-bold text-secondary sm:text-3xl">
@@ -85,7 +85,7 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
 
     {regularPosts.length > 0 && (
       <section aria-labelledby="all-posts-heading">
-        <h2 id="all-posts-heading" class="mb-6 text-2xl font-bold text-slate-900">
+        <h2 id="all-posts-heading" class="mb-6 text-2xl font-display font-bold tracking-tight text-ink-900 dark:text-slate-100">
           {featuredPosts.length > 0 ? t(lang, 'blog.allPosts') : t(lang, 'blog.latestPosts')}
         </h2>
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">

@@ -177,7 +177,7 @@ const coverImageUrl = data.coverImage;
 
       <!-- Title -->
       <h1
-        class="text-4xl font-bold leading-tight text-slate-900 dark:text-[#f1f5f9] sm:text-5xl lg:text-6xl"
+        class="text-4xl font-display font-bold leading-tight text-ink-900 dark:text-slate-100 sm:text-5xl lg:text-6xl"
         itemprop="headline"
       >
         {data.title}
@@ -185,14 +185,14 @@ const coverImageUrl = data.coverImage;
 
       <!-- Subtitle/Description -->
       <p
-        class="text-lg text-slate-600 dark:text-[#cbd5e1] sm:text-xl"
+        class="text-lg text-slate-600 dark:text-slate-300 sm:text-xl"
         itemprop="description"
       >
         {data.description}
       </p>
 
       <!-- Metadata -->
-      <div class="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-b border-slate-200 dark:border-[#334155] py-4">
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-b border-slate-200 dark:border-slate-700 py-4">
         <DateDisplay date={data.publishDate} showIcon={true} />
 
         <span class="text-slate-400" aria-hidden="true">•</span>
@@ -234,7 +234,7 @@ const coverImageUrl = data.coverImage;
 
     <!-- Article Content -->
     <div
-      class="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:text-blue-700 dark:hover:prose-a:text-blue-300 prose-img:rounded-lg"
+      class="prose prose-slate dark:prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:text-blue-700 dark:hover:prose-a:text-blue-300 prose-img:rounded-lg"
       itemprop="articleBody"
       id="article-content"
     >
@@ -247,7 +247,7 @@ const coverImageUrl = data.coverImage;
     </template>
 
     <!-- Article Footer -->
-    <footer class="mt-12 border-t border-slate-200 dark:border-[#334155] pt-8">
+    <footer class="mt-12 border-t border-slate-200 dark:border-slate-700 pt-8">
       <div class="flex items-center justify-between">
         <!-- Author Info -->
         <div class="flex items-center gap-3">
@@ -263,7 +263,7 @@ const coverImageUrl = data.coverImage;
             </div>
           )}
           <div>
-            <p class="font-medium text-slate-900 dark:text-[#f1f5f9]">
+            <p class="font-medium text-ink-900 dark:text-slate-100">
               {data.author.url ? (
                 <a href={data.author.url} class="hover:text-blue-600">
                   {data.author.name}
@@ -281,7 +281,7 @@ const coverImageUrl = data.coverImage;
         <!-- Back to Blog Link -->
         <a
           href="/blog"
-          class="inline-flex items-center gap-2 rounded-full bg-slate-100 dark:bg-[#334155] px-4 py-2 text-sm font-medium text-slate-700 dark:text-[#cbd5e1] transition-colors hover:bg-slate-200 dark:hover:bg-[#475569]"
+          class="inline-flex items-center gap-2 rounded-full bg-slate-100 dark:bg-slate-700 px-4 py-2 text-sm font-mono uppercase tracking-[0.15em] text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-200 dark:hover:bg-slate-600"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
