@@ -123,7 +123,7 @@ export default function TechConstellation({ lang = 'es' }: Props) {
     const measure = () => {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
-      const w = Math.max(320, Math.min(640, rect.width));
+      const w = Math.min(640, Math.max(0, rect.width));
       setDims({ w, h: w });
     };
     measure();

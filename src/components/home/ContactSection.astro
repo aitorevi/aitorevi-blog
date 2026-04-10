@@ -158,44 +158,47 @@ const { lang } = Astro.props;
 </section>
 
 <script>
-  /**
-   * Contact form controller — constructs a mailto: URL from the form
-   * fields and opens the user's email client. Zero backend required.
-   */
   function initContactForm() {
     const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
     if (!form) return;
-    const section = form.closest<HTMLElement>('#contact');
-    const email = section?.dataset.contactEmail || 'info@aitorevi.dev';
     const status = form.querySelector<HTMLElement>('[data-contact-status]');
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
 
-    const onSubmit = (e: SubmitEvent) => {
+    const showStatus = (msg: string, isError: boolean) => {
+      if (!status) return;
+      status.textContent = msg;
+      status.classList.remove('hidden', 'text-rose-400', 'dark:text-accent-blue');
+      status.classList.add(isError ? 'text-rose-400' : 'dark:text-accent-blue');
+      status.classList.remove('hidden');
+    };
+
+    const onSubmit = async (e: SubmitEvent) => {
       e.preventDefault();
-      const data = new FormData(form);
-      const name = (data.get('name') || '').toString().trim();
-      const senderEmail = (data.get('email') || '').toString().trim();
-      const subject = (data.get('subject') || '').toString().trim();
-      const message = (data.get('message') || '').toString().trim();
+      const fd = new FormData(form);
+      const name = (fd.get('name') || '').toString().trim();
+      const email = (fd.get('email') || '').toString().trim();
+      const subject = (fd.get('subject') || '').toString().trim();
+      const message = (fd.get('message') || '').toString().trim();
 
-      if (!name || !senderEmail || !subject || !message) {
-        if (status) {
-          status.textContent = status.dataset.errMissing || 'Completa todos los campos.';
-          status.classList.remove('hidden');
-          status.classList.add('text-rose-400');
-        }
+      if (!name || !email || !subject || !message) {
+        showStatus('Completa todos los campos.', true);
         return;
       }
 
-      const body = `${message}\n\n—\n${name}\n${senderEmail}`;
-      const mailto = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      window.location.href = mailto;
+      if (submitBtn) submitBtn.disabled = true;
 
-      if (status) {
-        status.textContent =
-          status.dataset.okMessage ||
-          'Abriendo tu cliente de correo…';
-        status.classList.remove('hidden', 'text-rose-400');
-        status.classList.add('text-accent-blue');
+      try {
+        const res = await fetch('/api/contact', { method: 'POST', body: fd });
+        if (res.ok) {
+          showStatus('¡Mensaje enviado! Te responderé pronto.', false);
+          form.reset();
+        } else {
+          showStatus('Algo fue mal. Inténtalo de nuevo o escríbeme directamente.', true);
+        }
+      } catch {
+        showStatus('Error de red. Inténtalo de nuevo.', true);
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
       }
     };
 
