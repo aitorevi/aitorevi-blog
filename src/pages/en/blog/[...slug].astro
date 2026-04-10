@@ -104,9 +104,9 @@ const coverImageUrl = data.coverImage;
     })} />
   </Fragment>
 
-  <div class="relative isolate min-h-screen">
+  <div class="relative min-h-screen">
     <!-- Dark-mode-only dot field -->
-    <div aria-hidden="true" class="pointer-events-none absolute inset-0 hidden dark:block text-accent-blue">
+    <div aria-hidden="true" class="pointer-events-none fixed inset-0 hidden dark:block text-accent-blue">
       {dots.map((d) => (
         <span
           class="absolute rounded-full bg-current"
