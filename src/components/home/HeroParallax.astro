@@ -107,10 +107,11 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
   <!-- Layer 3: orbit ring accent — language-independent, persisted across nav -->
   <div
     transition:persist="hero-orbit"
-    class="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent-blue/20 dark:border-accent-blue/30 will-change-transform"
+    class="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent-blue/20 dark:border-accent-blue/30 will-change-transform opacity-0 transition-opacity duration-700"
     data-parallax-layer
     data-speed="0.25"
     data-rotate="0.02"
+    data-orbit-ring
     aria-hidden="true"
   >
   </div>
@@ -298,6 +299,14 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
     if (!root) return;
     currentRoot = root;
     setRevealDelays(root);
+
+    // Fade in orbit ring after hero content has appeared
+    const orbitRing = root.querySelector<HTMLElement>('[data-orbit-ring]');
+    if (orbitRing) {
+      setTimeout(() => {
+        orbitRing.style.opacity = '1';
+      }, 800);
+    }
 
     const layerNodes = root.querySelectorAll<HTMLElement>('[data-parallax-layer]');
     layers = Array.from(layerNodes).map((el) => ({
