@@ -32,8 +32,8 @@ const jsonPath = getJsonPath(lang);
       <div class="absolute inset-0 opacity-[0.18] bg-[radial-gradient(rgba(203,213,225,0.35)_1px,transparent_1px)] [background-size:24px_24px]"></div>
     </div>
 
-    <section class="cv-page mx-auto max-w-screen-xl mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:p-16 pb-8 sm:pb-10 md:pb-12 lg:pb-12 rounded-2xl font-ibm
-                    bg-grayLight/70 dark:bg-white/[0.03] dark:backdrop-blur-md dark:border dark:border-white/10 dark:shadow-[0_0_80px_rgba(96,165,250,0.05)]">
+    <section class="cv-page mx-auto max-w-screen-xl mb-2 md:mb-4 p-6 pt-16 sm:p-7 sm:pt-16 md:p-8 md:pt-24 lg:p-16 lg:pt-24 pb-8 sm:pb-10 md:pb-12 lg:pb-12 rounded-2xl font-ibm
+                    "">
       <CvScrollReveal />
       <CvHeader contact={data.contact} />
       <CvProfile label={data.labels.profile} summary={data.summary} />
@@ -44,4 +44,14 @@ const jsonPath = getJsonPath(lang);
       <CvPdfDownload pdfPath={pdfPath} jsonPath={jsonPath} label={data.labels.downloadPdf} />
     </section>
   </div>
+  <style is:global>
+    body:has(.cv-page) {
+      background-color: #f8fafc;
+      background-image: none;
+    }
+    html.dark body:has(.cv-page),
+    html.dark body:has(.cv-page) main {
+      background-color: #020617;
+    }
+  </style>
 </Layout>

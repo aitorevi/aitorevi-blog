@@ -44,7 +44,7 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
     })} />
   </Fragment>
 
-  <main class="mx-auto max-w-7xl bg-grayLight bg-opacity-70 dark:bg-[#1a1f2e] dark:bg-opacity-70 mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:p-20 rounded">
+  <main class="blog-page mx-auto max-w-7xl mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:p-20">
     <header class="mb-12 text-center">
       <h1 class="mb-4 text-4xl font-bold tracking-tight text-slate-900 dark:text-[#f1f5f9] sm:text-5xl lg:text-6xl">
         Blog
@@ -87,6 +87,16 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
       </div>
     )}
   </main>
+  <style is:global>
+    body:has(.blog-page) {
+      background-color: #f8fafc;
+      background-image: none;
+    }
+    html.dark body:has(.blog-page),
+    html.dark body:has(.blog-page) main {
+      background-color: #020617;
+    }
+  </style>
 </Layout>
 
 <style>

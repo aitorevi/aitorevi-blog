@@ -9,6 +9,7 @@
  * The section doubles as the anchor target for the hero's 'Contact' CTA
  * (id="contact").
  */
+import { Icon } from 'astro-icon/components';
 import type { Lang } from '../../data/cv';
 import { t } from '../../i18n/utils';
 
@@ -23,7 +24,7 @@ const { lang } = Astro.props;
   id="contact"
   class="relative bg-slate-50 py-24 text-ink-900 dark:bg-ink-900 dark:text-slate-100 sm:py-32"
   aria-labelledby="contact-heading"
-  data-contact-email="aitorevi@gmail.com"
+  data-contact-email="info@aitorevi.dev"
 >
   <div class="mx-auto max-w-2xl px-6">
     <div class="text-center">
@@ -128,28 +129,29 @@ const { lang } = Astro.props;
 
     <div class="mt-12 flex flex-wrap items-center justify-center gap-4 text-[11px] uppercase tracking-[0.2em] text-slate-600 dark:text-slate-500 font-mono">
       <a
-        href="mailto:aitorevi@gmail.com"
-        class="transition-colors hover:text-secondary dark:hover:text-accent-blue"
+        href="https://www.linkedin.com/in/aitor-reviriego-amor/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center gap-1.5 transition-colors hover:text-secondary dark:hover:text-accent-blue"
       >
-        aitorevi@gmail.com
+        <Icon name="linkedin" class="w-3.5 h-3.5" />
+        LinkedIn
       </a>
-      <span class="text-slate-400 dark:text-slate-700">·</span>
       <a
         href="https://github.com/aitorevi"
         target="_blank"
         rel="noopener noreferrer"
-        class="transition-colors hover:text-secondary dark:hover:text-accent-blue"
+        class="flex items-center gap-1.5 transition-colors hover:text-secondary dark:hover:text-accent-blue"
       >
+        <Icon name="github" class="w-3.5 h-3.5" />
         GitHub
       </a>
-      <span class="text-slate-400 dark:text-slate-700">·</span>
       <a
-        href="https://www.linkedin.com/in/aitorevi/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="transition-colors hover:text-secondary dark:hover:text-accent-blue"
+        href="mailto:info@aitorevi.dev"
+        class="flex items-center gap-1.5 transition-colors hover:text-secondary dark:hover:text-accent-blue"
       >
-        LinkedIn
+        <Icon name="mail" class="w-3.5 h-3.5" />
+        info@aitorevi.dev
       </a>
     </div>
   </div>
@@ -164,7 +166,7 @@ const { lang } = Astro.props;
     const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
     if (!form) return;
     const section = form.closest<HTMLElement>('#contact');
-    const email = section?.dataset.contactEmail || 'aitorevi@gmail.com';
+    const email = section?.dataset.contactEmail || 'info@aitorevi.dev';
     const status = form.querySelector<HTMLElement>('[data-contact-status]');
 
     const onSubmit = (e: SubmitEvent) => {
