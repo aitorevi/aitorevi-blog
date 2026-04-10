@@ -7,7 +7,6 @@ import vercel from "@astrojs/vercel";
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'hybrid',
   adapter: vercel(),
   integrations: [tailwind(), icon(), react(), sitemap({
     filter: (page) => !page.includes('/katas/') && !page.includes('/print'),

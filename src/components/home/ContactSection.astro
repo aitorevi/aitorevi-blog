@@ -188,7 +188,11 @@ const { lang } = Astro.props;
       if (submitBtn) submitBtn.disabled = true;
 
       try {
-        const res = await fetch('/api/contact', { method: 'POST', body: fd });
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, subject, message }),
+        });
         if (res.ok) {
           showStatus('¡Mensaje enviado! Te responderé pronto.', false);
           form.reset();
