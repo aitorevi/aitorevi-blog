@@ -29,6 +29,14 @@ import { t, getBlogSlugFromId } from '../../i18n/utils';
 
 const lang = 'es';
 
+const DOT_COUNT = 60;
+const dots = Array.from({ length: DOT_COUNT }, (_, i) => ({
+  x: ((i * 37) % 100) + Math.random() * 2,
+  y: ((i * 53) % 95) + Math.random() * 2,
+  size: 1 + ((i * 13) % 4) * 0.6,
+  opacity: 0.12 + ((i * 7) % 10) * 0.025,
+}));
+
 // Astro 5: Fetch all blog posts using Content Layer API
 const allPosts = await getCollection('blog');
 
@@ -71,6 +79,17 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
       })),
     })} />
   </Fragment>
+
+  <div class="relative isolate min-h-screen">
+    <!-- Dark-mode-only dot field -->
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 hidden dark:block text-accent-blue">
+      {dots.map((d) => (
+        <span
+          class="absolute rounded-full bg-current"
+          style={`left:${d.x}%;top:${d.y}%;width:${d.size}px;height:${d.size}px;opacity:${d.opacity};`}
+        />
+      ))}
+    </div>
 
   <!-- Main Content -->
   <main class="blog-page mx-auto max-w-7xl mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:p-20">
@@ -172,6 +191,7 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
     </section>
     -->
   </main>
+  </div>
   <style is:global>
     body:has(.blog-page) {
       background-color: #f8fafc;
@@ -180,6 +200,9 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
     html.dark body:has(.blog-page),
     html.dark body:has(.blog-page) main {
       background-color: #020617;
+      background-image: radial-gradient(ellipse at 30% 20%, #0f172a 0%, #020617 55%, #000 100%);
+      background-attachment: fixed;
+      background-size: cover;
     }
   </style>
 </Layout>
