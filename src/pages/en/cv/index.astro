@@ -15,6 +15,14 @@ const lang: Lang = 'en';
 const data = getCvData(lang);
 const pdfPath = getPdfPath(lang);
 const jsonPath = getJsonPath(lang);
+
+const DOT_COUNT = 60;
+const dots = Array.from({ length: DOT_COUNT }, (_, i) => ({
+  x: ((i * 37) % 100) + Math.random() * 2,
+  y: ((i * 53) % 95) + Math.random() * 2,
+  size: 1 + ((i * 13) % 4) * 0.6,
+  opacity: 0.12 + ((i * 7) % 10) * 0.025,
+}));
 ---
 
 <Layout
@@ -24,11 +32,15 @@ const jsonPath = getJsonPath(lang);
 >
   <!-- Ambient wrapper: stays neutral in light mode, becomes dark-ink in dark mode
        to bridge smoothly with the home's visual language. -->
-  <div class="relative isolate min-h-[calc(100vh-3.5rem)] md:min-h-[calc(100vh-5rem)] dark:bg-home-radial dark:[background-size:100%_100vh] dark:[background-repeat:no-repeat]">
-    <!-- Dark-mode-only decorative layers (dot field + violet glow) -->
-    <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 hidden dark:block">
-      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(167,139,250,0.08),transparent_55%)]"></div>
-      <div class="absolute inset-0 opacity-[0.18] bg-[radial-gradient(rgba(203,213,225,0.35)_1px,transparent_1px)] [background-size:24px_24px]"></div>
+  <div class="relative isolate min-h-[calc(100vh-3.5rem)] md:min-h-[calc(100vh-5rem)]">
+    <!-- Dark-mode-only dot field — same logic as home hero -->
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 hidden dark:block text-accent-blue">
+      {dots.map((d) => (
+        <span
+          class="absolute rounded-full bg-current"
+          style={`left:${d.x}%;top:${d.y}%;width:${d.size}px;height:${d.size}px;opacity:${d.opacity};`}
+        />
+      ))}
     </div>
 
     <section class="cv-page mx-auto max-w-screen-xl mb-2 md:mb-4 p-6 pt-16 sm:p-7 sm:pt-16 md:p-8 md:pt-24 lg:p-16 lg:pt-24 pb-8 sm:pb-10 md:pb-12 lg:pb-12 rounded-2xl font-ibm
@@ -51,6 +63,9 @@ const jsonPath = getJsonPath(lang);
     html.dark body:has(.cv-page),
     html.dark body:has(.cv-page) main {
       background-color: #020617;
+      background-image: radial-gradient(ellipse at 30% 20%, #0f172a 0%, #020617 55%, #000 100%);
+      background-attachment: fixed;
+      background-size: cover;
     }
   </style>
 </Layout>
