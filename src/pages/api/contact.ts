@@ -37,15 +37,14 @@ export const POST: APIRoute = async ({ request }) => {
   const resend = new Resend(apiKey);
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const { error } = await resend.emails.send({
-    from: 'Portfolio Contact <onboarding@resend.dev>',
-    to: import.meta.env.CONTACT_TO ?? process.env.CONTACT_TO ?? 'info@aitorevi.dev',
+    from: 'Portfolio Contact <noreply@aitorevi.dev>',
+    to: 'info@aitorevi.dev',
     ...(isValidEmail ? { replyTo: email } : {}),
     subject: `[Portfolio] ${subject}`,
     text: `From: ${name} <${email}>\n\n${message}`,
   });
 
   if (error) {
-    console.error('[contact] Resend error:', error);
     return new Response(JSON.stringify({ error: 'send_failed', detail: error.message }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
