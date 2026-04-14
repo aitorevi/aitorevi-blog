@@ -5,12 +5,18 @@ import { Redis } from '@upstash/redis';
 
 export const prerender = false;
 
-function buildConfirmationHtml(name: string, message: string): string {
-  const escapedMessage = message
+function escapeHtml(str: string): string {
+  return str
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-    .replace(/\n/g, '<br>');
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
+function buildConfirmationHtml(name: string, message: string): string {
+  const escapedName = escapeHtml(name);
+  const escapedMessage = escapeHtml(message).replace(/\n/g, '<br>');
 
   return `<!DOCTYPE html>
 <html lang="es">
@@ -37,7 +43,7 @@ function buildConfirmationHtml(name: string, message: string): string {
             <td style="background-color:#0b1120;border:1px solid #1e293b;border-radius:16px;padding:40px 36px;">
 
               <!-- Greeting -->
-              <p style="margin:0 0 8px 0;font-family:Outfit,system-ui,sans-serif;font-size:22px;font-weight:700;color:#f1f5f9;">Hola, ${name}.</p>
+              <p style="margin:0 0 8px 0;font-family:Outfit,system-ui,sans-serif;font-size:22px;font-weight:700;color:#f1f5f9;">Hola, ${escapedName}.</p>
 
               <!-- Confirmation -->
               <p style="margin:0 0 32px 0;font-size:15px;line-height:1.6;color:#cbd5e1;">He recibido tu mensaje y te responderé lo antes posible. Aquí tienes una copia de lo que me enviaste:</p>
