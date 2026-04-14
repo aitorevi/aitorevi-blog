@@ -28,13 +28,13 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "resend": "^6.10.0",
+    "@sparticuz/chromium": "^143.0.4",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3"
   },
   "devDependencies": {
     "@heroicons/react": "^2.1.1",
     "@playwright/test": "^1.59.0",
-    "@sparticuz/chromium": "^143.0.4",
     "@tailwindcss/typography": "^0.5.19",
     "vitest": "^1.1.1"
   }
