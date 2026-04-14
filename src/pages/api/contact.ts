@@ -92,16 +92,20 @@ function getRatelimiter(): Ratelimit | null {
 }
 
 export const POST: APIRoute = async ({ request }) => {
-  // Rate limiting (skipped in dev if Upstash is not configured)
+  // Rate limiting (skipped if Upstash is not configured or unreachable)
   const ratelimiter = getRatelimiter();
   if (ratelimiter) {
-    const ip = request.headers.get('x-forwarded-for') ?? 'anonymous';
-    const { success } = await ratelimiter.limit(ip);
-    if (!success) {
-      return new Response(JSON.stringify({ error: 'too_many_requests' }), {
-        status: 429,
-        headers: { 'Content-Type': 'application/json' },
-      });
+    try {
+      const ip = request.headers.get('x-forwarded-for') ?? 'anonymous';
+      const { success } = await ratelimiter.limit(ip);
+      if (!success) {
+        return new Response(JSON.stringify({ error: 'too_many_requests' }), {
+          status: 429,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+    } catch {
+      // Upstash unreachable — allow the request through rather than blocking all traffic
     }
   }
 
