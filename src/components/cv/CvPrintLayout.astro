@@ -1,10 +1,18 @@
 ---
+/**
+ * CvPrintLayout — standalone ATS-optimised PDF layout.
+ *
+ * Does NOT import any web CV components. All content is rendered directly
+ * from the CvData prop so there are no Tailwind class overrides, no timeline
+ * dots, no dark-mode styles, and no responsive variants to fight against.
+ *
+ * Design goals:
+ * - Single page A4
+ * - Single color (#1e293b) — ATS-friendly, readable by bots and humans
+ * - Zero decorative elements: no dots, borders, shadows, icons
+ * - Skills rendered as inline comma-separated lists to save vertical space
+ */
 import type { CvData, Lang } from '../../data/cv';
-import CvProfile from './CvProfile.astro';
-import CvExperience from './CvExperience.astro';
-import CvEducation from './CvEducation.astro';
-import CvCertifications from './CvCertifications.astro';
-import CvSkills from './CvSkills.astro';
 
 interface Props {
   data: CvData;
@@ -14,11 +22,10 @@ interface Props {
 const { data, lang } = Astro.props;
 const { contact } = data;
 
-// Build contact items with URLs visible for ATS
 const contactItems = [
   contact.location,
-  ...contact.links.map((link) =>
-    link.url.startsWith('mailto:') ? link.url.replace('mailto:', '') : link.url.replace('https://', '')
+  ...contact.links.map((l) =>
+    l.url.startsWith('mailto:') ? l.url.replace('mailto:', '') : l.url.replace('https://', '')
   ),
 ];
 ---
@@ -26,7 +33,6 @@ const contactItems = [
 <html lang={lang}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
     <meta name="robots" content="noindex, nofollow" />
     <title>{data.labels.pageTitle}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -34,32 +40,89 @@ const contactItems = [
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <div class="cv-print">
-      <header class="print-header">
+    <div class="cv">
+
+      <!-- HEADER -->
+      <header>
         <h1>{contact.name}</h1>
-        <p class="print-title">{contact.title}</p>
-        <div class="print-contact">
-          {contactItems.map((item, i) => (
-            <>
-              {i > 0 && <span class="print-sep">|</span>}
-              <span>{item}</span>
-            </>
+        <p class="title">{contact.title}</p>
+        <p class="contact">{contactItems.join(' · ')}</p>
+      </header>
+
+      <!-- PERFIL -->
+      <section>
+        <h2>{data.labels.profile}</h2>
+        <p>{data.summary}</p>
+      </section>
+
+      <!-- EXPERIENCIA -->
+      <section>
+        <h2>{data.labels.experience}</h2>
+        {data.experience.map((entry) =>
+          entry.bullets.map((bullet) => (
+            <div class="entry">
+              <div class="entry-header">
+                <span class="entry-company">{entry.company} · {entry.role}</span>
+                {bullet.period && <span class="entry-period">{bullet.period}</span>}
+              </div>
+              <strong class="entry-heading">{bullet.heading}</strong>
+              {bullet.text && <p class="entry-text">{bullet.text}</p>}
+              {bullet.tags && bullet.tags.length > 0 && (
+                <p class="entry-tags">{bullet.tags.join(' · ')}</p>
+              )}
+            </div>
+          ))
+        )}
+      </section>
+
+      <!-- FORMACIÓN -->
+      <section>
+        <h2>{data.labels.education}</h2>
+        {data.education.map((entry) => (
+          <div class="entry">
+            <div class="entry-header">
+              <strong class="entry-heading">{entry.degree}</strong>
+              {entry.period && <span class="entry-period">{entry.period}</span>}
+            </div>
+            <span class="entry-company">{entry.institution}</span>
+          </div>
+        ))}
+      </section>
+
+      <!-- CERTIFICACIONES -->
+      <section>
+        <h2>{data.labels.certifications}</h2>
+        <div class="cert-grid">
+          {data.certifications.map((cert) => (
+            <div class="cert">
+              <strong>{cert.name}</strong>
+              <span class="entry-company">{cert.institution}</span>
+            </div>
           ))}
         </div>
-      </header>
-      <CvProfile label={data.labels.profile} summary={data.summary} />
-      <CvExperience label={data.labels.experience} entries={data.experience} />
-      <CvEducation label={data.labels.education} entries={data.education} />
-      <CvCertifications label={data.labels.certifications} entries={data.certifications} />
-      <CvSkills label={data.labels.skills} categories={data.skills} />
+      </section>
+
+      <!-- APTITUDES -->
+      <section>
+        <h2>{data.labels.skills}</h2>
+        <div class="skills">
+          {data.skills.map((cat) => (
+            <div class="skill-row">
+              <span class="skill-cat">{cat.name}:</span>
+              <span>{cat.skills.join(' · ')}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
     </div>
   </body>
 </html>
 
-<style is:global>
+<style>
   @page {
     size: A4;
-    margin: 10mm 14mm;
+    margin: 9mm 14mm;
   }
 
   * {
@@ -70,266 +133,145 @@ const contactItems = [
 
   body {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 10pt;
-    line-height: 1.4;
+    font-size: 8.5pt;
+    line-height: 1.35;
     color: #1e293b;
     background: white;
   }
 
-  .cv-print {
+  .cv {
     max-width: 100%;
   }
 
-  /* Force IBM Plex Mono on every element in print — the public CV uses
-     font-display (Outfit) and font-mono (JetBrains Mono) for visual coherence
-     with the home, but the ATS PDF must stay on IBM Plex Mono for consistency
-     across sections and for matching the tuned line-heights below. */
-  .cv-print,
-  .cv-print *,
-  .cv-print h1,
-  .cv-print h2,
-  .cv-print h3,
-  .cv-print p,
-  .cv-print span,
-  .cv-print a {
-    font-family: 'IBM Plex Mono', monospace !important;
-  }
-
-  /* Neutralize the home's accent palette in print — ATS readers expect
-     neutral slate colors, not violet/blue accents. */
-  .cv-print .dark\:text-accent-violet,
-  .cv-print .dark\:text-accent-blue,
-  .cv-print .text-accent-violet,
-  .cv-print .text-accent-blue {
-    color: #475569 !important;
-  }
-
-  /* Reset any text-shadow glow that CvHeader adds to the name in dark mode. */
-  .cv-print h1,
-  .cv-print .cv-name-glow {
-    text-shadow: none !important;
-  }
-
-  /* Print header */
-  .print-header {
+  /* HEADER */
+  header {
     text-align: center;
-    margin-bottom: 16pt;
+    margin-bottom: 10pt;
+    padding-bottom: 8pt;
+    border-bottom: 1pt solid #1e293b;
   }
 
-  .print-header h1 {
-    font-size: 20pt;
+  h1 {
+    font-size: 18pt;
     font-weight: 700;
-    margin-bottom: 4pt;
+    letter-spacing: -0.02em;
     color: #0f172a;
+    margin-bottom: 2pt;
   }
 
-  .print-title {
-    font-size: 11pt;
+  .title {
+    font-size: 9.5pt;
     font-weight: 600;
+    margin-bottom: 3pt;
+  }
+
+  .contact {
+    font-size: 7.5pt;
     color: #475569;
-    margin-bottom: 6pt;
   }
 
-  .print-contact {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 6pt;
-    font-size: 8.5pt;
-    color: #64748b;
-  }
-
-  .print-sep {
-    color: #cbd5e1;
-  }
-
-  /* Hide SVG icons in print (for reused components) */
-  .cv-print svg,
-  .cv-print [data-icon] {
-    display: none !important;
-  }
-
-  /* Sections */
-  .cv-print section {
-    margin-bottom: 14pt;
-  }
-
-  .cv-print section h2 {
-    font-size: 13pt;
-    font-weight: 700;
-    border-bottom: 1.5pt solid #334155;
-    padding-bottom: 3pt;
+  /* SECTIONS */
+  section {
     margin-bottom: 8pt;
+  }
+
+  h2 {
+    font-size: 9pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 0.5pt solid #1e293b;
+    padding-bottom: 2pt;
+    margin-bottom: 5pt;
     color: #0f172a;
   }
 
-  /* Experience */
-  .cv-print section > div {
+  /* ENTRIES (experience & education) */
+  .entry {
+    margin-bottom: 5pt;
     page-break-inside: avoid;
   }
 
-  .cv-print section > div > div:first-child {
+  .entry:last-child {
+    margin-bottom: 0;
+  }
+
+  .entry-header {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
+    gap: 8pt;
   }
 
-  .cv-print h3 {
-    font-size: 11pt;
+  .entry-company {
+    font-size: 7.5pt;
+    font-weight: 600;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .entry-period {
+    font-size: 7.5pt;
+    color: #64748b;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .entry-heading {
+    display: block;
+    font-size: 9pt;
     font-weight: 700;
     color: #0f172a;
-  }
-
-  /* Role text (text-secondary in web) */
-  .cv-print .text-secondary {
-    color: #475569 !important;
-    font-weight: 600;
-  }
-
-  /* Period text */
-  .cv-print .text-slate-500,
-  .cv-print .dark\:text-slate-400 {
-    color: #64748b !important;
-    font-size: 9pt;
-  }
-
-  /* Bullet lists */
-  .cv-print ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  .cv-print ul li {
-    display: flex;
-    gap: 6pt;
-    margin-bottom: 6pt;
-    page-break-inside: avoid;
-  }
-
-  .cv-print ul li > span:first-child {
-    color: #475569;
-    flex-shrink: 0;
     margin-top: 1pt;
   }
 
-  .cv-print ul li strong {
-    font-size: 10pt;
-    color: #0f172a;
-  }
-
-  .cv-print ul li p {
-    font-size: 9pt;
+  .entry-text {
+    font-size: 8pt;
     color: #334155;
     margin-top: 2pt;
     line-height: 1.4;
   }
 
-  /* Bullet heading + period row */
-  .cv-print ul li > div {
-    flex: 1;
+  .entry-tags {
+    font-size: 7pt;
+    color: #64748b;
+    margin-top: 2pt;
   }
 
-  .cv-print ul li > div > div:first-child {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    width: 100%;
-  }
-
-  /* Tags - plain text with subtle border for ATS readability */
-  .cv-print [role="term"],
-  .cv-print span[class*="tag"] {
-    display: inline-flex;
-    align-items: center;
-    padding: 1pt 5pt;
-    font-size: 8pt;
-    font-weight: 500;
-    border: 0.5pt solid #cbd5e1;
-    border-radius: 3pt;
-    color: #475569;
-    background: transparent;
-    margin: 1pt;
-  }
-
-  /* Tags container */
-  .cv-print div[class*="flex-wrap"] {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 3pt;
-    margin-top: 3pt;
-  }
-
-  /* Skills grid */
-  .cv-print div[class*="grid"] {
+  /* CERTIFICATIONS */
+  .cert-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10pt;
+    grid-template-columns: 1fr 1fr;
+    gap: 3pt 16pt;
   }
 
-  /* Each skill category card: simplify borders for print */
-  .cv-print div[class*="grid"] > div {
+  .cert {
     display: flex;
     flex-direction: column;
-    border: 0.5pt solid #cbd5e1 !important;
-    border-radius: 4pt;
-    padding: 6pt;
-    background: transparent !important;
   }
 
-  .cv-print div[class*="grid"] h3 {
-    font-size: 10pt;
-    margin-bottom: 4pt;
-    white-space: nowrap;
-    color: #475569 !important;
+  .cert strong {
+    font-size: 8pt;
+    font-weight: 700;
+    color: #0f172a;
   }
 
-  /* Education & Certifications timeline entries */
-  .cv-print section > div[class*="flex"][class*="gap-3"] {
-    margin-bottom: 6pt;
-    page-break-inside: avoid;
+  /* SKILLS */
+  .skills {
+    display: flex;
+    flex-direction: column;
+    gap: 3pt;
   }
 
-  /* Experience item container */
-  .cv-print section > div[class*="mb-8"],
-  .cv-print section > div[class*="mb-0"] {
-    margin-bottom: 10pt;
+  .skill-row {
+    font-size: 8pt;
+    line-height: 1.4;
   }
 
-  /* Hide timeline track column in print (dots + line segments) */
-  .cv-print div[class*="flex"][class*="gap-3"] > div[class*="w-4"] {
-    display: none !important;
+  .skill-cat {
+    font-weight: 700;
+    color: #0f172a;
+    margin-right: 4pt;
   }
-
-  /* Remove flex gap from timeline rows in print */
-  .cv-print div[class*="flex"][class*="gap-3"] {
-    gap: 0 !important;
-  }
-
-  /* Links should show URL for ATS */
-  .cv-print a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  /* Override any dark mode classes */
-  /* Attribute selectors avoid CSS-syntax issues with escaped `#` inside
-     Tailwind arbitrary-value class names (esbuild minifier warning). */
-  .dark .cv-print,
-  .cv-print [class*="dark:bg-["],
-  .cv-print [class*="dark:text-["] {
-    background: white !important;
-    color: #1e293b !important;
-  }
-
-  /* Override responsive breakpoints - always use full layout */
-  .cv-print .md\:flex-row { flex-direction: row; }
-  .cv-print .md\:items-baseline { align-items: baseline; }
-  .cv-print .md\:justify-between { justify-content: space-between; }
-  .cv-print .md\:mt-0 { margin-top: 0; }
-  .cv-print .sm\:flex-row { flex-direction: row; }
-  .cv-print .sm\:items-baseline { align-items: baseline; }
-  .cv-print .sm\:justify-between { justify-content: space-between; }
-  .cv-print .sm\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
-  .cv-print .lg\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
 </style>
