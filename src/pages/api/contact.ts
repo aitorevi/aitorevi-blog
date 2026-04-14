@@ -82,8 +82,8 @@ function buildConfirmationHtml(name: string, message: string): string {
 
 // Rate limiter — only active when Upstash env vars are present
 function getRatelimiter(): Ratelimit | null {
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  const url = import.meta.env.UPSTASH_REDIS_REST_URL ?? process.env.UPSTASH_REDIS_REST_URL;
+  const token = import.meta.env.UPSTASH_REDIS_REST_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
   if (!url || !token) return null;
   return new Ratelimit({
     redis: new Redis({ url, token }),
