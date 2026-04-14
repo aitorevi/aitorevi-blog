@@ -45,13 +45,14 @@ const stats = [
     {
       stats.map((stat) => (
         <div
-          class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white px-6 py-10 text-center shadow-lg backdrop-blur-md dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl"
+          class="group relative overflow-hidden rounded-xl border border-secondary/15 bg-slate-50/30 px-6 py-10 text-center transition-[border-color,box-shadow] duration-300 hover:border-secondary/40 hover:shadow-[0_0_12px_rgba(94,58,238,0.08)] dark:border-accent-violet/20 dark:bg-ink-800 dark:hover:border-accent-violet/40 dark:hover:shadow-[0_0_30px_rgba(167,139,250,0.15)]"
           data-stat
           data-stat-target={stat.value}
           data-stat-suffix={stat.suffix}
+          data-tilt-stat
         >
           <div
-            class="pointer-events-none absolute inset-x-0 -top-20 h-40 bg-gradient-to-b from-secondary/10 to-transparent opacity-60 dark:from-accent-blue/10"
+            class="pointer-events-none absolute inset-x-0 -top-20 h-40 bg-gradient-to-b from-secondary/10 to-transparent opacity-60 dark:from-accent-violet/10"
             aria-hidden="true"
           />
           <div
@@ -60,7 +61,7 @@ const stats = [
           >
             {stat.suffix ? '0' : stat.value}
           </div>
-          <div class="relative mt-3 font-mono text-[11px] uppercase tracking-[0.25em] text-secondary/70 dark:text-accent-blue/60">
+          <div class="relative mt-3 font-mono text-[11px] uppercase tracking-[0.25em] text-secondary/70 dark:text-accent-violet/50 group-hover:dark:text-accent-violet/80 transition-colors">
             {t(lang, stat.labelKey)}
           </div>
         </div>
@@ -153,6 +154,55 @@ const stats = [
     stats.forEach((stat) => io.observe(stat));
   }
 
-  document.addEventListener('astro:page-load', initStats);
-  document.addEventListener('astro:after-swap', initStats);
+  function initTilt() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const LERP = 0.08;
+    const MAX_ROT = 8;
+    const MAX_LIFT = 6;
+
+    document.querySelectorAll<HTMLElement>('[data-tilt-stat]').forEach((card) => {
+      let targetX = 0, targetY = 0, targetZ = 0;
+      let currentX = 0, currentY = 0, currentZ = 0;
+      let rafId = 0;
+      let isHovered = false;
+
+      const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+      function tick() {
+        currentX = lerp(currentX, targetX, LERP);
+        currentY = lerp(currentY, targetY, LERP);
+        currentZ = lerp(currentZ, targetZ, LERP);
+        card.style.transform = `perspective(800px) rotateX(${currentX}deg) rotateY(${currentY}deg) translateZ(${currentZ}px)`;
+        const settled =
+          Math.abs(currentX - targetX) < 0.01 &&
+          Math.abs(currentY - targetY) < 0.01 &&
+          Math.abs(currentZ - targetZ) < 0.1;
+        if (!settled) {
+          rafId = requestAnimationFrame(tick);
+        } else {
+          rafId = 0;
+          if (!isHovered) card.style.transform = '';
+        }
+      }
+
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        targetY =  ((e.clientX - rect.left) / rect.width  - 0.5) * 2 * MAX_ROT;
+        targetX = -((e.clientY - rect.top)  / rect.height - 0.5) * 2 * (MAX_ROT * 0.75);
+        targetZ = MAX_LIFT;
+        if (!rafId) rafId = requestAnimationFrame(tick);
+      });
+
+      card.addEventListener('mouseenter', () => { isHovered = true; });
+      card.addEventListener('mouseleave', () => {
+        isHovered = false;
+        targetX = 0; targetY = 0; targetZ = 0;
+        if (!rafId) rafId = requestAnimationFrame(tick);
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', () => { initStats(); initTilt(); });
+  document.addEventListener('astro:after-swap', () => { initStats(); initTilt(); });
 </script>
