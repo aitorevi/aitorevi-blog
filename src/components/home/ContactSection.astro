@@ -47,6 +47,15 @@ const { lang } = Astro.props;
       data-contact-form
       novalidate
     >
+      <!-- Honeypot: oculto para humanos, los bots lo rellenan -->
+      <input
+        type="text"
+        name="_trap"
+        tabindex="-1"
+        autocomplete="off"
+        aria-hidden="true"
+        style="position:absolute;left:-9999px;opacity:0;height:0;width:0;"
+      />
       <div class="grid gap-5 sm:grid-cols-2">
         <label class="block">
           <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary/80 dark:text-accent-blue/60">
@@ -57,9 +66,12 @@ const { lang } = Astro.props;
             name="name"
             required
             autocomplete="name"
+            maxlength="100"
+            data-field="name"
             class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus:ring-0 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
             placeholder="Jane Doe"
           />
+          <span data-field-error="name" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
         </label>
         <label class="block">
           <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary/80 dark:text-accent-blue/60">
@@ -70,9 +82,12 @@ const { lang } = Astro.props;
             name="email"
             required
             autocomplete="email"
+            maxlength="254"
+            data-field="email"
             class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus:ring-0 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
             placeholder="jane@example.com"
           />
+          <span data-field-error="email" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
         </label>
       </div>
 
@@ -84,9 +99,12 @@ const { lang } = Astro.props;
           type="text"
           name="subject"
           required
+          maxlength="200"
+          data-field="subject"
           class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus:ring-0 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
           placeholder={t(lang, 'home.contact.subjectPlaceholder')}
         />
+        <span data-field-error="subject" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
       </label>
 
       <label class="mt-5 block">
@@ -97,15 +115,15 @@ const { lang } = Astro.props;
           name="message"
           required
           rows="5"
+          maxlength="5000"
+          data-field="message"
           class="w-full resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus:ring-0 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
           placeholder={t(lang, 'home.contact.messagePlaceholder')}
         ></textarea>
+        <span data-field-error="message" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
       </label>
 
-      <div class="mt-6 flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center">
-        <p class="text-xs text-slate-500" data-contact-note>
-          {t(lang, 'home.contact.note')}
-        </p>
+      <div class="mt-6 flex justify-end">
         <button
           type="submit"
           class="group inline-flex items-center justify-center gap-2 rounded-lg border border-secondary/50 bg-gradient-to-r from-secondary/10 to-accent-violet/10 px-6 py-3 font-mono text-sm font-semibold text-secondary transition-all duration-300 hover:border-secondary/80 hover:from-secondary/20 hover:to-accent-violet/20 hover:shadow-[0_10px_30px_-10px_rgba(94,58,238,0.4)] dark:border-accent-blue/40 dark:from-accent-blue/15 dark:to-accent-violet/15 dark:text-accent-blue dark:hover:border-accent-blue/80 dark:hover:from-accent-blue/25 dark:hover:to-accent-violet/25 dark:hover:shadow-[0_0_40px_rgba(96,165,250,0.3)]"
@@ -117,6 +135,7 @@ const { lang } = Astro.props;
           >→</span>
         </button>
       </div>
+
 
       <p
         class="mt-4 hidden text-center text-xs text-secondary dark:text-accent-blue"
@@ -158,6 +177,47 @@ const { lang } = Astro.props;
 </section>
 
 <script>
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const INPUT_ERROR = ['!border-slate-300', '!border-rose-400', 'dark:!border-rose-500'];
+  const INPUT_OK   = ['!border-slate-300', '!border-rose-400', 'dark:!border-rose-500'];
+
+  function validate(name: string, value: string): string | null {
+    if (name === 'name') {
+      if (!value) return 'El nombre es obligatorio.';
+      if (value.length < 2) return 'El nombre es demasiado corto.';
+    }
+    if (name === 'email') {
+      if (!value) return 'El email es obligatorio.';
+      if (!EMAIL_RE.test(value)) return 'El formato del email no es válido.';
+    }
+    if (name === 'subject') {
+      if (!value) return 'El asunto es obligatorio.';
+    }
+    if (name === 'message') {
+      if (!value) return 'El mensaje es obligatorio.';
+      if (value.length < 20) return 'El mensaje es demasiado corto (mínimo 20 caracteres).';
+    }
+    return null;
+  }
+
+  function setFieldError(form: HTMLFormElement, fieldName: string, msg: string | null) {
+    const input = form.querySelector<HTMLElement>(`[data-field="${fieldName}"]`);
+    const errorEl = form.querySelector<HTMLElement>(`[data-field-error="${fieldName}"]`);
+    if (!input || !errorEl) return;
+
+    if (msg) {
+      input.classList.add('!border-rose-400', 'dark:!border-rose-500');
+      input.classList.remove('border-slate-300', 'dark:border-white/10');
+      errorEl.textContent = msg;
+      errorEl.classList.remove('hidden');
+    } else {
+      input.classList.remove('!border-rose-400', 'dark:!border-rose-500');
+      input.classList.add('border-slate-300', 'dark:border-white/10');
+      errorEl.textContent = '';
+      errorEl.classList.add('hidden');
+    }
+  }
+
   function initContactForm() {
     const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
     if (!form) return;
@@ -167,21 +227,50 @@ const { lang } = Astro.props;
     const showStatus = (msg: string, isError: boolean) => {
       if (!status) return;
       status.textContent = msg;
-      status.classList.remove('hidden', 'text-rose-400', 'dark:text-accent-blue');
-      status.classList.add(isError ? 'text-rose-400' : 'dark:text-accent-blue');
+      status.classList.remove('hidden', 'text-rose-400', 'text-secondary', 'dark:text-accent-blue');
+      if (isError) {
+        status.classList.add('text-rose-400');
+      } else {
+        status.classList.add('text-secondary', 'dark:text-accent-blue');
+      }
       status.classList.remove('hidden');
     };
+
+    // Validate on blur
+    form.querySelectorAll<HTMLElement>('[data-field]').forEach((el) => {
+      el.addEventListener('blur', () => {
+        const fieldName = el.getAttribute('data-field')!;
+        const value = (el as HTMLInputElement | HTMLTextAreaElement).value.trim();
+        setFieldError(form, fieldName, validate(fieldName, value));
+      });
+      // Clear error while typing
+      el.addEventListener('input', () => {
+        const fieldName = el.getAttribute('data-field')!;
+        setFieldError(form, fieldName, null);
+      });
+    });
 
     const onSubmit = async (e: SubmitEvent) => {
       e.preventDefault();
       const fd = new FormData(form);
-      const name = (fd.get('name') || '').toString().trim();
-      const email = (fd.get('email') || '').toString().trim();
-      const subject = (fd.get('subject') || '').toString().trim();
-      const message = (fd.get('message') || '').toString().trim();
+      const fields = {
+        name:    (fd.get('name')    || '').toString().trim(),
+        email:   (fd.get('email')   || '').toString().trim(),
+        subject: (fd.get('subject') || '').toString().trim(),
+        message: (fd.get('message') || '').toString().trim(),
+      };
 
-      if (!name || !email || !subject || !message) {
-        showStatus('Completa todos los campos.', true);
+      // Validate all fields and show errors
+      let firstInvalid: HTMLElement | null = null;
+      for (const [fieldName, value] of Object.entries(fields)) {
+        const err = validate(fieldName, value);
+        setFieldError(form, fieldName, err);
+        if (err && !firstInvalid) {
+          firstInvalid = form.querySelector(`[data-field="${fieldName}"]`);
+        }
+      }
+      if (firstInvalid) {
+        firstInvalid.focus();
         return;
       }
 
@@ -191,11 +280,13 @@ const { lang } = Astro.props;
         const res = await fetch('/api/contact', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, subject, message }),
+          body: JSON.stringify(fields),
         });
         if (res.ok) {
           showStatus('¡Mensaje enviado! Te responderé pronto.', false);
           form.reset();
+        } else if (res.status === 429) {
+          showStatus('Demasiados intentos. Prueba de nuevo en un rato.', true);
         } else {
           showStatus('Algo fue mal. Inténtalo de nuevo o escríbeme directamente.', true);
         }

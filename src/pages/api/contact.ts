@@ -1,5 +1,7 @@
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
 
 export const prerender = false;
 
@@ -78,7 +80,31 @@ function buildConfirmationHtml(name: string, message: string): string {
 </html>`;
 }
 
+// Rate limiter — only active when Upstash env vars are present
+function getRatelimiter(): Ratelimit | null {
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!url || !token) return null;
+  return new Ratelimit({
+    redis: new Redis({ url, token }),
+    limiter: Ratelimit.slidingWindow(5, '1 h'),
+  });
+}
+
 export const POST: APIRoute = async ({ request }) => {
+  // Rate limiting (skipped in dev if Upstash is not configured)
+  const ratelimiter = getRatelimiter();
+  if (ratelimiter) {
+    const ip = request.headers.get('x-forwarded-for') ?? 'anonymous';
+    const { success } = await ratelimiter.limit(ip);
+    if (!success) {
+      return new Response(JSON.stringify({ error: 'too_many_requests' }), {
+        status: 429,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+  }
+
   let data: Record<string, string> = {};
   try {
     const text = await request.text();
@@ -89,6 +115,15 @@ export const POST: APIRoute = async ({ request }) => {
       headers: { 'Content-Type': 'application/json' },
     });
   }
+
+  // Honeypot — bots fill this, humans don't
+  if (data._trap) {
+    return new Response(JSON.stringify({ ok: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   const name = (data.name ?? '').toString().trim();
   const email = (data.email ?? '').toString().trim();
   const subject = (data.subject ?? '').toString().trim();
@@ -96,6 +131,14 @@ export const POST: APIRoute = async ({ request }) => {
 
   if (!name || !email || !subject || !message) {
     return new Response(JSON.stringify({ error: 'missing_fields' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  // Length limits
+  if (name.length > 100 || email.length > 254 || subject.length > 200 || message.length > 5000) {
+    return new Response(JSON.stringify({ error: 'invalid_input' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' },
     });
@@ -120,7 +163,7 @@ export const POST: APIRoute = async ({ request }) => {
   });
 
   if (error) {
-    return new Response(JSON.stringify({ error: 'send_failed', detail: error.message }), {
+    return new Response(JSON.stringify({ error: 'send_failed' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });
