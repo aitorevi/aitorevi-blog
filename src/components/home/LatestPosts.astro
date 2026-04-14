@@ -1,0 +1,181 @@
+---
+/**
+ * LatestPosts — shows the three most recent blog posts for the current
+ * locale, plus a CTA to the full blog index.
+ *
+ * Uses the existing PostCard molecule so styles stay consistent with the
+ * blog index page. Handles the "fewer than 3 posts" case gracefully by
+ * just rendering what's available.
+ */
+import { getCollection } from 'astro:content';
+import PostCard from '../molecules/PostCard.astro';
+import { sortPostsByDate, filterDrafts } from '../../lib/utils';
+import { t, getLocalePath } from '../../i18n/utils';
+import type { Lang } from '../../data/cv';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const all = await getCollection('blog');
+const posts = sortPostsByDate(filterDrafts(all))
+  .filter((post) => post.id.startsWith(`${lang}/`))
+  .slice(0, 3);
+
+const blogPath = getLocalePath('/blog', lang);
+---
+
+<section
+  class="relative bg-slate-50 py-24 text-ink-900 dark:bg-ink-900 dark:text-slate-100 sm:py-28"
+  aria-labelledby="latest-posts-heading"
+>
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="flex flex-col items-center gap-3 text-center">
+      <h2
+        id="latest-posts-heading"
+        class="font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
+      >
+        {t(lang, 'home.posts.title')}
+      </h2>
+      <p class="font-mono text-xs uppercase tracking-[0.3em] text-secondary/70 dark:text-accent-blue/50">
+        {t(lang, 'home.posts.subtitle')}
+      </p>
+    </div>
+
+    {
+      posts.length > 0 ? (
+        <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {posts.map((post, i) => (
+            <div
+              class="home-post-wrapper"
+              data-stagger-item
+              style={`--stagger-delay:${i * 120}ms`}
+            >
+              <PostCard post={post} priority={i < 2} lang={lang} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p class="mt-12 text-center text-sm text-slate-500">
+          {t(lang, 'blog.noPostsDescription')}
+        </p>
+      )
+    }
+
+    <div class="mt-12 flex justify-center">
+      <a
+        href={blogPath}
+        class="group inline-flex items-center gap-2 rounded-full border border-secondary/40 bg-secondary/5 px-6 py-3 font-mono text-sm text-secondary transition-all duration-300 hover:border-secondary/70 hover:bg-secondary/10 hover:shadow-[0_10px_30px_-10px_rgba(94,58,238,0.35)] dark:border-accent-blue/30 dark:bg-accent-blue/5 dark:text-accent-blue dark:hover:border-accent-blue/60 dark:hover:bg-accent-blue/10 dark:hover:shadow-[0_0_40px_rgba(96,165,250,0.25)]"
+      >
+        <span>{t(lang, 'home.posts.cta')}</span>
+        <span
+          aria-hidden="true"
+          class="transition-transform duration-300 group-hover:translate-x-1"
+        >→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  /* Light-mode PostCard — crisp white card on slate-50 section background. */
+  .home-post-wrapper article {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+  }
+  .home-post-wrapper article h2 a {
+    color: #0f172a !important;
+  }
+  .home-post-wrapper article h2 a:hover,
+  .home-post-wrapper article h2 a:focus {
+    color: #5e3aee !important;
+  }
+  .home-post-wrapper article p[itemprop='description'] {
+    color: rgba(71, 85, 105, 0.9) !important;
+  }
+  .home-post-wrapper article footer {
+    border-top-color: #e2e8f0 !important;
+  }
+  .home-post-wrapper article:hover {
+    border-color: rgba(94, 58, 238, 0.4) !important;
+    box-shadow: 0 20px 40px -20px rgba(94, 58, 238, 0.25) !important;
+  }
+
+  /* Dark-mode PostCard — translucent glass card on ink-900. */
+  html.dark .home-post-wrapper article {
+    background-color: rgba(255, 255, 255, 0.04) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(12px);
+  }
+  html.dark .home-post-wrapper article h2 a {
+    color: #e2e8f0 !important;
+  }
+  html.dark .home-post-wrapper article h2 a:hover,
+  html.dark .home-post-wrapper article h2 a:focus {
+    color: #a78bfa !important;
+  }
+  html.dark .home-post-wrapper article p[itemprop='description'] {
+    color: rgba(148, 163, 184, 0.85) !important;
+  }
+  html.dark .home-post-wrapper article footer {
+    border-top-color: rgba(255, 255, 255, 0.08) !important;
+  }
+  html.dark .home-post-wrapper article:hover {
+    border-color: rgba(96, 165, 250, 0.4) !important;
+    box-shadow: 0 0 60px rgba(96, 165, 250, 0.15) !important;
+  }
+</style>
+
+<style>
+  [data-stagger-item] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--stagger-delay, 0ms);
+  }
+  [data-stagger-item].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-stagger-item] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  function initLatestPostsStagger() {
+    const items = document.querySelectorAll<HTMLElement>(
+      '.home-post-wrapper[data-stagger-item]'
+    );
+    if (items.length === 0) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      items.forEach((el) => el.classList.add('is-visible'));
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    items.forEach((el) => io.observe(el));
+  }
+
+  document.addEventListener('astro:page-load', initLatestPostsStagger);
+  document.addEventListener('astro:after-swap', initLatestPostsStagger);
+</script>

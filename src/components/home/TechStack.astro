@@ -1,0 +1,58 @@
+---
+/**
+ * TechStack — Astro wrapper around the TechConstellation React island.
+ * Hydrated with client:visible so the interactive JS only loads when the
+ * section actually enters the viewport.
+ */
+import type { Lang } from '../../data/cv';
+import { t } from '../../i18n/utils';
+import TechConstellation from './TechConstellation.tsx';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<section class="relative bg-slate-50 py-24 text-ink-900 dark:bg-ink-900 dark:text-slate-100 sm:py-32" aria-labelledby="tech-stack-heading">
+  <div class="mx-auto max-w-4xl px-6">
+    <h2
+      id="tech-stack-heading"
+      class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
+    >
+      {t(lang, 'home.stack.title')}
+    </h2>
+    <p class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary/70 dark:text-accent-blue/50">
+      {t(lang, 'home.stack.hint')}
+    </p>
+
+    <div class="mt-16 overflow-hidden">
+      <TechConstellation client:visible lang={lang} />
+    </div>
+
+    <!-- Legend -->
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[10px] uppercase tracking-[0.2em] text-slate-600 dark:text-slate-500 font-mono">
+      <span class="flex items-center gap-2">
+        <span class="inline-block h-2 w-2 rounded-full bg-accent-blue"></span>
+        {t(lang, 'home.stack.legend.backend')}
+      </span>
+      <span class="flex items-center gap-2">
+        <span class="inline-block h-2 w-2 rounded-full bg-accent-sky"></span>
+        {t(lang, 'home.stack.legend.frontend')}
+      </span>
+      <span class="flex items-center gap-2">
+        <span class="inline-block h-2 w-2 rounded-full bg-sky-400"></span>
+        {t(lang, 'home.stack.legend.infra')}
+      </span>
+      <span class="flex items-center gap-2">
+        <span class="inline-block h-2 w-2 rounded-full bg-accent-violet"></span>
+        {t(lang, 'home.stack.legend.practice')}
+      </span>
+      <span class="flex items-center gap-2">
+        <span class="inline-block h-2 w-2 rounded-full bg-amber-500"></span>
+        {t(lang, 'home.stack.legend.ai')}
+      </span>
+    </div>
+  </div>
+</section>

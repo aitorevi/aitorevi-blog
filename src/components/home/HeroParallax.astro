@@ -1,0 +1,360 @@
+---
+/**
+ * HeroParallax — redesigned home hero with layered parallax.
+ *
+ * Architecture:
+ *   - Three background layers (dot field, grid, orbit ring) + main content
+ *     translate vertically at different speeds as the user scrolls.
+ *   - Vanilla JS only: one scroll listener, requestAnimationFrame throttling,
+ *     IntersectionObserver to pause updates when the hero is out of viewport.
+ *   - Respects `prefers-reduced-motion`: layers stay static.
+ *   - Reinitialised on Astro View Transitions (`astro:page-load` + swap).
+ *
+ * View-transition persistence strategy:
+ *   - The decorative layers (dot field, grid SVG, orbit ring) are
+ *     language-independent, so they use fixed `transition:persist` names
+ *     and survive ES ↔ EN navigations in place — no re-creation of the
+ *     60 dots, no re-mount of the grid SVG.
+ *   - The main content layer has no persist and is fully re-rendered so
+ *     the role label, tagline and paragraph pick up the new locale (and
+ *     replay their reveal animation).
+ *
+ * Dot field positions are generated at build time for stability across renders.
+ */
+
+import type { Lang } from '../../data/cv';
+import { t } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+// Deterministic-ish dot field generated at build time.
+// We seed roughly so positions are stable per build; real randomness is fine
+// since the positions aren't semantically meaningful.
+const DOT_COUNT = 60;
+const dots = Array.from({ length: DOT_COUNT }, (_, i) => ({
+  x: ((i * 37) % 100) + Math.random() * 2,
+  y: ((i * 53) % 95) + Math.random() * 2,
+  size: 1 + ((i * 13) % 4) * 0.6,
+  opacity: 0.12 + ((i * 7) % 10) * 0.025,
+}));
+
+const gridHLines = Array.from({ length: 22 }, (_, i) => i);
+const gridVLines = Array.from({ length: 16 }, (_, i) => i);
+---
+
+<section
+  data-parallax-root
+  class="hero-parallax relative w-full overflow-hidden bg-home-radial-light text-ink-900 dark:bg-home-radial dark:text-slate-100"
+>
+  <!-- Layer 1: dot field (slowest) — language-independent, persisted across nav -->
+  <div
+    transition:persist="hero-dots"
+    class="pointer-events-none absolute inset-0 will-change-transform text-accent-blue/60 dark:text-accent-blue"
+    data-parallax-layer
+    data-speed="0.08"
+    aria-hidden="true"
+  >
+    {
+      dots.map((d) => (
+        <span
+          class="absolute rounded-full bg-current"
+          style={`left:${d.x}%;top:${d.y}%;width:${d.size}px;height:${d.size}px;opacity:${d.opacity};`}
+        />
+      ))
+    }
+  </div>
+
+  <!-- Layer 2: subtle grid — language-independent, persisted across nav -->
+  <div
+    transition:persist="hero-grid"
+    class="pointer-events-none absolute inset-x-0 top-0 -bottom-[30vh] opacity-[0.14] text-accent-blue dark:opacity-[0.22] will-change-transform"
+    data-parallax-layer
+    data-speed="0.18"
+    aria-hidden="true"
+  >
+    <svg class="h-full w-full" preserveAspectRatio="xMidYMin slice" viewBox="0 0 1200 1600">
+      {
+        gridHLines.map((i) => (
+          <line
+            x1="0"
+            y1={i * 70}
+            x2="1200"
+            y2={i * 70}
+            stroke="currentColor"
+            stroke-width="0.6"
+          />
+        ))
+      }
+      {
+        gridVLines.map((i) => (
+          <line
+            x1={i * 80}
+            y1="0"
+            x2={i * 80}
+            y2="1600"
+            stroke="currentColor"
+            stroke-width="0.6"
+          />
+        ))
+      }
+    </svg>
+  </div>
+
+  <!-- Layer 3: orbit ring accent — language-independent, persisted across nav -->
+  <div
+    transition:persist="hero-orbit"
+    class="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent-blue/20 dark:border-accent-blue/30 will-change-transform opacity-0 transition-opacity duration-700"
+    data-parallax-layer
+    data-speed="0.25"
+    data-rotate="0.02"
+    data-orbit-ring
+    aria-hidden="true"
+  >
+  </div>
+
+  <!-- Layer 4: main content (fastest, slight upward pull) -->
+  <div
+    class="relative mx-auto flex min-h-[100svh] max-w-4xl flex-col items-center justify-center px-6 text-center will-change-transform"
+    data-parallax-layer
+    data-speed="0.35"
+  >
+    <!--
+      Role label, h1 title, tagline and scroll hint are all
+      language-independent (the i18n strings for roleLabel and tagline
+      are identical in ES and EN, and the title + Scroll text are
+      hardcoded). Persisting them keeps the same DOM nodes across
+      ES ↔ EN navigations so they don't replay their reveal animation
+      and there's no visible flicker. Only home.p1 actually changes
+      between locales and is therefore the only element in this layer
+      without `transition:persist`.
+    -->
+    <p
+      transition:persist="hero-role-label"
+      class="mb-6 text-[11px] uppercase tracking-[0.5em] text-secondary/80 dark:text-accent-blue/70 font-mono"
+      data-hero-reveal
+      style="--reveal-delay: 0ms"
+    >
+      {t(lang, 'home.roleLabel')}
+    </p>
+
+    <h1
+      transition:persist="hero-title"
+      class="font-display font-black leading-[0.95] tracking-tight text-ink-900 dark:text-slate-100 hero-title-glow"
+      style="font-size: clamp(2.75rem, 9vw, 6.5rem);"
+      data-hero-reveal
+      data-hero-reveal-delay="120"
+    >
+      Aitor Reviriego
+    </h1>
+
+    <p
+      transition:persist="hero-tagline"
+      class="mt-5 text-[11px] uppercase tracking-[0.4em] text-accent-violet dark:text-accent-violet/70 font-mono"
+      data-hero-reveal
+      data-hero-reveal-delay="260"
+    >
+      {t(lang, 'home.tagline')}
+    </p>
+
+    <p
+      class="mt-8 max-w-xl text-base leading-relaxed text-slate-600 dark:text-slate-400 sm:text-lg"
+      data-hero-reveal
+      data-hero-reveal-delay="400"
+    >
+      {t(lang, 'home.p1')}
+    </p>
+
+    <!-- Scroll hint — language-independent, persisted across nav -->
+    <div
+      transition:persist="hero-scroll-hint"
+      class="absolute bottom-10 flex flex-col items-center gap-3"
+      data-hero-scroll-hint
+      aria-hidden="true"
+    >
+      <span class="text-[10px] uppercase tracking-[0.3em] text-secondary/50 dark:text-accent-blue/40 font-mono">
+        Scroll
+      </span>
+      <span class="block h-10 w-px bg-gradient-to-b from-secondary/50 to-transparent dark:from-accent-blue/50"></span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-parallax {
+    /* Small-screen safe height — use svh so iOS Safari chrome doesn't jump */
+    min-height: 100svh;
+  }
+
+  /* Glow is strictly a dark-mode flourish — in light mode the crisp
+     ink-900 title reads better without any halo. */
+  .hero-title-glow {
+    text-shadow: none;
+  }
+  :global(html.dark) .hero-title-glow {
+    text-shadow:
+      0 0 40px rgba(96, 165, 250, 0.35),
+      0 0 80px rgba(96, 165, 250, 0.12);
+  }
+
+  [data-hero-reveal] {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: heroReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  @keyframes heroReveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-hero-reveal] {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  /**
+   * Parallax controller — vanilla JS, IntersectionObserver gated, rAF throttled.
+   * Runs on initial load and after View Transitions.
+   */
+  type LayerMeta = {
+    el: HTMLElement;
+    speed: number;
+    rotate: number;
+  };
+
+  const REDUCED_MOTION = () =>
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let rafId: number | null = null;
+  let isVisible = false;
+  let currentRoot: HTMLElement | null = null;
+  let layers: LayerMeta[] = [];
+  let io: IntersectionObserver | null = null;
+  let cleanupFns: Array<() => void> = [];
+
+  function applyParallax() {
+    rafId = null;
+    if (!currentRoot || !isVisible) return;
+    const rect = currentRoot.getBoundingClientRect();
+    // Progress: 0 when top of hero is at top of viewport, grows as we scroll down.
+    const progress = -rect.top;
+    for (const { el, speed, rotate } of layers) {
+      const y = progress * speed;
+      const r = rotate ? progress * rotate : 0;
+      el.style.transform = r
+        ? `translate3d(0, ${-y}px, 0) rotate(${r}deg)`
+        : `translate3d(0, ${-y}px, 0)`;
+    }
+  }
+
+  function scheduleParallax() {
+    if (rafId != null) return;
+    rafId = requestAnimationFrame(applyParallax);
+  }
+
+  function setRevealDelays(root: HTMLElement) {
+    root.querySelectorAll<HTMLElement>('[data-hero-reveal]').forEach((el) => {
+      const delay = el.dataset.heroRevealDelay;
+      if (delay && !el.style.getPropertyValue('--reveal-delay')) {
+        el.style.setProperty('--reveal-delay', `${delay}ms`);
+      }
+    });
+  }
+
+  function tearDown() {
+    cleanupFns.forEach((fn) => fn());
+    cleanupFns = [];
+    if (io) {
+      io.disconnect();
+      io = null;
+    }
+    if (rafId != null) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+    // Reset inline transforms
+    layers.forEach(({ el }) => {
+      el.style.transform = '';
+    });
+    layers = [];
+    currentRoot = null;
+    isVisible = false;
+  }
+
+  function initHeroParallax() {
+    tearDown();
+    const root = document.querySelector<HTMLElement>('[data-parallax-root]');
+    if (!root) return;
+    currentRoot = root;
+    setRevealDelays(root);
+
+    // Fade in orbit ring after hero content has appeared
+    const orbitRing = root.querySelector<HTMLElement>('[data-orbit-ring]');
+    if (orbitRing) {
+      setTimeout(() => {
+        orbitRing.style.opacity = '1';
+      }, 800);
+    }
+
+    const layerNodes = root.querySelectorAll<HTMLElement>('[data-parallax-layer]');
+    layers = Array.from(layerNodes).map((el) => ({
+      el,
+      speed: parseFloat(el.dataset.speed || '0'),
+      rotate: parseFloat(el.dataset.rotate || '0'),
+    }));
+
+    if (REDUCED_MOTION()) {
+      // Honour reduced motion: just show content statically.
+      return;
+    }
+
+    io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          isVisible = entry.isIntersecting;
+          if (isVisible) scheduleParallax();
+        }
+      },
+      { threshold: 0 }
+    );
+    io.observe(root);
+
+    const onScroll = () => scheduleParallax();
+    const onResize = () => scheduleParallax();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
+    cleanupFns.push(() => window.removeEventListener('scroll', onScroll));
+    cleanupFns.push(() => window.removeEventListener('resize', onResize));
+
+    // Fade-out the scroll hint as we move away from the top.
+    const hint = root.querySelector<HTMLElement>('[data-hero-scroll-hint]');
+    if (hint) {
+      const onScrollHint = () => {
+        const y = window.scrollY;
+        hint.style.opacity = `${Math.max(0, 1 - y / 200)}`;
+      };
+      onScrollHint();
+      window.addEventListener('scroll', onScrollHint, { passive: true });
+      cleanupFns.push(() => window.removeEventListener('scroll', onScrollHint));
+    }
+
+    // Initial paint
+    scheduleParallax();
+  }
+
+  // Initial + View Transitions lifecycle hooks.
+  document.addEventListener('astro:page-load', initHeroParallax);
+  document.addEventListener('astro:after-swap', initHeroParallax);
+</script>

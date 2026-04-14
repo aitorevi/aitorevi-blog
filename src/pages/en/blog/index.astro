@@ -7,6 +7,14 @@ import { t, getBlogSlugFromId } from '../../../i18n/utils';
 
 const lang = 'en';
 
+const DOT_COUNT = 60;
+const dots = Array.from({ length: DOT_COUNT }, (_, i) => ({
+  x: ((i * 37) % 100) + Math.random() * 2,
+  y: ((i * 53) % 95) + Math.random() * 2,
+  size: 1 + ((i * 13) % 4) * 0.6,
+  opacity: 0.12 + ((i * 7) % 10) * 0.025,
+}));
+
 const allPosts = await getCollection('blog');
 const publishedPosts = sortPostsByDate(filterDrafts(allPosts)).filter((post) => post.id.startsWith('en/'));
 
@@ -44,12 +52,23 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
     })} />
   </Fragment>
 
-  <main class="mx-auto max-w-7xl bg-grayLight bg-opacity-70 dark:bg-[#1a1f2e] dark:bg-opacity-70 mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:p-20 rounded">
-    <header class="mb-12 text-center">
-      <h1 class="mb-4 text-4xl font-bold tracking-tight text-slate-900 dark:text-[#f1f5f9] sm:text-5xl lg:text-6xl">
+  <div class="relative min-h-screen">
+    <!-- Dark-mode-only dot field -->
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 hidden dark:block text-accent-blue">
+      {dots.map((d) => (
+        <span
+          class="absolute rounded-full bg-current"
+          style={`left:${d.x}%;top:${d.y}%;width:${d.size}px;height:${d.size}px;opacity:${d.opacity};`}
+        />
+      ))}
+    </div>
+
+  <main class="blog-page mx-auto max-w-7xl mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:px-20 lg:pt-10 lg:pb-20">
+    <header class="mb-12 text-center" data-reveal-item style="--reveal-delay:0ms">
+      <h1 class="mb-4 pb-2 font-display text-5xl font-black tracking-tight text-ink-900 dark:bg-home-gradient-text dark:bg-clip-text dark:text-transparent sm:text-6xl lg:text-7xl">
         Blog
       </h1>
-      <p class="mx-auto max-w-3xl text-2xl font-ibm font-bold text-secondary sm:text-3xl">
+      <p class="mx-auto mt-3 max-w-xl font-mono text-xs uppercase tracking-[0.3em] text-secondary/70 dark:text-accent-blue/50">
         {t(lang, 'blog.subtitle')}
       </p>
     </header>
@@ -58,7 +77,9 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
       <section class="mb-16" aria-labelledby="featured-heading">
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {featuredPosts.slice(0, 3).map((post, index) => (
-            <PostCard post={post} priority={index < 2} showFeaturedBadge={true} lang="en" />
+            <div data-reveal-item style={`--reveal-delay:${(index + 1) * 100}ms`}>
+              <PostCard post={post} priority={index < 2} showFeaturedBadge={true} lang="en" />
+            </div>
           ))}
         </div>
       </section>
@@ -66,12 +87,19 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
 
     {regularPosts.length > 0 && (
       <section aria-labelledby="all-posts-heading">
-        <h2 id="all-posts-heading" class="mb-6 text-2xl font-bold text-slate-900">
+        <h2
+          id="all-posts-heading"
+          class="mb-6 text-2xl font-display font-bold tracking-tight text-ink-900 dark:text-slate-100"
+          data-reveal-item
+          style={`--reveal-delay:${(featuredPosts.length + 1) * 100}ms`}
+        >
           {featuredPosts.length > 0 ? t(lang, 'blog.allPosts') : t(lang, 'blog.latestPosts')}
         </h2>
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {regularPosts.map((post, index) => (
-            <PostCard post={post} priority={featuredPosts.length === 0 && index < 3} showFeaturedBadge={false} lang="en" />
+            <div data-reveal-item style={`--reveal-delay:${(featuredPosts.length + index + 2) * 100}ms`}>
+              <PostCard post={post} priority={featuredPosts.length === 0 && index < 3} showFeaturedBadge={false} lang="en" />
+            </div>
           ))}
         </div>
       </section>
@@ -87,12 +115,61 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
       </div>
     )}
   </main>
+  </div>
+  <style is:global>
+    body:has(.blog-page) {
+      background-color: #f8fafc;
+      background-image: none;
+    }
+    html.dark body:has(.blog-page),
+    html.dark body:has(.blog-page) main {
+      background-color: #020617;
+      background-image: radial-gradient(ellipse at 30% 20%, #0f172a 0%, #020617 55%, #000 100%);
+      background-attachment: fixed;
+      background-size: cover;
+    }
+  </style>
 </Layout>
 
 <style>
-  @supports (grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))) {
-    .grid {
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
-    }
+  [data-reveal-item] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  [data-reveal-item].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal-item] { opacity: 1; transform: none; transition: none; }
   }
 </style>
+
+<script>
+  function initReveal() {
+    const items = document.querySelectorAll<HTMLElement>('[data-reveal-item]');
+    if (!items.length) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      items.forEach((el) => el.classList.add('is-visible'));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    items.forEach((el) => { el.classList.remove('is-visible'); io.observe(el); });
+  }
+  document.addEventListener('astro:page-load', initReveal);
+  document.addEventListener('astro:after-swap', initReveal);
+</script>

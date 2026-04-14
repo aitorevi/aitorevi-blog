@@ -1,10 +1,63 @@
+/**
+ * generate-cv-pdf.mjs — Build-time PDF generation for the CV pages
+ *
+ * ─────────────────────────────────────────────
+ * CÓMO FUNCIONA
+ * ─────────────────────────────────────────────
+ * 1. Se invoca al final del build: `astro build && node scripts/generate-cv-pdf.mjs`
+ * 2. Levanta un servidor HTTP estático que sirve el directorio dist/client/
+ *    (donde el adapter @astrojs/vercel deposita los HTML estáticos tras el build).
+ * 3. Abre Chromium headless via Playwright y navega a las páginas de impresión:
+ *    - /cv/print/      → CV en español (diseño ATS)
+ *    - /en/cv/print/   → CV en inglés (diseño ATS)
+ * 4. Genera un PDF A4 de cada página y lo guarda en dos sitios (ver abajo).
+ *
+ * ─────────────────────────────────────────────
+ * POR QUÉ DOS DIRECTORIOS DE SALIDA
+ * ─────────────────────────────────────────────
+ * dist/client/cv/  → Salida primaria. El adapter de Vercel copia dist/client/
+ *                    a .vercel/output/static/, así que los PDFs quedan servidos
+ *                    en el deployment actual sin pasos extra.
+ *
+ * public/cv/       → Copia de seguridad commiteada en git. Astro copia public/
+ *                    a dist/client/ al inicio de cada build, así que si Playwright
+ *                    falla en Vercel, los PDFs del commit anterior siguen disponibles.
+ *
+ * ─────────────────────────────────────────────
+ * CHROMIUM: LOCAL vs VERCEL
+ * ─────────────────────────────────────────────
+ * Local:  usa el Chromium instalado por Playwright (playwright install chromium).
+ * Vercel: usa @sparticuz/chromium, un build de Chromium optimizado para entornos
+ *         serverless/Lambda. Se detecta via process.env.VERCEL.
+ *         Nota: @sparticuz/chromium está en dependencies (no devDependencies)
+ *         para que Vercel lo instale durante el build.
+ *
+ * ─────────────────────────────────────────────
+ * DATOS DEL CV
+ * ─────────────────────────────────────────────
+ * La fuente de verdad es src/data/cv.ts. Los PDFs siempre están en sync porque
+ * se generan a partir del HTML renderizado de las páginas de print, que leen
+ * directamente de cv.ts.
+ *
+ * ─────────────────────────────────────────────
+ * ACTUALIZAR LOS PDFs MANUALMENTE
+ * ─────────────────────────────────────────────
+ * Si cambias src/data/cv.ts, ejecuta `npm run build` para regenerar los PDFs.
+ * Los nuevos archivos en public/cv/ deben commitearse para que el fallback esté
+ * actualizado. En el próximo deploy de Vercel, Playwright también los regenerará.
+ */
 import { chromium } from 'playwright-core';
 import { createServer } from 'node:http';
-import { readFile } from 'node:fs/promises';
+import { readFile, mkdir, copyFile } from 'node:fs/promises';
 import { join, extname } from 'node:path';
 import { existsSync } from 'node:fs';
 
-const DIST_DIR = join(import.meta.dirname, '..', 'dist');
+// dist/client/ es donde @astrojs/vercel deposita los HTML estáticos.
+// El adapter solo despliega dist/client/ → .vercel/output/static/,
+// por eso los PDFs deben escribirse ahí para llegar a producción.
+const SERVE_DIR = join(import.meta.dirname, '..', 'dist', 'client');
+const DEPLOY_CV_DIR = join(import.meta.dirname, '..', 'dist', 'client', 'cv');
+const PUBLIC_CV_DIR = join(import.meta.dirname, '..', 'public', 'cv');
 const PORT = 4173;
 
 const MIME_TYPES = {
@@ -21,14 +74,14 @@ const MIME_TYPES = {
 };
 
 const CV_PAGES = [
-  { url: '/cv/print/', output: 'cv/aitor-reviriego-cv-ats-es.pdf' },
-  { url: '/en/cv/print/', output: 'cv/aitor-reviriego-cv-ats-en.pdf' },
+  { url: '/cv/print/', filename: 'aitor-reviriego-cv-ats-es.pdf' },
+  { url: '/en/cv/print/', filename: 'aitor-reviriego-cv-ats-en.pdf' },
 ];
 
 function startServer() {
   return new Promise((resolve) => {
     const server = createServer(async (req, res) => {
-      let filePath = join(DIST_DIR, req.url);
+      let filePath = join(SERVE_DIR, req.url);
 
       if (filePath.endsWith('/')) {
         filePath = join(filePath, 'index.html');
@@ -74,7 +127,7 @@ async function launchBrowser() {
   });
 }
 
-async function generatePdf(url, output) {
+async function generatePdf(url, filename) {
   const browser = await launchBrowser();
   try {
     const page = await browser.newPage();
@@ -84,16 +137,21 @@ async function generatePdf(url, output) {
     await page.goto(fullUrl, { waitUntil: 'networkidle' });
     await page.evaluate(() => document.fonts.ready);
 
-    const outputPath = join(DIST_DIR, output);
+    // Primary output: dist/client/cv/ → included in Vercel deployment
+    const deployPath = join(DEPLOY_CV_DIR, filename);
     await page.pdf({
-      path: outputPath,
+      path: deployPath,
       format: 'A4',
       printBackground: true,
       preferCSSPageSize: true,
       margin: { top: '0', bottom: '0', left: '0', right: '0' },
     });
 
-    console.log(`Generated: ${output}`);
+    // Fallback copy: public/cv/ → committed to git, always available
+    const publicPath = join(PUBLIC_CV_DIR, filename);
+    await copyFile(deployPath, publicPath);
+
+    console.log(`Generated: ${filename}`);
   } finally {
     await browser.close();
   }
@@ -102,11 +160,14 @@ async function generatePdf(url, output) {
 async function generatePdfs() {
   console.log('Starting CV PDF generation...');
 
+  await mkdir(DEPLOY_CV_DIR, { recursive: true });
+  await mkdir(PUBLIC_CV_DIR, { recursive: true });
+
   const server = await startServer();
 
   try {
-    for (const { url, output } of CV_PAGES) {
-      await generatePdf(url, output);
+    for (const { url, filename } of CV_PAGES) {
+      await generatePdf(url, filename);
     }
   } finally {
     server.close();

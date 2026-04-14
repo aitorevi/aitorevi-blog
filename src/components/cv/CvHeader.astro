@@ -9,19 +9,36 @@ interface Props {
 const { contact } = Astro.props;
 ---
 
-<header class="text-center mb-8 md:mb-12">
-  <h1 class="text-3xl md:text-5xl font-bold mb-2 reveal-fade">{contact.name}</h1>
-  <p class="text-lg md:text-2xl text-secondary font-bold mb-4 reveal-fade">
+<header class="relative text-center mb-10 md:mb-14 pt-4 md:pt-6">
+  <!-- Mono eyebrow — matches home visual language -->
+  <p class="reveal-fade font-mono text-[10px] md:text-[11px] uppercase tracking-[0.35em] text-accent-violet/70 dark:text-accent-violet/80 mb-4">
+    — Curriculum Vitae —
+  </p>
+
+  <!-- Name with display font + subtle gradient highlight -->
+  <h1 class="reveal-fade font-display text-4xl md:text-6xl font-black tracking-tight leading-[1.05] mb-3 cv-name-glow">
+    {contact.name}
+  </h1>
+
+  <!-- Title with accent color matching home palette -->
+  <p class="reveal-fade text-lg md:text-2xl font-display font-semibold tracking-tight mb-5">
     {contact.title.split(' | ').map((part, i, arr) => (
       <>
-        <span class="whitespace-nowrap">{part}</span>
-        {i < arr.length - 1 && <><span class="hidden lg:inline"> | </span><br class="lg:hidden" /></>}
+        <span class="whitespace-nowrap text-secondary dark:text-accent-violet">{part}</span>
+        {i < arr.length - 1 && (
+          <>
+            <span class="hidden lg:inline text-quaternary/60 dark:text-slate-600 mx-2">/</span>
+            <br class="lg:hidden" />
+          </>
+        )}
       </>
     ))}
   </p>
-  <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-slate-500 dark:text-slate-400 reveal-fade">
-    <span class="flex items-center gap-1">
-      <Icon name="location" class="w-4 h-4" />
+
+  <!-- Contact meta: mono font, tiny, spaced — like home eyebrows -->
+  <div class="reveal-fade flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] md:text-xs font-mono uppercase tracking-[0.15em] text-slate-500 dark:text-slate-400">
+    <span class="flex items-center gap-1.5">
+      <Icon name="location" class="w-3.5 h-3.5" />
       {contact.location}
     </span>
     {contact.links.map((link) => (
@@ -29,11 +46,24 @@ const { contact } = Astro.props;
         href={link.url}
         target="_blank"
         rel="noopener noreferrer"
-        class="flex items-center gap-1 hover:text-secondary transition ease-linear duration-200"
+        class="flex items-center gap-1.5 hover:text-secondary dark:hover:text-accent-blue transition ease-linear duration-200"
       >
-        <Icon name={link.icon} class="w-4 h-4" />
+        <Icon name={link.icon} class="w-3.5 h-3.5" />
         {link.label}
       </a>
     ))}
   </div>
+
+  <!-- Decorative accent line -->
+  <div class="reveal-fade mx-auto mt-8 h-px w-24 bg-gradient-to-r from-transparent via-secondary/40 to-transparent dark:via-accent-violet/40"></div>
 </header>
+
+<style>
+  /* Subtle glow on the name in dark mode only, echoing the home hero title.
+     Kept scoped to this component to avoid leaking into print. */
+  :global(.dark) .cv-name-glow {
+    text-shadow:
+      0 0 30px rgba(167, 139, 250, 0.25),
+      0 0 60px rgba(96, 165, 250, 0.12);
+  }
+</style>

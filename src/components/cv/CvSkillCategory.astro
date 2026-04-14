@@ -9,8 +9,11 @@ interface Props {
 const { category } = Astro.props;
 ---
 
-<div class="reveal-fade border border-secondary/15 dark:border-secondary/20 rounded-lg p-4 bg-slate-50/30 dark:bg-slate-800/20 hover:border-secondary/30 dark:hover:border-secondary/35 transition-colors">
-  <h3 class="font-bold mb-3 text-base text-secondary">{category.name}</h3>
+<div class="reveal-fade group relative rounded-xl p-4 border border-secondary/15 bg-slate-50/30 dark:border-accent-violet/20 dark:bg-ink-800 hover:border-secondary/30 dark:hover:border-accent-violet/40 dark:hover:shadow-[0_0_30px_rgba(167,139,250,0.15)] transition-all duration-300">
+  <div class="flex items-center gap-3 mb-3">
+    <div class="h-2.5 w-2.5 rounded-full bg-secondary/30 dark:bg-accent-violet/50 border border-secondary/40 dark:border-accent-violet/60 shrink-0 group-hover:dark:bg-accent-violet/70 group-hover:dark:border-accent-violet/80 transition-colors"></div>
+    <h3 class="font-display font-bold text-base text-secondary dark:text-slate-100 tracking-tight">{category.name}</h3>
+  </div>
   <div class="flex flex-wrap gap-1.5">
     {category.skills.map((skill) => (
       <Tag label={skill} variant="accent" />

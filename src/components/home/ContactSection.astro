@@ -1,0 +1,343 @@
+---
+/**
+ * ContactSection — simple contact form section at the bottom of the home.
+ *
+ * Deliberately backend-free: the submit handler constructs a mailto: URL
+ * from the form fields so the user's default email client opens with a
+ * pre-filled draft. This keeps the site fully static and dependency-free.
+ *
+ * The section doubles as the anchor target for the hero's 'Contact' CTA
+ * (id="contact").
+ */
+import { Icon } from 'astro-icon/components';
+import type { Lang } from '../../data/cv';
+import { t } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<section
+  id="contact"
+  class="relative bg-slate-50 py-24 text-ink-900 dark:bg-ink-900 dark:text-slate-100 sm:py-32"
+  aria-labelledby="contact-heading"
+  data-contact-email="info@aitorevi.dev"
+>
+  <div class="mx-auto max-w-2xl px-6">
+    <div class="text-center">
+      <h2
+        id="contact-heading"
+        class="font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
+      >
+        {t(lang, 'home.contact.title')}
+      </h2>
+      <p class="mx-auto mt-3 max-w-xl font-mono text-xs uppercase tracking-[0.3em] text-secondary/70 dark:text-accent-blue/50">
+        {t(lang, 'home.contact.subtitle')}
+      </p>
+      <p class="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+        {t(lang, 'home.contact.intro')}
+      </p>
+    </div>
+
+    <form
+      class="mt-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-lg sm:p-8 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:backdrop-blur-md"
+      data-contact-form
+      novalidate
+      data-msg-name-required={t(lang, 'home.contact.validation.nameRequired')}
+      data-msg-name-short={t(lang, 'home.contact.validation.nameTooShort')}
+      data-msg-email-required={t(lang, 'home.contact.validation.emailRequired')}
+      data-msg-email-invalid={t(lang, 'home.contact.validation.emailInvalid')}
+      data-msg-subject-required={t(lang, 'home.contact.validation.subjectRequired')}
+      data-msg-message-required={t(lang, 'home.contact.validation.messageRequired')}
+      data-msg-message-short={t(lang, 'home.contact.validation.messageTooShort')}
+      data-msg-success={t(lang, 'home.contact.status.success')}
+      data-msg-too-many={t(lang, 'home.contact.status.tooMany')}
+      data-msg-error={t(lang, 'home.contact.status.error')}
+      data-msg-network-error={t(lang, 'home.contact.status.networkError')}
+    >
+      <!-- Honeypot: oculto para humanos, los bots lo rellenan -->
+      <input
+        type="text"
+        name="_trap"
+        tabindex="-1"
+        autocomplete="off"
+        aria-hidden="true"
+        style="position:absolute;left:-9999px;opacity:0;height:0;width:0;"
+      />
+      <div class="grid gap-5 sm:grid-cols-2">
+        <label class="block">
+          <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary/80 dark:text-accent-blue/60">
+            {t(lang, 'home.contact.name')}
+          </span>
+          <input
+            type="text"
+            name="name"
+            required
+            autocomplete="name"
+            maxlength="100"
+            data-field="name"
+            class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus:ring-0 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
+            placeholder="Jane Doe"
+          />
+          <span data-field-error="name" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
+        </label>
+        <label class="block">
+          <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary/80 dark:text-accent-blue/60">
+            {t(lang, 'home.contact.email')}
+          </span>
+          <input
+            type="email"
+            name="email"
+            required
+            autocomplete="email"
+            maxlength="254"
+            data-field="email"
+            class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus:ring-0 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
+            placeholder="jane@example.com"
+          />
+          <span data-field-error="email" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
+        </label>
+      </div>
+
+      <label class="mt-5 block">
+        <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary/80 dark:text-accent-blue/60">
+          {t(lang, 'home.contact.subject')}
+        </span>
+        <input
+          type="text"
+          name="subject"
+          required
+          maxlength="200"
+          data-field="subject"
+          class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus:ring-0 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
+          placeholder={t(lang, 'home.contact.subjectPlaceholder')}
+        />
+        <span data-field-error="subject" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
+      </label>
+
+      <label class="mt-5 block">
+        <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary/80 dark:text-accent-blue/60">
+          {t(lang, 'home.contact.message')}
+        </span>
+        <textarea
+          name="message"
+          required
+          rows="5"
+          maxlength="5000"
+          data-field="message"
+          class="w-full resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus:ring-0 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
+          placeholder={t(lang, 'home.contact.messagePlaceholder')}
+        ></textarea>
+        <span data-field-error="message" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
+      </label>
+
+      <div class="mt-6 flex justify-end">
+        <button
+          type="submit"
+          class="group inline-flex items-center justify-center gap-2 rounded-lg border border-secondary/50 bg-gradient-to-r from-secondary/10 to-accent-violet/10 px-6 py-3 font-mono text-sm font-semibold text-secondary transition-all duration-300 hover:border-secondary/80 hover:from-secondary/20 hover:to-accent-violet/20 hover:shadow-[0_10px_30px_-10px_rgba(94,58,238,0.4)] dark:border-accent-blue/40 dark:from-accent-blue/15 dark:to-accent-violet/15 dark:text-accent-blue dark:hover:border-accent-blue/80 dark:hover:from-accent-blue/25 dark:hover:to-accent-violet/25 dark:hover:shadow-[0_0_40px_rgba(96,165,250,0.3)]"
+        >
+          <span>{t(lang, 'home.contact.submit')}</span>
+          <span
+            aria-hidden="true"
+            class="transition-transform duration-300 group-hover:translate-x-1"
+          >→</span>
+        </button>
+      </div>
+
+
+      <p
+        class="mt-4 hidden text-center text-xs text-secondary dark:text-accent-blue"
+        data-contact-status
+        role="status"
+        aria-live="polite"
+      >
+      </p>
+    </form>
+
+    <div class="mt-12 flex flex-wrap items-center justify-center gap-4 text-[11px] uppercase tracking-[0.2em] text-slate-600 dark:text-slate-500 font-mono">
+      <a
+        href="https://www.linkedin.com/in/aitor-reviriego-amor/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center gap-1.5 transition-colors hover:text-secondary dark:hover:text-accent-blue"
+      >
+        <Icon name="linkedin" class="w-3.5 h-3.5" />
+        LinkedIn
+      </a>
+      <a
+        href="https://github.com/aitorevi"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center gap-1.5 transition-colors hover:text-secondary dark:hover:text-accent-blue"
+      >
+        <Icon name="github" class="w-3.5 h-3.5" />
+        GitHub
+      </a>
+      <a
+        href="mailto:info@aitorevi.dev"
+        class="flex items-center gap-1.5 transition-colors hover:text-secondary dark:hover:text-accent-blue"
+      >
+        <Icon name="mail" class="w-3.5 h-3.5" />
+        info@aitorevi.dev
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  interface Msgs {
+    nameRequired: string;
+    nameShort: string;
+    emailRequired: string;
+    emailInvalid: string;
+    subjectRequired: string;
+    messageRequired: string;
+    messageShort: string;
+    success: string;
+    tooMany: string;
+    error: string;
+    networkError: string;
+  }
+
+  function validate(name: string, value: string, msgs: Msgs): string | null {
+    if (name === 'name') {
+      if (!value) return msgs.nameRequired;
+      if (value.length < 2) return msgs.nameShort;
+    }
+    if (name === 'email') {
+      if (!value) return msgs.emailRequired;
+      if (!EMAIL_RE.test(value)) return msgs.emailInvalid;
+    }
+    if (name === 'subject') {
+      if (!value) return msgs.subjectRequired;
+    }
+    if (name === 'message') {
+      if (!value) return msgs.messageRequired;
+      if (value.length < 20) return msgs.messageShort;
+    }
+    return null;
+  }
+
+  function setFieldError(form: HTMLFormElement, fieldName: string, msg: string | null) {
+    const input = form.querySelector<HTMLElement>(`[data-field="${fieldName}"]`);
+    const errorEl = form.querySelector<HTMLElement>(`[data-field-error="${fieldName}"]`);
+    if (!input || !errorEl) return;
+
+    if (msg) {
+      input.classList.add('!border-rose-400', 'dark:!border-rose-500');
+      input.classList.remove('border-slate-300', 'dark:border-white/10');
+      errorEl.textContent = msg;
+      errorEl.classList.remove('hidden');
+    } else {
+      input.classList.remove('!border-rose-400', 'dark:!border-rose-500');
+      input.classList.add('border-slate-300', 'dark:border-white/10');
+      errorEl.textContent = '';
+      errorEl.classList.add('hidden');
+    }
+  }
+
+  function initContactForm() {
+    const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+    if (!form) return;
+    const status = form.querySelector<HTMLElement>('[data-contact-status]');
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+
+    const d = form.dataset;
+    const msgs: Msgs = {
+      nameRequired:    d.msgNameRequired    || '',
+      nameShort:       d.msgNameShort       || '',
+      emailRequired:   d.msgEmailRequired   || '',
+      emailInvalid:    d.msgEmailInvalid    || '',
+      subjectRequired: d.msgSubjectRequired || '',
+      messageRequired: d.msgMessageRequired || '',
+      messageShort:    d.msgMessageShort    || '',
+      success:         d.msgSuccess         || '',
+      tooMany:         d.msgTooMany         || '',
+      error:           d.msgError           || '',
+      networkError:    d.msgNetworkError    || '',
+    };
+
+    const showStatus = (msg: string, isError: boolean) => {
+      if (!status) return;
+      status.textContent = msg;
+      status.classList.remove('hidden', 'text-rose-400', 'text-secondary', 'dark:text-accent-blue');
+      if (isError) {
+        status.classList.add('text-rose-400');
+      } else {
+        status.classList.add('text-secondary', 'dark:text-accent-blue');
+      }
+      status.classList.remove('hidden');
+    };
+
+    // Validate on blur
+    form.querySelectorAll<HTMLElement>('[data-field]').forEach((el) => {
+      el.addEventListener('blur', () => {
+        const fieldName = el.getAttribute('data-field')!;
+        const value = (el as HTMLInputElement | HTMLTextAreaElement).value.trim();
+        setFieldError(form, fieldName, validate(fieldName, value, msgs));
+      });
+      // Clear error while typing
+      el.addEventListener('input', () => {
+        const fieldName = el.getAttribute('data-field')!;
+        setFieldError(form, fieldName, null);
+      });
+    });
+
+    const onSubmit = async (e: SubmitEvent) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const fields = {
+        name:    (fd.get('name')    || '').toString().trim(),
+        email:   (fd.get('email')   || '').toString().trim(),
+        subject: (fd.get('subject') || '').toString().trim(),
+        message: (fd.get('message') || '').toString().trim(),
+      };
+
+      // Validate all fields and show errors
+      let firstInvalid: HTMLElement | null = null;
+      for (const [fieldName, value] of Object.entries(fields)) {
+        const err = validate(fieldName, value, msgs);
+        setFieldError(form, fieldName, err);
+        if (err && !firstInvalid) {
+          firstInvalid = form.querySelector(`[data-field="${fieldName}"]`);
+        }
+      }
+      if (firstInvalid) {
+        firstInvalid.focus();
+        return;
+      }
+
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(fields),
+        });
+        if (res.ok) {
+          showStatus(msgs.success, false);
+          form.reset();
+        } else if (res.status === 429) {
+          showStatus(msgs.tooMany, true);
+        } else {
+          showStatus(msgs.error, true);
+        }
+      } catch {
+        showStatus(msgs.networkError, true);
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    };
+
+    form.addEventListener('submit', onSubmit);
+  }
+
+  document.addEventListener('astro:page-load', initContactForm);
+  document.addEventListener('astro:after-swap', initContactForm);
+</script>

@@ -157,5 +157,7 @@
     });
   }
 
-  document.addEventListener('astro:page-load', initReveals);
+  document.addEventListener('astro:page-load', () => {
+    initReveals();
+  });
 </script>

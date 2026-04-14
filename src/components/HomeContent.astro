@@ -1,207 +1,49 @@
 ---
-import { Image } from "astro:assets";
+/**
+ * HomeContent — orchestrator for the redesigned home page.
+ *
+ * Composes the home sections in order. The home respects the site-wide
+ * light/dark theme toggle: every section declares both light and dark
+ * variants, and the Layout/Nav behave normally over the top. Individual
+ * sections handle their own animations, parallax and IntersectionObservers.
+ */
 import type { Lang } from '../data/cv';
-import { t } from '../i18n/utils';
-import HomeRotatingText from './HomeRotatingText.astro';
+import HeroParallax from './home/HeroParallax.astro';
+import WhatIDo from './home/WhatIDo.astro';
+import StatsCounter from './home/StatsCounter.astro';
+import TechStack from './home/TechStack.astro';
+import LatestPosts from './home/LatestPosts.astro';
+import ContactSection from './home/ContactSection.astro';
 
 interface Props {
   lang: Lang;
 }
 
 const { lang } = Astro.props;
-const roles = t(lang, 'home.roles').split(',');
 ---
 
-<section
-  transition:persist="hero-section"
-  class="hero-section mx-auto max-w-screen-xl min-h-[calc(100vh-8rem)] md:min-h-[calc(100vh-11rem)] flex items-center mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:p-20 rounded bg-grayLight bg-opacity-70 dark:bg-[#1a1f2e] dark:bg-opacity-70 overflow-hidden"
-  data-greeting-es={t('es' as Lang, 'home.greeting')}
-  data-greeting-en={t('en' as Lang, 'home.greeting')}
-  data-p1-es={t('es' as Lang, 'home.p1')}
-  data-p1-en={t('en' as Lang, 'home.p1')}
->
-    <!-- Mobile layout -->
-    <div class="flex flex-col items-center w-full lg:hidden font-ibm">
-        <Image
-            src="/retrato.webp"
-            alt="Aitor Reviriego"
-            width={200}
-            height={200}
-            class="w-48 h-48 sm:w-56 sm:h-56 rounded-2xl mb-6 hero-animate"
-            style="--delay: 0ms"
-        />
-        <span class="text-sm font-semibold tracking-widest uppercase text-secondary opacity-80 mb-3 hero-animate" style="--delay: 100ms">
-            {t(lang, 'home.roleLabel')}
-        </span>
-        <h1 class="text-4xl sm:text-5xl font-bold leading-none tracking-tight mb-2 hero-animate hero-greeting" style="--delay: 200ms">
-            {t(lang, 'home.greeting')}
-        </h1>
-        <h1 class="text-4xl sm:text-5xl font-bold leading-none tracking-tight mb-4 hero-animate" style="--delay: 300ms">
-            {t(lang, 'home.name')}
-        </h1>
-        <HomeRotatingText texts={roles} class="text-secondary text-xl font-medium mb-6 hero-animate" />
-        <p class="text-base leading-relaxed text-gray-600 dark:text-gray-400 max-w-prose text-center hero-animate hero-p1" style="--delay: 500ms">
-            {t(lang, 'home.p1')}
-        </p>
-    </div>
+<div class="home-redesign relative isolate bg-slate-50 text-ink-900 dark:bg-ink-900 dark:text-slate-100">
+  <HeroParallax lang={lang} />
+  <WhatIDo lang={lang} />
+  <StatsCounter lang={lang} />
+  <TechStack lang={lang} />
+  <LatestPosts lang={lang} />
+  <ContactSection lang={lang} />
+</div>
 
-    <!-- Desktop layout -->
-    <div class="hidden lg:grid lg:grid-cols-[1fr_auto] lg:gap-16 lg:items-center w-full font-ibm">
-        <div>
-            <span class="text-sm lg:text-base font-semibold tracking-widest uppercase text-secondary opacity-80 block mb-4 hero-animate" style="--delay: 0ms">
-                {t(lang, 'home.roleLabel')}
-            </span>
-            <h1 class="text-5xl lg:text-7xl font-bold leading-none tracking-tight mb-4 hero-animate hero-greeting" style="--delay: 150ms">
-                {t(lang, 'home.greeting')}
-            </h1>
-            <h2 class="text-5xl lg:text-7xl font-bold leading-tight tracking-tight mb-6 hero-animate" style="--delay: 300ms">
-                Aitor<br/>Reviriego
-            </h2>
-            <HomeRotatingText texts={roles} class="text-secondary text-xl lg:text-2xl font-medium mb-8 hero-animate" />
-            <p class="text-base lg:text-lg leading-relaxed text-gray-600 dark:text-gray-400 max-w-[52ch] hero-animate hero-p1" style="--delay: 500ms">
-                {t(lang, 'home.p1')}
-            </p>
-        </div>
-        <div class="flex items-center justify-center">
-            <Image
-                src="/retrato.webp"
-                alt="Aitor Reviriego"
-                width={600}
-                height={600}
-                class="w-80 h-80 xl:w-96 xl:h-96 rounded-2xl hero-animate-image"
-                style="--delay: 200ms"
-            />
-        </div>
-    </div>
-</section>
-
-<style>
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(12px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @keyframes fadeInScale {
-        from {
-            opacity: 0;
-            transform: scale(0.97);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
-
-    .hero-animate {
-        opacity: 0;
-        animation: fadeInUp 0.6s ease-out forwards;
-        animation-delay: var(--delay, 0ms);
-    }
-
-    .hero-animate-image {
-        opacity: 0;
-        animation: fadeInScale 0.8s ease-out forwards;
-        animation-delay: var(--delay, 200ms);
-        transition: transform 0.5s ease;
-    }
-
-    .hero-animate-image:hover {
-        transform: scale(1.02);
-    }
-
-    .no-animate.hero-animate,
-    .no-animate.hero-animate-image {
-        animation: none;
-        opacity: 1;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .hero-animate,
-        .hero-animate-image {
-            animation: none;
-            opacity: 1;
-        }
-    }
+<style is:global>
+  /* Make the page background follow the theme on the home. Layout.astro
+     already applies `bg-white dark:bg-[#0f1419]` to the body, but we tune
+     it on the home so the transition between sections feels continuous. */
+  body:has(.home-redesign) {
+    background-color: #f8fafc;
+    background-image: none;
+  }
+  body:has(.home-redesign) main {
+    background-color: #f8fafc;
+  }
+  html.dark body:has(.home-redesign),
+  html.dark body:has(.home-redesign) main {
+    background-color: #020617;
+  }
 </style>
-
-<script>
-    const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*!?áéíóúñ¡¿';
-    const SCRAMBLE_SPEED = 25;
-    const RESOLVE_SPEED = 2;
-
-    function scrambleText(el: Element, target: string) {
-        const htmlEl = el as HTMLElement;
-        let frame = 0;
-        const length = target.length;
-
-        const interval = setInterval(() => {
-            const resolved = Math.floor(frame / RESOLVE_SPEED);
-            if (resolved >= length) {
-                clearInterval(interval);
-                htmlEl.textContent = target;
-                return;
-            }
-            let output = '';
-            for (let i = 0; i < length; i++) {
-                if (i < resolved) {
-                    output += target[i];
-                } else if (target[i] === ' ') {
-                    output += ' ';
-                } else {
-                    output += CHARS[Math.floor(Math.random() * CHARS.length)];
-                }
-            }
-            htmlEl.textContent = output;
-            frame++;
-        }, SCRAMBLE_SPEED);
-    }
-
-    function typeText(el: Element, target: string) {
-        const htmlEl = el as HTMLElement;
-        const current = htmlEl.textContent ?? '';
-        let index = 0;
-        const maxLen = Math.max(current.length, target.length);
-        const SPEED = 10;
-
-        const interval = setInterval(() => {
-            index += 2;
-            if (index >= maxLen) {
-                clearInterval(interval);
-                htmlEl.textContent = target;
-                return;
-            }
-            // New text typed so far + remaining old text
-            const typed = target.slice(0, index);
-            const remaining = current.slice(index);
-            htmlEl.textContent = typed + remaining;
-        }, SPEED);
-    }
-
-    function initHero() {
-        document.querySelectorAll('.hero-animate, .hero-animate-image').forEach(el => {
-            el.classList.add('no-animate');
-        });
-
-        const section = document.querySelector('.hero-section');
-        if (!section) return;
-
-        const lang = window.location.pathname.startsWith('/en') ? 'en' : 'es';
-        const greeting = section.getAttribute(`data-greeting-${lang}`) ?? '';
-        const p1 = section.getAttribute(`data-p1-${lang}`) ?? '';
-
-        document.querySelectorAll('.hero-greeting').forEach(el => {
-            if (el.textContent?.trim() !== greeting.trim()) scrambleText(el, greeting);
-        });
-        document.querySelectorAll('.hero-p1').forEach(el => {
-            if (el.textContent?.trim() !== p1.trim()) typeText(el, p1);
-        });
-    }
-
-    document.addEventListener('astro:after-swap', initHero);
-</script>

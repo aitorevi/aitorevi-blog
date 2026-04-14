@@ -29,6 +29,14 @@ import { t, getBlogSlugFromId } from '../../i18n/utils';
 
 const lang = 'es';
 
+const DOT_COUNT = 60;
+const dots = Array.from({ length: DOT_COUNT }, (_, i) => ({
+  x: ((i * 37) % 100) + Math.random() * 2,
+  y: ((i * 53) % 95) + Math.random() * 2,
+  size: 1 + ((i * 13) % 4) * 0.6,
+  opacity: 0.12 + ((i * 7) % 10) * 0.025,
+}));
+
 // Astro 5: Fetch all blog posts using Content Layer API
 const allPosts = await getCollection('blog');
 
@@ -42,7 +50,7 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
 
 <Layout
   title="Blog | aitorevi"
-  description="Technical articles, tutorials, and insights on web development, Astro, TypeScript, and modern web technologies."
+  description={t(lang, 'blog.description')}
 >
   <!-- SEO: Additional metadata -->
   <Fragment slot="head">
@@ -72,14 +80,25 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
     })} />
   </Fragment>
 
+  <div class="relative min-h-screen">
+    <!-- Dark-mode-only dot field -->
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 hidden dark:block text-accent-blue">
+      {dots.map((d) => (
+        <span
+          class="absolute rounded-full bg-current"
+          style={`left:${d.x}%;top:${d.y}%;width:${d.size}px;height:${d.size}px;opacity:${d.opacity};`}
+        />
+      ))}
+    </div>
+
   <!-- Main Content -->
-  <main class="mx-auto max-w-7xl bg-grayLight bg-opacity-70 dark:bg-[#1a1f2e] dark:bg-opacity-70 mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:p-20 rounded">
+  <main class="blog-page mx-auto max-w-7xl mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:px-20 lg:pt-10 lg:pb-20">
     <!-- Page Header -->
-    <header class="mb-12 text-center">
-      <h1 class="mb-4 text-4xl font-bold tracking-tight text-slate-900 dark:text-[#f1f5f9] sm:text-5xl lg:text-6xl">
+    <header class="mb-12 text-center" data-reveal-item style="--reveal-delay:0ms">
+      <h1 class="mb-4 pb-2 font-display text-5xl font-black tracking-tight text-ink-900 dark:bg-home-gradient-text dark:bg-clip-text dark:text-transparent sm:text-6xl lg:text-7xl">
         Blog
       </h1>
-      <p class="mx-auto max-w-3xl text-2xl font-ibm font-bold text-secondary sm:text-3xl">
+      <p class="mx-auto mt-3 max-w-xl font-mono text-xs uppercase tracking-[0.3em] text-secondary/70 dark:text-accent-blue/50">
         {t(lang, 'blog.subtitle')}
       </p>
     </header>
@@ -89,11 +108,14 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
       <section class="mb-16" aria-labelledby="featured-heading">
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {featuredPosts.slice(0, 3).map((post, index) => (
-            <PostCard
-              post={post}
-              priority={index < 2}
-              showFeaturedBadge={true}
-            />
+            <div data-reveal-item style={`--reveal-delay:${(index + 1) * 100}ms`}>
+              <PostCard
+                post={post}
+                priority={index < 2}
+                showFeaturedBadge={true}
+                lang="es"
+              />
+            </div>
           ))}
         </div>
       </section>
@@ -104,18 +126,23 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
       <section aria-labelledby="all-posts-heading">
         <h2
           id="all-posts-heading"
-          class="mb-6 text-2xl font-bold text-slate-900"
+          class="mb-6 text-2xl font-display font-bold tracking-tight text-ink-900 dark:text-slate-100"
+          data-reveal-item
+          style={`--reveal-delay:${(featuredPosts.length + 1) * 100}ms`}
         >
           {featuredPosts.length > 0 ? t(lang, 'blog.allPosts') : t(lang, 'blog.latestPosts')}
         </h2>
 
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {regularPosts.map((post, index) => (
-            <PostCard
-              post={post}
-              priority={featuredPosts.length === 0 && index < 3}
-              showFeaturedBadge={false}
-            />
+            <div data-reveal-item style={`--reveal-delay:${(featuredPosts.length + index + 2) * 100}ms`}>
+              <PostCard
+                post={post}
+                priority={featuredPosts.length === 0 && index < 3}
+                showFeaturedBadge={false}
+                lang="es"
+              />
+            </div>
           ))}
         </div>
       </section>
@@ -139,49 +166,67 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
             d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
           />
         </svg>
-        <h3 class="mb-2 text-lg font-semibold text-slate-900">
-          No posts yet
-        </h3>
-        <p class="text-slate-600">
-          Check back soon for new articles!
-        </p>
+        <h3 class="mb-2 text-lg font-semibold text-slate-900">{t(lang, 'blog.noPosts')}</h3>
+        <p class="text-slate-600">{t(lang, 'blog.noPostsDescription')}</p>
       </div>
     )}
 
-    <!-- Optional: Newsletter Signup CTA -->
-    <!-- Uncomment when ready to add newsletter functionality
-    <section class="mt-16 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 p-8 text-center text-white sm:p-12">
-      <h2 class="mb-4 text-3xl font-bold">Subscribe to the Newsletter</h2>
-      <p class="mb-6 text-lg opacity-90">
-        Get the latest articles and insights delivered to your inbox.
-      </p>
-      <form class="mx-auto flex max-w-md gap-3">
-        <input
-          type="email"
-          placeholder="your@email.com"
-          class="flex-1 rounded-lg px-4 py-3 text-slate-900"
-          required
-        />
-        <button
-          type="submit"
-          class="rounded-lg bg-white px-6 py-3 font-semibold text-blue-600 transition-transform hover:scale-105"
-        >
-          Subscribe
-        </button>
-      </form>
-    </section>
-    -->
   </main>
+  </div>
+  <style is:global>
+    body:has(.blog-page) {
+      background-color: #f8fafc;
+      background-image: none;
+    }
+    html.dark body:has(.blog-page),
+    html.dark body:has(.blog-page) main {
+      background-color: #020617;
+      background-image: radial-gradient(ellipse at 30% 20%, #0f172a 0%, #020617 55%, #000 100%);
+      background-attachment: fixed;
+      background-size: cover;
+    }
+  </style>
 </Layout>
 
 <style>
-  /**
-   * Grid auto-fill ensures responsive layout without media queries
-   * Prevents layout shift with explicit gaps
-   */
-  @supports (grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))) {
-    .grid {
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
-    }
+  [data-reveal-item] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  [data-reveal-item].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal-item] { opacity: 1; transform: none; transition: none; }
   }
 </style>
+
+<script>
+  function initReveal() {
+    const items = document.querySelectorAll<HTMLElement>('[data-reveal-item]');
+    if (!items.length) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      items.forEach((el) => el.classList.add('is-visible'));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    items.forEach((el) => { el.classList.remove('is-visible'); io.observe(el); });
+  }
+  document.addEventListener('astro:page-load', initReveal);
+  document.addEventListener('astro:after-swap', initReveal);
+</script>
