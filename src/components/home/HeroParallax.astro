@@ -42,7 +42,7 @@ const dots = Array.from({ length: DOT_COUNT }, (_, i) => ({
   opacity: 0.12 + ((i * 7) % 10) * 0.025,
 }));
 
-const gridHLines = Array.from({ length: 14 }, (_, i) => i);
+const gridHLines = Array.from({ length: 22 }, (_, i) => i);
 const gridVLines = Array.from({ length: 16 }, (_, i) => i);
 ---
 
@@ -71,12 +71,12 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
   <!-- Layer 2: subtle grid — language-independent, persisted across nav -->
   <div
     transition:persist="hero-grid"
-    class="pointer-events-none absolute inset-0 opacity-[0.14] text-accent-blue dark:opacity-[0.22] will-change-transform"
+    class="pointer-events-none absolute inset-x-0 top-0 -bottom-[30vh] opacity-[0.14] text-accent-blue dark:opacity-[0.22] will-change-transform"
     data-parallax-layer
     data-speed="0.18"
     aria-hidden="true"
   >
-    <svg class="h-full w-full" preserveAspectRatio="xMidYMid slice" viewBox="0 0 1200 900">
+    <svg class="h-full w-full" preserveAspectRatio="xMidYMin slice" viewBox="0 0 1200 1600">
       {
         gridHLines.map((i) => (
           <line
@@ -95,7 +95,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
             x1={i * 80}
             y1="0"
             x2={i * 80}
-            y2="900"
+            y2="1600"
             stroke="currentColor"
             stroke-width="0.6"
           />

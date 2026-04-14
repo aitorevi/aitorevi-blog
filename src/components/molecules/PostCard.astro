@@ -34,7 +34,7 @@ import Tag from '../atoms/Tag.astro';
 import DateDisplay from '../atoms/DateDisplay.astro';
 import ReadingTime from '../atoms/ReadingTime.astro';
 import { calculateReadingTime } from '../../lib/utils';
-import { getBlogSlugFromId } from '../../i18n/utils';
+import { t, getBlogSlugFromId } from '../../i18n/utils';
 
 interface Props {
   /**
@@ -93,9 +93,9 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
   {data.featured && showFeaturedBadge && (
     <div
       class="absolute left-4 top-4 z-[1] rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-white shadow-md"
-      aria-label="Featured post"
+      aria-label={t(lang, 'blog.featured')}
     >
-      Featured
+      {t(lang, 'blog.featured')}
     </div>
   )}
 

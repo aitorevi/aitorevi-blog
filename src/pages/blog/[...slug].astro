@@ -36,7 +36,9 @@ import DateDisplay from '../../components/atoms/DateDisplay.astro';
 import ReadingTime from '../../components/atoms/ReadingTime.astro';
 import CopyButton from '../../components/atoms/CopyButton.astro';
 import { calculateReadingTime, formatDateISO } from '../../lib/utils';
-import { getBlogSlugFromId } from '../../i18n/utils';
+import { t, getBlogSlugFromId } from '../../i18n/utils';
+
+const lang = 'es';
 
 // Astro 5: Generate static paths for Spanish blog posts
 export async function getStaticPaths() {
@@ -243,7 +245,7 @@ const coverImageUrl = data.coverImage;
 
     <!-- Copy Button Template (hidden, será clonado por el script) -->
     <template id="copy-button-template">
-      <CopyButton />
+      <CopyButton copyLabel={t(lang, 'blog.copyCode')} copiedLabel={t(lang, 'blog.copied')} />
     </template>
 
     <!-- Article Footer -->
@@ -273,7 +275,7 @@ const coverImageUrl = data.coverImage;
               )}
             </p>
             <p class="text-sm text-slate-600">
-              Published on <DateDisplay date={data.publishDate} />
+              {t(lang, 'blog.publishedOn')} <DateDisplay date={data.publishDate} />
             </p>
           </div>
         </div>
@@ -294,7 +296,7 @@ const coverImageUrl = data.coverImage;
           >
             <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
           </svg>
-          Back to Blog
+          {t(lang, 'blog.backToBlog')}
         </a>
       </div>
     </footer>

@@ -23,19 +23,20 @@
  */
 
 interface Props {
-  /**
-   * Additional CSS classes
-   */
   class?: string;
+  copyLabel?: string;
+  copiedLabel?: string;
 }
 
-const { class: className = '' } = Astro.props;
+const { class: className = '', copyLabel = 'Copy', copiedLabel = 'Copied!' } = Astro.props;
 ---
 
 <button
   class={`copy-button group relative rounded-md bg-transparent p-2 text-slate-400 hover:text-secondary transition-colors duration-200 focus:outline-none ${className}`}
-  aria-label="Copy code to clipboard"
+  aria-label={copyLabel}
   data-copy-button
+  data-copy-label={copyLabel}
+  data-copied-label={copiedLabel}
 >
   <!-- Icono copiar (estado normal) -->
   <svg
@@ -76,7 +77,7 @@ const { class: className = '' } = Astro.props;
     class="tooltip pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-slate-800 px-2 py-1 text-xs font-medium text-white opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100"
     aria-hidden="true"
   >
-    Copy code
+    {copyLabel}
   </span>
 </button>
 
@@ -168,12 +169,13 @@ const { class: className = '' } = Astro.props;
      * Muestra feedback visual de éxito
      */
     private showSuccess(): void {
+      const copiedLabel = this.button.dataset.copiedLabel || 'Copied!';
       this.button.setAttribute('data-copied', 'true');
-      this.button.setAttribute('aria-label', 'Code copied to clipboard');
+      this.button.setAttribute('aria-label', copiedLabel);
 
       const tooltip = this.button.querySelector('.tooltip');
       if (tooltip) {
-        tooltip.textContent = 'Copied!';
+        tooltip.textContent = copiedLabel;
       }
 
       // Resetear después de 2 segundos
@@ -190,12 +192,13 @@ const { class: className = '' } = Astro.props;
      * Resetea el botón a su estado original
      */
     private reset(): void {
+      const copyLabel = this.button.dataset.copyLabel || 'Copy';
       this.button.setAttribute('data-copied', 'false');
-      this.button.setAttribute('aria-label', 'Copy code to clipboard');
+      this.button.setAttribute('aria-label', copyLabel);
 
       const tooltip = this.button.querySelector('.tooltip');
       if (tooltip) {
-        tooltip.textContent = 'Copy code';
+        tooltip.textContent = copyLabel;
       }
     }
 
@@ -220,8 +223,8 @@ const { class: className = '' } = Astro.props;
         }).execCommand;
         exec.call(document, 'copy');
         this.showSuccess();
-      } catch (err) {
-        console.error('Failed to copy code:', err);
+      } catch {
+        // execCommand fallback failed silently
       } finally {
         document.body.removeChild(textarea);
       }

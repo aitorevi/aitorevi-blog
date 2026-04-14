@@ -46,6 +46,17 @@ const { lang } = Astro.props;
       class="mt-12 rounded-2xl border border-slate-200 bg-white p-6 shadow-lg sm:p-8 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:backdrop-blur-md"
       data-contact-form
       novalidate
+      data-msg-name-required={t(lang, 'home.contact.validation.nameRequired')}
+      data-msg-name-short={t(lang, 'home.contact.validation.nameTooShort')}
+      data-msg-email-required={t(lang, 'home.contact.validation.emailRequired')}
+      data-msg-email-invalid={t(lang, 'home.contact.validation.emailInvalid')}
+      data-msg-subject-required={t(lang, 'home.contact.validation.subjectRequired')}
+      data-msg-message-required={t(lang, 'home.contact.validation.messageRequired')}
+      data-msg-message-short={t(lang, 'home.contact.validation.messageTooShort')}
+      data-msg-success={t(lang, 'home.contact.status.success')}
+      data-msg-too-many={t(lang, 'home.contact.status.tooMany')}
+      data-msg-error={t(lang, 'home.contact.status.error')}
+      data-msg-network-error={t(lang, 'home.contact.status.networkError')}
     >
       <!-- Honeypot: oculto para humanos, los bots lo rellenan -->
       <input
@@ -179,21 +190,35 @@ const { lang } = Astro.props;
 <script>
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  function validate(name: string, value: string): string | null {
+  interface Msgs {
+    nameRequired: string;
+    nameShort: string;
+    emailRequired: string;
+    emailInvalid: string;
+    subjectRequired: string;
+    messageRequired: string;
+    messageShort: string;
+    success: string;
+    tooMany: string;
+    error: string;
+    networkError: string;
+  }
+
+  function validate(name: string, value: string, msgs: Msgs): string | null {
     if (name === 'name') {
-      if (!value) return 'El nombre es obligatorio.';
-      if (value.length < 2) return 'El nombre es demasiado corto.';
+      if (!value) return msgs.nameRequired;
+      if (value.length < 2) return msgs.nameShort;
     }
     if (name === 'email') {
-      if (!value) return 'El email es obligatorio.';
-      if (!EMAIL_RE.test(value)) return 'El formato del email no es válido.';
+      if (!value) return msgs.emailRequired;
+      if (!EMAIL_RE.test(value)) return msgs.emailInvalid;
     }
     if (name === 'subject') {
-      if (!value) return 'El asunto es obligatorio.';
+      if (!value) return msgs.subjectRequired;
     }
     if (name === 'message') {
-      if (!value) return 'El mensaje es obligatorio.';
-      if (value.length < 20) return 'El mensaje es demasiado corto (mínimo 20 caracteres).';
+      if (!value) return msgs.messageRequired;
+      if (value.length < 20) return msgs.messageShort;
     }
     return null;
   }
@@ -222,6 +247,21 @@ const { lang } = Astro.props;
     const status = form.querySelector<HTMLElement>('[data-contact-status]');
     const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
 
+    const d = form.dataset;
+    const msgs: Msgs = {
+      nameRequired:    d.msgNameRequired    || '',
+      nameShort:       d.msgNameShort       || '',
+      emailRequired:   d.msgEmailRequired   || '',
+      emailInvalid:    d.msgEmailInvalid    || '',
+      subjectRequired: d.msgSubjectRequired || '',
+      messageRequired: d.msgMessageRequired || '',
+      messageShort:    d.msgMessageShort    || '',
+      success:         d.msgSuccess         || '',
+      tooMany:         d.msgTooMany         || '',
+      error:           d.msgError           || '',
+      networkError:    d.msgNetworkError    || '',
+    };
+
     const showStatus = (msg: string, isError: boolean) => {
       if (!status) return;
       status.textContent = msg;
@@ -239,7 +279,7 @@ const { lang } = Astro.props;
       el.addEventListener('blur', () => {
         const fieldName = el.getAttribute('data-field')!;
         const value = (el as HTMLInputElement | HTMLTextAreaElement).value.trim();
-        setFieldError(form, fieldName, validate(fieldName, value));
+        setFieldError(form, fieldName, validate(fieldName, value, msgs));
       });
       // Clear error while typing
       el.addEventListener('input', () => {
@@ -261,7 +301,7 @@ const { lang } = Astro.props;
       // Validate all fields and show errors
       let firstInvalid: HTMLElement | null = null;
       for (const [fieldName, value] of Object.entries(fields)) {
-        const err = validate(fieldName, value);
+        const err = validate(fieldName, value, msgs);
         setFieldError(form, fieldName, err);
         if (err && !firstInvalid) {
           firstInvalid = form.querySelector(`[data-field="${fieldName}"]`);
@@ -281,15 +321,15 @@ const { lang } = Astro.props;
           body: JSON.stringify(fields),
         });
         if (res.ok) {
-          showStatus('¡Mensaje enviado! Te responderé pronto.', false);
+          showStatus(msgs.success, false);
           form.reset();
         } else if (res.status === 429) {
-          showStatus('Demasiados intentos. Prueba de nuevo en un rato.', true);
+          showStatus(msgs.tooMany, true);
         } else {
-          showStatus('Algo fue mal. Inténtalo de nuevo o escríbeme directamente.', true);
+          showStatus(msgs.error, true);
         }
       } catch {
-        showStatus('Error de red. Inténtalo de nuevo.', true);
+        showStatus(msgs.networkError, true);
       } finally {
         if (submitBtn) submitBtn.disabled = false;
       }

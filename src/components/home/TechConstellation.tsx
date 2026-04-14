@@ -40,7 +40,7 @@ const TECH_NODES: TechNode[] = [
   { id: 'java', label: 'Java', group: 'backend', angle: 154, ring: 1, color: '#f89820', size: 38 },
   { id: 'csharp', label: 'C#', group: 'backend', angle: 206, ring: 1, color: '#9a67b3', size: 38 },
   { id: 'node', label: 'Node.js', group: 'backend', angle: 257, ring: 1, color: '#68a063', size: 36 },
-  { id: 'sql', label: 'SQL', group: 'backend', angle: 309, ring: 1, color: '#e48e00', size: 36 },
+
 
   // Ring 2 — frontend / infra / practices / ai
   { id: 'astro', label: 'Astro', group: 'frontend', angle: 30, ring: 2, color: '#ff5d01', size: 32 },
@@ -55,6 +55,7 @@ const TECH_NODES: TechNode[] = [
   { id: 'solid', label: 'SOLID', group: 'practice', angle: 75, ring: 3, color: '#c084fc', size: 24 },
   { id: 'dotnet', label: '.NET', group: 'backend', angle: 135, ring: 3, color: '#7c3aed', size: 26 },
   { id: 'copilot', label: 'Copilot', group: 'ai', angle: 195, ring: 3, color: '#d4a574', size: 24 },
+  { id: 'gemini', label: 'Gemini', group: 'ai', angle: 309, ring: 1, color: '#d4a574', size: 36 },
   { id: 'gcloud', label: 'Google Cloud', group: 'infra', angle: 255, ring: 3, color: '#4285f4', size: 26 },
   { id: 'do', label: 'DigitalOcean', group: 'infra', angle: 315, ring: 3, color: '#0080ff', size: 24 },
 ];
@@ -70,17 +71,16 @@ const CONNECTIONS: Array<[string, string]> = [
   ['next', 'docker'],
   ['java', 'tdd'],
   ['java', 'hexarch'],
-  ['java', 'sql'],
+
   ['csharp', 'dotnet'],
   ['csharp', 'solid'],
-  ['csharp', 'sql'],
-  ['dotnet', 'sql'],
   ['node', 'docker'],
-  ['node', 'sql'],
   ['docker', 'ghactions'],
   ['tdd', 'hexarch'],
   ['tdd', 'solid'],
   ['claude', 'copilot'],
+  ['claude', 'gemini'],
+  ['copilot', 'gemini'],
   ['ghactions', 'gcloud'],
   ['ghactions', 'do'],
   ['astro', 'tailwind'],

@@ -1,3 +1,57 @@
+/**
+ * Contact Form API — POST /api/contact
+ *
+ * ─────────────────────────────────────────────
+ * FLUJO GENERAL
+ * ─────────────────────────────────────────────
+ * 1. El cliente envía un JSON con { name, email, subject, message, _trap }.
+ * 2. El servidor aplica las capas de seguridad (ver abajo).
+ * 3. Si todo es válido, envía dos emails via Resend:
+ *    a) Notificación a info@aitorevi.dev con el contenido del mensaje.
+ *    b) Confirmación al remitente con un HTML de marca (buildConfirmationHtml).
+ *
+ * ─────────────────────────────────────────────
+ * CAPAS DE SEGURIDAD (en orden de ejecución)
+ * ─────────────────────────────────────────────
+ * 1. Rate limiting (Upstash Redis)
+ *    - 5 envíos por IP por hora, ventana deslizante.
+ *    - Si Upstash no está configurado o falla, el request pasa igualmente
+ *      (fail-open) para no romper el formulario si el servicio cae.
+ *    - Devuelve 429 cuando se supera el límite.
+ *
+ * 2. Honeypot (_trap)
+ *    - Campo oculto que los bots rellenan automáticamente; los humanos no.
+ *    - Si llega con valor, se devuelve 200 silencioso (el bot no sabe que fue bloqueado).
+ *
+ * 3. Límites de longitud
+ *    - name ≤ 100 · email ≤ 254 · subject ≤ 200 · message ≤ 5000 caracteres.
+ *    - Evita payloads abusivos y agotamiento de cuota en Resend.
+ *
+ * 4. Limpieza de errores
+ *    - Los errores de Resend nunca se exponen al cliente (sin detail: error.message).
+ *
+ * ─────────────────────────────────────────────
+ * SERVICIOS EXTERNOS
+ * ─────────────────────────────────────────────
+ * Resend (envío de email)
+ *   - Dashboard : https://resend.com/emails
+ *   - Dominio verificado: aitorevi.dev
+ *   - Variable: RESEND_API_KEY
+ *
+ * Upstash Redis (rate limiting)
+ *   - Dashboard : https://console.upstash.com
+ *   - Base de datos: la del proyecto aitorevi-blog (tier gratuito, 10k cmds/día)
+ *   - Variables: UPSTASH_REDIS_REST_URL · UPSTASH_REDIS_REST_TOKEN
+ *   - Las variables deben estar en .env (dev) y en Vercel → Settings → Environment Variables (prod)
+ *   - Librería: @upstash/ratelimit + @upstash/redis
+ *
+ * ─────────────────────────────────────────────
+ * VARIABLES DE ENTORNO NECESARIAS
+ * ─────────────────────────────────────────────
+ * RESEND_API_KEY              → clave API de Resend
+ * UPSTASH_REDIS_REST_URL      → endpoint REST de la bbdd Upstash
+ * UPSTASH_REDIS_REST_TOKEN    → token de autenticación de Upstash
+ */
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
 import { Ratelimit } from '@upstash/ratelimit';

@@ -64,7 +64,7 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
     </div>
 
   <main class="blog-page mx-auto max-w-7xl mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:px-20 lg:pt-10 lg:pb-20">
-    <header class="mb-12 text-center">
+    <header class="mb-12 text-center" data-reveal-item style="--reveal-delay:0ms">
       <h1 class="mb-4 pb-2 font-display text-5xl font-black tracking-tight text-ink-900 dark:bg-home-gradient-text dark:bg-clip-text dark:text-transparent sm:text-6xl lg:text-7xl">
         Blog
       </h1>
@@ -77,7 +77,9 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
       <section class="mb-16" aria-labelledby="featured-heading">
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {featuredPosts.slice(0, 3).map((post, index) => (
-            <PostCard post={post} priority={index < 2} showFeaturedBadge={true} lang="en" />
+            <div data-reveal-item style={`--reveal-delay:${(index + 1) * 100}ms`}>
+              <PostCard post={post} priority={index < 2} showFeaturedBadge={true} lang="en" />
+            </div>
           ))}
         </div>
       </section>
@@ -85,12 +87,19 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
 
     {regularPosts.length > 0 && (
       <section aria-labelledby="all-posts-heading">
-        <h2 id="all-posts-heading" class="mb-6 text-2xl font-display font-bold tracking-tight text-ink-900 dark:text-slate-100">
+        <h2
+          id="all-posts-heading"
+          class="mb-6 text-2xl font-display font-bold tracking-tight text-ink-900 dark:text-slate-100"
+          data-reveal-item
+          style={`--reveal-delay:${(featuredPosts.length + 1) * 100}ms`}
+        >
           {featuredPosts.length > 0 ? t(lang, 'blog.allPosts') : t(lang, 'blog.latestPosts')}
         </h2>
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {regularPosts.map((post, index) => (
-            <PostCard post={post} priority={featuredPosts.length === 0 && index < 3} showFeaturedBadge={false} lang="en" />
+            <div data-reveal-item style={`--reveal-delay:${(featuredPosts.length + index + 2) * 100}ms`}>
+              <PostCard post={post} priority={featuredPosts.length === 0 && index < 3} showFeaturedBadge={false} lang="en" />
+            </div>
           ))}
         </div>
       </section>
@@ -123,9 +132,44 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
 </Layout>
 
 <style>
-  @supports (grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))) {
-    .grid {
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
-    }
+  [data-reveal-item] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  [data-reveal-item].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal-item] { opacity: 1; transform: none; transition: none; }
   }
 </style>
+
+<script>
+  function initReveal() {
+    const items = document.querySelectorAll<HTMLElement>('[data-reveal-item]');
+    if (!items.length) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      items.forEach((el) => el.classList.add('is-visible'));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    items.forEach((el) => { el.classList.remove('is-visible'); io.observe(el); });
+  }
+  document.addEventListener('astro:page-load', initReveal);
+  document.addEventListener('astro:after-swap', initReveal);
+</script>

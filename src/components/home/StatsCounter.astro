@@ -24,10 +24,19 @@ const { lang } = Astro.props;
 // dev portfolio was being read as "20+ years coding", which misrepresented
 // the actual timeline. Splitting the number tells the real story: a dev
 // with a long product/business background underneath.
+function yearsSince(year: number, month: number /* 1-based */): number {
+  const now = new Date();
+  const months = (now.getFullYear() - year) * 12 + (now.getMonth() + 1 - month);
+  return Math.floor(months / 12);
+}
+
+const devYears = yearsSince(2023, 3);      // Lean Mind, March 2023
+const productYears = yearsSince(1998, 1);  // Tiendas Zulima, 1998
+
 const stats = [
-  { value: '3', suffix: '+', labelKey: 'home.stats.dev' },
-  { value: '25', suffix: '+', labelKey: 'home.stats.product' },
-  { value: '4', suffix: '+', labelKey: 'home.stats.stacks' },
+  { value: String(devYears),     suffix: '+', labelKey: 'home.stats.dev' },
+  { value: String(productYears), suffix: '+', labelKey: 'home.stats.product' },
+  { value: '3',                  suffix: '+', labelKey: 'home.stats.stacks' },
 ];
 ---
 
