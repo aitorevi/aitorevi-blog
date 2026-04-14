@@ -57,6 +57,7 @@ const { lang } = Astro.props;
       data-msg-too-many={t(lang, 'home.contact.status.tooMany')}
       data-msg-error={t(lang, 'home.contact.status.error')}
       data-msg-network-error={t(lang, 'home.contact.status.networkError')}
+      data-lang={lang}
     >
       <!-- Honeypot: oculto para humanos, los bots lo rellenan -->
       <input
@@ -296,6 +297,7 @@ const { lang } = Astro.props;
         email:   (fd.get('email')   || '').toString().trim(),
         subject: (fd.get('subject') || '').toString().trim(),
         message: (fd.get('message') || '').toString().trim(),
+        lang:    form.dataset.lang ?? 'es',
       };
 
       // Validate all fields and show errors

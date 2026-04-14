@@ -68,16 +68,32 @@ function escapeHtml(str: string): string {
     .replace(/'/g, '&#x27;');
 }
 
-function buildConfirmationHtml(name: string, message: string): string {
+function buildConfirmationHtml(name: string, message: string, lang: 'es' | 'en'): string {
   const escapedName = escapeHtml(name);
   const escapedMessage = escapeHtml(message).replace(/\n/g, '<br>');
 
+  const copy = lang === 'en'
+    ? {
+        htmlLang: 'en',
+        title: 'I received your message',
+        greeting: `Hi, ${escapedName}.`,
+        body: "I've received your message and will get back to you as soon as possible. Here's a copy of what you sent:",
+        cta: 'Visit aitorevi.dev',
+      }
+    : {
+        htmlLang: 'es',
+        title: 'He recibido tu mensaje',
+        greeting: `Hola, ${escapedName}.`,
+        body: 'He recibido tu mensaje y te responderé lo antes posible. Aquí tienes una copia de lo que me enviaste:',
+        cta: 'Visitar aitorevi.dev',
+      };
+
   return `<!DOCTYPE html>
-<html lang="es">
+<html lang="${copy.htmlLang}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>He recibido tu mensaje</title>
+  <title>${copy.title}</title>
 </head>
 <body style="margin:0;padding:0;background-color:#020617;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#020617;padding:40px 16px;">
@@ -97,10 +113,10 @@ function buildConfirmationHtml(name: string, message: string): string {
             <td style="background-color:#0b1120;border:1px solid #1e293b;border-radius:16px;padding:40px 36px;">
 
               <!-- Greeting -->
-              <p style="margin:0 0 8px 0;font-family:Outfit,system-ui,sans-serif;font-size:22px;font-weight:700;color:#f1f5f9;">Hola, ${escapedName}.</p>
+              <p style="margin:0 0 8px 0;font-family:Outfit,system-ui,sans-serif;font-size:22px;font-weight:700;color:#f1f5f9;">${copy.greeting}</p>
 
               <!-- Confirmation -->
-              <p style="margin:0 0 32px 0;font-size:15px;line-height:1.6;color:#cbd5e1;">He recibido tu mensaje y te responderé lo antes posible. Aquí tienes una copia de lo que me enviaste:</p>
+              <p style="margin:0 0 32px 0;font-size:15px;line-height:1.6;color:#cbd5e1;">${copy.body}</p>
 
               <!-- Quote block -->
               <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:36px;">
@@ -115,7 +131,7 @@ function buildConfirmationHtml(name: string, message: string): string {
               <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
                   <td style="border-radius:8px;background-color:#60a5fa;">
-                    <a href="https://www.aitorevi.dev/" style="display:inline-block;padding:12px 24px;font-family:Outfit,system-ui,sans-serif;font-size:14px;font-weight:600;color:#020617;text-decoration:none;letter-spacing:0.01em;">Visitar aitorevi.dev</a>
+                    <a href="https://www.aitorevi.dev/" style="display:inline-block;padding:12px 24px;font-family:Outfit,system-ui,sans-serif;font-size:14px;font-weight:600;color:#020617;text-decoration:none;letter-spacing:0.01em;">${copy.cta}</a>
                   </td>
                 </tr>
               </table>
@@ -192,6 +208,7 @@ export const POST: APIRoute = async ({ request }) => {
   const email = (data.email ?? '').toString().trim();
   const subject = (data.subject ?? '').toString().trim();
   const message = (data.message ?? '').toString().trim();
+  const lang: 'es' | 'en' = (data.lang ?? '') === 'en' ? 'en' : 'es';
 
   if (!name || !email || !subject || !message) {
     return new Response(JSON.stringify({ error: 'missing_fields' }), {
@@ -239,8 +256,10 @@ export const POST: APIRoute = async ({ request }) => {
       from: 'Aitor Reviriego <noreply@aitorevi.dev>',
       to: email,
       subject: `Re: ${subject}`,
-      text: `Hola ${name},\n\nHe recibido tu mensaje y te responderé lo antes posible.\n\n---\n${message}\n\n---\naitorevi.dev`,
-      html: buildConfirmationHtml(name, message),
+      text: lang === 'en'
+        ? `Hi ${name},\n\nI've received your message and will reply as soon as possible.\n\n---\n${message}\n\n---\naitorevi.dev`
+        : `Hola ${name},\n\nHe recibido tu mensaje y te responderé lo antes posible.\n\n---\n${message}\n\n---\naitorevi.dev`,
+      html: buildConfirmationHtml(name, message, lang),
     });
   }
 
