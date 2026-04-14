@@ -178,8 +178,6 @@ const { lang } = Astro.props;
 
 <script>
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const INPUT_ERROR = ['!border-slate-300', '!border-rose-400', 'dark:!border-rose-500'];
-  const INPUT_OK   = ['!border-slate-300', '!border-rose-400', 'dark:!border-rose-500'];
 
   function validate(name: string, value: string): string | null {
     if (name === 'name') {
