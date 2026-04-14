@@ -13,10 +13,14 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",
+    "@astrojs/markdoc": "^0.15.11",
     "@astrojs/react": "^4.4.2",
     "@astrojs/sitemap": "^3.6.0",
     "@astrojs/tailwind": "^6.0.2",
     "@astrojs/vercel": "^9.0.2",
+    "@keystatic/astro": "^5.0.6",
+    "@keystatic/core": "^0.5.50",
+    "@sparticuz/chromium": "^143.0.4",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "@upstash/ratelimit": "^2.0.8",
@@ -28,7 +32,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "resend": "^6.10.0",
-    "@sparticuz/chromium": "^143.0.4",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3"
   },

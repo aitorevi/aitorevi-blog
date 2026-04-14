@@ -4,12 +4,14 @@ import icon from "astro-icon";
 import sitemap from '@astrojs/sitemap';
 import react from "@astrojs/react";
 import vercel from "@astrojs/vercel";
+import markdoc from "@astrojs/markdoc";
+import keystatic from "@keystatic/astro";
 
 // https://astro.build/config
 export default defineConfig({
   adapter: vercel(),
-  integrations: [tailwind(), icon(), react(), sitemap({
-    filter: (page) => !page.includes('/katas/') && !page.includes('/print'),
+  integrations: [tailwind(), icon(), react(), markdoc(), keystatic(), sitemap({
+    filter: (page) => !page.includes('/katas/') && !page.includes('/print') && !page.includes('/keystatic'),
   })],
   site: "https://www.aitorevi.dev/",
   redirects: {
