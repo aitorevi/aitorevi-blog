@@ -17,7 +17,7 @@ const sharedBlogFields = {
   }),
   coverImage: fields.text({
     label: 'Cover image path',
-    validation: { length: { isRequired: true } },
+    validation: { isRequired: true },
     description: 'Absolute path from public/. e.g. /images/blog/my-post/cover.webp',
   }),
   coverImageAlt: fields.text({
