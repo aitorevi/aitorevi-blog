@@ -50,7 +50,7 @@ const KEYSTATIC_SAVE_FEEDBACK_SCRIPT = `
     if (!saving && wasSaving) {
       wasSaving = false;
       setTimeout(function() {
-        if (!hasUnsavedBadge()) showToast('✓ Saved');
+        if (!hasUnsavedBadge()) showToast('\u2713 Saved');
       }, 120);
     }
   });
@@ -85,6 +85,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   const headers = new Headers(response.headers);
   headers.delete('content-length');
+  headers.set('content-type', 'text/html; charset=utf-8');
 
   return new Response(injected, {
     status: response.status,
