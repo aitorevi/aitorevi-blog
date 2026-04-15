@@ -6,77 +6,59 @@ const KEYSTATIC_SAVE_FEEDBACK_SCRIPT = `
   if (window.__keystaticFeedbackInstalled) return;
   window.__keystaticFeedbackInstalled = true;
 
+  var SAVING_SELECTOR = '[aria-label="Saving changes"]';
+
   function ensureToastContainer() {
-    let el = document.getElementById('ks-toast');
+    var el = document.getElementById('ks-toast');
     if (el) return el;
     el = document.createElement('div');
     el.id = 'ks-toast';
-    el.style.cssText = [
-      'position:fixed',
-      'bottom:24px',
-      'right:24px',
-      'z-index:99999',
-      'padding:14px 20px',
-      'border-radius:10px',
-      'font-family:system-ui,sans-serif',
-      'font-size:14px',
-      'font-weight:500',
-      'color:#fff',
-      'box-shadow:0 10px 30px rgba(0,0,0,0.35)',
-      'opacity:0',
-      'transform:translateY(20px)',
-      'transition:opacity .25s ease,transform .25s ease',
-      'pointer-events:none',
-      'max-width:360px',
-    ].join(';');
+    el.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:99999;padding:14px 20px;border-radius:10px;font-family:system-ui,sans-serif;font-size:14px;font-weight:500;color:#fff;background:#16a34a;box-shadow:0 10px 30px rgba(0,0,0,0.35);opacity:0;transform:translateY(20px);transition:opacity .25s ease,transform .25s ease;pointer-events:none;max-width:360px';
     document.body.appendChild(el);
     return el;
   }
 
-  function showToast(message, kind) {
-    const el = ensureToastContainer();
+  function showToast(message) {
+    var el = ensureToastContainer();
     el.textContent = message;
-    el.style.background = kind === 'error' ? '#dc2626' : '#16a34a';
     el.style.opacity = '1';
     el.style.transform = 'translateY(0)';
     clearTimeout(el.__t);
-    el.__t = setTimeout(() => {
+    el.__t = setTimeout(function() {
       el.style.opacity = '0';
       el.style.transform = 'translateY(20px)';
-    }, 2800);
+    }, 2500);
   }
 
-  const originalFetch = window.fetch.bind(window);
-  window.fetch = async function(input, init) {
-    const url = typeof input === 'string' ? input : (input && input.url) || '';
-    const isGithubGraphql = url.indexOf('api.github.com/graphql') !== -1;
-    let isCommitMutation = false;
-    if (isGithubGraphql && init && init.body) {
-      try {
-        const body = typeof init.body === 'string' ? init.body : '';
-        if (body.indexOf('createCommitOnBranch') !== -1) {
-          isCommitMutation = true;
-        }
-      } catch (_) {}
+  function hasUnsavedBadge() {
+    var nodes = document.querySelectorAll('span,div');
+    for (var i = 0; i < nodes.length; i++) {
+      var n = nodes[i];
+      if (n.children.length === 0 && n.textContent === 'Unsaved') return true;
     }
+    return false;
+  }
 
-    const response = await originalFetch(input, init);
-
-    if (isCommitMutation) {
-      const clone = response.clone();
-      clone.json().then(function(data) {
-        const errors = (data && data.errors) || null;
-        const commitCreated = !!(data && data.data && data.data.createCommitOnBranch && data.data.createCommitOnBranch.commit);
-        if (commitCreated && !errors) {
-          showToast('✓ Saved — committed to GitHub', 'success');
-        } else if (errors && errors.length) {
-          showToast('✗ Save failed: ' + (errors[0].message || 'unknown error'), 'error');
-        }
-      }).catch(function() {});
+  var wasSaving = false;
+  var observer = new MutationObserver(function() {
+    var saving = !!document.querySelector(SAVING_SELECTOR);
+    if (saving && !wasSaving) {
+      wasSaving = true;
+      return;
     }
+    if (!saving && wasSaving) {
+      wasSaving = false;
+      setTimeout(function() {
+        if (!hasUnsavedBadge()) showToast('✓ Saved');
+      }, 120);
+    }
+  });
 
-    return response;
-  };
+  function start() {
+    observer.observe(document.body, { subtree: true, childList: true });
+  }
+  if (document.body) start();
+  else document.addEventListener('DOMContentLoaded', start);
 })();
 </script>
 `;
