@@ -78,9 +78,6 @@ const {
 const { data, id, body = '' } = post;
 const readingTime = calculateReadingTime(body);
 
-const DEFAULT_COVER_IMAGE = '/logo.webp';
-const coverImageUrl = data.coverImage || DEFAULT_COVER_IMAGE;
-
 // Generate post URL - strip language prefix from content ID
 const slug = getBlogSlugFromId(id);
 const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
@@ -108,16 +105,29 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
     class="relative aspect-video w-full overflow-hidden bg-grayLight"
     aria-label={`Read full post: ${data.title}`}
   >
-    <img
-      src={coverImageUrl}
-      alt={data.coverImageAlt || data.title}
-      width={1200}
-      height={630}
-      class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-      loading={priority ? 'eager' : 'lazy'}
-      decoding={priority ? 'sync' : 'async'}
-      itemprop="image"
-    />
+    {data.coverImage ? (
+      <img
+        src={data.coverImage}
+        alt={data.coverImageAlt || data.title}
+        width={1200}
+        height={630}
+        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        loading={priority ? 'eager' : 'lazy'}
+        decoding={priority ? 'sync' : 'async'}
+        itemprop="image"
+      />
+    ) : (
+      <div
+        class="flex h-full w-full items-center justify-center bg-home-radial transition-transform duration-500 group-hover:scale-105"
+        role="img"
+        aria-label={data.coverImageAlt || data.title}
+        itemprop="image"
+      >
+        <span class="select-none font-display text-4xl font-black tracking-tight text-white md:text-5xl">
+          aitorevi<span class="text-accent-violet">.</span>
+        </span>
+      </div>
+    )}
   </a>
 
   <!-- Card Content -->

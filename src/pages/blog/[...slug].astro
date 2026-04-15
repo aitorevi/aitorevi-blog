@@ -221,16 +221,29 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
 
     <!-- Cover Image -->
     <figure class="mb-10 overflow-hidden rounded-xl">
-      <img
-        src={coverImageUrl}
-        alt={data.coverImageAlt || data.title}
-        width={1200}
-        height={630}
-        class="w-full"
-        loading="eager"
-        decoding="sync"
-        itemprop="image"
-      />
+      {data.coverImage ? (
+        <img
+          src={data.coverImage}
+          alt={data.coverImageAlt || data.title}
+          width={1200}
+          height={630}
+          class="w-full"
+          loading="eager"
+          decoding="sync"
+          itemprop="image"
+        />
+      ) : (
+        <div
+          class="flex aspect-[1200/630] w-full items-center justify-center bg-home-radial"
+          role="img"
+          aria-label={data.coverImageAlt || data.title}
+          itemprop="image"
+        >
+          <span class="select-none font-display text-6xl font-black tracking-tight text-white md:text-8xl">
+            aitorevi<span class="text-accent-violet">.</span>
+          </span>
+        </div>
+      )}
       {data.coverImageAlt && (
         <figcaption class="mt-2 text-center text-sm text-slate-500">
           {data.coverImageAlt}
