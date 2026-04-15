@@ -9,8 +9,8 @@ tags:
   - Vercel
   - DevOps
   - CLI
-draft: true
-featured: false
+draft: false
+featured: true
 author:
   name: aitorevi
   avatar: /avatar.webp
