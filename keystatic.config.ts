@@ -85,6 +85,7 @@ export default config({
       label: 'Posts (ES)',
       slugField: 'title',
       path: 'src/content/blog/es/*',
+      columns: ['draft', 'publishDate'],
       format: { contentField: 'content' },
       schema: {
         title: fields.slug({
@@ -114,6 +115,7 @@ export default config({
       label: 'Posts (EN)',
       slugField: 'title',
       path: 'src/content/blog/en/*',
+      columns: ['draft', 'publishDate'],
       format: { contentField: 'content' },
       schema: {
         title: fields.slug({
