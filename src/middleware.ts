@@ -5,6 +5,7 @@ const KEYSTATIC_SAVE_FEEDBACK_SCRIPT = `
 (function() {
   if (window.__keystaticFeedbackInstalled) return;
   window.__keystaticFeedbackInstalled = true;
+  console.log('[ks-toast] installed');
 
   var SAVING_SELECTOR = '[aria-label="Saving changes"]';
 
@@ -76,11 +77,18 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   const html = await response.text();
-  const injected = html.replace('</body>', `${KEYSTATIC_SAVE_FEEDBACK_SCRIPT}</body>`);
+  // Keystatic's SSR response has no </body> to anchor against — it's a
+  // minimal shell that mounts a client:only React app. Append at the end.
+  const injected = html.includes('</body>')
+    ? html.replace('</body>', `${KEYSTATIC_SAVE_FEEDBACK_SCRIPT}</body>`)
+    : html + KEYSTATIC_SAVE_FEEDBACK_SCRIPT;
+
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
 
   return new Response(injected, {
     status: response.status,
     statusText: response.statusText,
-    headers: response.headers,
+    headers,
   });
 });
