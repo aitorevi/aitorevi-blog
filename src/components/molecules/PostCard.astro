@@ -78,6 +78,9 @@ const {
 const { data, id, body = '' } = post;
 const readingTime = calculateReadingTime(body);
 
+const DEFAULT_COVER_IMAGE = '/logo.webp';
+const coverImageUrl = data.coverImage || DEFAULT_COVER_IMAGE;
+
 // Generate post URL - strip language prefix from content ID
 const slug = getBlogSlugFromId(id);
 const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
@@ -106,8 +109,8 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
     aria-label={`Read full post: ${data.title}`}
   >
     <img
-      src={data.coverImage}
-      alt={data.coverImageAlt}
+      src={coverImageUrl}
+      alt={data.coverImageAlt || data.title}
       width={1200}
       height={630}
       class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"

@@ -50,10 +50,11 @@ const dots = Array.from({ length: DOT_COUNT }, (_, i) => ({
 }));
 const readingTime = calculateReadingTime(body);
 const canonicalUrl = data.canonicalUrl || new URL(Astro.url.pathname, Astro.site).href;
-const ogImageUrl = data.ogImage || data.coverImage;
-const coverImageUrl = data.coverImage;
-const toAbsoluteUrl = (url: string | undefined) =>
-  url ? (url.startsWith('http') ? url : new URL(url, Astro.site).href) : undefined;
+const DEFAULT_COVER_IMAGE = '/logo.webp';
+const coverImageUrl = data.coverImage || DEFAULT_COVER_IMAGE;
+const ogImageUrl = data.ogImage || coverImageUrl;
+const toAbsoluteUrl = (url: string) =>
+  url.startsWith('http') ? url : new URL(url, Astro.site).href;
 const ogImageAbsolute = toAbsoluteUrl(ogImageUrl);
 const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
 ---
@@ -68,7 +69,7 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
     <meta property="og:title" content={data.title} />
     <meta property="og:description" content={data.description} />
     <meta property="og:url" content={canonicalUrl} />
-    {ogImageAbsolute && <meta property="og:image" content={ogImageAbsolute} />}
+    <meta property="og:image" content={ogImageAbsolute} />
     <meta property="article:published_time" content={data.publishDate.toISOString()} />
     {data.updatedDate && (
       <meta property="article:modified_time" content={data.updatedDate.toISOString()} />
@@ -80,14 +81,14 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={data.title} />
     <meta name="twitter:description" content={data.description} />
-    {ogImageAbsolute && <meta name="twitter:image" content={ogImageAbsolute} />}
+    <meta name="twitter:image" content={ogImageAbsolute} />
     <link rel="canonical" href={canonicalUrl} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "BlogPosting",
       "headline": data.title,
       "description": data.description,
-      ...(coverImageAbsolute ? { "image": coverImageAbsolute } : {}),
+      "image": coverImageAbsolute,
       "datePublished": data.publishDate.toISOString(),
       "dateModified": data.updatedDate?.toISOString() || data.publishDate.toISOString(),
       "author": {
@@ -160,25 +161,23 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
       </div>
     </header>
 
-    {data.coverImage && (
-      <figure class="mb-10 overflow-hidden rounded-xl">
-        <img
-          src={data.coverImage}
-          alt={data.coverImageAlt}
-          width={1200}
-          height={630}
-          class="w-full"
-          loading="eager"
-          decoding="sync"
-          itemprop="image"
-        />
-        {data.coverImageAlt && (
-          <figcaption class="mt-2 text-center text-sm text-slate-500">
-            {data.coverImageAlt}
-          </figcaption>
-        )}
-      </figure>
-    )}
+    <figure class="mb-10 overflow-hidden rounded-xl">
+      <img
+        src={coverImageUrl}
+        alt={data.coverImageAlt || data.title}
+        width={1200}
+        height={630}
+        class="w-full"
+        loading="eager"
+        decoding="sync"
+        itemprop="image"
+      />
+      {data.coverImageAlt && (
+        <figcaption class="mt-2 text-center text-sm text-slate-500">
+          {data.coverImageAlt}
+        </figcaption>
+      )}
+    </figure>
 
     <div
       class="prose prose-slate dark:prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:text-blue-700 dark:hover:prose-a:text-blue-300 prose-img:rounded-lg"
