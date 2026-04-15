@@ -2,7 +2,7 @@
 title: 'Inversión de Dependencias: deja de acoplar lo que no debería estar junto'
 description: >-
   El acoplamiento hace que tocar una cosa rompa cinco. La Inversión de
-  Dependencias es una de las herramientas más potentes para combatirlo.Popo
+  Dependencias es una de las herramientas más potentes para combatirlo.
 publishDate: 2026-03-30
 coverImage: /images/blog/dependency-inversion/coverImage.webp
 coverImageAlt: Ilustración de piezas conectándose a través de una interfaz abstracta
