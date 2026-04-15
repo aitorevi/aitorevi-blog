@@ -100,6 +100,7 @@ export default config({
         ...sharedBlogFields,
         content: fields.markdoc({
           label: 'Content',
+          extension: 'md',
           options: {
             image: {
               directory: 'public/images/blog',
@@ -128,6 +129,7 @@ export default config({
         ...sharedBlogFields,
         content: fields.markdoc({
           label: 'Content',
+          extension: 'md',
           options: {
             image: {
               directory: 'public/images/blog',
