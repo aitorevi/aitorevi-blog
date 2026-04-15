@@ -74,6 +74,7 @@ export default config({
     : {
         kind: 'github',
         repo: { owner: 'aitorevi', name: 'aitorevi-blog' },
+        branchPrefix: 'drafts/',
       },
   ui: {
     brand: { name: 'aitorevi blog' },
