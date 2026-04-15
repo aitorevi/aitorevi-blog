@@ -2,7 +2,7 @@
 title: "Vercel preview deployments: úsalos, compártelos y deja el proyecto limpio"
 description: "Cada rama que subes a Vercel genera una URL pública automáticamente. Te explico cómo sacarle partido y cómo limpiar lo que se acumula."
 publishDate: 2026-04-14
-coverImage: /images/blog/vercel-preview-deployments/cover.webp
+coverImage: /images/blog/vercel-preview-deployments-cover.webp
 coverImageAlt: "Terminal mostrando el listado de deployments de Vercel con URLs de preview"
 tags:
   - Vercel
