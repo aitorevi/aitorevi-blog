@@ -15,10 +15,10 @@ const sharedBlogFields = {
   updatedDate: fields.date({
     label: 'Updated date',
   }),
-  coverImage: fields.image({
-    label: 'Cover image',
-    directory: 'public/images/blog',
-    publicPath: '/images/blog/',
+  coverImage: fields.text({
+    label: 'Cover image path',
+    validation: { isRequired: true },
+    description: 'Absolute path from public/. e.g. /images/blog/my-post/cover.webp',
   }),
   coverImageAlt: fields.text({
     label: 'Cover image alt text',
