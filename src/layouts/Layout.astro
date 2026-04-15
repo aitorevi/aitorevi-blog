@@ -110,3 +110,18 @@ const alternatePath = alternateUrl.replace('https://www.aitorevi.dev', '');
 		if (!localStorage.getItem('theme')) applyTheme();
 	});
 </script>
+<script>
+	// Secret shortcut: press G then A within 1s to open Keystatic
+	let lastKey = '';
+	let lastTime = 0;
+	document.addEventListener('keydown', (e) => {
+		if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+		const now = Date.now();
+		if (e.key === 'g') { lastKey = 'g'; lastTime = now; return; }
+		if (e.key === 'a' && lastKey === 'g' && now - lastTime < 1000) {
+			window.location.href = '/keystatic';
+		} else {
+			lastKey = '';
+		}
+	});
+</script>
