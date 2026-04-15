@@ -20,6 +20,33 @@ Sí, funcionan. Keystatic permite configurar un `document` o `markdown` field co
 
 ---
 
+## Workflow de imágenes (importante)
+
+Tras varios intentos de usar `fields.image` para la portada hemos optado por un setup híbrido que evita un bug de Keystatic con paths en subdirectorios. Resumen:
+
+### Cover image (portada)
+
+El campo `coverImage` es `fields.text` — un input de texto donde pegas la ruta absoluta desde `public/`. **No hay picker ni preview** para la cover.
+
+**Workflow para un post nuevo:**
+
+1. Crea/exporta la imagen
+2. Colócala en `public/images/blog/{slug}/cover.webp` (sigue la convención de subdirectorio por post)
+3. En Keystatic, en el campo "Cover image path", pega: `/images/blog/{slug}/cover.webp`
+4. Pon el alt descriptivo en "Cover image alt text"
+
+**Por qué no picker**: Keystatic con `fields.image` intenta leer y reemplazar imágenes en subdirectorios del `directory` configurado, pero su cálculo de `deletions` en el commit de GitHub produce paths que el API de GitHub rechaza con "path requested for deletion does not exist". Hasta que esto se arregle upstream (o migremos las covers a un layout flat sin subdirectorios), el campo de texto es lo fiable.
+
+### Imágenes dentro del cuerpo del artículo
+
+En el editor markdoc del campo "Content" **sí funciona** el drag & drop y el botón de insertar imagen. Keystatic las sube a `public/images/blog/` y las commitea junto al `.md`. No hay problema porque son imágenes nuevas, sin el legacy de los subdirectorios.
+
+### Regla a recordar
+
+> **Nunca intentes cambiar la cover de un post existente con `fields.image`** mientras siga configurado como `fields.text` — y si alguna vez lo volvemos a cambiar, evítalo hasta verificar que Keystatic ha arreglado el bug.
+
+---
+
 ## Pasos de implementación
 
 ### 0. Rama de trabajo
