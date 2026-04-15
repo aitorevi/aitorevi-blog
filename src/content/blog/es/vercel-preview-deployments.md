@@ -10,7 +10,7 @@ tags:
   - DevOps
   - CLI
 draft: true
-featured: true
+featured: false
 author:
   name: aitorevi
   avatar: /avatar.webp
