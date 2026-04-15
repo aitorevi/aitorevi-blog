@@ -1,9 +1,11 @@
 ---
-title: "Inversión de Dependencias: deja de acoplar lo que no debería estar junto"
-description: "El acoplamiento hace que tocar una cosa rompa cinco. La Inversión de Dependencias es una de las herramientas más potentes para combatirlo."
+title: 'dddInversión de Dependencias: deja de acoplar lo que no debería estar junto'
+description: >-
+  El acoplamiento hace que tocar una cosa rompa cinco. La Inversión de
+  Dependencias es una de las herramientas más potentes para combatirlo.
 publishDate: 2026-03-30
 coverImage: /images/blog/dependency-inversion-cover/dependency-inversion-cover.webp
-coverImageAlt: "Ilustración de piezas conectándose a través de una interfaz abstracta"
+coverImageAlt: Ilustración de piezas conectándose a través de una interfaz abstracta
 tags:
   - SOLID
   - Clean Code
@@ -14,7 +16,6 @@ author:
   name: aitorevi
   avatar: /avatar.webp
 ---
-
 Hay un momento en la vida de todo desarrollador junior en el que escribe una clase, la conecta con otra, y piensa: *"esto funciona, estoy contento"*. Y tiene razón. Funciona. El problema llega tres semanas después, cuando hay que cambiar algo y de repente tocar una cosa rompe otras cinco.
 
 Ese es el síntoma. La causa, muchas veces, es el acoplamiento. Y una de las herramientas más potentes para combatirlo se llama **Inversión de Dependencias**.
@@ -26,6 +27,7 @@ Imagina que estás modelando un interruptor de luz. Algo simple: pulsas, se enci
 Una primera implementación podría ser así:
 
 <!-- code-group -->
+
 ```java
 class ConcreteLight {
     public void turnOn() {
@@ -112,6 +114,7 @@ class Switch
     }
 }
 ```
+
 <!-- /code-group -->
 
 Funciona. Pero hay un problema oculto: **el Switch sabe que existe `ConcreteLight`**. Está hardcodeado dentro. Si mañana quieres que ese mismo Switch controle un ventilador, tienes que modificar `Switch`. Si quieres una SmartTV, modificas `Switch` de nuevo.
@@ -133,6 +136,7 @@ Traducido al mundo real: el Switch no debería saber que existe `ConcreteLight`.
 Primero definimos la abstracción. Un contrato que dice: *"si implementas esto, puedes ser controlado por un Switch"*.
 
 <!-- code-group -->
+
 ```java
 interface Switchable {
     void turnOn();
@@ -161,11 +165,13 @@ interface ISwitchable
     bool IsOn { get; }
 }
 ```
+
 <!-- /code-group -->
 
 Ahora los dispositivos firman ese contrato:
 
 <!-- code-group -->
+
 ```java
 class Light implements Switchable {
     private boolean on = false;
@@ -284,11 +290,13 @@ class Fan : ISwitchable
     }
 }
 ```
+
 <!-- /code-group -->
 
 Y el Switch ahora recibe la abstracción, no la clase concreta:
 
 <!-- code-group -->
+
 ```java
 class Switch {
     private final Switchable device;  // ← aquí está la inversión
@@ -342,6 +350,7 @@ class Switch
     }
 }
 ```
+
 <!-- /code-group -->
 
 La inversión ocurre en el constructor. En vez de `ConcreteLight`, el tipo es `Switchable`. El Switch ya no sabe qué hay al otro lado. Solo sabe que cumple el contrato.
@@ -351,6 +360,7 @@ La inversión ocurre en el constructor. En vez de `ConcreteLight`, el tipo es `S
 Ahora alguien tiene que decidir qué dispositivo va con qué Switch. Ese alguien es el **punto de composición**: el único lugar del código donde se conecta todo.
 
 <!-- code-group -->
+
 ```java
 // Composition Root: el único lugar que conoce los detalles
 Switch livingRoomSwitch = new Switch(new Light());
@@ -377,6 +387,7 @@ livingRoomSwitch.Press(); // 💡 Light on
 var deskSwitch = new Switch(new Fan());
 deskSwitch.Press(); // 🌀 Fan on
 ```
+
 <!-- /code-group -->
 
 El acto de pasarle el dispositivo al Switch desde fuera se llama **inyección de dependencias**. No es magia ni un framework: es simplemente que alguien de fuera decide qué entra, en vez de que la clase lo cree internamente.
@@ -386,6 +397,7 @@ El acto de pasarle el dispositivo al Switch desde fuera se llama **inyección de
 ¿Quieres añadir un aire acondicionado? Solo creas la clase y firmas el contrato. No tocas `Switch`, no tocas `Light`, no tocas nada existente.
 
 <!-- code-group -->
+
 ```java
 class AirConditioner implements Switchable {
     private boolean on = false;
@@ -459,6 +471,7 @@ class AirConditioner : ISwitchable
 var livingRoomSwitch = new Switch(new AirConditioner());
 livingRoomSwitch.Press(); // ❄️ Air conditioner on
 ```
+
 <!-- /code-group -->
 
 Ese es el poder real del principio. El sistema es **abierto a la extensión, cerrado a la modificación**.
