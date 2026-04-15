@@ -14,7 +14,7 @@ const KEYSTATIC_SAVE_FEEDBACK_SCRIPT = `
     if (el) return el;
     el = document.createElement('div');
     el.id = 'ks-toast';
-    el.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:99999;padding:14px 20px;border-radius:10px;font-family:system-ui,sans-serif;font-size:14px;font-weight:500;color:#fff;background:#16a34a;box-shadow:0 10px 30px rgba(0,0,0,0.35);opacity:0;transform:translateY(20px);transition:opacity .25s ease,transform .25s ease;pointer-events:none;max-width:360px';
+    el.style.cssText = 'position:fixed;top:24px;right:24px;z-index:99999;padding:14px 20px;border-radius:10px;font-family:system-ui,sans-serif;font-size:14px;font-weight:500;color:#fff;background:#16a34a;box-shadow:0 10px 30px rgba(0,0,0,0.35);opacity:0;transform:translateY(-20px);transition:opacity .25s ease,transform .25s ease;pointer-events:none;max-width:360px';
     document.body.appendChild(el);
     return el;
   }
@@ -27,7 +27,7 @@ const KEYSTATIC_SAVE_FEEDBACK_SCRIPT = `
     clearTimeout(el.__t);
     el.__t = setTimeout(function() {
       el.style.opacity = '0';
-      el.style.transform = 'translateY(20px)';
+      el.style.transform = 'translateY(-20px)';
     }, 2500);
   }
 
