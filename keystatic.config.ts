@@ -19,12 +19,10 @@ const sharedBlogFields = {
     label: 'Cover image',
     directory: 'public/images/blog',
     publicPath: '/images/blog/',
-    validation: { isRequired: true },
   }),
   coverImageAlt: fields.text({
     label: 'Cover image alt text',
-    validation: { length: { min: 10, max: 125 } },
-    description: 'Descriptive alt text for accessibility. Between 10 and 125 characters.',
+    description: 'Descriptive alt text for accessibility. Required when a cover image is set (10–125 chars).',
   }),
   tags: fields.array(
     fields.text({ label: 'Tag' }),

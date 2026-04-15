@@ -30,13 +30,15 @@ const blogCollection = defineCollection({
       invalid_type_error: 'Invalid date format',
     }),
 
-    // Astro 5 image() helper - validates image paths at build time
-    // Supports both local images and remote URLs
-    coverImage: z.string(),
+    // Optional at the schema level so drafts can be saved from Keystatic
+    // before an image is ready. Published (non-draft) posts without an
+    // image will still render without it.
+    coverImage: z.string().optional(),
 
     coverImageAlt: z.string()
       .min(10, 'Alt text must be descriptive (minimum 10 characters)')
-      .max(125, 'Alt text should be concise (maximum 125 characters)'),
+      .max(125, 'Alt text should be concise (maximum 125 characters)')
+      .optional(),
 
     tags: z.array(z.string())
       .min(1, 'At least one tag is required')

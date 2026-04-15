@@ -2,8 +2,6 @@
 title: "Vercel preview deployments: use them, share them, keep things clean"
 description: "Every branch you push to Vercel automatically gets a public URL. Here's how to get the most out of it and how to clean up what accumulates."
 publishDate: 2026-04-14
-coverImage: /images/blog/vercel-preview-deployments/cover.webp
-coverImageAlt: "Terminal showing a Vercel deployment list with preview URLs"
 tags:
   - Vercel
   - DevOps
