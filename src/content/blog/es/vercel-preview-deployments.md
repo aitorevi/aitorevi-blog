@@ -9,7 +9,7 @@ tags:
   - Vercel
   - DevOps
   - CLI
-draft: false
+draft: true
 featured: false
 author:
   name: aitorevi
