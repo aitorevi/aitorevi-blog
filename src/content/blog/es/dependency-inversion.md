@@ -1,5 +1,5 @@
 ---
-title: 'Inversión de Dependencias: deja de acoplar lo que no debería estar junto PPPP'
+title: 'Inversión de Dependencias: deja de acoplar lo que no debería estar junto'
 description: >-
   El acoplamiento hace que tocar una cosa rompa cinco. La Inversión de
   Dependencias es una de las herramientas más potentes para combatirlo.
