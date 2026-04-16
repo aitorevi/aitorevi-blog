@@ -152,7 +152,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
     </header>
 
     <!-- Main Content -->
-    <div class="flex-1">
+    <div class="flex-1 overflow-hidden">
       <h2
         class="mb-3 text-xl font-display font-bold leading-tight text-ink-900 dark:text-slate-100 sm:text-2xl"
         itemprop="headline"
@@ -166,7 +166,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
       </h2>
 
       <p
-        class="mb-4 line-clamp-3 text-sm text-quaternary sm:text-base"
+        class="mb-4 line-clamp-5 text-sm text-quaternary sm:text-base"
         itemprop="description"
       >
         {data.description}
@@ -208,9 +208,9 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
    * line-clamp utility for description truncation
    * Provides graceful degradation for browsers without -webkit-line-clamp
    */
-  .line-clamp-3 {
+  .line-clamp-5 {
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
