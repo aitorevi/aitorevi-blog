@@ -5,7 +5,7 @@ description: >-
   testdescription testdescription testdescription testdescription
   testdescription
 publishDate: 2026-04-16
-coverImage: /images/blog/test/test-3.webp
+coverImage: /images/blog/test/test-cover.webp
 coverImageAlt: 'jhfdjksh hfsjkdh fjkjkshdjkfh jkshdjkfh jkhsdjk fjkh '
 tags:
   - test
