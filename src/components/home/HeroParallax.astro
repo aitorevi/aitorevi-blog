@@ -118,7 +118,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
 
   <!-- Layer 4: main content (fastest, slight upward pull) -->
   <div
-    class="relative mx-auto flex min-h-[100svh] max-w-4xl flex-col items-center justify-center px-6 text-center will-change-transform"
+    class="relative mx-auto flex min-h-[100svh] max-w-4xl flex-col items-center justify-center px-6 pt-28 pb-28 text-center will-change-transform"
     data-parallax-layer
     data-speed="0.35"
   >
@@ -147,13 +147,22 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
       style="--reveal-delay: 60ms"
     >
       <img
+        src="/avatar-light.webp"
+        alt="Aitor Reviriego"
+        width="220"
+        height="220"
+        loading="eager"
+        decoding="async"
+        class="hero-photo h-[160px] w-[160px] rounded-full object-cover sm:h-[220px] sm:w-[220px] dark:hidden"
+      />
+      <img
         src="/avatar.webp"
         alt="Aitor Reviriego"
         width="220"
         height="220"
         loading="eager"
         decoding="async"
-        class="hero-photo h-[160px] w-[160px] rounded-full object-cover sm:h-[220px] sm:w-[220px]"
+        class="hero-photo h-[160px] w-[160px] rounded-full object-cover sm:h-[220px] sm:w-[220px] hidden dark:block"
       />
     </div>
 
@@ -187,7 +196,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
     <!-- Scroll hint — language-independent, persisted across nav -->
     <div
       transition:persist="hero-scroll-hint"
-      class="absolute bottom-10 flex flex-col items-center gap-3"
+      class="absolute bottom-8 flex flex-col items-center gap-3"
       data-hero-scroll-hint
       aria-hidden="true"
     >
