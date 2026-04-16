@@ -147,7 +147,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
       style="--reveal-delay: 60ms"
     >
       <img
-        src="/retrato.webp"
+        src="/avatar.webp"
         alt="Aitor Reviriego"
         width="220"
         height="220"
@@ -238,9 +238,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
     }
   }
 
-  /* Shift magenta (~330°) → violet (~270°): rotate -60deg */
   .hero-photo {
-    filter: hue-rotate(-60deg) saturate(0.85) brightness(0.95);
     box-shadow:
       0 0 0 1px rgb(167 139 250 / 0.5),
       0 0 0 4px rgb(167 139 250 / 0.1),
@@ -248,7 +246,6 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
   }
 
   :global(html.dark) .hero-photo {
-    filter: hue-rotate(-60deg) saturate(0.9);
     box-shadow:
       0 0 0 1px rgb(167 139 250 / 0.6),
       0 0 0 5px rgb(167 139 250 / 0.15),
