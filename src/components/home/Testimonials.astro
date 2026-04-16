@@ -1,0 +1,201 @@
+---
+import { t } from '../../i18n/utils';
+import type { Lang } from '../../data/cv';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+// Replace placeholder text with real testimonials when received
+const testimonials = lang === 'es'
+  ? [
+      {
+        text: 'Placeholder — sustituir por el texto real cuando lo reciba.',
+        author: 'Nombre Apellido',
+        role: 'Rol · Empresa',
+        accent: 'violet' as const,
+      },
+      {
+        text: 'Placeholder — sustituir por el texto real cuando lo reciba.',
+        author: 'Nombre Apellido',
+        role: 'Rol · Empresa',
+        accent: 'blue' as const,
+      },
+      {
+        text: 'Placeholder — sustituir por el texto real cuando lo reciba.',
+        author: 'Nombre Apellido',
+        role: 'Rol · Empresa',
+        accent: 'secondary' as const,
+      },
+    ]
+  : [
+      {
+        text: 'Placeholder — replace with real text when received.',
+        author: 'First Last',
+        role: 'Role · Company',
+        accent: 'violet' as const,
+      },
+      {
+        text: 'Placeholder — replace with real text when received.',
+        author: 'First Last',
+        role: 'Role · Company',
+        accent: 'blue' as const,
+      },
+      {
+        text: 'Placeholder — replace with real text when received.',
+        author: 'First Last',
+        role: 'Role · Company',
+        accent: 'secondary' as const,
+      },
+    ];
+
+const accentClasses = {
+  violet: {
+    quote:   'text-accent-violet',
+    avatar:  'bg-accent-violet/20 text-accent-violet dark:bg-accent-violet/15 dark:text-accent-violet',
+    border:  'border-slate-200 hover:border-accent-violet/40 dark:border-white/10 dark:hover:border-accent-violet/40',
+    glow:    'hover:shadow-[0_20px_50px_-20px_rgba(167,139,250,0.25)] dark:hover:shadow-[0_0_50px_rgba(167,139,250,0.12)]',
+    top:     'from-accent-violet/30 to-transparent',
+  },
+  blue: {
+    quote:   'text-accent-blue',
+    avatar:  'bg-accent-blue/20 text-accent-blue dark:bg-accent-blue/15 dark:text-accent-blue',
+    border:  'border-slate-200 hover:border-accent-blue/40 dark:border-white/10 dark:hover:border-accent-blue/40',
+    glow:    'hover:shadow-[0_20px_50px_-20px_rgba(96,165,250,0.25)] dark:hover:shadow-[0_0_50px_rgba(96,165,250,0.12)]',
+    top:     'from-accent-blue/30 to-transparent',
+  },
+  secondary: {
+    quote:   'text-secondary',
+    avatar:  'bg-secondary/10 text-secondary dark:bg-secondary/15 dark:text-accent-violet',
+    border:  'border-slate-200 hover:border-secondary/40 dark:border-white/10 dark:hover:border-secondary/40',
+    glow:    'hover:shadow-[0_20px_50px_-20px_rgba(94,58,238,0.25)] dark:hover:shadow-[0_0_50px_rgba(94,58,238,0.12)]',
+    top:     'from-secondary/30 to-transparent',
+  },
+};
+---
+
+<section
+  class="relative bg-white py-24 text-ink-900 dark:bg-ink-900 dark:text-slate-100 sm:py-32"
+  aria-labelledby="testimonials-heading"
+>
+  <div class="mx-auto max-w-5xl px-6 lg:max-w-6xl">
+
+    <!-- Heading -->
+    <div class="mb-14 text-center">
+      <h2
+        id="testimonials-heading"
+        class="font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
+      >
+        {t(lang, 'home.testimonials.title')}
+      </h2>
+      <p class="mt-3 font-mono text-xs uppercase tracking-[0.3em] text-secondary/70 dark:text-accent-blue/50">
+        {t(lang, 'home.testimonials.subtitle')}
+      </p>
+    </div>
+
+    <!-- Cards grid -->
+    <ul
+      class="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3"
+      role="list"
+    >
+      {testimonials.map((item, i) => {
+        const a = accentClasses[item.accent];
+        const initials = item.author.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+        return (
+          <li
+            data-stagger-item
+            style={`--stagger-delay:${i * 120}ms`}
+            class={`group relative flex flex-col overflow-hidden rounded-2xl border bg-white p-6 shadow-sm transition-[border-color,box-shadow] duration-500 dark:bg-white/[0.04] ${a.border} ${a.glow}`}
+          >
+            <!-- Subtle top accent line -->
+            <div class={`absolute inset-x-0 top-0 h-px bg-gradient-to-r ${a.top}`} aria-hidden="true" />
+
+            <!-- Decorative quote mark -->
+            <span
+              class={`pointer-events-none absolute right-5 top-3 select-none font-display text-7xl font-black leading-none opacity-10 ${a.quote}`}
+              aria-hidden="true"
+            >
+              "
+            </span>
+
+            <!-- Quote text -->
+            <blockquote class="relative z-10 flex-1">
+              <p class="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                "{item.text}"
+              </p>
+            </blockquote>
+
+            <!-- Author -->
+            <footer class="relative z-10 mt-6 flex items-center gap-3">
+              <div
+                class={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold ${a.avatar}`}
+                aria-hidden="true"
+              >
+                {initials}
+              </div>
+              <div>
+                <p class="text-sm font-semibold text-ink-900 dark:text-slate-100">
+                  {item.author}
+                </p>
+                <p class="font-mono text-xs text-slate-500 dark:text-slate-400">
+                  {item.role}
+                </p>
+              </div>
+            </footer>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</section>
+
+<style>
+  [data-stagger-item] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--stagger-delay, 0ms);
+  }
+  [data-stagger-item].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-stagger-item] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  function initStagger() {
+    const items = document.querySelectorAll<HTMLElement>(
+      '#testimonials-heading ~ * [data-stagger-item], section[aria-labelledby="testimonials-heading"] [data-stagger-item]'
+    );
+    if (!items.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    items.forEach((el) => observer.observe(el));
+  }
+
+  document.addEventListener('astro:page-load', initStagger);
+  document.addEventListener('astro:after-swap', initStagger);
+  initStagger();
+</script>
