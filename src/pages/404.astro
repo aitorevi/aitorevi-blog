@@ -1,0 +1,773 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getLangFromUrl, t } from '../i18n/utils';
+
+const requestedPath = Astro.url.pathname;
+const lang = getLangFromUrl(Astro.url);
+const isEs = lang === 'es';
+---
+
+<Layout title="404 · aitorevi.dev" description="Página no encontrada">
+  <div class="not-found-page flex min-h-full flex-col">
+
+    <p class="route-label font-mono text-xs text-slate-500 dark:text-slate-300 px-4 py-2 text-center shrink-0">
+      <span class="font-bold text-red-400">404</span> · <code class="rounded border border-red-500/30 bg-red-500/10 px-1.5 py-0.5 text-red-400">{requestedPath}</code> {t(lang, '404.routeNoAdapters')}
+    </p>
+
+    <div class="game-wrapper relative flex-1 min-h-0">
+      <canvas id="game"></canvas>
+
+      <div class="hud">
+        <span class="hud-item hud-time">⏱ <span id="time">0.00</span>s</span>
+        <span class="hud-item hud-rank" id="rankItem" style="display:none">◆ <span id="rank">Novice</span></span>
+        <span class="hud-item hud-best">⭐ <span id="best">0.00</span>s</span>
+      </div>
+
+      <button class="audio-toggle" id="audioToggle">🔊</button>
+
+      <!-- Touch zones (left / right) -->
+      <div class="touch-zones">
+        <div class="touch-zone" id="zoneLeft"></div>
+        <div class="touch-zone" id="zoneRight"></div>
+      </div>
+
+      <!-- Start screen -->
+      <div class="overlay" id="startScreen">
+        <h2>⬡ Hexagonal Rush</h2>
+        <p class="tagline">
+          {isEs
+            ? <>{`Eres el `}<strong style="color:#58a6ff">core</strong>{` de una arquitectura hexagonal. Rota para que los `}<strong style="color:#3fb950">adaptadores</strong>{` entren por los lados correctos y esquiva los `}<strong style="color:#f85149">acoplamientos</strong>.</>
+            : <>{`You are the `}<strong style="color:#58a6ff">core</strong>{` of a hexagonal architecture. Rotate so `}<strong style="color:#3fb950">adapters</strong>{` enter through the right sides and dodge the `}<strong style="color:#f85149">couplings</strong>.</>
+          }
+        </p>
+        <div class="keys-guide">
+          <div><span class="key">A</span> / <span class="key">←</span> {t(lang, '404.keysLeft')}</div>
+          <div><span class="key">D</span> / <span class="key">→</span> {t(lang, '404.keysRight')}</div>
+        </div>
+        <p style="font-size:0.72rem;color:#8b949e;margin-top:-0.3rem;margin-bottom:1rem;">
+          {t(lang, '404.touch')}
+        </p>
+        <button id="startBtn">{t(lang, '404.start')}</button>
+      </div>
+
+      <!-- Game over -->
+      <div class="overlay hidden" id="gameOverScreen">
+        <h2 style="color:#f85149">{t(lang, '404.gameOver')}</h2>
+        <p class="tagline" id="gameOverMsg"></p>
+        <div class="big-time" id="finalTime">0.00s</div>
+        <div class="rank-label" id="finalRank"></div>
+        <div class="best-note" id="bestNote"></div>
+        <button id="restartBtn">{t(lang, '404.restart')}</button>
+      </div>
+    </div>
+
+  </div>
+</Layout>
+
+<style>
+  /* ─── page background ─────────────────────────────────────── */
+  :global(html.dark body:has(.not-found-page)),
+  :global(html.dark body:has(.not-found-page) main) {
+    background: radial-gradient(ellipse at center, #15191f 0%, #0a0e14 70%) !important;
+  }
+  :global(html:not(.dark) body:has(.not-found-page)),
+  :global(html:not(.dark) body:has(.not-found-page) main) {
+    background: radial-gradient(ellipse at center, #e2e8f0 0%, #f1f5f9 70%) !important;
+  }
+
+  /* ─── page layout ─────────────────────────────────────────── */
+  .not-found-page { padding-top: var(--nav-h, 64px); }
+
+  /* ─── route label ─────────────────────────────────────────── */
+  .route-label { background: #eef2fe; }
+  :global(html.dark) .route-label { background: rgba(10,14,20,0.96); }
+
+  /* ─── game wrapper ────────────────────────────────────────── */
+  .game-wrapper { width: 100%; }
+
+  /* ─── canvas fills viewport minus nav + route text + footer ── */
+  #game {
+    display: block;
+    width: 100%;
+    height: calc(100svh - var(--nav-h, 64px) - var(--footer-h, 60px) - 2rem);
+    background: radial-gradient(ellipse at center, #0d1420 0%, #050810 100%);
+    touch-action: none;
+  }
+
+  /* ─── HUD ─────────────────────────────────────────────────── */
+  .hud {
+    position: absolute;
+    top: 12px; left: 12px; right: 12px;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .hud-item {
+    background: rgba(13,17,23,0.75);
+    border: 1px solid #30363d;
+    padding: 4px 10px;
+    border-radius: 5px;
+    backdrop-filter: blur(4px);
+  }
+  .hud-time { color: #58a6ff; }
+  .hud-best { color: #d29922; }
+  .hud-rank { color: #bc8cff; }
+
+  /* ─── touch zones ─────────────────────────────────────────── */
+  .touch-zones {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    pointer-events: none;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .touch-zone { flex: 1; pointer-events: auto; }
+
+  /* ─── overlay ─────────────────────────────────────────────── */
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10,14,20,0.96);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.5rem;
+    backdrop-filter: blur(8px);
+    border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: #c9d1d9;
+  }
+  :global(html:not(.dark)) .overlay {
+    background: #eef2fe;
+    color: #1e293b;
+  }
+  .overlay.hidden { display: none; }
+  .overlay h2 { font-size: 1.6rem; margin-bottom: 0.3rem; color: #58a6ff; }
+  :global(html:not(.dark)) .overlay h2 { color: #1d4ed8; }
+  .overlay .tagline {
+    color: #8b949e;
+    max-width: 420px;
+    line-height: 1.55;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
+  .overlay .big-time {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #3fb950;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.03em;
+  }
+  .overlay .rank-label { color: #bc8cff; font-weight: 700; font-size: 1rem; margin: 0.2rem 0 1rem; }
+  .overlay .best-note  { color: #d29922; font-size: 0.8rem; margin-bottom: 1rem; }
+  .overlay .best-note.new { animation: pulse 0.8s ease-in-out infinite alternate; }
+  @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.06); } }
+
+  .keys-guide { display: flex; gap: 1rem; margin: 0.8rem 0; font-size: 0.75rem; color: #8b949e; }
+  .keys-guide .key { background: #0d1117; border: 1px solid #30363d; padding: 4px 8px; border-radius: 4px; color: #c9d1d9; font-weight: 700; }
+  :global(html:not(.dark)) .keys-guide .key { background: #e2e8f0; border-color: #cbd5e1; color: #1e293b; }
+
+  .overlay button {
+    background: linear-gradient(135deg, #58a6ff, #bc8cff);
+    color: #0a0e14;
+    border: none;
+    padding: 0.65rem 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.88rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.2s;
+  }
+  .overlay button:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(88,166,255,0.4); }
+  .overlay button:active { transform: translateY(0); }
+
+  /* ─── audio toggle ────────────────────────────────────────── */
+  .audio-toggle {
+    position: absolute;
+    top: 50px; right: 14px;
+    background: rgba(13,17,23,0.75);
+    border: 1px solid #30363d;
+    color: #8b949e;
+    padding: 4px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.72rem;
+    z-index: 5;
+  }
+  .audio-toggle:hover { color: #c9d1d9; }
+  :global(html:not(.dark)) .audio-toggle {
+    background: rgba(203,213,225,0.85);
+    border-color: #94a3b8;
+    color: #475569;
+  }
+  :global(html:not(.dark)) .audio-toggle:hover { color: #1e293b; }
+</style>
+
+<script>
+// ============================================================
+// AUDIO ENGINE (singleton — survives across view transitions)
+// ============================================================
+const AudioEngine = (() => {
+  let audioCtx: AudioContext | null = null;
+  let enabled = true;
+  let masterGain: GainNode | null = null;
+  let musicGain: GainNode | null = null;
+  let sfxGain: GainNode | null = null;
+  let musicInterval: ReturnType<typeof setTimeout> | null = null;
+  let musicStep = 0;
+  let musicTempo = 180;
+
+  function init() {
+    if (audioCtx) { audioCtx.resume(); return; }
+    audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    masterGain = audioCtx.createGain(); masterGain.gain.value = 0.35; masterGain.connect(audioCtx.destination);
+    musicGain = audioCtx.createGain(); musicGain.gain.value = 0.25; musicGain.connect(masterGain);
+    sfxGain = audioCtx.createGain(); sfxGain.gain.value = 0.7; sfxGain.connect(masterGain);
+    audioCtx.resume();
+  }
+
+  function play(freq: number, duration: number, type: OscillatorType = 'sine', vol = 0.3, target: AudioNode | null = null) {
+    if (!enabled || !audioCtx) return;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type; osc.frequency.value = freq;
+    osc.connect(gain); gain.connect(target || sfxGain!);
+    const now = audioCtx.currentTime;
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(vol, now + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+    osc.start(now); osc.stop(now + duration + 0.05);
+  }
+
+  const sfx = {
+    pass:    () => play(660, 0.08, 'triangle', 0.2),
+    rotate:  () => play(400, 0.04, 'sine', 0.12),
+    death:   () => { [500,400,300,200,150].forEach((f,i) => setTimeout(()=>play(f,0.15,'sawtooth',0.3),i*70)); },
+    rank:    () => { [523,659,784,1046].forEach((f,i) => setTimeout(()=>play(f,0.2,'triangle',0.3),i*60)); },
+    newBest: () => { [659,784,988,1175,1568].forEach((f,i) => setTimeout(()=>play(f,0.25,'triangle',0.35),i*80)); },
+  };
+
+  const BASS = [110,110,165,110,146,110,165,123];
+  const LEAD = [440,0,523,0,659,523,440,0,392,0,523,0,659,784,659,523];
+
+  function tick() {
+    if (!enabled || !audioCtx) { musicInterval = setTimeout(tick, musicTempo); return; }
+    if (musicStep % 2 === 0) { const b = BASS[(musicStep/2) % BASS.length]; if (b) play(b, 0.18, 'sawtooth', 0.15, musicGain); }
+    const l = LEAD[musicStep % LEAD.length]; if (l) play(l, 0.08, 'square', 0.07, musicGain);
+    if (musicStep % 4 === 0) play(60, 0.08, 'sine', 0.25, musicGain);
+    musicStep++;
+    musicInterval = setTimeout(tick, musicTempo);
+  }
+
+  function startMusic() { if (musicInterval || !audioCtx) return; tick(); }
+  function stopMusic()  { if (musicInterval) { clearTimeout(musicInterval); musicInterval = null; } musicStep = 0; musicTempo = 180; }
+  function setTempo(ms: number) { musicTempo = Math.max(80, ms); }
+  function toggle() { enabled = !enabled; return enabled; }
+
+  return { init, sfx, startMusic, stopMusic, setTempo, toggle, isEnabled: () => enabled };
+})();
+
+// ============================================================
+// CONSTANTS
+// ============================================================
+const SIDES = 6;
+const SIDE_ANGLE = (Math.PI * 2) / SIDES;
+const PLAYER_ORBIT = 50;
+const PLAYER_SIZE = 10;
+const ROTATION_SPEED = 5.5;
+const BASE_WALL_SPEED = 170;
+const WALL_THICKNESS = 18;
+
+const THEME = {
+  dark: {
+    canvasBg: ['#0d1420', '#050810'], grid: 'rgba(88,166,255,0.06)',
+    flash: 'rgba(88,166,255,', coreFill: 'rgba(13,17,23,0.85)',
+    player: '#58a6ff', trail: '#58a6ff',
+  },
+  light: {
+    canvasBg: ['#eef2fe', '#eef2fe'], grid: 'rgba(30,64,175,0.07)',
+    flash: 'rgba(59,130,246,', coreFill: 'rgba(248,250,252,0.92)',
+    player: '#2563eb', trail: '#2563eb',
+  },
+};
+
+const RANKS = [
+  { time: 0,   name: 'Spaghetti', color: '#8b949e' },
+  { time: 10,  name: 'Layered',   color: '#58a6ff' },
+  { time: 25,  name: 'MVC',       color: '#3fb950' },
+  { time: 45,  name: 'Clean',     color: '#d29922' },
+  { time: 70,  name: 'Hexagonal', color: '#bc8cff' },
+  { time: 100, name: 'DDD Master',color: '#f85149' },
+  { time: 140, name: 'Architect', color: '#ffa657' },
+];
+
+const MESSAGES: Record<string, string[]> = {
+  es: [
+    'Un acoplamiento rompió la arquitectura.',
+    'Dependencia no inyectada.',
+    'Violación del puerto hexagonal.',
+    'El dominio filtró detalles de infraestructura.',
+    'Un adaptador rompió el principio de inversión.',
+  ],
+  en: [
+    'A coupling broke the architecture.',
+    'Uninjected dependency.',
+    'Hexagonal port violation.',
+    'The domain leaked infrastructure details.',
+    'An adapter broke the inversion principle.',
+  ],
+};
+
+// ============================================================
+// MUTABLE STATE — reassigned on every navigation via initGame()
+// ============================================================
+let gameCanvas: HTMLCanvasElement | null = null;
+let gctx: CanvasRenderingContext2D | null = null;
+let W = 0, H = 0, CX = 0, CY = 0;
+let scoreEl: HTMLElement | null = null;
+let bestEl: HTMLElement | null = null;
+let rankEl: HTMLElement | null = null;
+let rankItem: HTMLElement | null = null;
+let startScreen: HTMLElement | null = null;
+let gameOverScreen: HTMLElement | null = null;
+let finalTimeEl: HTMLElement | null = null;
+let finalRankEl: HTMLElement | null = null;
+let bestNoteEl: HTMLElement | null = null;
+let gameOverMsgEl: HTMLElement | null = null;
+let state: any = null;
+let lastTime = 0;
+let themeObserver: MutationObserver | null = null;
+
+// ============================================================
+// HELPERS
+// ============================================================
+function isDark() { return document.documentElement.classList.contains('dark'); }
+function palette() { return isDark() ? THEME.dark : THEME.light; }
+function getMsgs() { return MESSAGES[document.documentElement.lang] || MESSAGES.es; }
+function hexToRgba(hex: string, alpha: number) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+function bestFromStorage() {
+  try { return parseFloat(localStorage.getItem('hex-rush-best') || '0') || 0; } catch { return 0; }
+}
+function saveBest(v: number) {
+  try { localStorage.setItem('hex-rush-best', String(v)); } catch { /* noop */ }
+}
+function getRank(t: number) {
+  let current = RANKS[0];
+  for (const r of RANKS) { if (t >= r.time) current = r; }
+  return current;
+}
+
+function syncCanvasBg() {
+  if (!gameCanvas) return;
+  const p = palette();
+  gameCanvas.style.background = `radial-gradient(ellipse at center, ${p.canvasBg[0]} 0%, ${p.canvasBg[1]} 100%)`;
+}
+
+function resizeCanvas() {
+  if (!gameCanvas || !gctx) return;
+  W = gameCanvas.clientWidth  || gameCanvas.offsetWidth  || 500;
+  H = gameCanvas.clientHeight || gameCanvas.offsetHeight || 500;
+  gameCanvas.width  = W;
+  gameCanvas.height = H;
+  CX = W / 2;
+  CY = H / 2;
+  syncCanvasBg();
+  if (state) render();
+}
+
+// ============================================================
+// GAME STATE
+// ============================================================
+function initRun() {
+  state = {
+    running: false, paused: false,
+    playerAngle: -Math.PI / 2, rotationDir: 0,
+    walls: [] as any[], particles: [] as any[], trail: [] as any[],
+    time: 0, best: bestFromStorage(), rank: RANKS[0],
+    spawnTimer: 0, worldRotation: 0, worldRotationSpeed: 0.15,
+    hueShift: 0, cameraShake: 0, keys: {} as Record<string, boolean>,
+    difficulty: 1, flashTimer: 0,
+  };
+}
+
+// ============================================================
+// WALL SPAWNING
+// ============================================================
+function spawnWall() {
+  const gapSide = Math.floor(Math.random() * SIDES);
+  const patterns = [{ count: 1 }, { count: 1 }, { count: 2 }, { count: 3 }];
+  const difficultyLevel = Math.min(3, Math.floor(state.time / 20));
+  const pattern = patterns[Math.floor(Math.random() * (difficultyLevel + 1))];
+  const startDist = 360;
+  const separation = 60 + Math.random() * 30;
+  for (let i = 0; i < pattern.count; i++) {
+    let thisGap = gapSide;
+    if (i > 0) { const shift = Math.random() < 0.5 ? 1 : -1; thisGap = (gapSide + shift * i + SIDES) % SIDES; }
+    state.walls.push({ dist: startDist + i * separation, gapSide: thisGap, speed: BASE_WALL_SPEED * (1 + state.difficulty * 0.15), passed: false, alpha: 1 });
+  }
+}
+
+// ============================================================
+// UPDATE
+// ============================================================
+function update(dt: number) {
+  if (!state.running || state.paused) return;
+  state.time += dt;
+  state.hueShift += dt * 15;
+  if (state.flashTimer > 0) state.flashTimer -= dt;
+  if (state.cameraShake > 0) state.cameraShake -= dt;
+  state.difficulty = 1 + state.time / 15 * 0.15;
+  AudioEngine.setTempo(Math.max(80, 180 - state.time * 1.2));
+  const rotMagnitude = 0.15 + Math.min(1.2, state.time / 50);
+  if (Math.floor(state.time / 20) % 2 === 1 && state.time > 20)
+    state.worldRotationSpeed += (-rotMagnitude - state.worldRotationSpeed) * dt * 0.5;
+  else
+    state.worldRotationSpeed += (rotMagnitude - state.worldRotationSpeed) * dt * 0.5;
+  state.worldRotation += state.worldRotationSpeed * dt;
+
+  let dir = 0;
+  if (state.keys['ArrowLeft'] || state.keys['a'] || state.rotationDir === -1) dir -= 1;
+  if (state.keys['ArrowRight'] || state.keys['d'] || state.rotationDir === 1) dir += 1;
+  if (dir !== 0) state.playerAngle += dir * ROTATION_SPEED * dt;
+  while (state.playerAngle < 0) state.playerAngle += Math.PI * 2;
+  while (state.playerAngle >= Math.PI * 2) state.playerAngle -= Math.PI * 2;
+
+  const playerX = CX + Math.cos(state.playerAngle) * PLAYER_ORBIT;
+  const playerY = CY + Math.sin(state.playerAngle) * PLAYER_ORBIT;
+  state.trail.push({ x: playerX, y: playerY, life: 1 });
+  if (state.trail.length > 15) state.trail.shift();
+  state.trail.forEach((t: any) => t.life -= dt * 3);
+
+  state.spawnTimer -= dt;
+  if (state.spawnTimer <= 0) { spawnWall(); state.spawnTimer = Math.max(0.45, 1.4 / state.difficulty); }
+
+  for (let i = state.walls.length - 1; i >= 0; i--) {
+    const wall = state.walls[i];
+    wall.dist -= wall.speed * dt;
+    if (!wall.passed && wall.dist < PLAYER_ORBIT + WALL_THICKNESS / 2) {
+      wall.passed = true;
+      if (checkCollision(wall)) return gameOver();
+      else { AudioEngine.sfx.pass(); state.flashTimer = 0.1; }
+    }
+    if (wall.dist < 10) { wall.alpha -= dt * 3; if (wall.alpha <= 0) state.walls.splice(i, 1); }
+  }
+
+  for (let i = state.particles.length - 1; i >= 0; i--) {
+    const p = state.particles[i];
+    p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt * 1.5;
+    if (p.life <= 0) state.particles.splice(i, 1);
+  }
+
+  const newRank = getRank(state.time);
+  if (newRank.name !== state.rank.name) {
+    state.rank = newRank;
+    if (state.time > 5) { AudioEngine.sfx.rank(); state.flashTimer = 0.3; spawnRankBurst(); }
+    rankItem!.style.display = '';
+    rankEl!.textContent = newRank.name;
+    rankEl!.style.color = newRank.color;
+  }
+  scoreEl!.textContent = state.time.toFixed(2);
+  bestEl!.textContent  = state.best.toFixed(2);
+}
+
+function checkCollision(wall: any) {
+  let normAngle = state.playerAngle - state.worldRotation;
+  while (normAngle < 0) normAngle += Math.PI * 2;
+  while (normAngle >= Math.PI * 2) normAngle -= Math.PI * 2;
+  const shifted = (normAngle + Math.PI / 2 + SIDE_ANGLE / 2) % (Math.PI * 2);
+  return Math.floor(shifted / SIDE_ANGLE) % SIDES !== wall.gapSide;
+}
+
+function spawnRankBurst() {
+  for (let i = 0; i < 40; i++) {
+    const a = Math.random() * Math.PI * 2, s = 150 + Math.random() * 200;
+    state.particles.push({ x:CX, y:CY, vx:Math.cos(a)*s, vy:Math.sin(a)*s, life:1, color:state.rank.color, size:2+Math.random()*2 });
+  }
+}
+
+function spawnDeathParticles() {
+  const px = CX + Math.cos(state.playerAngle) * PLAYER_ORBIT;
+  const py = CY + Math.sin(state.playerAngle) * PLAYER_ORBIT;
+  for (let i = 0; i < 60; i++) {
+    const a = Math.random()*Math.PI*2, s = 100+Math.random()*300;
+    state.particles.push({ x:px, y:py, vx:Math.cos(a)*s, vy:Math.sin(a)*s, life:1+Math.random()*0.5, color:['#f85149','#ff7b72','#d2a8ff'][Math.floor(Math.random()*3)], size:2+Math.random()*3 });
+  }
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function render() {
+  if (!gctx || !state) return;
+  gctx.clearRect(0, 0, W, H);
+  const shakeMag = state.cameraShake > 0 ? state.cameraShake * 10 : 0;
+  const shakeX = (Math.random()-0.5)*shakeMag, shakeY = (Math.random()-0.5)*shakeMag;
+  gctx.save();
+  gctx.translate(CX + shakeX, CY + shakeY);
+  const pal = palette();
+  if (state.flashTimer > 0) {
+    gctx.fillStyle = `${pal.flash}${state.flashTimer * 0.3})`;
+    gctx.fillRect(-W, -H, W*2, H*2);
+  }
+  const pulse = Math.sin(state.time * 4) * 0.5 + 0.5;
+  const bgGradient = gctx.createRadialGradient(0,0,0,0,0,300);
+  bgGradient.addColorStop(0, hexToRgba(state.rank.color, 0.08 + pulse * 0.03));
+  bgGradient.addColorStop(1, 'rgba(0,0,0,0)');
+  gctx.fillStyle = bgGradient;
+  gctx.fillRect(-W, -H, W*2, H*2);
+
+  gctx.save(); gctx.rotate(state.worldRotation);
+  gctx.strokeStyle = pal.grid; gctx.lineWidth = 1;
+  for (let i = 0; i < SIDES; i++) {
+    const a = i * SIDE_ANGLE - Math.PI / 2;
+    gctx.beginPath(); gctx.moveTo(0,0); gctx.lineTo(Math.cos(a)*600, Math.sin(a)*600); gctx.stroke();
+  }
+  gctx.restore();
+
+  gctx.save(); gctx.rotate(state.worldRotation);
+  [...state.walls].sort((a: any,b: any) => b.dist - a.dist).forEach(drawWall);
+  gctx.restore();
+
+  drawCore();
+
+  gctx.save();
+  state.trail.forEach((t: any) => {
+    if (t.life <= 0) return;
+    gctx!.globalAlpha = t.life * 0.4;
+    gctx!.fillStyle = pal.trail;
+    gctx!.beginPath(); gctx!.arc(t.x-CX, t.y-CY, 4*t.life, 0, Math.PI*2); gctx!.fill();
+  });
+  gctx.restore();
+
+  drawPlayer();
+
+  state.particles.forEach((p: any) => {
+    gctx!.save(); gctx!.globalAlpha = Math.max(0, p.life); gctx!.fillStyle = p.color;
+    gctx!.beginPath(); gctx!.arc(p.x-CX, p.y-CY, p.size, 0, Math.PI*2); gctx!.fill(); gctx!.restore();
+  });
+
+  gctx.restore();
+}
+
+function drawWall(wall: any) {
+  if (!gctx) return;
+  const innerDist = wall.dist, outerDist = wall.dist + WALL_THICKNESS;
+  for (let side = 0; side < SIDES; side++) {
+    if (side === wall.gapSide) continue;
+    const a1 = side * SIDE_ANGLE - Math.PI/2 - SIDE_ANGLE/2;
+    const a2 = side * SIDE_ANGLE - Math.PI/2 + SIDE_ANGLE/2;
+    gctx.save(); gctx.globalAlpha = wall.alpha;
+    gctx.fillStyle = state.rank.color;
+    gctx.shadowColor = state.rank.color; gctx.shadowBlur = 8;
+    gctx.beginPath();
+    gctx.moveTo(Math.cos(a1)*innerDist, Math.sin(a1)*innerDist);
+    gctx.lineTo(Math.cos(a2)*innerDist, Math.sin(a2)*innerDist);
+    gctx.lineTo(Math.cos(a2)*outerDist, Math.sin(a2)*outerDist);
+    gctx.lineTo(Math.cos(a1)*outerDist, Math.sin(a1)*outerDist);
+    gctx.closePath(); gctx.fill(); gctx.restore();
+  }
+}
+
+function drawCore() {
+  if (!gctx) return;
+  gctx.save(); gctx.rotate(state.worldRotation);
+  const pulseSize = 32 + Math.sin(state.time * 6) * 2;
+  gctx.strokeStyle = state.rank.color; gctx.lineWidth = 3;
+  gctx.shadowColor = state.rank.color; gctx.shadowBlur = 14;
+  gctx.beginPath();
+  for (let i = 0; i < SIDES; i++) {
+    const a = i * SIDE_ANGLE - Math.PI/2;
+    if (i===0) gctx.moveTo(Math.cos(a)*pulseSize, Math.sin(a)*pulseSize);
+    else gctx.lineTo(Math.cos(a)*pulseSize, Math.sin(a)*pulseSize);
+  }
+  gctx.closePath(); gctx.stroke();
+  gctx.shadowBlur = 0; gctx.fillStyle = palette().coreFill; gctx.fill();
+  gctx.fillStyle = state.rank.color; gctx.font = 'bold 11px "JetBrains Mono", monospace';
+  gctx.textAlign = 'center'; gctx.textBaseline = 'middle'; gctx.fillText('core', 0, 0);
+  gctx.restore();
+}
+
+function drawPlayer() {
+  if (!gctx) return;
+  const px = Math.cos(state.playerAngle) * PLAYER_ORBIT;
+  const py = Math.sin(state.playerAngle) * PLAYER_ORBIT;
+  gctx.save(); gctx.translate(px, py); gctx.rotate(state.playerAngle + Math.PI/2);
+  gctx.shadowColor = palette().player; gctx.shadowBlur = 12; gctx.fillStyle = palette().player;
+  gctx.beginPath();
+  gctx.moveTo(0, -PLAYER_SIZE);
+  gctx.lineTo(PLAYER_SIZE * 0.8, PLAYER_SIZE * 0.6);
+  gctx.lineTo(-PLAYER_SIZE * 0.8, PLAYER_SIZE * 0.6);
+  gctx.closePath(); gctx.fill();
+  gctx.shadowBlur = 0; gctx.fillStyle = 'rgba(255,255,255,0.3)';
+  gctx.beginPath();
+  gctx.moveTo(0, -PLAYER_SIZE * 0.8);
+  gctx.lineTo(PLAYER_SIZE * 0.4, PLAYER_SIZE * 0.2);
+  gctx.lineTo(-PLAYER_SIZE * 0.4, PLAYER_SIZE * 0.2);
+  gctx.closePath(); gctx.fill();
+  gctx.restore();
+}
+
+// ============================================================
+// GAME LOOP
+// ============================================================
+function loop(t: number) {
+  if (!state || !state.running) return;
+  const dt = Math.min(0.033, (t - lastTime) / 1000 || 0.016);
+  lastTime = t;
+  update(dt); render();
+  requestAnimationFrame(loop);
+}
+
+function start() {
+  initRun(); state.running = true;
+  startScreen!.classList.add('hidden');
+  gameOverScreen!.classList.add('hidden');
+  rankItem!.style.display = '';
+  rankEl!.textContent = state.rank.name;
+  rankEl!.style.color = state.rank.color;
+  bestEl!.textContent = state.best.toFixed(2);
+  lastTime = performance.now();
+  AudioEngine.init(); AudioEngine.startMusic();
+  requestAnimationFrame(loop);
+}
+
+function gameOver() {
+  state.running = false; state.cameraShake = 0.5;
+  spawnDeathParticles(); AudioEngine.sfx.death(); AudioEngine.stopMusic();
+  const isNewBest = state.time > state.best;
+  if (isNewBest) { state.best = state.time; saveBest(state.best); AudioEngine.sfx.newBest(); }
+  finalTimeEl!.textContent = state.time.toFixed(2) + 's';
+  finalRankEl!.textContent = state.rank.name;
+  finalRankEl!.style.color = state.rank.color;
+  const lang = document.documentElement.lang === 'en' ? 'en' : 'es';
+  if (isNewBest && state.time > 0.5) {
+    bestNoteEl!.textContent = lang === 'en' ? '🏆 New record!' : '🏆 ¡Nuevo récord!';
+    bestNoteEl!.classList.add('new');
+  } else {
+    const prefix = lang === 'en' ? 'Best' : 'Mejor';
+    bestNoteEl!.textContent = state.best > 0 ? `${prefix}: ${state.best.toFixed(2)}s` : '';
+    bestNoteEl!.classList.remove('new');
+  }
+  const msgs = getMsgs();
+  gameOverMsgEl!.textContent = msgs[Math.floor(Math.random() * msgs.length)];
+  setTimeout(() => gameOverScreen!.classList.remove('hidden'), 700);
+
+  const deathFrame = () => {
+    if (gameOverScreen!.classList.contains('hidden')) { render(); requestAnimationFrame(deathFrame); }
+    else { update(0.016); render(); if (state.particles.length > 0) requestAnimationFrame(deathFrame); }
+  };
+  requestAnimationFrame(deathFrame);
+}
+
+// ============================================================
+// INPUT — keyboard listeners added once (document persists)
+// ============================================================
+function onTouchLeftStart(e: Event) { e.preventDefault(); if (state) state.rotationDir = -1; }
+function onTouchRightStart(e: Event) { e.preventDefault(); if (state) state.rotationDir = 1; }
+function onTouchEnd(e: Event) { e.preventDefault(); if (state) state.rotationDir = 0; }
+
+document.addEventListener('keydown', (e) => {
+  if (!gameCanvas?.isConnected) return;
+  if (state) { state.keys[e.key] = true; state.keys[e.key.toLowerCase()] = true; }
+  if (!state || !state.running) {
+    if (e.key === ' ' || e.key === 'Enter') {
+      if (!startScreen!.classList.contains('hidden')) start();
+      else if (!gameOverScreen!.classList.contains('hidden')) start();
+    }
+  }
+});
+document.addEventListener('keyup', (e) => {
+  if (!gameCanvas?.isConnected) return;
+  if (state) { state.keys[e.key] = false; state.keys[e.key.toLowerCase()] = false; }
+});
+
+// ============================================================
+// INIT — runs on every page load (including view transitions)
+// ============================================================
+function initGame() {
+  // Only run on the 404 page
+  const canvas = document.getElementById('game') as HTMLCanvasElement | null;
+  if (!canvas) return;
+
+  gameCanvas = canvas;
+  gctx = canvas.getContext('2d')!;
+
+  // Fresh DOM refs (new elements after view transition swap)
+  scoreEl      = document.getElementById('time');
+  bestEl       = document.getElementById('best');
+  rankEl       = document.getElementById('rank');
+  rankItem     = document.getElementById('rankItem');
+  startScreen  = document.getElementById('startScreen');
+  gameOverScreen = document.getElementById('gameOverScreen');
+  finalTimeEl  = document.getElementById('finalTime');
+  finalRankEl  = document.getElementById('finalRank');
+  bestNoteEl   = document.getElementById('bestNote');
+  gameOverMsgEl = document.getElementById('gameOverMsg');
+
+  // Theme observer — disconnect previous to avoid accumulation
+  if (themeObserver) themeObserver.disconnect();
+  themeObserver = new MutationObserver(syncCanvasBg);
+  themeObserver.observe(document.documentElement, { attributeFilter: ['class'] });
+  syncCanvasBg();
+
+  // Resize (same function ref = addEventListener is idempotent)
+  window.addEventListener('resize', resizeCanvas);
+
+  // Button listeners (new DOM elements need fresh listeners)
+  document.getElementById('startBtn')?.addEventListener('click', start);
+  document.getElementById('restartBtn')?.addEventListener('click', start);
+  document.getElementById('audioToggle')?.addEventListener('click', () => {
+    AudioEngine.init();
+    const on = AudioEngine.toggle();
+    document.getElementById('audioToggle')!.textContent = on ? '🔊' : '🔇';
+  });
+
+  // Touch zones
+  const zl = document.getElementById('zoneLeft');
+  const zr = document.getElementById('zoneRight');
+  if (zl) {
+    zl.addEventListener('touchstart', onTouchLeftStart, {passive:false});
+    zl.addEventListener('touchend', onTouchEnd, {passive:false});
+    zl.addEventListener('touchcancel', onTouchEnd, {passive:false});
+    zl.addEventListener('mousedown', onTouchLeftStart);
+    zl.addEventListener('mouseup', onTouchEnd);
+    zl.addEventListener('mouseleave', onTouchEnd);
+  }
+  if (zr) {
+    zr.addEventListener('touchstart', onTouchRightStart, {passive:false});
+    zr.addEventListener('touchend', onTouchEnd, {passive:false});
+    zr.addEventListener('touchcancel', onTouchEnd, {passive:false});
+    zr.addEventListener('mousedown', onTouchRightStart);
+    zr.addEventListener('mouseup', onTouchEnd);
+    zr.addEventListener('mouseleave', onTouchEnd);
+  }
+
+  // Layout measurements (footer exists because astro:page-load fires after full render)
+  const navEl = document.querySelector('header');
+  if (navEl) document.documentElement.style.setProperty('--nav-h', navEl.offsetHeight + 'px');
+  const footerEl = document.querySelector('footer');
+  if (footerEl) document.documentElement.style.setProperty('--footer-h', footerEl.offsetHeight + 'px');
+
+  resizeCanvas();
+  initRun();
+  state.running = false;
+  bestEl!.textContent = bestFromStorage().toFixed(2);
+  render();
+}
+
+// astro:page-load fires on every navigation (including initial)
+// and always AFTER the full DOM is ready. Module code runs once;
+// initGame re-binds to the new DOM on each navigation.
+document.addEventListener('astro:page-load', initGame);
+</script>
