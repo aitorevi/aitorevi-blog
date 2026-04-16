@@ -141,10 +141,26 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
       {t(lang, 'home.roleLabel')}
     </p>
 
+    <div
+      class="hero-photo-wrapper mb-8 mt-2"
+      data-hero-reveal
+      style="--reveal-delay: 60ms"
+    >
+      <img
+        src="/retrato.webp"
+        alt="Aitor Reviriego"
+        width="220"
+        height="220"
+        loading="eager"
+        decoding="async"
+        class="hero-photo h-[160px] w-[160px] rounded-full object-cover sm:h-[220px] sm:w-[220px]"
+      />
+    </div>
+
     <h1
       transition:persist="hero-title"
       class="font-display font-black leading-[0.95] tracking-tight text-ink-900 dark:text-slate-100 hero-title-glow"
-      style="font-size: clamp(2.75rem, 9vw, 6.5rem);"
+      style="font-size: clamp(2.25rem, 6vw, 4rem);"
       data-hero-reveal
       data-hero-reveal-delay="120"
     >
@@ -220,6 +236,23 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
       opacity: 1;
       transform: none;
     }
+  }
+
+  /* Shift magenta (~330°) → violet (~270°): rotate -60deg */
+  .hero-photo {
+    filter: hue-rotate(-60deg) saturate(0.85) brightness(0.95);
+    box-shadow:
+      0 0 0 1px rgb(167 139 250 / 0.5),
+      0 0 0 4px rgb(167 139 250 / 0.1),
+      0 20px 60px rgb(2 6 23 / 0.35);
+  }
+
+  :global(html.dark) .hero-photo {
+    filter: hue-rotate(-60deg) saturate(0.9);
+    box-shadow:
+      0 0 0 1px rgb(167 139 250 / 0.6),
+      0 0 0 5px rgb(167 139 250 / 0.15),
+      0 20px 80px rgb(2 6 23 / 0.6);
   }
 </style>
 
