@@ -30,6 +30,7 @@
  */
 
 import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 import Tag from '../atoms/Tag.astro';
 import DateDisplay from '../atoms/DateDisplay.astro';
 import ReadingTime from '../atoms/ReadingTime.astro';
@@ -116,11 +117,11 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
     aria-label={`Read full post: ${data.title}`}
   >
     {data.coverImage ? (
-      <img
+      <Image
         src={data.coverImage}
         alt={data.coverImageAlt || data.title}
-        width={1200}
-        height={630}
+        width={800}
+        height={450}
         class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         loading={priority ? 'eager' : 'lazy'}
         decoding={priority ? 'sync' : 'async'}

@@ -1,5 +1,6 @@
 ---
 import { getCollection, type CollectionEntry, render } from 'astro:content';
+import { Image } from 'astro:assets';
 import Layout from '../../../layouts/Layout.astro';
 import Tag from '../../../components/atoms/Tag.astro';
 import DateDisplay from '../../../components/atoms/DateDisplay.astro';
@@ -163,7 +164,7 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
 
     <figure class="mb-10 overflow-hidden rounded-xl">
       {data.coverImage ? (
-        <img
+        <Image
           src={data.coverImage}
           alt={data.coverImageAlt || data.title}
           width={1200}

@@ -3,6 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
+    "prepare": "git config core.hooksPath .githooks",
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build && node scripts/generate-cv-pdf.mjs",
