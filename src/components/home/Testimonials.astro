@@ -15,19 +15,16 @@ const testimonials = lang === 'es'
         text: 'Placeholder — sustituir por el texto real cuando lo reciba.',
         author: 'Nombre Apellido',
         role: 'Rol · Empresa',
-        accent: 'violet' as const,
       },
       {
         text: 'Placeholder — sustituir por el texto real cuando lo reciba.',
         author: 'Nombre Apellido',
         role: 'Rol · Empresa',
-        accent: 'blue' as const,
       },
       {
         text: 'Placeholder — sustituir por el texto real cuando lo reciba.',
         author: 'Nombre Apellido',
         role: 'Rol · Empresa',
-        accent: 'secondary' as const,
       },
     ]
   : [
@@ -35,49 +32,22 @@ const testimonials = lang === 'es'
         text: 'Placeholder — replace with real text when received.',
         author: 'First Last',
         role: 'Role · Company',
-        accent: 'violet' as const,
       },
       {
         text: 'Placeholder — replace with real text when received.',
         author: 'First Last',
         role: 'Role · Company',
-        accent: 'blue' as const,
       },
       {
         text: 'Placeholder — replace with real text when received.',
         author: 'First Last',
         role: 'Role · Company',
-        accent: 'secondary' as const,
       },
     ];
-
-const accentClasses = {
-  violet: {
-    quote:   'text-accent-violet',
-    avatar:  'bg-accent-violet/20 text-accent-violet dark:bg-accent-violet/15 dark:text-accent-violet',
-    border:  'border-slate-200 hover:border-accent-violet/40 dark:border-white/10 dark:hover:border-accent-violet/40',
-    glow:    'hover:shadow-[0_20px_50px_-20px_rgba(167,139,250,0.25)] dark:hover:shadow-[0_0_50px_rgba(167,139,250,0.12)]',
-    top:     'from-accent-violet/30 to-transparent',
-  },
-  blue: {
-    quote:   'text-accent-blue',
-    avatar:  'bg-accent-blue/20 text-accent-blue dark:bg-accent-blue/15 dark:text-accent-blue',
-    border:  'border-slate-200 hover:border-accent-blue/40 dark:border-white/10 dark:hover:border-accent-blue/40',
-    glow:    'hover:shadow-[0_20px_50px_-20px_rgba(96,165,250,0.25)] dark:hover:shadow-[0_0_50px_rgba(96,165,250,0.12)]',
-    top:     'from-accent-blue/30 to-transparent',
-  },
-  secondary: {
-    quote:   'text-secondary',
-    avatar:  'bg-secondary/10 text-secondary dark:bg-secondary/15 dark:text-accent-violet',
-    border:  'border-slate-200 hover:border-secondary/40 dark:border-white/10 dark:hover:border-secondary/40',
-    glow:    'hover:shadow-[0_20px_50px_-20px_rgba(94,58,238,0.25)] dark:hover:shadow-[0_0_50px_rgba(94,58,238,0.12)]',
-    top:     'from-secondary/30 to-transparent',
-  },
-};
 ---
 
 <section
-  class="relative bg-white py-24 text-ink-900 dark:bg-ink-900 dark:text-slate-100 sm:py-32"
+  class="relative bg-slate-50 py-24 text-ink-900 dark:bg-ink-900 dark:text-slate-100 sm:py-32"
   aria-labelledby="testimonials-heading"
 >
   <div class="mx-auto max-w-5xl px-6 lg:max-w-6xl">
@@ -97,31 +67,34 @@ const accentClasses = {
 
     <!-- Cards grid -->
     <ul
-      class="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3"
+      class="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6"
       role="list"
     >
       {testimonials.map((item, i) => {
-        const a = accentClasses[item.accent];
         const initials = item.author.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
         return (
           <li
             data-stagger-item
             style={`--stagger-delay:${i * 120}ms`}
-            class={`group relative flex flex-col overflow-hidden rounded-2xl border bg-white p-6 shadow-sm transition-[border-color,box-shadow] duration-500 dark:bg-white/[0.04] ${a.border} ${a.glow}`}
+            class="group relative overflow-hidden rounded-xl border border-secondary/15 bg-slate-50/30 px-6 py-8 transition-[border-color,box-shadow] duration-300 hover:border-secondary/40 hover:shadow-[0_0_12px_rgba(94,58,238,0.08)] dark:border-accent-violet/20 dark:bg-ink-800 dark:hover:border-accent-violet/40 dark:hover:shadow-[0_0_30px_rgba(167,139,250,0.15)]"
+            data-tilt-testimonial
           >
-            <!-- Subtle top accent line -->
-            <div class={`absolute inset-x-0 top-0 h-px bg-gradient-to-r ${a.top}`} aria-hidden="true" />
+            <!-- Top gradient overlay (same as StatsCounter) -->
+            <div
+              class="pointer-events-none absolute inset-x-0 -top-20 h-40 bg-gradient-to-b from-secondary/10 to-transparent opacity-60 dark:from-accent-violet/10"
+              aria-hidden="true"
+            />
 
             <!-- Decorative quote mark -->
             <span
-              class={`pointer-events-none absolute right-5 top-3 select-none font-display text-7xl font-black leading-none opacity-10 ${a.quote}`}
+              class="pointer-events-none absolute right-4 top-2 select-none font-display text-7xl font-black leading-none text-secondary/10 dark:text-accent-violet/10"
               aria-hidden="true"
             >
               "
             </span>
 
             <!-- Quote text -->
-            <blockquote class="relative z-10 flex-1">
+            <blockquote class="relative z-10">
               <p class="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
                 "{item.text}"
               </p>
@@ -130,7 +103,7 @@ const accentClasses = {
             <!-- Author -->
             <footer class="relative z-10 mt-6 flex items-center gap-3">
               <div
-                class={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold ${a.avatar}`}
+                class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-xs font-bold text-secondary dark:bg-accent-violet/15 dark:text-accent-violet"
                 aria-hidden="true"
               >
                 {initials}
@@ -139,7 +112,7 @@ const accentClasses = {
                 <p class="text-sm font-semibold text-ink-900 dark:text-slate-100">
                   {item.author}
                 </p>
-                <p class="font-mono text-xs text-slate-500 dark:text-slate-400">
+                <p class="font-mono text-[11px] uppercase tracking-[0.2em] text-secondary/60 dark:text-accent-violet/50">
                   {item.role}
                 </p>
               </div>
@@ -174,12 +147,60 @@ const accentClasses = {
 </style>
 
 <script>
+  const LERP = 0.08;
+  const MAX_ROT = 8;
+  const MAX_LIFT = 6;
+
+  function initTilt() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    document.querySelectorAll<HTMLElement>('[data-tilt-testimonial]').forEach((card) => {
+      let targetX = 0, targetY = 0, targetZ = 0;
+      let currentX = 0, currentY = 0, currentZ = 0;
+      let rafId = 0;
+      let isHovered = false;
+
+      const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+      function tick() {
+        currentX = lerp(currentX, targetX, LERP);
+        currentY = lerp(currentY, targetY, LERP);
+        currentZ = lerp(currentZ, targetZ, LERP);
+        card.style.transform = `perspective(800px) rotateX(${currentX}deg) rotateY(${currentY}deg) translateZ(${currentZ}px)`;
+        const settled =
+          Math.abs(currentX - targetX) < 0.01 &&
+          Math.abs(currentY - targetY) < 0.01 &&
+          Math.abs(currentZ - targetZ) < 0.1;
+        if (!settled) {
+          rafId = requestAnimationFrame(tick);
+        } else {
+          rafId = 0;
+          if (!isHovered) card.style.transform = '';
+        }
+      }
+
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        targetY =  ((e.clientX - rect.left) / rect.width  - 0.5) * 2 * MAX_ROT;
+        targetX = -((e.clientY - rect.top)  / rect.height - 0.5) * 2 * (MAX_ROT * 0.75);
+        targetZ = MAX_LIFT;
+        if (!rafId) rafId = requestAnimationFrame(tick);
+      });
+
+      card.addEventListener('mouseenter', () => { isHovered = true; });
+      card.addEventListener('mouseleave', () => {
+        isHovered = false;
+        targetX = 0; targetY = 0; targetZ = 0;
+        if (!rafId) rafId = requestAnimationFrame(tick);
+      });
+    });
+  }
+
   function initStagger() {
     const items = document.querySelectorAll<HTMLElement>(
-      '#testimonials-heading ~ * [data-stagger-item], section[aria-labelledby="testimonials-heading"] [data-stagger-item]'
+      'section[aria-labelledby="testimonials-heading"] [data-stagger-item]'
     );
     if (!items.length) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -191,11 +212,11 @@ const accentClasses = {
       },
       { threshold: 0.15 }
     );
-
     items.forEach((el) => observer.observe(el));
   }
 
-  document.addEventListener('astro:page-load', initStagger);
-  document.addEventListener('astro:after-swap', initStagger);
+  document.addEventListener('astro:page-load', () => { initStagger(); initTilt(); });
+  document.addEventListener('astro:after-swap', () => { initStagger(); initTilt(); });
   initStagger();
+  initTilt();
 </script>
