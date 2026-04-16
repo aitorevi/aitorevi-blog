@@ -44,9 +44,12 @@ for (const slug of affectedSlugs) {
   if (rawFiles.length === 0) continue;
 
   // Separate cover from content images
-  const coverFile = rawFiles.find(f => f.startsWith('coverImage.'));
+  const isCoverFile = (f) => f.startsWith('coverImage.') || f === `${slug}-cover${extname(f)}`;
+  const isNormalizedContent = (f) => new RegExp(`^${slug}-\\d+\\.[^.]+$`).test(f);
+
+  const coverFile = rawFiles.find(isCoverFile);
   const contentFiles = rawFiles
-    .filter(f => !f.startsWith('coverImage.'))
+    .filter(f => !isCoverFile(f))
     .sort(); // alphabetical for deterministic counter
 
   // Build rename map: { currentName -> desiredName }
@@ -58,13 +61,22 @@ for (const slug of affectedSlugs) {
     if (coverFile !== desired) renameMap.set(coverFile, desired);
   }
 
-  contentFiles.forEach((file, i) => {
-    // Skip files already matching {slug}-N.{ext}
-    const alreadyNormalized = new RegExp(`^${slug}-\\d+\\.[^.]+$`);
-    if (alreadyNormalized.test(file)) return;
+  // Only process content files that aren't already normalized
+  // Re-index only the non-normalized ones; already-normalized files keep their number
+  const toRename = contentFiles.filter(f => !isNormalizedContent(f));
+  const usedCounters = new Set(
+    contentFiles
+      .filter(isNormalizedContent)
+      .map(f => parseInt(f.replace(`${slug}-`, '').split('.')[0]))
+  );
 
+  let counter = 1;
+  toRename.forEach((file) => {
+    while (usedCounters.has(counter)) counter++;
     const ext = extname(file);
-    const desired = `${slug}-${i + 1}${ext}`;
+    const desired = `${slug}-${counter}${ext}`;
+    usedCounters.add(counter);
+    counter++;
     if (file !== desired) renameMap.set(file, desired);
   });
 
