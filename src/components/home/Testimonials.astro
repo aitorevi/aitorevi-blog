@@ -73,50 +73,50 @@ const testimonials = lang === 'es'
       {testimonials.map((item, i) => {
         const initials = item.author.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
         return (
-          <li
-            data-stagger-item
-            style={`--stagger-delay:${i * 120}ms`}
-            class="group relative overflow-hidden rounded-xl border border-secondary/15 bg-slate-50/30 px-6 py-8 transition-[border-color,box-shadow] duration-300 hover:border-secondary/40 hover:shadow-[0_0_12px_rgba(94,58,238,0.08)] dark:border-accent-violet/20 dark:bg-ink-800 dark:hover:border-accent-violet/40 dark:hover:shadow-[0_0_30px_rgba(167,139,250,0.15)]"
-            data-tilt-testimonial
-          >
-            <!-- Top gradient overlay (same as StatsCounter) -->
+          <li data-stagger-item style={`--stagger-delay:${i * 120}ms`}>
             <div
-              class="pointer-events-none absolute inset-x-0 -top-20 h-40 bg-gradient-to-b from-secondary/10 to-transparent opacity-60 dark:from-accent-violet/10"
-              aria-hidden="true"
-            />
-
-            <!-- Decorative quote mark -->
-            <span
-              class="pointer-events-none absolute right-4 top-2 select-none font-display text-7xl font-black leading-none text-secondary/10 dark:text-accent-violet/10"
-              aria-hidden="true"
+              class="group relative overflow-hidden rounded-xl border border-secondary/15 bg-slate-50/30 px-6 py-8 transition-[border-color,box-shadow] duration-300 hover:border-secondary/40 hover:shadow-[0_0_12px_rgba(94,58,238,0.08)] dark:border-accent-violet/20 dark:bg-ink-800 dark:hover:border-accent-violet/40 dark:hover:shadow-[0_0_30px_rgba(167,139,250,0.15)]"
+              data-tilt-testimonial
             >
-              "
-            </span>
-
-            <!-- Quote text -->
-            <blockquote class="relative z-10">
-              <p class="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
-                "{item.text}"
-              </p>
-            </blockquote>
-
-            <!-- Author -->
-            <footer class="relative z-10 mt-6 flex items-center gap-3">
+              <!-- Top gradient overlay (same as StatsCounter) -->
               <div
-                class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-xs font-bold text-secondary dark:bg-accent-violet/15 dark:text-accent-violet"
+                class="pointer-events-none absolute inset-x-0 -top-20 h-40 bg-gradient-to-b from-secondary/10 to-transparent opacity-60 dark:from-accent-violet/10"
+                aria-hidden="true"
+              />
+
+              <!-- Decorative quote mark -->
+              <span
+                class="pointer-events-none absolute right-4 top-2 select-none font-display text-7xl font-black leading-none text-secondary/10 dark:text-accent-violet/10"
                 aria-hidden="true"
               >
-                {initials}
-              </div>
-              <div>
-                <p class="text-sm font-semibold text-ink-900 dark:text-slate-100">
-                  {item.author}
+                "
+              </span>
+
+              <!-- Quote text -->
+              <blockquote class="relative z-10">
+                <p class="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                  "{item.text}"
                 </p>
-                <p class="font-mono text-[11px] uppercase tracking-[0.2em] text-secondary/60 dark:text-accent-violet/50">
-                  {item.role}
-                </p>
-              </div>
-            </footer>
+              </blockquote>
+
+              <!-- Author -->
+              <footer class="relative z-10 mt-6 flex items-center gap-3">
+                <div
+                  class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-xs font-bold text-secondary dark:bg-accent-violet/15 dark:text-accent-violet"
+                  aria-hidden="true"
+                >
+                  {initials}
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-ink-900 dark:text-slate-100">
+                    {item.author}
+                  </p>
+                  <p class="font-mono text-[11px] uppercase tracking-[0.2em] text-secondary/60 dark:text-accent-violet/50">
+                    {item.role}
+                  </p>
+                </div>
+              </footer>
+            </div>
           </li>
         );
       })}
