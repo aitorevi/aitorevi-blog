@@ -9,7 +9,7 @@ const isEs = lang === 'es';
 
 <Layout title="404 · aitorevi.dev" description="Página no encontrada">
   <script is:inline slot="head">
-    document.addEventListener('DOMContentLoaded', function () {
+    function fix404Nav() {
       var real = window.location.pathname;
 
       // Step 1: route label
@@ -25,7 +25,9 @@ const isEs = lang === 'es';
         if (text === 'ES') a.href = esPath;
         if (text === 'EN') a.href = enPath;
       });
-    });
+    }
+    // astro:page-load fires on initial load AND after every View Transition swap
+    document.addEventListener('astro:page-load', fix404Nav);
   </script>
   <div class="not-found-page flex min-h-full flex-col">
 
