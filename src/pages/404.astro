@@ -18,6 +18,7 @@ const isEs = lang === 'es';
     })();
 
     function fix404Nav() {
+      if (!document.getElementById('route-path')) return;
       var real = window.location.pathname;
       var isEN = real.startsWith('/en/') || real === '/en';
 
