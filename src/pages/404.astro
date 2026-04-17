@@ -8,10 +8,77 @@ const isEs = lang === 'es';
 ---
 
 <Layout title="404 · aitorevi.dev" description="Página no encontrada">
+  <script is:inline slot="head">
+    // Step 3: set lang class before body renders to avoid flash
+    (function () {
+      var p = window.location.pathname;
+      if (p.startsWith('/en/') || p === '/en') {
+        document.documentElement.classList.add('page-404-en');
+      }
+    })();
+
+    function fix404Nav() {
+      if (!document.getElementById('route-path')) return;
+      var real = window.location.pathname;
+      var isEN = real.startsWith('/en/') || real === '/en';
+
+      // Step 1: route label
+      var el = document.getElementById('route-path');
+      if (el) el.textContent = real;
+
+      // Step 2: nav lang links
+      var esPath = isEN ? (real.replace(/^\/en/, '') || '/') : real;
+      var enPath = isEN ? real : '/en' + real;
+      document.querySelectorAll('header a').forEach(function (a) {
+        var text = a.textContent.trim();
+        if (text !== 'ES' && text !== 'EN') return;
+        var isActive = (text === 'ES' && !isEN) || (text === 'EN' && isEN);
+        var targetPath = text === 'ES' ? esPath : enPath;
+        a.href = targetPath;
+        // Paso A: active color
+        if (isActive) {
+          a.classList.add('text-secondary');
+          a.classList.remove('text-quaternary');
+        } else {
+          a.classList.remove('text-secondary');
+          a.classList.add('text-quaternary');
+        }
+        // Step 4: intercept click — pushState + DOM swap, no VT navigation
+        a.onclick = function (e) {
+          e.preventDefault();
+          var newPath = new URL(a.href).pathname;
+          history.pushState(null, '', newPath);
+          fix404Nav();
+        };
+      });
+
+      // Paso B: swap nav text + fix Blog/About hrefs for current lang
+      document.querySelectorAll('header a').forEach(function (a) {
+        var text = a.textContent.trim();
+        if (text === 'Blog') {
+          a.href = isEN ? '/en/blog' : '/blog';
+        }
+        if (text === 'Sobre mí' || text === 'About me') {
+          a.textContent = isEN ? 'About me' : 'Sobre mí';
+          a.href = isEN ? '/en/cv' : '/cv';
+        }
+      });
+
+      // Step 3: sync lang class after every VT swap
+      if (isEN) {
+        document.documentElement.classList.add('page-404-en');
+      } else {
+        document.documentElement.classList.remove('page-404-en');
+      }
+    }
+    // astro:page-load fires on initial load AND after every View Transition swap
+    document.addEventListener('astro:page-load', fix404Nav);
+  </script>
   <div class="not-found-page flex min-h-full flex-col">
 
     <p class="route-label font-mono text-xs text-slate-500 dark:text-slate-300 px-4 py-2 text-center shrink-0">
-      <span class="font-bold text-red-400">404</span> · <code class="rounded border border-red-500/30 bg-red-500/10 px-1.5 py-0.5 text-red-400">{requestedPath}</code> {t(lang, '404.routeNoAdapters')}
+      <span class="font-bold text-red-400">404</span> · <code id="route-path" class="rounded border border-red-500/30 bg-red-500/10 px-1.5 py-0.5 text-red-400">{requestedPath}</code>
+      <span class="lang-es">{t('es', '404.routeNoAdapters')}</span><span class="lang-en">{t('en', '404.routeNoAdapters')}</span>
     </p>
 
     <div class="game-wrapper relative flex-1 min-h-0">
@@ -35,29 +102,27 @@ const isEs = lang === 'es';
       <div class="overlay" id="startScreen">
         <h2>⬡ Hexagonal Rush</h2>
         <p class="tagline">
-          {isEs
-            ? <>{`Eres el `}<strong style="color:#58a6ff">core</strong>{` de una arquitectura hexagonal. Rota para que los `}<strong style="color:#3fb950">adaptadores</strong>{` entren por los lados correctos y esquiva los `}<strong style="color:#f85149">acoplamientos</strong>.</>
-            : <>{`You are the `}<strong style="color:#58a6ff">core</strong>{` of a hexagonal architecture. Rotate so `}<strong style="color:#3fb950">adapters</strong>{` enter through the right sides and dodge the `}<strong style="color:#f85149">couplings</strong>.</>
-          }
+          <span class="lang-es">Eres el <strong style="color:#58a6ff">core</strong> de una arquitectura hexagonal. Rota para que los <strong style="color:#3fb950">adaptadores</strong> entren por los lados correctos y esquiva los <strong style="color:#f85149">acoplamientos</strong>.</span>
+          <span class="lang-en">You are the <strong style="color:#58a6ff">core</strong> of a hexagonal architecture. Rotate so <strong style="color:#3fb950">adapters</strong> enter through the right sides and dodge the <strong style="color:#f85149">couplings</strong>.</span>
         </p>
         <div class="keys-guide">
-          <div><span class="key">A</span> / <span class="key">←</span> {t(lang, '404.keysLeft')}</div>
-          <div><span class="key">D</span> / <span class="key">→</span> {t(lang, '404.keysRight')}</div>
+          <div><span class="key">A</span> / <span class="key">←</span> <span class="lang-es">{t('es', '404.keysLeft')}</span><span class="lang-en">{t('en', '404.keysLeft')}</span></div>
+          <div><span class="key">D</span> / <span class="key">→</span> <span class="lang-es">{t('es', '404.keysRight')}</span><span class="lang-en">{t('en', '404.keysRight')}</span></div>
         </div>
         <p style="font-size:0.72rem;color:#8b949e;margin-top:-0.3rem;margin-bottom:1rem;">
-          {t(lang, '404.touch')}
+          <span class="lang-es">{t('es', '404.touch')}</span><span class="lang-en">{t('en', '404.touch')}</span>
         </p>
-        <button id="startBtn">{t(lang, '404.start')}</button>
+        <button id="startBtn"><span class="lang-es">{t('es', '404.start')}</span><span class="lang-en">{t('en', '404.start')}</span></button>
       </div>
 
       <!-- Game over -->
       <div class="overlay hidden" id="gameOverScreen">
-        <h2 style="color:#f85149">{t(lang, '404.gameOver')}</h2>
+        <h2 style="color:#f85149"><span class="lang-es">{t('es', '404.gameOver')}</span><span class="lang-en">{t('en', '404.gameOver')}</span></h2>
         <p class="tagline" id="gameOverMsg"></p>
         <div class="big-time" id="finalTime">0.00s</div>
         <div class="rank-label" id="finalRank"></div>
         <div class="best-note" id="bestNote"></div>
-        <button id="restartBtn">{t(lang, '404.restart')}</button>
+        <button id="restartBtn"><span class="lang-es">{t('es', '404.restart')}</span><span class="lang-en">{t('en', '404.restart')}</span></button>
       </div>
     </div>
 
@@ -80,7 +145,12 @@ const isEs = lang === 'es';
 
   /* ─── route label ─────────────────────────────────────────── */
   .route-label { background: #eef2fe; }
-  :global(html.dark) .route-label { background: rgba(10,14,20,0.96); }
+  :global(html.dark) .route-label { background: transparent; }
+
+  /* ─── i18n: EN hidden by default, shown when html.page-404-en ─ */
+  :global(.lang-en) { display: none; }
+  :global(html.page-404-en .lang-es) { display: none; }
+  :global(html.page-404-en .lang-en) { display: inline; }
 
   /* ─── game wrapper ────────────────────────────────────────── */
   .game-wrapper { width: 100%; }
@@ -131,7 +201,7 @@ const isEs = lang === 'es';
   .overlay {
     position: absolute;
     inset: 0;
-    background: rgba(10,14,20,0.96);
+    background: radial-gradient(ellipse at 30% 20%, #0f172a 0%, #020617 55%, #000 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
