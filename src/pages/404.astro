@@ -8,10 +8,16 @@ const isEs = lang === 'es';
 ---
 
 <Layout title="404 · aitorevi.dev" description="Página no encontrada">
+  <script is:inline slot="head">
+    document.addEventListener('DOMContentLoaded', function () {
+      var el = document.getElementById('route-path');
+      if (el) el.textContent = window.location.pathname;
+    });
+  </script>
   <div class="not-found-page flex min-h-full flex-col">
 
     <p class="route-label font-mono text-xs text-slate-500 dark:text-slate-300 px-4 py-2 text-center shrink-0">
-      <span class="font-bold text-red-400">404</span> · <code class="rounded border border-red-500/30 bg-red-500/10 px-1.5 py-0.5 text-red-400">{requestedPath}</code> {t(lang, '404.routeNoAdapters')}
+      <span class="font-bold text-red-400">404</span> · <code id="route-path" class="rounded border border-red-500/30 bg-red-500/10 px-1.5 py-0.5 text-red-400">{requestedPath}</code> {t(lang, '404.routeNoAdapters')}
     </p>
 
     <div class="game-wrapper relative flex-1 min-h-0">
