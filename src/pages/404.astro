@@ -9,6 +9,14 @@ const isEs = lang === 'es';
 
 <Layout title="404 · aitorevi.dev" description="Página no encontrada">
   <script is:inline slot="head">
+    // Step 3: set lang class before body renders to avoid flash
+    (function () {
+      var p = window.location.pathname;
+      if (p.startsWith('/en/') || p === '/en') {
+        document.documentElement.classList.add('page-404-en');
+      }
+    })();
+
     function fix404Nav() {
       var real = window.location.pathname;
 
@@ -32,7 +40,8 @@ const isEs = lang === 'es';
   <div class="not-found-page flex min-h-full flex-col">
 
     <p class="route-label font-mono text-xs text-slate-500 dark:text-slate-300 px-4 py-2 text-center shrink-0">
-      <span class="font-bold text-red-400">404</span> · <code id="route-path" class="rounded border border-red-500/30 bg-red-500/10 px-1.5 py-0.5 text-red-400">{requestedPath}</code> {t(lang, '404.routeNoAdapters')}
+      <span class="font-bold text-red-400">404</span> · <code id="route-path" class="rounded border border-red-500/30 bg-red-500/10 px-1.5 py-0.5 text-red-400">{requestedPath}</code>
+      <span class="lang-es">{t('es', '404.routeNoAdapters')}</span><span class="lang-en">{t('en', '404.routeNoAdapters')}</span>
     </p>
 
     <div class="game-wrapper relative flex-1 min-h-0">
@@ -56,29 +65,27 @@ const isEs = lang === 'es';
       <div class="overlay" id="startScreen">
         <h2>⬡ Hexagonal Rush</h2>
         <p class="tagline">
-          {isEs
-            ? <>{`Eres el `}<strong style="color:#58a6ff">core</strong>{` de una arquitectura hexagonal. Rota para que los `}<strong style="color:#3fb950">adaptadores</strong>{` entren por los lados correctos y esquiva los `}<strong style="color:#f85149">acoplamientos</strong>.</>
-            : <>{`You are the `}<strong style="color:#58a6ff">core</strong>{` of a hexagonal architecture. Rotate so `}<strong style="color:#3fb950">adapters</strong>{` enter through the right sides and dodge the `}<strong style="color:#f85149">couplings</strong>.</>
-          }
+          <span class="lang-es">Eres el <strong style="color:#58a6ff">core</strong> de una arquitectura hexagonal. Rota para que los <strong style="color:#3fb950">adaptadores</strong> entren por los lados correctos y esquiva los <strong style="color:#f85149">acoplamientos</strong>.</span>
+          <span class="lang-en">You are the <strong style="color:#58a6ff">core</strong> of a hexagonal architecture. Rotate so <strong style="color:#3fb950">adapters</strong> enter through the right sides and dodge the <strong style="color:#f85149">couplings</strong>.</span>
         </p>
         <div class="keys-guide">
-          <div><span class="key">A</span> / <span class="key">←</span> {t(lang, '404.keysLeft')}</div>
-          <div><span class="key">D</span> / <span class="key">→</span> {t(lang, '404.keysRight')}</div>
+          <div><span class="key">A</span> / <span class="key">←</span> <span class="lang-es">{t('es', '404.keysLeft')}</span><span class="lang-en">{t('en', '404.keysLeft')}</span></div>
+          <div><span class="key">D</span> / <span class="key">→</span> <span class="lang-es">{t('es', '404.keysRight')}</span><span class="lang-en">{t('en', '404.keysRight')}</span></div>
         </div>
         <p style="font-size:0.72rem;color:#8b949e;margin-top:-0.3rem;margin-bottom:1rem;">
-          {t(lang, '404.touch')}
+          <span class="lang-es">{t('es', '404.touch')}</span><span class="lang-en">{t('en', '404.touch')}</span>
         </p>
-        <button id="startBtn">{t(lang, '404.start')}</button>
+        <button id="startBtn"><span class="lang-es">{t('es', '404.start')}</span><span class="lang-en">{t('en', '404.start')}</span></button>
       </div>
 
       <!-- Game over -->
       <div class="overlay hidden" id="gameOverScreen">
-        <h2 style="color:#f85149">{t(lang, '404.gameOver')}</h2>
+        <h2 style="color:#f85149"><span class="lang-es">{t('es', '404.gameOver')}</span><span class="lang-en">{t('en', '404.gameOver')}</span></h2>
         <p class="tagline" id="gameOverMsg"></p>
         <div class="big-time" id="finalTime">0.00s</div>
         <div class="rank-label" id="finalRank"></div>
         <div class="best-note" id="bestNote"></div>
-        <button id="restartBtn">{t(lang, '404.restart')}</button>
+        <button id="restartBtn"><span class="lang-es">{t('es', '404.restart')}</span><span class="lang-en">{t('en', '404.restart')}</span></button>
       </div>
     </div>
 
@@ -102,6 +109,11 @@ const isEs = lang === 'es';
   /* ─── route label ─────────────────────────────────────────── */
   .route-label { background: #eef2fe; }
   :global(html.dark) .route-label { background: rgba(10,14,20,0.96); }
+
+  /* ─── i18n: EN hidden by default, shown when html.page-404-en ─ */
+  :global(.lang-en) { display: none; }
+  :global(html.page-404-en .lang-es) { display: none; }
+  :global(html.page-404-en .lang-en) { display: inline; }
 
   /* ─── game wrapper ────────────────────────────────────────── */
   .game-wrapper { width: 100%; }
