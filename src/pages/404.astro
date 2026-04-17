@@ -31,8 +31,17 @@ const isEs = lang === 'es';
       document.querySelectorAll('header a').forEach(function (a) {
         var text = a.textContent.trim();
         if (text !== 'ES' && text !== 'EN') return;
+        var isActive = (text === 'ES' && !isEN) || (text === 'EN' && isEN);
         var targetPath = text === 'ES' ? esPath : enPath;
         a.href = targetPath;
+        // Paso A: active color
+        if (isActive) {
+          a.classList.add('text-secondary');
+          a.classList.remove('text-quaternary');
+        } else {
+          a.classList.remove('text-secondary');
+          a.classList.add('text-quaternary');
+        }
         // Step 4: intercept click — pushState + DOM swap, no VT navigation
         a.onclick = function (e) {
           e.preventDefault();
