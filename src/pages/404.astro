@@ -10,8 +10,21 @@ const isEs = lang === 'es';
 <Layout title="404 · aitorevi.dev" description="Página no encontrada">
   <script is:inline slot="head">
     document.addEventListener('DOMContentLoaded', function () {
+      var real = window.location.pathname;
+
+      // Step 1: route label
       var el = document.getElementById('route-path');
-      if (el) el.textContent = window.location.pathname;
+      if (el) el.textContent = real;
+
+      // Step 2: nav lang links
+      var isEN = real.startsWith('/en/') || real === '/en';
+      var esPath = isEN ? (real.replace(/^\/en/, '') || '/') : real;
+      var enPath = isEN ? real : '/en' + real;
+      document.querySelectorAll('header a').forEach(function (a) {
+        var text = a.textContent.trim();
+        if (text === 'ES') a.href = esPath;
+        if (text === 'EN') a.href = enPath;
+      });
     });
   </script>
   <div class="not-found-page flex min-h-full flex-col">
