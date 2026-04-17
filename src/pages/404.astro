@@ -30,8 +30,16 @@ const isEs = lang === 'es';
       var enPath = isEN ? real : '/en' + real;
       document.querySelectorAll('header a').forEach(function (a) {
         var text = a.textContent.trim();
-        if (text === 'ES') a.href = esPath;
-        if (text === 'EN') a.href = enPath;
+        if (text !== 'ES' && text !== 'EN') return;
+        var targetPath = text === 'ES' ? esPath : enPath;
+        a.href = targetPath;
+        // Step 4: intercept click — pushState + DOM swap, no VT navigation
+        a.onclick = function (e) {
+          e.preventDefault();
+          var newPath = new URL(a.href).pathname;
+          history.pushState(null, '', newPath);
+          fix404Nav();
+        };
       });
 
       // Step 3: sync lang class after every VT swap
