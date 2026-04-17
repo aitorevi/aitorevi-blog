@@ -51,6 +51,14 @@ const isEs = lang === 'es';
         };
       });
 
+      // Paso B: swap nav text language
+      document.querySelectorAll('header a').forEach(function (a) {
+        var text = a.textContent.trim();
+        if (text === 'Sobre mí' || text === 'About me') {
+          a.textContent = isEN ? 'About me' : 'Sobre mí';
+        }
+      });
+
       // Step 3: sync lang class after every VT swap
       if (isEN) {
         document.documentElement.classList.add('page-404-en');
