@@ -124,7 +124,7 @@ export default function TechConstellation({ lang = 'es' }: Props) {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
       const w = Math.min(640, Math.max(0, rect.width));
-      setDims({ w, h: w });
+      setDims({ w, h: w + 72 });
     };
     measure();
     window.addEventListener('resize', measure);
@@ -161,7 +161,7 @@ export default function TechConstellation({ lang = 'es' }: Props) {
 
   const cx = dims.w / 2;
   const cy = dims.h / 2;
-  const base = Math.min(dims.w, dims.h);
+  const base = dims.w;
   const ringRadii = useMemo(
     () => [0, base * 0.22, base * 0.35, base * 0.46],
     [base]
