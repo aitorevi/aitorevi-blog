@@ -35,6 +35,7 @@ const testimonials = lang === 'es'
         text: 'He tenido la oportunidad de trabajar con Aitor y he de decir que es una persona comprometida con aprender y resolver los problemas que se le ponen por delante. Siempre está dispuesto a escuchar para tener una visión más completa y resolver el problema en equipo. Es un gran profesional que ha sabido adaptarse al desarrollo de software viniendo de un mundo totalmente distinto.',
         author: 'Aitor Santana',
         role: 'Junior Developer · Lean Mind',
+        avatar: '/images/testimonials/aitor-santana.jpg',
       },
     ]
   : [
@@ -62,6 +63,7 @@ const testimonials = lang === 'es'
         text: 'I had the opportunity to work with Aitor and I have to say he is someone truly committed to learning and solving the problems in front of him. He is always willing to listen to get a fuller picture and tackle the problem as a team. He is a great professional who has managed to adapt to software development coming from a completely different world.',
         author: 'Aitor Santana',
         role: 'Junior Developer · Lean Mind',
+        avatar: '/images/testimonials/aitor-santana.jpg',
       },
     ];
 ---
@@ -87,7 +89,7 @@ const testimonials = lang === 'es'
     <ul class="marquee-track">
       <!-- Original set -->
       {testimonials.map((item) => {
-        const initials = item.author.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+        const initials = item.author.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase();
         return (
           <li class="marquee-card">
             <div class="group relative overflow-hidden rounded-xl border border-secondary/15 bg-white px-7 py-8 dark:border-accent-violet/20 dark:bg-ink-800" data-tilt-testimonial>
@@ -111,12 +113,10 @@ const testimonials = lang === 'es'
               </blockquote>
               <!-- Author -->
               <footer class="relative z-10 mt-6 flex items-center gap-3">
-                <div
-                  class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-xs font-bold text-secondary dark:bg-accent-violet/15 dark:text-accent-violet"
-                  aria-hidden="true"
-                >
-                  {initials}
-                </div>
+                {item.avatar
+                  ? <img src={item.avatar} alt={item.author} class="h-8 w-8 shrink-0 rounded-full object-cover" aria-hidden="true" />
+                  : <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-xs font-bold text-secondary dark:bg-accent-violet/15 dark:text-accent-violet" aria-hidden="true">{initials}</div>
+                }
                 <div>
                   <p class="text-sm font-semibold text-ink-900 dark:text-slate-100">{item.author}</p>
                   <p class="font-mono text-[11px] uppercase tracking-[0.2em] text-secondary/60 dark:text-accent-violet/50">{item.role}</p>
