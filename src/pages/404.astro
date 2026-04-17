@@ -51,11 +51,15 @@ const isEs = lang === 'es';
         };
       });
 
-      // Paso B: swap nav text language
+      // Paso B: swap nav text + fix Blog/About hrefs for current lang
       document.querySelectorAll('header a').forEach(function (a) {
         var text = a.textContent.trim();
+        if (text === 'Blog') {
+          a.href = isEN ? '/en/blog' : '/blog';
+        }
         if (text === 'Sobre mí' || text === 'About me') {
           a.textContent = isEN ? 'About me' : 'Sobre mí';
+          a.href = isEN ? '/en/cv' : '/cv';
         }
       });
 
