@@ -19,13 +19,13 @@ const isEs = lang === 'es';
 
     function fix404Nav() {
       var real = window.location.pathname;
+      var isEN = real.startsWith('/en/') || real === '/en';
 
       // Step 1: route label
       var el = document.getElementById('route-path');
       if (el) el.textContent = real;
 
       // Step 2: nav lang links
-      var isEN = real.startsWith('/en/') || real === '/en';
       var esPath = isEN ? (real.replace(/^\/en/, '') || '/') : real;
       var enPath = isEN ? real : '/en' + real;
       document.querySelectorAll('header a').forEach(function (a) {
@@ -33,6 +33,13 @@ const isEs = lang === 'es';
         if (text === 'ES') a.href = esPath;
         if (text === 'EN') a.href = enPath;
       });
+
+      // Step 3: sync lang class after every VT swap
+      if (isEN) {
+        document.documentElement.classList.add('page-404-en');
+      } else {
+        document.documentElement.classList.remove('page-404-en');
+      }
     }
     // astro:page-load fires on initial load AND after every View Transition swap
     document.addEventListener('astro:page-load', fix404Nav);
