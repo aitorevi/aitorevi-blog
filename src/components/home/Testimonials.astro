@@ -8,7 +8,6 @@ interface Props {
 
 const { lang } = Astro.props;
 
-// Replace placeholder text with real testimonials when received
 const testimonials = lang === 'es'
   ? [
       {
@@ -84,201 +83,202 @@ const testimonials = lang === 'es'
     </p>
   </div>
 
-  <!-- Marquee: full-width, faded edges -->
-  <div class="marquee-container" aria-label="Testimonials">
-    <ul class="marquee-track">
-      <!-- Original set -->
-      {testimonials.map((item) => {
+  <div class="carousel-wrapper mx-auto max-w-2xl px-6" aria-label="Testimonials">
+    <!-- Cards stacked in the same grid cell -->
+    <div class="carousel-track">
+      {testimonials.map((item, i) => {
         const initials = item.author.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase();
         return (
-          <li class="marquee-card">
-            <div class="group relative overflow-hidden rounded-xl border border-secondary/15 bg-white px-7 py-8 dark:border-accent-violet/20 dark:bg-ink-800" data-tilt-testimonial>
-              <!-- Top gradient overlay -->
-              <div
-                class="pointer-events-none absolute inset-x-0 -top-20 h-40 bg-gradient-to-b from-secondary/10 to-transparent opacity-60 dark:from-accent-violet/10"
-                aria-hidden="true"
-              />
-              <!-- Decorative quote mark -->
-              <span
-                class="pointer-events-none absolute right-5 top-2 select-none font-display text-7xl font-black leading-none text-secondary/10 dark:text-accent-violet/10"
-                aria-hidden="true"
-              >
-                "
-              </span>
-              <!-- Quote -->
-              <blockquote class="relative z-10">
-                <p class="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
-                  "{item.text}"
-                </p>
-              </blockquote>
-              <!-- Author -->
-              <footer class="relative z-10 mt-6 flex items-center gap-3">
-                {item.avatar
-                  ? <img src={item.avatar} alt={item.author} class="h-8 w-8 shrink-0 rounded-full object-cover" aria-hidden="true" />
-                  : <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-xs font-bold text-secondary dark:bg-accent-violet/15 dark:text-accent-violet" aria-hidden="true">{initials}</div>
-                }
-                <div>
-                  <p class="text-sm font-semibold text-ink-900 dark:text-slate-100">{item.author}</p>
-                  <p class="font-mono text-[11px] text-secondary/60 dark:text-accent-violet/50 whitespace-nowrap">{item.role}</p>
-                </div>
-              </footer>
-            </div>
-          </li>
+          <div
+            class:list={[
+              'carousel-slide relative overflow-hidden rounded-xl border border-secondary/15 bg-white px-7 py-8 dark:border-accent-violet/20 dark:bg-ink-800',
+              i === 0 ? 'opacity-100' : 'opacity-0 pointer-events-none',
+            ]}
+            aria-hidden={i !== 0 ? 'true' : undefined}
+          >
+            <!-- Top gradient overlay -->
+            <div
+              class="pointer-events-none absolute inset-x-0 -top-20 h-40 bg-gradient-to-b from-secondary/10 to-transparent opacity-60 dark:from-accent-violet/10"
+              aria-hidden="true"
+            />
+            <!-- Decorative quote mark -->
+            <span
+              class="pointer-events-none absolute right-5 top-2 select-none font-display text-7xl font-black leading-none text-secondary/10 dark:text-accent-violet/10"
+              aria-hidden="true"
+            >
+              "
+            </span>
+            <!-- Quote -->
+            <blockquote class="relative z-10">
+              <p class="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                "{item.text}"
+              </p>
+            </blockquote>
+            <!-- Author -->
+            <footer class="relative z-10 mt-6 flex items-center gap-3">
+              {item.avatar
+                ? <img src={item.avatar} alt={item.author} class="h-8 w-8 shrink-0 rounded-full object-cover" />
+                : <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-xs font-bold text-secondary dark:bg-accent-violet/15 dark:text-accent-violet" aria-hidden="true">{initials}</div>
+              }
+              <div>
+                <p class="text-sm font-semibold text-ink-900 dark:text-slate-100">{item.author}</p>
+                <p class="font-mono text-[11px] text-secondary/60 dark:text-accent-violet/50 whitespace-nowrap">{item.role}</p>
+              </div>
+            </footer>
+          </div>
         );
       })}
-      <!-- Clones are added by JS to cover any viewport width -->
-    </ul>
+    </div>
+
+    <!-- Dots -->
+    <div class="mt-8 flex items-center justify-center gap-3" role="tablist" aria-label="Testimonials navigation">
+      {testimonials.map((item, i) => (
+        <button
+          class:list={['dot', i === 0 ? 'active' : '']}
+          role="tab"
+          aria-selected={i === 0 ? 'true' : 'false'}
+          aria-label={item.author}
+          data-index={i}
+        >
+          <span class="dot-fill" />
+        </button>
+      ))}
+    </div>
   </div>
 </section>
 
 <style>
-  /* Fade edges */
-  .marquee-container {
+  /* Stack all cards in the same grid cell */
+  .carousel-track {
+    display: grid;
+  }
+  .carousel-slide {
+    grid-column: 1;
+    grid-row: 1;
+    transition: opacity 0.7s ease;
+  }
+
+  /* Dot base */
+  .dot {
+    position: relative;
+    height: 8px;
+    width: 8px;
+    border-radius: 9999px;
+    background-color: currentColor;
+    opacity: 0.2;
     overflow: hidden;
-    -webkit-mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      black 12%,
-      black 88%,
-      transparent 100%
-    );
-    mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      black 12%,
-      black 88%,
-      transparent 100%
-    );
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    transition: width 0.3s ease, height 0.3s ease, border-radius 0.3s ease, opacity 0.3s ease;
   }
 
-  /* Infinite scroll track */
-  .marquee-track {
-    display: flex;
-    gap: 1.5rem;
-    width: max-content;
-    animation: marquee 28s linear infinite;
-    padding: 0.5rem 0;
+  /* Active dot — becomes a pill with progress bar */
+  .dot.active {
+    opacity: 1;
+    width: 3rem;
+    height: 4px;
+    border-radius: 9999px;
   }
 
-  /* Pause on hover */
-  .marquee-container:hover .marquee-track {
+  /* Progress fill — only animates inside the active dot */
+  .dot-fill {
+    position: absolute;
+    inset: 0;
+    background-color: rgb(var(--color-secondary, 94 58 238));
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .dot.active .dot-fill {
+    animation: dot-progress 6s linear forwards;
+  }
+
+  .carousel-wrapper:hover .dot.active .dot-fill {
     animation-play-state: paused;
   }
 
-  /* Card fixed width */
-  .marquee-card {
-    width: 22rem;
-    flex-shrink: 0;
-  }
-
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to   { transform: translateX(calc(-1 * var(--marquee-offset, 50%))); }
-  }
-
-  /* Respect reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    .marquee-track {
-      animation: none;
-    }
-    .marquee-container {
-      -webkit-mask-image: none;
-      mask-image: none;
-      overflow-x: auto;
-    }
+  @keyframes dot-progress {
+    to { transform: scaleX(1); }
   }
 </style>
 
 <script>
-  function initTilt() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  function initFadeCarousel() {
+    const slides = document.querySelectorAll<HTMLElement>('.carousel-slide');
+    const dots   = document.querySelectorAll<HTMLElement>('.dot');
+    if (!slides.length) return;
 
-    const LERP = 0.08, MAX_ROT = 8, MAX_LIFT = 6;
+    let current = 0;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    let paused = false;
+    let slideStartedAt = Date.now();
+    const DURATION = 6000;
 
-    document.querySelectorAll<HTMLElement>('[data-tilt-testimonial]').forEach((card) => {
-      let tx = 0, ty = 0, tz = 0, cx = 0, cy = 0, cz = 0, rafId = 0, hovered = false;
-      const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+    function goTo(index: number) {
+      // Hide current
+      slides[current].classList.replace('opacity-100', 'opacity-0');
+      slides[current].classList.add('pointer-events-none');
+      slides[current].setAttribute('aria-hidden', 'true');
+      dots[current].classList.remove('active');
+      dots[current].setAttribute('aria-selected', 'false');
 
-      function tick() {
-        cx = lerp(cx, tx, LERP); cy = lerp(cy, ty, LERP); cz = lerp(cz, tz, LERP);
-        card.style.transform = `perspective(800px) rotateX(${cx}deg) rotateY(${cy}deg) translateZ(${cz}px)`;
-        const settled = Math.abs(cx - tx) < 0.01 && Math.abs(cy - ty) < 0.01 && Math.abs(cz - tz) < 0.1;
-        if (!settled) { rafId = requestAnimationFrame(tick); }
-        else { rafId = 0; if (!hovered) card.style.transform = ''; }
-      }
+      current = (index + slides.length) % slides.length;
 
-      card.addEventListener('mousemove', (e) => {
-        const r = card.getBoundingClientRect();
-        ty =  ((e.clientX - r.left) / r.width  - 0.5) * 2 * MAX_ROT;
-        tx = -((e.clientY - r.top)  / r.height - 0.5) * 2 * (MAX_ROT * 0.75);
-        tz = MAX_LIFT;
-        if (!rafId) rafId = requestAnimationFrame(tick);
-      });
-      card.addEventListener('mouseenter', () => { hovered = true; });
-      card.addEventListener('mouseleave', () => {
-        hovered = false; tx = 0; ty = 0; tz = 0;
-        if (!rafId) rafId = requestAnimationFrame(tick);
+      // Show next
+      slides[current].classList.replace('opacity-0', 'opacity-100');
+      slides[current].classList.remove('pointer-events-none');
+      slides[current].removeAttribute('aria-hidden');
+
+      // Re-trigger dot animation by removing and re-adding the class
+      const dot = dots[current];
+      dot.classList.remove('active');
+      dot.setAttribute('aria-selected', 'true');
+      // Force reflow so animation restarts
+      dot.offsetWidth;
+      dot.classList.add('active');
+    }
+
+    function startTimer(remaining = DURATION) {
+      if (timer) clearTimeout(timer);
+      slideStartedAt = Date.now() - (DURATION - remaining);
+      timer = setTimeout(() => {
+        if (!paused) {
+          goTo(current + 1);
+          startTimer();
+        }
+      }, remaining);
+    }
+
+    // Dot clicks
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        goTo(i);
+        startTimer();
       });
     });
+
+    // Pause on hover
+    const wrapper = document.querySelector('.carousel-wrapper');
+    let remainingWhenPaused = DURATION;
+
+    wrapper?.addEventListener('mouseenter', () => {
+      paused = true;
+      if (timer) clearTimeout(timer);
+      remainingWhenPaused = Math.max(0, DURATION - (Date.now() - slideStartedAt));
+    });
+    wrapper?.addEventListener('mouseleave', () => {
+      paused = false;
+      startTimer(remainingWhenPaused);
+    });
+
+    // Respect prefers-reduced-motion — dots still work, no autoplay
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    startTimer();
   }
 
-  function initMarquee() {
-    const track = document.querySelector<HTMLElement>('.marquee-track');
-    if (!track) return;
-
-    // Mark originals on first run, remove clones on subsequent runs
-    const existingClones = track.querySelectorAll('[data-clone]');
-    existingClones.forEach(el => el.remove());
-
-    const origItems = Array.from(
-      track.querySelectorAll<HTMLElement>('[data-original]')
-    );
-    if (origItems.length === 0) {
-      // First run: mark all current children as originals
-      Array.from(track.children).forEach(el => el.setAttribute('data-original', ''));
-      origItems.push(...Array.from(track.querySelectorAll<HTMLElement>('[data-original]')));
-    }
-
-    const origCount = origItems.length;
-
-    // Clone until track is at least 2× the viewport width
-    while (track.scrollWidth < window.innerWidth * 2) {
-      origItems.forEach(item => {
-        const clone = item.cloneNode(true) as HTMLElement;
-        clone.setAttribute('aria-hidden', 'true');
-        clone.setAttribute('data-clone', '');
-        clone.removeAttribute('data-original');
-        track.appendChild(clone);
-      });
-    }
-
-    // One loop = exact distance from track start to first clone's left edge
-    // (includes card widths + all gaps, no rounding error)
-    const trackLeft = track.getBoundingClientRect().left;
-    const firstCloneLeft = (track.children[origCount] as HTMLElement).getBoundingClientRect().left;
-    const loopWidth = firstCloneLeft - trackLeft;
-    track.style.setProperty('--marquee-offset', `${loopWidth}px`);
-
-    // Restart animation so it picks up the new offset cleanly
-    track.style.animation = 'none';
-    track.offsetHeight; // force reflow
-    track.style.animation = '';
-  }
-
-  let resizeTimer: ReturnType<typeof setTimeout>;
-  function onResize() {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => { initMarquee(); initTilt(); }, 150);
-  }
-
-  function init() {
-    initMarquee();
-    initTilt();
-    window.removeEventListener('resize', onResize);
-    window.addEventListener('resize', onResize, { passive: true });
-  }
-
-  document.addEventListener('astro:page-load', init);
-  document.addEventListener('astro:after-swap', init);
-  init();
+  document.addEventListener('astro:page-load', initFadeCarousel);
+  document.addEventListener('astro:after-swap', initFadeCarousel);
+  initFadeCarousel();
 </script>
