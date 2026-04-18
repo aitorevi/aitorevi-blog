@@ -194,7 +194,7 @@ const testimonials = lang === 'es'
     animation: dot-progress 6s linear forwards;
   }
 
-  .carousel-wrapper:hover .dot.active .dot-fill {
+  .carousel-wrapper.is-paused .dot.active .dot-fill {
     animation-play-state: paused;
   }
 
@@ -266,9 +266,11 @@ const testimonials = lang === 'es'
       paused = true;
       if (timer) clearTimeout(timer);
       remainingWhenPaused = Math.max(0, DURATION - (Date.now() - slideStartedAt));
+      wrapper.classList.add('is-paused');
     });
     wrapper?.addEventListener('mouseleave', () => {
       paused = false;
+      wrapper.classList.remove('is-paused');
       startTimer(remainingWhenPaused);
     });
 
