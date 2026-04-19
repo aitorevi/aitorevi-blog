@@ -54,7 +54,7 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
     <!-- Dark-mode-only dot field -->
     <DotField />
 
-  <main class="blog-page mx-auto max-w-7xl mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:px-20 lg:pt-10 lg:pb-20">
+  <div class="blog-page mx-auto max-w-7xl mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:px-20 lg:pt-10 lg:pb-20">
     <header class="mb-12 text-center" data-reveal-item style="--reveal-delay:0ms">
       <h1 class="mb-4 pb-2 font-display text-5xl font-black tracking-tight text-ink-900 dark:bg-home-gradient-text dark:bg-clip-text dark:text-transparent sm:text-6xl lg:text-7xl">
         Blog
@@ -66,6 +66,7 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
 
     {featuredPosts.length > 0 && (
       <section class="mb-16" aria-labelledby="featured-heading">
+        <h2 id="featured-heading" class="sr-only">{t(lang, 'blog.featured')}</h2>
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {featuredPosts.slice(0, 3).map((post, index) => (
             <div data-reveal-item style={`--reveal-delay:${(index + 1) * 100}ms`}>
@@ -105,7 +106,7 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
         <p class="text-slate-600">{t(lang, 'blog.noPostsDescription')}</p>
       </div>
     )}
-  </main>
+  </div>
   </div>
   <style is:global>
     body:has(.blog-page) {

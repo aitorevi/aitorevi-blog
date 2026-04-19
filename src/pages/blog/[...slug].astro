@@ -224,8 +224,7 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
         ) : (
           <div
             class="flex h-full w-full items-center justify-center bg-home-radial"
-            role="img"
-            aria-label={data.coverImageAlt || data.title}
+            aria-hidden="true"
             itemprop="image"
           >
             <span class="select-none font-display text-6xl font-black tracking-tight text-white md:text-8xl">
@@ -586,8 +585,9 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
       // If this group doesn't have that language, do nothing
       if (targetIndex === -1) return;
 
-      tabs.forEach(t => t.classList.remove('active'));
+      tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
       tabs[targetIndex]?.classList.add('active');
+      tabs[targetIndex]?.setAttribute('aria-selected', 'true');
       wrappers.forEach((w, i) => { w.hidden = i !== targetIndex; });
     });
   }
