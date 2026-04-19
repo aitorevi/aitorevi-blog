@@ -11,21 +11,6 @@ const { lang } = Astro.props;
 const testimonials = lang === 'es'
   ? [
       {
-        text: 'Trabajar con Aitor es una garantía de calidad. Su dominio del TDD y la arquitectura limpia se nota en cada línea de código que escribe.',
-        author: 'Nombre Apellido',
-        role: 'Senior Developer · Lean Mind',
-      },
-      {
-        text: 'Aitor tiene una capacidad única para hacer que conceptos complejos parezcan evidentes. En los code reviews siempre aprendo algo nuevo, ya sea sobre diseño de dominio, sobre cómo nombrar bien las cosas o sobre cómo simplificar sin perder expresividad. Es el tipo de compañero que te hace mejor desarrollador solo con trabajar a su lado.',
-        author: 'Nombre Apellido',
-        role: 'Developer · Lean Mind',
-      },
-      {
-        text: 'Lo que más destaca de Aitor es su compromiso con las buenas prácticas incluso bajo presión. Nunca toma atajos que comprometan la mantenibilidad del código.',
-        author: 'Nombre Apellido',
-        role: 'Tech Lead · Empresa',
-      },
-      {
         text: 'Aitor aporta una visión de producto muy valiosa además de sus habilidades técnicas. Entiende el negocio y eso se refleja en las soluciones que propone.',
         author: 'Adrián Carmona',
         role: 'Product Manager · Empresa',
@@ -39,23 +24,8 @@ const testimonials = lang === 'es'
     ]
   : [
       {
-        text: 'Working with Aitor is a guarantee of quality. His mastery of TDD and clean architecture shows in every line of code he writes.',
-        author: 'First Last',
-        role: 'Senior Developer · Lean Mind',
-      },
-      {
-        text: 'Aitor has a unique ability to make complex concepts feel obvious. In code reviews I always learn something new, whether about domain design, naming things well, or simplifying without losing expressiveness. He is the kind of colleague who makes you a better developer just by working alongside him.',
-        author: 'First Last',
-        role: 'Developer · Lean Mind',
-      },
-      {
-        text: 'What stands out most about Aitor is his commitment to good practices even under pressure. He never takes shortcuts that compromise maintainability.',
-        author: 'First Last',
-        role: 'Tech Lead · Company',
-      },
-      {
         text: 'Aitor brings valuable product vision on top of his technical skills. He understands the business and that shows in the solutions he proposes.',
-        author: 'First Last',
+        author: 'Adrián Carmona',
         role: 'Product Manager · Company',
       },
       {
@@ -95,6 +65,7 @@ const testimonials = lang === 'es'
               i === 0 ? 'opacity-100' : 'opacity-0 pointer-events-none',
             ]}
             aria-hidden={i !== 0 ? 'true' : undefined}
+            inert={i !== 0 ? true : undefined}
           >
             <!-- Top gradient overlay -->
             <div
@@ -226,6 +197,7 @@ const testimonials = lang === 'es'
       slides[current].classList.replace('opacity-100', 'opacity-0');
       slides[current].classList.add('pointer-events-none');
       slides[current].setAttribute('aria-hidden', 'true');
+      slides[current].setAttribute('inert', '');
       dots[current].classList.remove('active');
       dots[current].setAttribute('aria-selected', 'false');
 
@@ -235,6 +207,7 @@ const testimonials = lang === 'es'
       slides[current].classList.replace('opacity-0', 'opacity-100');
       slides[current].classList.remove('pointer-events-none');
       slides[current].removeAttribute('aria-hidden');
+      slides[current].removeAttribute('inert');
 
       // Re-trigger dot animation by removing and re-adding the class
       const dot = dots[current];
