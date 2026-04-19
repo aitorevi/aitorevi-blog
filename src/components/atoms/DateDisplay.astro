@@ -36,6 +36,12 @@ interface Props {
   lang?: 'es' | 'en';
 
   /**
+   * Use short month format (e.g., "abr" instead of "abril")
+   * @default false
+   */
+  short?: boolean;
+
+  /**
    * Show icon before date
    * @default false
    */
@@ -56,13 +62,14 @@ const {
   date,
   locale,
   lang = 'en',
+  short = false,
   showIcon = false,
   class: className = '',
   ariaLabel,
 } = Astro.props;
 
 const resolvedLocale = locale ?? (lang === 'es' ? 'es-ES' : 'en-US');
-const formattedDate = formatDate(date, resolvedLocale);
+const formattedDate = formatDate(date, resolvedLocale, short);
 const isoDate = formatDateISO(date);
 const label = ariaLabel || (lang === 'es' ? `Publicado el ${formattedDate}` : `Published on ${formattedDate}`);
 ---

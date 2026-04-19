@@ -8,30 +8,35 @@ interface Props {
 
 const { lang } = Astro.props;
 
+const imsUrl = lang === 'en' ? '/en/portfolio/ims' : '/portfolio/ims';
+
 const projects = [
   {
     name: 'Colorprof',
     url: 'https://www.colorprof.es',
     tagKey: 'home.portfolio.tag.landing',
     descKey: 'home.portfolio.colorprof.desc',
-    tech: 'Astro, Tailwind CSS',
+    tech: 'Astro 5, Tailwind CSS',
     accent: 'from-emerald-400/20 to-transparent',
+    external: true,
   },
   {
     name: 'IRPH Calculator',
     url: 'https://www.perjuicioirph.com',
     tagKey: 'home.portfolio.tag.tool',
     descKey: 'home.portfolio.irph.desc',
-    tech: 'Next.js, TypeScript',
+    tech: 'Astro 5, Google Sheets API',
     accent: 'from-accent-sky/20 to-transparent',
+    external: true,
   },
   {
     name: 'IMS',
-    url: 'https://instalation-management-system.vercel.app',
+    url: imsUrl,
     tagKey: 'home.portfolio.tag.saas',
     descKey: 'home.portfolio.ims.desc',
-    tech: 'React, Node.js, PostgreSQL',
+    tech: 'Astro 5, Supabase, TypeScript',
     accent: 'from-accent-violet/20 to-transparent',
+    external: false,
   },
 ];
 ---
@@ -88,8 +93,7 @@ const projects = [
 
             <a
               href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
+              {...(project.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               aria-label={`${t(lang, 'home.portfolio.visit')}: ${project.name}`}
               class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-secondary transition-colors hover:text-accent-violet dark:text-accent-blue dark:hover:text-accent-violet focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2"
             >
