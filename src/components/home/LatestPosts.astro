@@ -10,7 +10,7 @@
 import { getCollection } from 'astro:content';
 import PostCard from '../molecules/PostCard.astro';
 import { sortPostsByDate, filterDrafts } from '../../lib/utils';
-import { t, getLocalePath } from '../../i18n/utils';
+import { t } from '../../i18n/utils';
 import type { Lang } from '../../data/cv';
 
 interface Props {
@@ -24,11 +24,10 @@ const posts = sortPostsByDate(filterDrafts(all))
   .filter((post) => post.id.startsWith(`${lang}/`))
   .slice(0, 3);
 
-const blogPath = getLocalePath('/blog', lang);
 ---
 
 <section
-  class="relative bg-slate-50 py-24 text-ink-900 dark:bg-ink-900 dark:text-slate-100 sm:py-28"
+  class="relative bg-slate-50 py-24 text-ink-900 dark:bg-ink-900 dark:text-slate-100 sm:py-32"
   aria-labelledby="latest-posts-heading"
 >
   <div class="mx-auto max-w-5xl px-6">
@@ -64,18 +63,6 @@ const blogPath = getLocalePath('/blog', lang);
       )
     }
 
-    <div class="mt-12 flex justify-center">
-      <a
-        href={blogPath}
-        class="group inline-flex items-center gap-2 rounded-full border border-secondary/40 bg-secondary/5 px-6 py-3 font-mono text-sm text-secondary transition-all duration-300 hover:border-secondary/70 hover:bg-secondary/10 hover:shadow-[0_10px_30px_-10px_rgba(94,58,238,0.35)] dark:border-accent-blue/30 dark:bg-accent-blue/5 dark:text-accent-blue dark:hover:border-accent-blue/60 dark:hover:bg-accent-blue/10 dark:hover:shadow-[0_0_40px_rgba(96,165,250,0.25)]"
-      >
-        <span>{t(lang, 'home.posts.cta')}</span>
-        <span
-          aria-hidden="true"
-          class="transition-transform duration-300 group-hover:translate-x-1"
-        >→</span>
-      </a>
-    </div>
   </div>
 </section>
 

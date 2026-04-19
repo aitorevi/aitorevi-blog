@@ -41,14 +41,25 @@ const stats = [
 ---
 
 <section
-  class="relative bg-slate-50 pb-24 text-ink-900 dark:bg-ink-900 dark:text-slate-100"
+  class="relative bg-slate-50 py-24 text-ink-900 dark:bg-ink-900 dark:text-slate-100 sm:py-32"
   aria-labelledby="stats-heading"
 >
-  <h2 id="stats-heading" class="sr-only">
-    {t(lang, 'home.stats.title')}
-  </h2>
+  <div class="mx-auto max-w-5xl px-6">
+    <h2
+      id="stats-heading"
+      class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
+    >
+      {t(lang, 'home.stats.title')}
+    </h2>
+    <p
+      class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary/85 dark:text-accent-blue/70"
+    >
+      {t(lang, 'home.stats.subtitle')}
+    </p>
+  </div>
+
   <div
-    class="mx-auto grid max-w-5xl grid-cols-1 gap-4 px-6 sm:grid-cols-3 sm:gap-6"
+    class="mx-auto mt-14 grid max-w-5xl grid-cols-1 gap-4 px-6 sm:grid-cols-3 sm:gap-6"
     data-stats-root
   >
     {
