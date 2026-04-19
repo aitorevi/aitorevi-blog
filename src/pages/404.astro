@@ -412,7 +412,20 @@ let finalTimeEl: HTMLElement | null = null;
 let finalRankEl: HTMLElement | null = null;
 let bestNoteEl: HTMLElement | null = null;
 let gameOverMsgEl: HTMLElement | null = null;
-let state: any = null;
+interface Wall { dist: number; gapSide: number; speed: number; passed: boolean; alpha: number; }
+interface Particle { x: number; y: number; vx: number; vy: number; life: number; maxLife: number; color: string; size: number; }
+interface TrailPoint { x: number; y: number; life: number; }
+interface Rank { time: number; name: string; color: string; }
+interface GameState {
+  running: boolean; paused: boolean;
+  playerAngle: number; rotationDir: number;
+  walls: Wall[]; particles: Particle[]; trail: TrailPoint[];
+  time: number; best: number; rank: Rank;
+  spawnTimer: number; worldRotation: number; worldRotationSpeed: number;
+  hueShift: number; cameraShake: number; keys: Record<string, boolean>;
+  difficulty: number; flashTimer: number;
+}
+let state: GameState | null = null;
 let lastTime = 0;
 let themeObserver: MutationObserver | null = null;
 
@@ -463,7 +476,7 @@ function initRun() {
   state = {
     running: false, paused: false,
     playerAngle: -Math.PI / 2, rotationDir: 0,
-    walls: [] as any[], particles: [] as any[], trail: [] as any[],
+    walls: [] as Wall[], particles: [] as Particle[], trail: [] as TrailPoint[],
     time: 0, best: bestFromStorage(), rank: RANKS[0],
     spawnTimer: 0, worldRotation: 0, worldRotationSpeed: 0.15,
     hueShift: 0, cameraShake: 0, keys: {} as Record<string, boolean>,
