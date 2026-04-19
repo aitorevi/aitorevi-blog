@@ -65,8 +65,10 @@ const requestedPath = Astro.url.pathname;
       // Step 3: sync lang class after every VT swap
       if (isEN) {
         document.documentElement.classList.add('page-404-en');
+        document.documentElement.lang = 'en';
       } else {
         document.documentElement.classList.remove('page-404-en');
+        document.documentElement.lang = 'es';
       }
     }
     // astro:page-load fires on initial load AND after every View Transition swap
@@ -80,15 +82,15 @@ const requestedPath = Astro.url.pathname;
     </p>
 
     <div class="game-wrapper relative flex-1 min-h-0">
-      <canvas id="game"></canvas>
+      <canvas id="game" role="application" aria-label="Hexagonal Rush — juego de arcade interactivo"></canvas>
 
       <div class="hud">
         <span class="hud-item hud-time">⏱ <span id="time">0.00</span>s</span>
-        <span class="hud-item hud-rank" id="rankItem" style="display:none">◆ <span id="rank">Novice</span></span>
+        <span class="hud-item hud-rank" id="rankItem" style="display:none">◆ <span id="rank" aria-live="polite">Novice</span></span>
         <span class="hud-item hud-best">⭐ <span id="best">0.00</span>s</span>
       </div>
 
-      <button class="audio-toggle" id="audioToggle">🔊</button>
+      <button class="audio-toggle" id="audioToggle" aria-label="Toggle audio" aria-pressed="true"><span aria-hidden="true">🔊</span></button>
 
       <!-- Touch zones (left / right) -->
       <div class="touch-zones">
@@ -236,6 +238,9 @@ const requestedPath = Astro.url.pathname;
   .overlay .best-note  { color: #d29922; font-size: 0.8rem; margin-bottom: 1rem; }
   .overlay .best-note.new { animation: pulse 0.8s ease-in-out infinite alternate; }
   @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.06); } }
+  @media (prefers-reduced-motion: reduce) {
+    .overlay .best-note.new { animation: none; }
+  }
 
   .keys-guide { display: flex; gap: 1rem; margin: 0.8rem 0; font-size: 0.75rem; color: #8b949e; }
   .keys-guide .key { background: #0d1117; border: 1px solid #30363d; padding: 4px 8px; border-radius: 4px; color: #c9d1d9; font-weight: 700; }
@@ -816,7 +821,9 @@ function initGame() {
   document.getElementById('audioToggle')?.addEventListener('click', () => {
     AudioEngine.init();
     const on = AudioEngine.toggle();
-    document.getElementById('audioToggle')!.textContent = on ? '🔊' : '🔇';
+    const btn = document.getElementById('audioToggle')!;
+    btn.querySelector('span')!.textContent = on ? '🔊' : '🔇';
+    btn.setAttribute('aria-pressed', String(on));
   });
 
   // Touch zones
