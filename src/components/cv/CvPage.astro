@@ -1,0 +1,58 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CvHeader from './CvHeader.astro';
+import CvProfile from './CvProfile.astro';
+import CvExperience from './CvExperience.astro';
+import CvSkills from './CvSkills.astro';
+import CvEducation from './CvEducation.astro';
+import CvCertifications from './CvCertifications.astro';
+import CvPdfDownload from './CvPdfDownload.astro';
+import CvScrollReveal from './CvScrollReveal.astro';
+import DotField from '../atoms/DotField.astro';
+import { getCvData, getPdfPath, getJsonPath } from '../../data/cv';
+import type { Lang } from '../../data/cv';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const data = getCvData(lang);
+const pdfPath = getPdfPath(lang);
+const jsonPath = getJsonPath(lang);
+---
+
+<Layout
+  title={data.labels.pageTitle}
+  lang={lang}
+  description={data.labels.pageDescription}
+>
+  <div class="relative isolate min-h-[calc(100vh-3.5rem)] md:min-h-[calc(100vh-5rem)]">
+    <!-- Dark-mode-only dot field — same logic as home hero -->
+    <DotField />
+
+    <section class="cv-page mx-auto max-w-screen-xl mb-2 md:mb-4 p-6 pt-16 sm:p-7 sm:pt-16 md:p-8 md:pt-24 lg:p-16 lg:pt-24 pb-8 sm:pb-10 md:pb-12 lg:pb-12 rounded-2xl font-ibm">
+      <CvScrollReveal />
+      <CvHeader contact={data.contact} />
+      <CvProfile label={data.labels.profile} summary={data.summary} />
+      <CvExperience label={data.labels.experience} entries={data.experience} />
+      <CvEducation label={data.labels.education} entries={data.education} />
+      <CvCertifications label={data.labels.certifications} entries={data.certifications} />
+      <CvSkills label={data.labels.skills} categories={data.skills} />
+      <CvPdfDownload pdfPath={pdfPath} jsonPath={jsonPath} label={data.labels.downloadPdf} />
+    </section>
+  </div>
+  <style is:global>
+    body:has(.cv-page) {
+      background-color: #f8fafc;
+      background-image: none;
+    }
+    html.dark body:has(.cv-page),
+    html.dark body:has(.cv-page) main {
+      background-color: #020617;
+      background-image: radial-gradient(ellipse at 30% 20%, #0f172a 0%, #020617 55%, #000 100%);
+      background-attachment: fixed;
+      background-size: cover;
+    }
+  </style>
+</Layout>

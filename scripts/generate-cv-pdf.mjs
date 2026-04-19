@@ -49,7 +49,7 @@
 import { chromium } from 'playwright-core';
 import { createServer } from 'node:http';
 import { readFile, mkdir, copyFile } from 'node:fs/promises';
-import { join, extname } from 'node:path';
+import { join, extname, resolve as resolvePath } from 'node:path';
 import { existsSync } from 'node:fs';
 
 // dist/client/ es donde @astrojs/vercel deposita los HTML estáticos.
@@ -82,6 +82,13 @@ function startServer() {
   return new Promise((resolve) => {
     const server = createServer(async (req, res) => {
       let filePath = join(SERVE_DIR, req.url);
+
+      // Guard against path traversal attacks
+      if (!resolvePath(filePath).startsWith(resolvePath(SERVE_DIR))) {
+        res.writeHead(403);
+        res.end('Forbidden');
+        return;
+      }
 
       if (filePath.endsWith('/')) {
         filePath = join(filePath, 'index.html');

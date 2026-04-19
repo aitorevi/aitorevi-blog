@@ -13,6 +13,7 @@ import WhatIDo from './home/WhatIDo.astro';
 import StatsCounter from './home/StatsCounter.astro';
 import TechStack from './home/TechStack.astro';
 import LatestPosts from './home/LatestPosts.astro';
+import Testimonials from './home/Testimonials.astro';
 import ContactSection from './home/ContactSection.astro';
 
 interface Props {
@@ -25,9 +26,10 @@ const { lang } = Astro.props;
 <div class="home-redesign relative isolate bg-slate-50 text-ink-900 dark:bg-ink-900 dark:text-slate-100">
   <HeroParallax lang={lang} />
   <WhatIDo lang={lang} />
-  <StatsCounter lang={lang} />
   <TechStack lang={lang} />
   <LatestPosts lang={lang} />
+  <StatsCounter lang={lang} />
+  <Testimonials lang={lang} />
   <ContactSection lang={lang} />
 </div>
 

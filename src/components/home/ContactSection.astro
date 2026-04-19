@@ -26,7 +26,7 @@ const { lang } = Astro.props;
   aria-labelledby="contact-heading"
   data-contact-email="info@aitorevi.dev"
 >
-  <div class="mx-auto max-w-2xl px-6">
+  <div class="mx-auto max-w-[640px] px-6">
     <div class="text-center">
       <h2
         id="contact-heading"
@@ -34,7 +34,7 @@ const { lang } = Astro.props;
       >
         {t(lang, 'home.contact.title')}
       </h2>
-      <p class="mx-auto mt-3 max-w-xl font-mono text-xs uppercase tracking-[0.3em] text-secondary/70 dark:text-accent-blue/50">
+      <p class="mx-auto mt-3 max-w-xl font-mono text-xs uppercase tracking-[0.3em] text-secondary/85 dark:text-accent-blue/70">
         {t(lang, 'home.contact.subtitle')}
       </p>
       <p class="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-slate-600 dark:text-slate-400">
@@ -68,71 +68,83 @@ const { lang } = Astro.props;
         aria-hidden="true"
         style="position:absolute;left:-9999px;opacity:0;height:0;width:0;"
       />
+      <p class="mb-4 font-mono text-[10px] text-secondary/60 dark:text-accent-blue/50">
+        <span aria-hidden="true">* </span>{lang === 'es' ? 'Campos obligatorios' : 'Required fields'}
+      </p>
+
       <div class="grid gap-5 sm:grid-cols-2">
-        <label class="block">
+        <label for="contact-name" class="block">
           <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary/80 dark:text-accent-blue/60">
-            {t(lang, 'home.contact.name')}
+            {t(lang, 'home.contact.name')}<span aria-hidden="true"> *</span>
           </span>
           <input
+            id="contact-name"
             type="text"
             name="name"
             required
             autocomplete="name"
             maxlength="100"
             data-field="name"
-            class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus:ring-0 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
+            aria-describedby="contact-name-error"
+            class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-1 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
             placeholder="Jane Doe"
           />
-          <span data-field-error="name" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
+          <span id="contact-name-error" data-field-error="name" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
         </label>
-        <label class="block">
+        <label for="contact-email" class="block">
           <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary/80 dark:text-accent-blue/60">
-            {t(lang, 'home.contact.email')}
+            {t(lang, 'home.contact.email')}<span aria-hidden="true"> *</span>
           </span>
           <input
+            id="contact-email"
             type="email"
             name="email"
             required
             autocomplete="email"
             maxlength="254"
             data-field="email"
-            class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus:ring-0 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
+            aria-describedby="contact-email-error"
+            class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-1 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
             placeholder="jane@example.com"
           />
-          <span data-field-error="email" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
+          <span id="contact-email-error" data-field-error="email" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
         </label>
       </div>
 
-      <label class="mt-5 block">
+      <label for="contact-subject" class="mt-5 block">
         <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary/80 dark:text-accent-blue/60">
-          {t(lang, 'home.contact.subject')}
+          {t(lang, 'home.contact.subject')}<span aria-hidden="true"> *</span>
         </span>
         <input
+          id="contact-subject"
           type="text"
           name="subject"
           required
           maxlength="200"
           data-field="subject"
-          class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus:ring-0 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
+          aria-describedby="contact-subject-error"
+          class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-1 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
           placeholder={t(lang, 'home.contact.subjectPlaceholder')}
         />
-        <span data-field-error="subject" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
+        <span id="contact-subject-error" data-field-error="subject" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
       </label>
 
-      <label class="mt-5 block">
+      <label for="contact-message" class="mt-5 block">
         <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary/80 dark:text-accent-blue/60">
-          {t(lang, 'home.contact.message')}
+          {t(lang, 'home.contact.message')}<span aria-hidden="true"> *</span>
         </span>
         <textarea
+          id="contact-message"
           name="message"
           required
           rows="5"
           maxlength="5000"
           data-field="message"
-          class="w-full resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus:ring-0 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
+          aria-describedby="contact-message-error"
+          class="w-full resize-none rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-400 transition-colors focus:border-secondary/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-1 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-600 dark:focus:border-accent-blue/60"
           placeholder={t(lang, 'home.contact.messagePlaceholder')}
         ></textarea>
-        <span data-field-error="message" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
+        <span id="contact-message-error" data-field-error="message" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
       </label>
 
       <div class="mt-6 flex justify-end">

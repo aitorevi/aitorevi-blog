@@ -59,7 +59,7 @@ import { Redis } from '@upstash/redis';
 
 export const prerender = false;
 
-function escapeHtml(str: string): string {
+export function escapeHtml(str: string): string {
   return str
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -68,7 +68,7 @@ function escapeHtml(str: string): string {
     .replace(/'/g, '&#x27;');
 }
 
-function buildConfirmationHtml(name: string, message: string, lang: 'es' | 'en'): string {
+export function buildConfirmationHtml(name: string, message: string, lang: 'es' | 'en'): string {
   const escapedName = escapeHtml(name);
   const escapedMessage = escapeHtml(message).replace(/\n/g, '<br>');
 

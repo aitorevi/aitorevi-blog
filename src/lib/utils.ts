@@ -85,7 +85,7 @@ const WORDS_PER_MINUTE = 225;
  * @param content - Markdown or plain text content
  * @returns Object with reading time in minutes and word count
  */
-export function calculateReadingTime(content: string): {
+export function calculateReadingTime(content: string, lang: 'es' | 'en' = 'en'): {
   minutes: number;
   words: number;
   text: string;
@@ -110,7 +110,8 @@ export function calculateReadingTime(content: string): {
   const minutes = Math.max(1, Math.ceil(words / WORDS_PER_MINUTE));
 
   // Generate human-readable text
-  const text = minutes === 1 ? '1 min read' : `${minutes} min read`;
+  const label = lang === 'es' ? 'min de lectura' : 'min read';
+  const text = `${minutes} ${label}`;
 
   return {
     minutes,

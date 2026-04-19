@@ -34,7 +34,7 @@ import { Image } from 'astro:assets';
 import Tag from '../atoms/Tag.astro';
 import DateDisplay from '../atoms/DateDisplay.astro';
 import ReadingTime from '../atoms/ReadingTime.astro';
-import { calculateReadingTime } from '../../lib/utils';
+import { calculateReadingTime, formatDate } from '../../lib/utils';
 import { t, getBlogSlugFromId } from '../../i18n/utils';
 
 interface Props {
@@ -77,7 +77,7 @@ const {
 } = Astro.props;
 
 const { data, id, body = '' } = post;
-const readingTime = calculateReadingTime(body);
+const readingTime = calculateReadingTime(body, lang);
 
 // Generate post URL - strip language prefix from content ID
 const slug = getBlogSlugFromId(id);
@@ -181,6 +181,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
       <DateDisplay
         date={data.publishDate}
         showIcon={true}
+        lang={lang}
       />
 
       <ReadingTime text={readingTime.text} />
@@ -189,7 +190,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
         <>
           <span class="text-gray-300" aria-hidden="true">•</span>
           <span class="text-xs text-quaternary">
-            Updated {new Date(data.updatedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            {t(lang, 'blog.updated')} {formatDate(data.updatedDate, lang === 'es' ? 'es-ES' : 'en-US')}
           </span>
         </>
       )}

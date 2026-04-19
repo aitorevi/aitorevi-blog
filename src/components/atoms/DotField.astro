@@ -1,0 +1,30 @@
+---
+interface Props {
+  position?: 'fixed' | 'absolute';
+}
+
+const { position = 'absolute' } = Astro.props;
+
+const DOT_COUNT = 60;
+const dots = Array.from({ length: DOT_COUNT }, (_, i) => ({
+  x: ((i * 37) % 100) + Math.random() * 2,
+  y: ((i * 53) % 95) + Math.random() * 2,
+  size: 1 + ((i * 13) % 4) * 0.6,
+  opacity: 0.12 + ((i * 7) % 10) * 0.025,
+}));
+---
+
+<div
+  aria-hidden="true"
+  class:list={[
+    'pointer-events-none inset-0 hidden dark:block text-accent-blue',
+    position === 'fixed' ? 'fixed' : 'absolute',
+  ]}
+>
+  {dots.map((d) => (
+    <span
+      class="absolute rounded-full bg-current"
+      style={`left:${d.x}%;top:${d.y}%;width:${d.size}px;height:${d.size}px;opacity:${d.opacity};`}
+    />
+  ))}
+</div>

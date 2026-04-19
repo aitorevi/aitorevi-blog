@@ -2,7 +2,10 @@
 import Layout from "../../layouts/Layout.astro";
 ---
 <Layout title="KATAS">
-    <slot name="header">
-        <h1>KATAS</h1>
-    </slot>
+  <Fragment slot="head">
+    <meta name="robots" content="noindex, nofollow" />
+  </Fragment>
+  <slot name="header">
+    <h1>KATAS</h1>
+  </slot>
 </Layout>
