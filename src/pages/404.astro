@@ -1,10 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getLangFromUrl, t } from '../i18n/utils';
+import { t } from '../i18n/utils';
 
 const requestedPath = Astro.url.pathname;
-const lang = getLangFromUrl(Astro.url);
-const isEs = lang === 'es';
 ---
 
 <Layout title="404 · aitorevi.dev" description="Página no encontrada">
@@ -413,7 +411,7 @@ let finalRankEl: HTMLElement | null = null;
 let bestNoteEl: HTMLElement | null = null;
 let gameOverMsgEl: HTMLElement | null = null;
 interface Wall { dist: number; gapSide: number; speed: number; passed: boolean; alpha: number; }
-interface Particle { x: number; y: number; vx: number; vy: number; life: number; maxLife: number; color: string; size: number; }
+interface Particle { x: number; y: number; vx: number; vy: number; life: number; maxLife?: number; color: string; size: number; }
 interface TrailPoint { x: number; y: number; life: number; }
 interface Rank { time: number; name: string; color: string; }
 interface GameState {
@@ -488,6 +486,7 @@ function initRun() {
 // WALL SPAWNING
 // ============================================================
 function spawnWall() {
+  if (!state) return;
   const gapSide = Math.floor(Math.random() * SIDES);
   const patterns = [{ count: 1 }, { count: 1 }, { count: 2 }, { count: 3 }];
   const difficultyLevel = Math.min(3, Math.floor(state.time / 20));
@@ -505,7 +504,7 @@ function spawnWall() {
 // UPDATE
 // ============================================================
 function update(dt: number) {
-  if (!state.running || state.paused) return;
+  if (!state || !state.running || state.paused) return;
   state.time += dt;
   state.hueShift += dt * 15;
   if (state.flashTimer > 0) state.flashTimer -= dt;
@@ -565,6 +564,7 @@ function update(dt: number) {
 }
 
 function checkCollision(wall: any) {
+  if (!state) return false;
   let normAngle = state.playerAngle - state.worldRotation;
   while (normAngle < 0) normAngle += Math.PI * 2;
   while (normAngle >= Math.PI * 2) normAngle -= Math.PI * 2;
@@ -573,6 +573,7 @@ function checkCollision(wall: any) {
 }
 
 function spawnRankBurst() {
+  if (!state) return;
   for (let i = 0; i < 40; i++) {
     const a = Math.random() * Math.PI * 2, s = 150 + Math.random() * 200;
     state.particles.push({ x:CX, y:CY, vx:Math.cos(a)*s, vy:Math.sin(a)*s, life:1, color:state.rank.color, size:2+Math.random()*2 });
@@ -580,6 +581,7 @@ function spawnRankBurst() {
 }
 
 function spawnDeathParticles() {
+  if (!state) return;
   const px = CX + Math.cos(state.playerAngle) * PLAYER_ORBIT;
   const py = CY + Math.sin(state.playerAngle) * PLAYER_ORBIT;
   for (let i = 0; i < 60; i++) {
@@ -644,7 +646,7 @@ function render() {
 }
 
 function drawWall(wall: any) {
-  if (!gctx) return;
+  if (!gctx || !state) return;
   const innerDist = wall.dist, outerDist = wall.dist + WALL_THICKNESS;
   for (let side = 0; side < SIDES; side++) {
     if (side === wall.gapSide) continue;
@@ -663,7 +665,7 @@ function drawWall(wall: any) {
 }
 
 function drawCore() {
-  if (!gctx) return;
+  if (!gctx || !state) return;
   gctx.save(); gctx.rotate(state.worldRotation);
   const pulseSize = 32 + Math.sin(state.time * 6) * 2;
   gctx.strokeStyle = state.rank.color; gctx.lineWidth = 3;
@@ -682,7 +684,7 @@ function drawCore() {
 }
 
 function drawPlayer() {
-  if (!gctx) return;
+  if (!gctx || !state) return;
   const px = Math.cos(state.playerAngle) * PLAYER_ORBIT;
   const py = Math.sin(state.playerAngle) * PLAYER_ORBIT;
   gctx.save(); gctx.translate(px, py); gctx.rotate(state.playerAngle + Math.PI/2);
@@ -713,7 +715,7 @@ function loop(t: number) {
 }
 
 function start() {
-  initRun(); state.running = true;
+  initRun(); if (!state) return; state.running = true;
   startScreen!.classList.add('hidden');
   gameOverScreen!.classList.add('hidden');
   rankItem!.style.display = '';
@@ -726,6 +728,7 @@ function start() {
 }
 
 function gameOver() {
+  if (!state) return;
   state.running = false; state.cameraShake = 0.5;
   spawnDeathParticles(); AudioEngine.sfx.death(); AudioEngine.stopMusic();
   const isNewBest = state.time > state.best;
@@ -748,7 +751,7 @@ function gameOver() {
 
   const deathFrame = () => {
     if (gameOverScreen!.classList.contains('hidden')) { render(); requestAnimationFrame(deathFrame); }
-    else { update(0.016); render(); if (state.particles.length > 0) requestAnimationFrame(deathFrame); }
+    else { update(0.016); render(); if ((state?.particles.length ?? 0) > 0) requestAnimationFrame(deathFrame); }
   };
   requestAnimationFrame(deathFrame);
 }
@@ -844,7 +847,7 @@ function initGame() {
 
   resizeCanvas();
   initRun();
-  state.running = false;
+  if (state) state.running = false;
   bestEl!.textContent = bestFromStorage().toFixed(2);
   render();
 }
