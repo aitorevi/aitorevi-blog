@@ -26,16 +26,9 @@ import Layout from '../../layouts/Layout.astro';
 import PostCard from '../../components/molecules/PostCard.astro';
 import { sortPostsByDate, filterDrafts } from '../../lib/utils';
 import { t, getBlogSlugFromId } from '../../i18n/utils';
+import DotField from '../../components/atoms/DotField.astro';
 
 const lang = 'es';
-
-const DOT_COUNT = 60;
-const dots = Array.from({ length: DOT_COUNT }, (_, i) => ({
-  x: ((i * 37) % 100) + Math.random() * 2,
-  y: ((i * 53) % 95) + Math.random() * 2,
-  size: 1 + ((i * 13) % 4) * 0.6,
-  opacity: 0.12 + ((i * 7) % 10) * 0.025,
-}));
 
 // Astro 5: Fetch all blog posts using Content Layer API
 const allPosts = await getCollection('blog');
@@ -82,14 +75,7 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
 
   <div class="relative min-h-screen">
     <!-- Dark-mode-only dot field -->
-    <div aria-hidden="true" class="pointer-events-none absolute inset-0 hidden dark:block text-accent-blue">
-      {dots.map((d) => (
-        <span
-          class="absolute rounded-full bg-current"
-          style={`left:${d.x}%;top:${d.y}%;width:${d.size}px;height:${d.size}px;opacity:${d.opacity};`}
-        />
-      ))}
-    </div>
+    <DotField />
 
   <!-- Main Content -->
   <main class="blog-page mx-auto max-w-7xl mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:px-20 lg:pt-10 lg:pb-20">

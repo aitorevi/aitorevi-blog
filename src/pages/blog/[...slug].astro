@@ -37,6 +37,7 @@ import DateDisplay from '../../components/atoms/DateDisplay.astro';
 import ReadingTime from '../../components/atoms/ReadingTime.astro';
 import CopyButton from '../../components/atoms/CopyButton.astro';
 import { calculateReadingTime, formatDate, formatDateISO } from '../../lib/utils';
+import DotField from '../../components/atoms/DotField.astro';
 import { t, getBlogSlugFromId } from '../../i18n/utils';
 
 const lang = 'es';
@@ -72,13 +73,6 @@ interface Props {
 const { post, alternateUrl } = Astro.props;
 const { data, body = '' } = post;
 
-const DOT_COUNT = 60;
-const dots = Array.from({ length: DOT_COUNT }, (_, i) => ({
-  x: ((i * 37) % 100) + Math.random() * 2,
-  y: ((i * 53) % 95) + Math.random() * 2,
-  size: 1 + ((i * 13) % 4) * 0.6,
-  opacity: 0.12 + ((i * 7) % 10) * 0.025,
-}));
 
 // Astro 5: render() function for MDX/Markdown content
 const { Content } = await render(post);
@@ -158,14 +152,7 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
 
   <div class="relative min-h-screen">
     <!-- Dark-mode-only dot field -->
-    <div aria-hidden="true" class="pointer-events-none fixed inset-0 hidden dark:block text-accent-blue">
-      {dots.map((d) => (
-        <span
-          class="absolute rounded-full bg-current"
-          style={`left:${d.x}%;top:${d.y}%;width:${d.size}px;height:${d.size}px;opacity:${d.opacity};`}
-        />
-      ))}
-    </div>
+    <DotField position="fixed" />
 
   <!-- Main Article Content -->
   <article
