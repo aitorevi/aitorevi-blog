@@ -203,8 +203,8 @@ export default function TechConstellation({ lang = 'es' }: Props) {
       ref={containerRef}
       className="relative mx-auto w-full max-w-2xl"
       style={{ height: dims.h }}
-      role="figure"
-      aria-label="Tech stack constellation"
+      role="group"
+      aria-label="Tech stack"
     >
       <svg
         width={dims.w}
