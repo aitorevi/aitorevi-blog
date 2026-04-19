@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { escapeHtml, buildConfirmationHtml, POST } from './contact';
+import { escapeHtml, buildConfirmationHtml, POST } from '../src/pages/api/contact';
 
 // ---------------------------------------------------------------------------
 // escapeHtml
