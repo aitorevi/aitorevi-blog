@@ -1,0 +1,108 @@
+---
+import type { Lang } from '../../data/cv';
+import { t } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const imsUrl = lang === 'en' ? '/en/portfolio/ims' : '/portfolio/ims';
+
+const projects = [
+  {
+    name: 'Colorprof',
+    url: 'https://www.colorprof.es',
+    tagKey: 'home.portfolio.tag.landing',
+    descKey: 'home.portfolio.colorprof.desc',
+    tech: 'Astro 5, Tailwind CSS',
+    accent: 'from-emerald-400/20 to-transparent',
+    external: true,
+  },
+  {
+    name: 'IRPH Calculator',
+    url: 'https://www.perjuicioirph.com',
+    tagKey: 'home.portfolio.tag.tool',
+    descKey: 'home.portfolio.irph.desc',
+    tech: 'Astro 5, Google Sheets API',
+    accent: 'from-accent-sky/20 to-transparent',
+    external: true,
+  },
+  {
+    name: 'IMS',
+    url: imsUrl,
+    tagKey: 'home.portfolio.tag.saas',
+    descKey: 'home.portfolio.ims.desc',
+    tech: 'Astro 5, Supabase, TypeScript',
+    accent: 'from-accent-violet/20 to-transparent',
+    external: false,
+  },
+];
+---
+
+<section
+  class="relative bg-white py-24 text-ink-900 dark:bg-ink-900/50 dark:text-slate-100 sm:py-32"
+  aria-labelledby="portfolio-heading"
+>
+  <div class="mx-auto max-w-5xl px-6">
+    <h2
+      id="portfolio-heading"
+      class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
+    >
+      {t(lang, 'home.portfolio.title')}
+    </h2>
+    <p
+      class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary/85 dark:text-accent-blue/70"
+    >
+      {t(lang, 'home.portfolio.subtitle')}
+    </p>
+
+    <ul
+      class="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+      data-stagger-root
+    >
+      {projects.map((project, i) => (
+        <li
+          class="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-lg backdrop-blur-md transition-[border-color,box-shadow,background-color] duration-500 hover:border-secondary/40 hover:shadow-[0_20px_50px_-20px_rgba(94,58,238,0.35)] dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:hover:border-accent-blue/40 dark:hover:bg-white/[0.07] dark:hover:shadow-[0_0_60px_rgba(96,165,250,0.15)]"
+          data-stagger-item
+          data-tilt-card
+          style={`--stagger-delay:${i * 120}ms`}
+        >
+          <div
+            class={`pointer-events-none absolute -top-px left-0 h-32 w-full bg-gradient-to-b ${project.accent} opacity-0 transition-opacity duration-500 group-hover:opacity-100`}
+            aria-hidden="true"
+          />
+
+          <div class="relative flex h-full flex-col">
+            <span class="mb-3 inline-flex w-fit items-center rounded-full border border-secondary/20 bg-secondary/10 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.15em] text-secondary dark:border-accent-violet/30 dark:bg-accent-violet/20 dark:text-accent-violet">
+              {t(lang, project.tagKey)}
+            </span>
+
+            <h3 class="font-display text-lg font-semibold text-ink-900 dark:text-slate-100">
+              {project.name}
+            </h3>
+
+            <p class="mt-2 flex-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+              {t(lang, project.descKey)}
+            </p>
+
+            <p class="mt-3 font-mono text-[11px] text-secondary/60 dark:text-accent-violet/50">
+              {project.tech}
+            </p>
+
+            <a
+              href={project.url}
+              {...(project.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              aria-label={`${t(lang, 'home.portfolio.visit')}: ${project.name}`}
+              class="mt-4 inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-secondary transition-colors hover:text-accent-violet dark:text-accent-blue dark:hover:text-accent-violet focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2"
+            >
+              {t(lang, 'home.portfolio.visit')}
+              <span aria-hidden="true" class="transition-transform duration-200 group-hover:translate-x-0.5">&rarr;</span>
+            </a>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
