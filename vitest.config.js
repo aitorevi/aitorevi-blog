@@ -1,7 +1,13 @@
-import { getViteConfig } from 'astro/config';
+import { defineConfig } from 'vitest/config';
 
-export default getViteConfig({
+export default defineConfig({
+    define: {
+        'import.meta.env.PROD': false,
+        'import.meta.env.DEV': true,
+    },
     test: {
-        // Opciones de configuración de Vitest
+        globals: true,
+        environment: 'node',
+        include: ['src/**/*.test.ts'],
     },
 });
