@@ -205,6 +205,12 @@ const testimonials = lang === 'es'
 
 <script>
   function initFadeCarousel() {
+    const wrapper = document.querySelector<HTMLElement>('.carousel-wrapper');
+    if (!wrapper) return;
+    // Guard against multiple init calls (direct + astro:page-load + astro:after-swap)
+    if (wrapper.dataset.initialized) return;
+    wrapper.dataset.initialized = 'true';
+
     const slides = document.querySelectorAll<HTMLElement>('.carousel-slide');
     const dots   = document.querySelectorAll<HTMLElement>('.dot');
     if (!slides.length) return;
@@ -259,7 +265,6 @@ const testimonials = lang === 'es'
     });
 
     // Pause on hover
-    const wrapper = document.querySelector('.carousel-wrapper');
     let remainingWhenPaused = DURATION;
 
     wrapper?.addEventListener('mouseenter', () => {
