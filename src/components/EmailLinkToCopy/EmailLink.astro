@@ -1,8 +1,8 @@
 ---
 import {EmailLinkToCopy} from "./EmailLinkToCopy";
-const {position} = Astro.props;
+const { position, copiedLabel = 'Copied' } = Astro.props;
 ---
 
-<EmailLinkToCopy client:load position={position}>
+<EmailLinkToCopy client:idle position={position} copiedLabel={copiedLabel}>
     <slot/>
 </EmailLinkToCopy>
