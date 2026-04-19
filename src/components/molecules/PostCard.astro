@@ -181,6 +181,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
       <DateDisplay
         date={data.publishDate}
         showIcon={true}
+        lang={lang}
       />
 
       <ReadingTime text={readingTime.text} />

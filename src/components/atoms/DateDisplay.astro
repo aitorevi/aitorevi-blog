@@ -30,6 +30,12 @@ interface Props {
   locale?: string;
 
   /**
+   * Language for localised aria-label
+   * @default 'en'
+   */
+  lang?: 'es' | 'en';
+
+  /**
    * Show icon before date
    * @default false
    */
@@ -48,15 +54,17 @@ interface Props {
 
 const {
   date,
-  locale = 'en-US',
+  locale,
+  lang = 'en',
   showIcon = false,
   class: className = '',
   ariaLabel,
 } = Astro.props;
 
-const formattedDate = formatDate(date, locale);
+const resolvedLocale = locale ?? (lang === 'es' ? 'es-ES' : 'en-US');
+const formattedDate = formatDate(date, resolvedLocale);
 const isoDate = formatDateISO(date);
-const label = ariaLabel || `Published on ${formattedDate}`;
+const label = ariaLabel || (lang === 'es' ? `Publicado el ${formattedDate}` : `Published on ${formattedDate}`);
 ---
 
 <time

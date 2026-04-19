@@ -132,7 +132,7 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
         {data.description}
       </p>
       <div class="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-b border-slate-200 dark:border-slate-700 py-4">
-        <DateDisplay date={data.publishDate} showIcon={true} locale="en-US" />
+        <DateDisplay date={data.publishDate} showIcon={true} lang="en" />
         <span class="text-slate-400" aria-hidden="true">&bull;</span>
         <ReadingTime text={readingTime.text} />
         {data.updatedDate && (
@@ -216,7 +216,7 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
               )}
             </p>
             <p class="text-sm text-slate-600">
-              {t(lang, 'blog.publishedOn')} <DateDisplay date={data.publishDate} locale="en-US" />
+              {t(lang, 'blog.publishedOn')} <DateDisplay date={data.publishDate} lang="en" />
             </p>
           </div>
         </div>
