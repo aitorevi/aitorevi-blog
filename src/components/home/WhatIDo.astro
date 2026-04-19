@@ -145,31 +145,35 @@ const cards = [
 
 <script>
   function initStagger() {
-    const root = document.querySelector('[data-stagger-root]');
-    if (!root) return;
-    const items = Array.from(
-      root.querySelectorAll<HTMLElement>('[data-stagger-item]')
-    );
-    if (items.length === 0) return;
+    const roots = document.querySelectorAll('[data-stagger-root]');
+    if (roots.length === 0) return;
 
-    // If reduced motion, just show everything and bail out.
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      items.forEach((el) => el.classList.add('is-visible'));
-      return;
-    }
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            (entry.target as HTMLElement).classList.add('is-visible');
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-    items.forEach((el) => io.observe(el));
+    roots.forEach((root) => {
+      const items = Array.from(
+        root.querySelectorAll<HTMLElement>('[data-stagger-item]')
+      );
+      if (items.length === 0) return;
+
+      if (reducedMotion) {
+        items.forEach((el) => el.classList.add('is-visible'));
+        return;
+      }
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              (entry.target as HTMLElement).classList.add('is-visible');
+              io.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.2 }
+      );
+      items.forEach((el) => io.observe(el));
+    });
   }
 
   function initTilt() {
