@@ -53,13 +53,17 @@ const testimonials = lang === 'es'
     </p>
   </div>
 
-  <div class="carousel-wrapper mx-auto max-w-[640px] px-6" aria-label="Testimonials">
+  <div class="carousel-wrapper mx-auto max-w-[640px] px-6">
     <!-- Cards stacked in the same grid cell -->
     <div class="carousel-track">
       {testimonials.map((item, i) => {
         const initials = item.author.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase();
         return (
           <div
+            id={`testimonial-panel-${i}`}
+            role="tabpanel"
+            tabindex={i === 0 ? 0 : -1}
+            aria-labelledby={`testimonial-tab-${i}`}
             class:list={[
               'carousel-slide relative overflow-hidden rounded-xl border border-secondary/15 bg-white px-7 py-8 dark:border-accent-violet/20 dark:bg-ink-800',
               i === 0 ? 'opacity-100' : 'opacity-0 pointer-events-none',
@@ -105,9 +109,11 @@ const testimonials = lang === 'es'
     <div class="mt-8 flex items-center justify-center gap-3" role="tablist" aria-label="Testimonials navigation">
       {testimonials.map((item, i) => (
         <button
+          id={`testimonial-tab-${i}`}
           class:list={['dot', i === 0 ? 'active' : '']}
           role="tab"
           aria-selected={i === 0 ? 'true' : 'false'}
+          aria-controls={`testimonial-panel-${i}`}
           aria-label={item.author}
           data-index={i}
         >
@@ -172,6 +178,11 @@ const testimonials = lang === 'es'
   @keyframes dot-progress {
     to { transform: scaleX(1); }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dot.active .dot-fill { animation: none; transform: scaleX(1); }
+    .carousel-slide { transition: none; }
+  }
 </style>
 
 <script>
@@ -198,6 +209,7 @@ const testimonials = lang === 'es'
       slides[current].classList.add('pointer-events-none');
       slides[current].setAttribute('aria-hidden', 'true');
       slides[current].setAttribute('inert', '');
+      slides[current].setAttribute('tabindex', '-1');
       dots[current].classList.remove('active');
       dots[current].setAttribute('aria-selected', 'false');
 
@@ -208,6 +220,7 @@ const testimonials = lang === 'es'
       slides[current].classList.remove('pointer-events-none');
       slides[current].removeAttribute('aria-hidden');
       slides[current].removeAttribute('inert');
+      slides[current].setAttribute('tabindex', '0');
 
       // Re-trigger dot animation by removing and re-adding the class
       const dot = dots[current];
