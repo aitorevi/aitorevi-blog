@@ -34,7 +34,8 @@ import { Image } from 'astro:assets';
 import Tag from '../atoms/Tag.astro';
 import DateDisplay from '../atoms/DateDisplay.astro';
 import ReadingTime from '../atoms/ReadingTime.astro';
-import { calculateReadingTime, formatDate } from '../../lib/utils';
+import { calculateReadingTime } from '../../lib/blog';
+import { formatDate } from '../../lib/date';
 import { t, getBlogSlugFromId } from '../../i18n/utils';
 
 interface Props {

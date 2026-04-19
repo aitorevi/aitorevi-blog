@@ -6,12 +6,9 @@ import {
   getBlogSlugFromId,
   getBlogLangFromId,
   getLocalePath,
-} from './utils';
+} from '../../../src/i18n/utils';
 
-// ---------------------------------------------------------------------------
-// t — translation lookup
-// ---------------------------------------------------------------------------
-describe('t', () => {
+describe('t — translation lookup', () => {
   it('returns the translation for a known key in Spanish', () => {
     expect(t('es', 'nav.blog')).toBe('Blog');
   });
@@ -25,9 +22,6 @@ describe('t', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// getLangFromUrl
-// ---------------------------------------------------------------------------
 describe('getLangFromUrl', () => {
   it('returns "es" for root path', () => {
     expect(getLangFromUrl(new URL('http://x.com/'))).toBe('es');
@@ -50,9 +44,6 @@ describe('getLangFromUrl', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// getAlternateUrl
-// ---------------------------------------------------------------------------
 describe('getAlternateUrl', () => {
   it('switches ES → EN for homepage', () => {
     expect(getAlternateUrl('/', 'es')).toBe('/en/');
@@ -79,9 +70,6 @@ describe('getAlternateUrl', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// getBlogSlugFromId
-// ---------------------------------------------------------------------------
 describe('getBlogSlugFromId', () => {
   it('removes es/ prefix', () => {
     expect(getBlogSlugFromId('es/mi-post')).toBe('mi-post');
@@ -96,9 +84,6 @@ describe('getBlogSlugFromId', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// getBlogLangFromId
-// ---------------------------------------------------------------------------
 describe('getBlogLangFromId', () => {
   it('returns "en" for en/ prefix', () => {
     expect(getBlogLangFromId('en/my-post')).toBe('en');
@@ -113,9 +98,6 @@ describe('getBlogLangFromId', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// getLocalePath
-// ---------------------------------------------------------------------------
 describe('getLocalePath', () => {
   it('returns path unchanged for lang "es"', () => {
     expect(getLocalePath('/blog', 'es')).toBe('/blog');

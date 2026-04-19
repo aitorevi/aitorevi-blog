@@ -6,7 +6,8 @@ import Tag from '../../../components/atoms/Tag.astro';
 import DateDisplay from '../../../components/atoms/DateDisplay.astro';
 import ReadingTime from '../../../components/atoms/ReadingTime.astro';
 import CopyButton from '../../../components/atoms/CopyButton.astro';
-import { calculateReadingTime, formatDate, formatDateISO } from '../../../lib/utils';
+import { calculateReadingTime } from '../../../lib/blog';
+import { formatDate, formatDateISO } from '../../../lib/date';
 import DotField from '../../../components/atoms/DotField.astro';
 import { t, getBlogSlugFromId } from '../../../i18n/utils';
 

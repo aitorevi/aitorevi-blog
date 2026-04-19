@@ -1,9 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { cvES, cvEN, getCvData, getPdfPath, getJsonPath, getAlternateLangUrl } from './cv';
+import { cvES, cvEN, getCvData, getPdfPath, getJsonPath, getAlternateLangUrl } from '../../../src/data/cv';
 
-// ---------------------------------------------------------------------------
-// getCvData
-// ---------------------------------------------------------------------------
 describe('getCvData', () => {
   it('returns cvES for lang "es"', () => {
     expect(getCvData('es')).toBe(cvES);
@@ -14,9 +11,6 @@ describe('getCvData', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// getPdfPath
-// ---------------------------------------------------------------------------
 describe('getPdfPath', () => {
   it('returns a path under /cv/ with .pdf extension for ES', () => {
     const path = getPdfPath('es');
@@ -35,9 +29,6 @@ describe('getPdfPath', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// getJsonPath
-// ---------------------------------------------------------------------------
 describe('getJsonPath', () => {
   it('returns /cv/resume.json for ES', () => {
     expect(getJsonPath('es')).toBe('/cv/resume.json');
@@ -48,9 +39,6 @@ describe('getJsonPath', () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// getAlternateLangUrl
-// ---------------------------------------------------------------------------
 describe('getAlternateLangUrl', () => {
   it('returns /en/cv when current lang is es', () => {
     expect(getAlternateLangUrl('es')).toBe('/en/cv');
