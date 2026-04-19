@@ -57,8 +57,14 @@ const alternatePath = alternateUrl.replace('https://www.aitorevi.dev', '');
 		<slot name="head" />
 	</head>
 	<body class="flex flex-col min-h-dvh bg-white dark:bg-[#0f1419] bg-custom bg-fixed text-primary dark:text-[#f1f5f9] scrollbar scrollbar-thumb-primary scrollbar-w-2 scrollbar-corner-rounded-xl">
+		<a
+			href="#main-content"
+			class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:rounded focus:bg-white dark:focus:bg-ink-900 focus:px-4 focus:py-2 focus:text-secondary focus:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
+		>
+			{lang === 'es' ? 'Saltar al contenido principal' : 'Skip to main content'}
+		</a>
 		<Nav alternateUrl={alternatePath} />
-		<main class="flex-1 relative z-0">
+		<main id="main-content" class="flex-1 relative z-0">
 			<slot/>
 		</main>
 		<Footer />
@@ -100,6 +106,13 @@ const alternatePath = alternateUrl.replace('https://www.aitorevi.dev', '');
 	}
 
 	document.addEventListener('astro:after-swap', applyTheme);
+	document.addEventListener('astro:after-swap', () => {
+		const main = document.getElementById('main-content');
+		if (!main) return;
+		main.setAttribute('tabindex', '-1');
+		main.focus();
+		main.removeAttribute('tabindex');
+	});
 
 	window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
 		if (!localStorage.getItem('theme')) applyTheme();
