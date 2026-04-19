@@ -32,7 +32,7 @@ const { class: className = '', copyLabel = 'Copy', copiedLabel = 'Copied!' } = A
 ---
 
 <button
-  class={`copy-button group relative rounded-md bg-transparent p-2 text-slate-400 hover:text-secondary transition-colors duration-200 focus:outline-none ${className}`}
+  class={`copy-button group relative rounded-md bg-transparent p-2 text-slate-400 hover:text-secondary transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 ${className}`}
   aria-label={copyLabel}
   data-copy-button
   data-copy-label={copyLabel}
@@ -97,6 +97,10 @@ const { class: className = '', copyLabel = 'Copy', copiedLabel = 'Copied!' } = A
     100% {
       transform: scale(1);
     }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .check-icon { animation: none; }
   }
 
   /* Estados del botón */
