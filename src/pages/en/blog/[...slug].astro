@@ -6,7 +6,7 @@ import Tag from '../../../components/atoms/Tag.astro';
 import DateDisplay from '../../../components/atoms/DateDisplay.astro';
 import ReadingTime from '../../../components/atoms/ReadingTime.astro';
 import CopyButton from '../../../components/atoms/CopyButton.astro';
-import { calculateReadingTime, formatDateISO } from '../../../lib/utils';
+import { calculateReadingTime, formatDate, formatDateISO } from '../../../lib/utils';
 import { t, getBlogSlugFromId } from '../../../i18n/utils';
 
 const lang = 'en';
@@ -49,7 +49,7 @@ const dots = Array.from({ length: DOT_COUNT }, (_, i) => ({
   size: 1 + ((i * 13) % 4) * 0.6,
   opacity: 0.12 + ((i * 7) % 10) * 0.025,
 }));
-const readingTime = calculateReadingTime(body);
+const readingTime = calculateReadingTime(body, lang);
 const canonicalUrl = data.canonicalUrl || new URL(Astro.url.pathname, Astro.site).href;
 const DEFAULT_COVER_IMAGE = '/logo.webp';
 const coverImageUrl = data.coverImage || DEFAULT_COVER_IMAGE;
@@ -155,7 +155,7 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
               datetime={formatDateISO(data.updatedDate)}
               class="text-sm text-slate-500"
             >
-              Updated {new Date(data.updatedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+              {t(lang, 'blog.updated')} {formatDate(data.updatedDate, 'en-US')}
             </time>
           </>
         )}
