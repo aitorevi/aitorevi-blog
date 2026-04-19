@@ -14,8 +14,8 @@ const isES = lang === 'es';
         <a href="https://github.com/aitorevi" target="_blank" rel="noopener noreferrer" aria-label={isES ? 'Ver repositorios en GitHub' : 'View GitHub repositories'}>
             <Icon name="github" class="p-0.5 w-[1.6rem] h-[1.6rem] md:w-[1.8rem] md:h-[1.8rem] inline-block text-quaternary hover:text-secondary transition ease-linear delay-50 duration-200" />
         </a>
-        <EmailLinkToCopy position="footer" copiedLabel={isES ? 'Copiado' : 'Copied'}>
-            <Icon name="mail" class="w-[1.6rem] h-[1.6rem] md:w-[1.9rem] md:h-[1.9rem] text-quaternary hover:text-secondary inline-block transition ease-linear delay-50 duration-200" aria-label={isES ? 'Copiar email' : 'Copy email'}/>
+        <EmailLinkToCopy position="footer" copiedLabel={isES ? 'Copiado' : 'Copied'} buttonLabel={isES ? 'Copiar email' : 'Copy email'}>
+            <Icon name="mail" class="w-[1.6rem] h-[1.6rem] md:w-[1.9rem] md:h-[1.9rem] text-quaternary hover:text-secondary inline-block transition ease-linear delay-50 duration-200" aria-hidden="true" />
         </EmailLinkToCopy>
     </div>
     <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-quaternary/70 dark:text-slate-500">

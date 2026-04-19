@@ -4,9 +4,10 @@ interface Props {
     children: React.ReactElement<HTMLElement>;
     position?: "navbar" | "footer";
     copiedLabel?: string;
+    buttonLabel?: string;
 }
 
-export const EmailLinkToCopy: React.FC<Props> = ({children, position="footer", copiedLabel="Copied"}) => {
+export const EmailLinkToCopy: React.FC<Props> = ({children, position="footer", copiedLabel="Copied", buttonLabel="Copy email"}) => {
     const [isCopied, setIsCopied] = React.useState(false);
 
     const dictionary = {
@@ -29,7 +30,7 @@ export const EmailLinkToCopy: React.FC<Props> = ({children, position="footer", c
     }
     return (
         <>
-            <button onClick={handleClick} className="relative">
+            <button onClick={handleClick} className="relative" aria-label={buttonLabel}>
                 {children}
             </button>
             <div className={`absolute w-16 bg-primary bg-opacity-60 text-tertiary text-xs text-center rounded-md ${dictionary[position]}`}>
