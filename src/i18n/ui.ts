@@ -4,7 +4,7 @@ export const ui: Record<Lang, Record<string, string>> = {
   es: {
     'nav.blog': 'Blog',
     'nav.about': 'Sobre mí',
-    'site.description': 'aitorevi.dev - Desarrollador de software',
+    'site.description': 'Software Developer en Lean Mind. TDD, Clean Architecture y desarrollo asistido por IA. Notas, aprendizaje y experimentos.',
     'home.greeting': '¡Hola! Soy',
     'home.name': 'Aitor Reviriego',
     'home.role': 'Desarrollador web',
@@ -133,7 +133,7 @@ export const ui: Record<Lang, Record<string, string>> = {
   en: {
     'nav.blog': 'Blog',
     'nav.about': 'About me',
-    'site.description': 'aitorevi.dev - Software Developer',
+    'site.description': 'Software Developer at Lean Mind. TDD, Clean Architecture and AI-assisted development. Notes, learnings and experiments.',
     'home.greeting': 'Hi! I am',
     'home.name': 'Aitor Reviriego',
     'home.role': 'Web Developer',
