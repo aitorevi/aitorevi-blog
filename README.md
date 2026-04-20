@@ -1,54 +1,57 @@
-# Astro Starter Kit: Basics
+# aitorevi.dev
 
-```sh
-npm create astro@latest -- --template basics
+Web personal + blog de **Aitor Reviriego Amor**. Notas, aprendizaje y experimentos.
+Sitio en producción: [aitorevi.dev](https://www.aitorevi.dev).
+
+## Stack
+
+- **[Astro 5](https://astro.build/)** — SSG con View Transitions, zero-JS por defecto
+- **[Tailwind CSS](https://tailwindcss.com/)** — estilos utilitarios con dark mode
+- **[Keystatic](https://keystatic.com/)** — CMS para editar posts sin salir del repo
+- **[Vercel](https://vercel.com/)** — deploy automático + analytics
+- **[Vitest](https://vitest.dev/)** + **[Playwright](https://playwright.dev/)** — tests unitarios y e2e
+- **[satori](https://github.com/vercel/satori)** + **@resvg/resvg-js** — generación de la imagen Open Graph
+
+## Scripts
+
+| Comando | Descripción |
+| --- | --- |
+| `npm run dev` | Servidor de desarrollo en `http://localhost:4321` |
+| `npm run build` | Build de producción + generación del PDF del CV |
+| `npm run preview` | Previsualizar el build local |
+| `npm run test` | Ejecutar la suite de tests unitarios (Vitest) |
+| `npm run og:generate` | Regenerar `public/og-image.png` (1200×630) |
+
+## Estructura
+
+```
+src/
+├── components/    Componentes .astro y React (atoms, blog, home, Nav, Footer…)
+├── content/       Colecciones Content Layer (blog en ES/EN)
+├── data/          Datos tipados: CV, testimonials, fuente única de verdad
+├── i18n/          ui.ts (strings) + utils (rutas, detección de idioma)
+├── layouts/       Layout.astro (meta, OG tags, ClientRouter)
+├── lib/           Helpers (fechas, blog, cv→json-resume, strings…)
+└── pages/         Rutas. ES en la raíz (/), EN bajo /en/
+scripts/          One-shots: generar PDF del CV, generar OG image
+tests/unit/       Tests de lib, api, i18n y datos
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+## Contenido
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+- **Blog** — posts en `src/content/blog/{es,en}/` como Markdown con frontmatter validado por Zod. Editables desde el panel de Keystatic en `/keystatic` (o pulsa `g` y luego `a` en cualquier página para abrirlo).
+- **CV** — datos estructurados en `src/data/cv.ts`. Al hacer `npm run build` se generan dos PDFs (ES/EN) en `public/cv/` usando Puppeteer contra la ruta `/cv/print/`.
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+## i18n
 
-## 🚀 Project Structure
+- **ES** es el idioma por defecto y no lleva prefijo (`/`, `/blog`, `/cv`).
+- **EN** vive bajo `/en/` (`/en/`, `/en/blog`, `/en/cv`).
+- Las traducciones de UI están en `src/i18n/ui.ts` y se consumen con `t(lang, 'clave')`.
 
-Inside of your Astro project, you'll see the following folders and files:
+## Deploy
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+Push a `master` → Vercel despliega automáticamente. El script `vercel-build` corre el build de Astro + la generación del PDF del CV.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Licencia
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Código bajo MIT. El contenido del blog y los PDFs del CV son propiedad de Aitor Reviriego.
