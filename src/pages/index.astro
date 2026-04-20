@@ -4,5 +4,7 @@ import HomeContent from '../components/HomeContent.astro';
 ---
 
 <Layout title="aitorevi.dev">
+    <link slot="head" rel="preload" as="image" href="/avatar-light.webp" fetchpriority="high" media="(prefers-color-scheme: light)" />
+    <link slot="head" rel="preload" as="image" href="/avatar.webp" fetchpriority="high" media="(prefers-color-scheme: dark)" />
     <HomeContent lang="es" />
 </Layout>
