@@ -11,9 +11,11 @@ const isEs = lang === 'es';
 const currentPath = Astro.url.pathname;
 const isInBlog = currentPath.startsWith('/blog') || currentPath.startsWith('/en/blog');
 const isInCv = currentPath.startsWith('/cv') || currentPath.startsWith('/en/cv');
+const isInKatas = currentPath.startsWith('/katas') || currentPath.startsWith('/en/katas');
 const homePath = getLocalePath('/', lang);
 const blogPath = getLocalePath('/blog', lang);
 const cvPath = getLocalePath('/cv', lang);
+const katasPath = getLocalePath('/katas', lang);
 ---
 <header class="flex w-full bg-white/90 dark:bg-ink-900/85 backdrop-blur-md border-b border-transparent dark:border-white/5 fixed z-10 transition-colors duration-200">
     <div class="flex w-[80rem] h-14 md:h-20 mx-auto justify-between items-center">
@@ -30,6 +32,11 @@ const cvPath = getLocalePath('/cv', lang);
                aria-current={isInBlog ? 'page' : undefined}
                class={`flex items-center cursor-pointer uppercase tracking-[0.15em] text-sm transition ease-linear delay-50 duration-200 ${isInBlog ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
                 {t(lang, 'nav.blog')}
+            </a>
+            <a href={katasPath}
+               aria-current={isInKatas ? 'page' : undefined}
+               class={`flex items-center cursor-pointer uppercase tracking-[0.15em] text-sm transition ease-linear delay-50 duration-200 ${isInKatas ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
+                {t(lang, 'nav.katas')}
             </a>
             <a href={cvPath}
                aria-current={isInCv ? 'page' : undefined}
@@ -103,6 +110,11 @@ const cvPath = getLocalePath('/cv', lang);
                aria-current={isInBlog ? 'page' : undefined}
                class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isInBlog ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
                 {t(lang, 'nav.blog')}
+            </a>
+            <a href={katasPath}
+               aria-current={isInKatas ? 'page' : undefined}
+               class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isInKatas ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
+                {t(lang, 'nav.katas')}
             </a>
             <a href={cvPath}
                aria-current={isInCv ? 'page' : undefined}

@@ -10,7 +10,7 @@ import keystatic from "@keystatic/astro";
 export default defineConfig({
   adapter: vercel(),
   integrations: [tailwind(), icon(), react(), keystatic(), sitemap({
-    filter: (page) => !page.includes('/katas/') && !page.includes('/print') && !page.includes('/keystatic'),
+    filter: (page) => !page.includes('/print') && !page.includes('/keystatic'),
   })],
   site: "https://www.aitorevi.dev/",
   redirects: {

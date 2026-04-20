@@ -4,6 +4,11 @@ export const ui: Record<Lang, Record<string, string>> = {
   es: {
     'nav.blog': 'Blog',
     'nav.about': 'Sobre mí',
+    'nav.katas': 'Katas',
+    'katas.title': 'Katas',
+    'katas.subtitle': '// Pequeños retos, grandes lecciones',
+    'katas.intro': 'Pequeños ejercicios donde entreno diseño, TDD y refactor. Cada tarjeta enlaza al repositorio en GitHub.',
+    'katas.card.openOnGithub': 'ver en GitHub',
     'site.description': 'Software Developer en Lean Mind. TDD, Clean Architecture y desarrollo asistido por IA. Notas, aprendizaje y experimentos.',
     'home.greeting': '¡Hola! Soy',
     'home.name': 'Aitor Reviriego',
@@ -111,7 +116,7 @@ export const ui: Record<Lang, Record<string, string>> = {
       'Pero, ¡espera! No todo es sobre mí. En este viaje, mi capa no solo vuela con el viento... también extiende sus pliegues para abrazar a la comunidad. Sí, estoy aquí para compartir, aprender y, por supuesto, aportar mi granito de arena, convirtiendo el vasto desierto de la programación en un fértil oasis de conocimiento.',
     'home.p3':
       'Así que, si te apasiona el código tanto como a mí, y sueñas con tests que pasan con elegancia mientras contribuyes a un mundo digital mejor, ¡únete a mi aventura! Juntos, podemos hacer de este un viaje legendario.',
-    'blog.subtitle': 'Explorando desarrollo web, tecnologías modernas y buenas prácticas.',
+    'blog.subtitle': '// Explorando desarrollo web, tecnologías modernas y buenas prácticas',
     'blog.allPosts': 'Todos los posts',
     'blog.latestPosts': 'Últimos posts',
     'blog.noPosts': 'Aún no hay posts',
@@ -134,6 +139,11 @@ export const ui: Record<Lang, Record<string, string>> = {
   en: {
     'nav.blog': 'Blog',
     'nav.about': 'About me',
+    'nav.katas': 'Katas',
+    'katas.title': 'Katas',
+    'katas.subtitle': '// Small challenges, big lessons',
+    'katas.intro': 'Small exercises where I practice design, TDD and refactoring. Each card links out to the GitHub repo.',
+    'katas.card.openOnGithub': 'view on GitHub',
     'site.description': 'Software Developer at Lean Mind. TDD, Clean Architecture and AI-assisted development. Notes, learnings and experiments.',
     'home.greeting': 'Hi! I am',
     'home.name': 'Aitor Reviriego',
@@ -241,7 +251,7 @@ export const ui: Record<Lang, Record<string, string>> = {
       "But wait! It's not all about me. On this journey, my cape doesn't just fly in the wind... it also extends its folds to embrace the community. Yes, I'm here to share, learn and, of course, do my bit, turning the vast desert of programming into a fertile oasis of knowledge.",
     'home.p3':
       "So, if you're as passionate about code as I am, and dream of tests that pass with elegance while contributing to a better digital world, join my adventure! Together, we can make this a legendary journey.",
-    'blog.subtitle': 'Exploring web development, modern technologies and best practices.',
+    'blog.subtitle': '// Exploring web development, modern technologies and best practices',
     'blog.allPosts': 'All Posts',
     'blog.latestPosts': 'Latest Posts',
     'blog.noPosts': 'No posts yet',

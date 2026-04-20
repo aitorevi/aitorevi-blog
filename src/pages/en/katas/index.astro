@@ -1,11 +1,11 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import KataCard from '../../components/katas/KataCard.astro';
-import DotField from '../../components/atoms/DotField.astro';
-import { katas } from '../../data/katas';
-import { t } from '../../i18n/utils';
+import Layout from '../../../layouts/Layout.astro';
+import KataCard from '../../../components/katas/KataCard.astro';
+import DotField from '../../../components/atoms/DotField.astro';
+import { katas } from '../../../data/katas';
+import { t } from '../../../i18n/utils';
 
-const lang = 'es';
+const lang = 'en';
 const sorted = [...katas].sort((a, b) => (a.date < b.date ? 1 : -1));
 ---
 
