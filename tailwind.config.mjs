@@ -34,7 +34,6 @@ export default {
 				'home-gradient-text-light': 'linear-gradient(135deg, #2563eb, #7c3aed, #2563eb)',
 			},
 			fontFamily: {
-				ibm: ['IBM Plex Mono', 'monospace'],
 				mono: ['"JetBrains Mono"', '"Fira Code"', 'ui-monospace', 'monospace'],
 				display: ['Outfit', 'system-ui', 'sans-serif'],
 			},
