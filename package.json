@@ -10,7 +10,8 @@
     "vercel-build": "astro check && astro build && node scripts/generate-cv-pdf.mjs",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "vitest"
+    "test": "vitest",
+    "og:generate": "node scripts/generate-og-image.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",
@@ -39,7 +40,9 @@
   "devDependencies": {
     "@heroicons/react": "^2.1.1",
     "@playwright/test": "^1.59.0",
+    "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/typography": "^0.5.19",
+    "satori": "^0.26.0",
     "vitest": "^1.1.1"
   }
 }
