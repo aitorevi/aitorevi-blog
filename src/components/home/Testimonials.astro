@@ -15,6 +15,7 @@ const testimonials = lang === 'es'
         author: 'Aitor Santana',
         role: 'Software Developer · Lean Mind',
         avatar: '/images/testimonials/aitor-santana.webp',
+        url: 'https://github.com/Sstark97',
       },
     ]
   : [
@@ -23,6 +24,7 @@ const testimonials = lang === 'es'
         author: 'Aitor Santana',
         role: 'Software Developer · Lean Mind',
         avatar: '/images/testimonials/aitor-santana.webp',
+        url: 'https://github.com/Sstark97',
       },
     ];
 ---
@@ -80,15 +82,30 @@ const testimonials = lang === 'es'
               </p>
             </blockquote>
             <!-- Author -->
-            <footer class="relative z-10 mt-6 flex items-center gap-3">
-              {item.avatar
-                ? <img src={item.avatar} alt={item.author} class="h-8 w-8 shrink-0 rounded-full object-cover" />
-                : <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-xs font-bold text-secondary dark:bg-accent-violet/15 dark:text-accent-violet" aria-hidden="true">{initials}</div>
-              }
-              <div>
-                <p class="text-sm font-semibold text-ink-900 dark:text-slate-100">{item.author}</p>
-                <p class="font-mono text-[11px] text-secondary/60 dark:text-accent-violet/50 whitespace-nowrap">{item.role}</p>
-              </div>
+            <footer class="relative z-10 mt-6">
+              {item.url ? (
+                <a href={item.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 transition-opacity duration-200 hover:opacity-80">
+                  {item.avatar
+                    ? <img src={item.avatar} alt={item.author} class="h-8 w-8 shrink-0 rounded-full object-cover" />
+                    : <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-xs font-bold text-secondary dark:bg-accent-violet/15 dark:text-accent-violet" aria-hidden="true">{initials}</div>
+                  }
+                  <div>
+                    <p class="text-sm font-semibold text-ink-900 dark:text-slate-100">{item.author}</p>
+                    <p class="font-mono text-[11px] text-secondary/60 dark:text-accent-violet/50 whitespace-nowrap">{item.role}</p>
+                  </div>
+                </a>
+              ) : (
+                <div class="flex items-center gap-3">
+                  {item.avatar
+                    ? <img src={item.avatar} alt={item.author} class="h-8 w-8 shrink-0 rounded-full object-cover" />
+                    : <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-xs font-bold text-secondary dark:bg-accent-violet/15 dark:text-accent-violet" aria-hidden="true">{initials}</div>
+                  }
+                  <div>
+                    <p class="text-sm font-semibold text-ink-900 dark:text-slate-100">{item.author}</p>
+                    <p class="font-mono text-[11px] text-secondary/60 dark:text-accent-violet/50 whitespace-nowrap">{item.role}</p>
+                  </div>
+                </div>
+              )}
             </footer>
           </div>
         );
