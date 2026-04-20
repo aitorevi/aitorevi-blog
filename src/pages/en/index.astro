@@ -1,10 +1,29 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import HomeContent from '../../components/HomeContent.astro';
+
+const personSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Aitor Reviriego Amor',
+    url: 'https://www.aitorevi.dev/en',
+    image: 'https://www.aitorevi.dev/avatar.webp',
+    jobTitle: 'Full Stack Developer',
+    worksFor: {
+        '@type': 'Organization',
+        name: 'Lean Mind',
+        url: 'https://leanmind.es',
+    },
+    sameAs: [
+        'https://es.linkedin.com/in/aitor-reviriego-amor',
+        'https://github.com/aitorevi',
+    ],
+};
 ---
 
 <Layout title="aitorevi.dev">
     <link slot="head" rel="preload" as="image" href="/avatar-light.webp" fetchpriority="high" media="(prefers-color-scheme: light)" />
     <link slot="head" rel="preload" as="image" href="/avatar.webp" fetchpriority="high" media="(prefers-color-scheme: dark)" />
+    <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)}></script>
     <HomeContent lang="en" />
 </Layout>
