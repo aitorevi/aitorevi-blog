@@ -60,16 +60,16 @@ export const katas: Kata[] = [
     date: '2023-03-17',
   },
   {
-    slug: 'string-calculator',
+    slug: 'string-calculator-tdd',
     title: 'String Calculator',
     description: {
-      es: 'Clásico de Roy Osherove: un parser que crece a golpe de test, descubriendo complejidad gradual.',
-      en: "Roy Osherove's classic: a parser that grows one test at a time, discovering complexity gradually.",
+      es: 'Clásico de Roy Osherove resuelto paso a paso con TDD red-green-refactor: delimitadores custom, multi-línea, excepción para negativos y filtrado de números > 1000.',
+      en: "Roy Osherove's classic solved step by step with red-green-refactor TDD: custom delimiters, multi-line, negative-number exception, and filtering of numbers > 1000.",
     },
-    tech: ['TypeScript'],
-    concepts: ['TDD', 'Parsing'],
-    githubUrl: 'https://github.com/aitorevi/kata-string-calculator-curso',
-    date: '2024-12-23',
+    tech: ['Java'],
+    concepts: ['TDD', 'Parsing', 'Red-Green-Refactor'],
+    githubUrl: 'https://github.com/aitorevi/kata_string_calculator_TDD',
+    date: '2023-04-05',
   },
   {
     slug: 'csv-filter',
