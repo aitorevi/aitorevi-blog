@@ -246,6 +246,7 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
       class="prose prose-slate dark:prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:text-blue-700 dark:hover:prose-a:text-blue-300 prose-img:rounded-lg prose-img:max-h-[600px] prose-img:w-auto prose-img:mx-auto prose-img:object-contain"
       itemprop="articleBody"
       id="article-content"
+      data-code-block-label={t(lang, 'blog.codeBlock')}
     >
       <Content />
     </div>
@@ -669,7 +670,14 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
     });
   }
 
-  function wrapStandaloneCodeBlocks(content: HTMLElement) {
+  function makeCodeBlockAccessible(pre: Element, label: string) {
+    // WCAG 2.1 SC 2.1.1 — scrollable regions must be keyboard-operable.
+    if (!pre.hasAttribute('tabindex')) pre.setAttribute('tabindex', '0');
+    if (!pre.hasAttribute('role')) pre.setAttribute('role', 'region');
+    if (!pre.hasAttribute('aria-label')) pre.setAttribute('aria-label', label);
+  }
+
+  function wrapStandaloneCodeBlocks(content: HTMLElement, label: string) {
     const template = document.getElementById('copy-button-template') as HTMLTemplateElement;
     if (!template) return;
 
@@ -682,6 +690,7 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
       pre.parentNode?.replaceChild(wrapper, pre);
       wrapper.appendChild(pre);
       wrapper.appendChild(button);
+      makeCodeBlockAccessible(pre, label);
     });
   }
 
@@ -689,8 +698,11 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
     const content = document.getElementById('article-content');
     if (!content) return;
 
+    const label = content.dataset.codeBlockLabel || 'Code block';
+
     processCodeGroups(content);
-    wrapStandaloneCodeBlocks(content);
+    wrapStandaloneCodeBlocks(content, label);
+    content.querySelectorAll('.code-group pre').forEach((pre) => makeCodeBlockAccessible(pre, label));
   }
 
   if (document.readyState === 'loading') {
