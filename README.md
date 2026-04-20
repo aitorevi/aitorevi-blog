@@ -9,7 +9,7 @@ Sitio en producción: [aitorevi.dev](https://www.aitorevi.dev).
 - **[Tailwind CSS](https://tailwindcss.com/)** — estilos utilitarios con dark mode
 - **[Keystatic](https://keystatic.com/)** — CMS para editar posts sin salir del repo
 - **[Vercel](https://vercel.com/)** — deploy automático + analytics
-- **[Vitest](https://vitest.dev/)** + **[Playwright](https://playwright.dev/)** — tests unitarios y e2e
+- **[Vitest](https://vitest.dev/)** — tests unitarios
 - **[satori](https://github.com/vercel/satori)** + **@resvg/resvg-js** — generación de la imagen Open Graph
 
 ## Scripts
