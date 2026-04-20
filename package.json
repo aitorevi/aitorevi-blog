@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",
-    "@astrojs/markdoc": "^0.15.11",
     "@astrojs/react": "^4.4.2",
     "@astrojs/sitemap": "^3.6.0",
     "@astrojs/tailwind": "^6.0.2",
@@ -30,7 +29,6 @@
     "@vercel/analytics": "^2.0.1",
     "astro": "^5.16.6",
     "astro-icon": "^1.0.4",
-    "astro-navbar": "^2.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "resend": "^6.10.0",
@@ -38,10 +36,9 @@
     "typescript": "^5.3.3"
   },
   "devDependencies": {
-    "@heroicons/react": "^2.1.1",
-    "@playwright/test": "^1.59.0",
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/typography": "^0.5.19",
+    "playwright-core": "^1.59.1",
     "satori": "^0.26.0",
     "vitest": "^1.1.1"
   }
