@@ -26,7 +26,6 @@ export default {
 				},
 			},
 			backgroundImage: {
-				'confetti': "url('/background/bg-confetti.svg')",
 				'custom': "url('/background/bg-custom.svg')",
 				'home-radial': 'radial-gradient(ellipse at 30% 20%, #0f172a 0%, #020617 55%, #000 100%)',
 				'home-radial-light': 'radial-gradient(ellipse at 30% 20%, #eef2ff 0%, #f8fafc 55%, #e2e8f0 100%)',
