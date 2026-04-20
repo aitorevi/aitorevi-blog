@@ -1,6 +1,5 @@
 ---
 import { t } from '../../i18n/utils';
-import { shuffle } from '../../lib/array';
 import type { Lang } from '../../data/cv';
 
 interface Props {
@@ -42,8 +41,6 @@ const testimonials = lang === 'es'
         url: 'https://www.linkedin.com/in/francisco-correa-82a142234/',
       },
     ];
-
-const shuffled = shuffle(testimonials);
 ---
 
 <section
@@ -65,7 +62,7 @@ const shuffled = shuffle(testimonials);
   <div class="carousel-wrapper mx-auto max-w-[640px] px-6">
     <!-- Cards stacked in the same grid cell -->
     <div class="carousel-track">
-      {shuffled.map((item, i) => {
+      {testimonials.map((item, i) => {
         const initials = item.author.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase();
         return (
           <div
@@ -131,7 +128,7 @@ const shuffled = shuffle(testimonials);
 
     <!-- Dots -->
     <div class="mt-8 flex items-center justify-center gap-3" role="tablist" aria-label="Testimonials navigation">
-      {shuffled.map((item, i) => (
+      {testimonials.map((item, i) => (
         <button
           id={`testimonial-tab-${i}`}
           class:list={['dot', i === 0 ? 'active' : '']}
