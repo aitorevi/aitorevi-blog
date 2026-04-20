@@ -48,16 +48,16 @@ export const katas: Kata[] = [
     date: '2025-11-28',
   },
   {
-    slug: 'fizz-buzz-tdd',
-    title: 'FizzBuzz · TDD from zero',
+    slug: 'fizz-buzz-7-styles',
+    title: 'FizzBuzz · 7 estilos',
     description: {
-      es: 'Kata didáctica paso a paso, pensada para practicar Red-Green-Refactor desde cero.',
-      en: 'A step-by-step didactic kata designed to drill Red-Green-Refactor from scratch.',
+      es: 'Siete soluciones al mismo problema: desde if/else clásico hasta patrón Specification con Predicates. Un laboratorio para comparar estilos y ver cómo cambia el diseño.',
+      en: 'Seven solutions to the same problem: from plain if/else to a Specification pattern with predicates. A lab to compare styles and see how the design shifts.',
     },
     tech: ['Java'],
-    concepts: ['TDD'],
-    githubUrl: 'https://github.com/aitorevi/kata-fizz-buzz-learning-tdd-with-aitorevi',
-    date: '2025-03-02',
+    concepts: ['TDD', 'Refactor', 'Design Exploration'],
+    githubUrl: 'https://github.com/aitorevi/kata_fizz_buzz',
+    date: '2023-03-17',
   },
   {
     slug: 'string-calculator',
