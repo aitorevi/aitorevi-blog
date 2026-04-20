@@ -1,0 +1,378 @@
+---
+/**
+ * CodeBlockEnhancer
+ *
+ * Shared styling + client script that turns raw markdown `<pre>` blocks into:
+ *   - macOS-style windows (CSS title bar + traffic-light dots)
+ *   - code-group tabs (when the MD content uses <!-- code-group --> markers)
+ *   - keyboard-accessible scrollable regions (tabindex + role + aria-label)
+ *   - a clone-per-block Copy button (from the CopyButton atom template)
+ *
+ * Used by both ES and EN blog post pages so behaviour and look stay in sync.
+ * Must be placed *inside* the same article scope that contains
+ * `#article-content` (the script reads its `data-code-block-label`).
+ */
+
+import CopyButton from '../atoms/CopyButton.astro';
+import { t } from '../../i18n/utils';
+import type { Lang } from '../../data/cv';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<template id="copy-button-template">
+  <CopyButton copyLabel={t(lang, 'blog.copyCode')} copiedLabel={t(lang, 'blog.copied')} />
+</template>
+
+<style is:global>
+  /* Horizontal scroll on code blocks */
+  .prose pre {
+    @apply overflow-x-auto;
+  }
+
+  /* Inline code */
+  .prose code {
+    @apply rounded bg-slate-100 px-1.5 py-0.5;
+  }
+
+  .prose pre code {
+    @apply bg-transparent p-0;
+  }
+
+  .prose :not(pre) > code {
+    @apply bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded;
+  }
+
+  .dark .prose :not(pre) > code {
+    background-color: #334155;
+    color: #e2e8f0;
+  }
+
+  /* macOS window effect on code blocks */
+  .prose pre {
+    @apply relative mb-6 rounded-xl bg-white border border-slate-200 shadow-sm;
+    overflow: hidden;
+    padding-top: 3rem;
+  }
+
+  .dark .prose pre {
+    background-color: #1a1f2e !important;
+    border-color: #334155;
+  }
+
+  .prose pre::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2.5rem;
+    @apply bg-slate-200 border-b border-slate-200;
+  }
+
+  .dark .prose pre::before {
+    background-color: #1e2533;
+    border-color: #334155;
+  }
+
+  .prose pre::after {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 12px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ff5f56;
+    box-shadow:
+      20px 0 0 0 #ffbd2e,
+      40px 0 0 0 #27c93f,
+      0 0 0 1px rgba(0, 0, 0, 0.1) inset;
+    z-index: 1;
+  }
+
+  /* Shiki dual theme: switch CSS variables based on dark mode */
+  .prose pre,
+  .prose pre span {
+    color: var(--shiki-light);
+    background-color: transparent;
+  }
+
+  .dark .prose pre,
+  .dark .prose pre span {
+    color: var(--shiki-dark) !important;
+    background-color: transparent !important;
+  }
+
+  /* Wrapper added by JS to host the Copy button */
+  .code-block-wrapper {
+    @apply relative mb-6;
+  }
+
+  .code-block-wrapper pre {
+    @apply mb-0;
+  }
+
+  .code-block-wrapper .copy-button {
+    @apply absolute top-0.5 right-3 z-[1];
+  }
+
+  /* Code group: language tabs */
+  .code-group {
+    @apply relative mb-6 rounded-xl border border-slate-200 shadow-sm overflow-hidden bg-white;
+  }
+
+  .dark .code-group {
+    border-color: #334155;
+    background-color: #1a1f2e;
+  }
+
+  .code-group-tabs {
+    @apply flex gap-0 border-b border-slate-200;
+    background-color: #f1f5f9;
+    padding-left: 4.5rem;
+    position: relative;
+  }
+
+  .dark .code-group-tabs {
+    border-color: #334155;
+    background-color: #1e2533;
+  }
+
+  .code-group-tabs button[role='tab'] {
+    @apply px-5 py-2.5 text-sm font-semibold text-slate-400 bg-transparent border-b-2 border-transparent transition-all duration-150 cursor-pointer;
+  }
+
+  .code-group-tabs button[role='tab']:hover {
+    @apply text-slate-600 bg-slate-50;
+  }
+
+  :is(.dark) .code-group-tabs button[role='tab']:hover {
+    @apply text-slate-300 bg-[#252d3d];
+  }
+
+  .code-group-tabs button[role='tab'].active {
+    @apply text-secondary border-secondary bg-white;
+  }
+
+  :is(.dark) .code-group-tabs button[role='tab'].active {
+    @apply bg-[#1a1f2e];
+  }
+
+  .code-group-tabs .copy-button {
+    @apply ml-auto mr-2 relative top-0 right-0;
+  }
+
+  .code-group .code-block-wrapper {
+    @apply mb-0;
+  }
+
+  .code-group .code-block-wrapper[hidden] {
+    display: none;
+  }
+
+  .code-group .code-block-wrapper pre,
+  .code-group pre {
+    @apply mb-0 rounded-none border-0 shadow-none;
+  }
+
+  /* macOS dots in the tab bar instead of each pre */
+  .code-group-tabs::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ff5f56;
+    box-shadow:
+      20px 0 0 0 #ffbd2e,
+      40px 0 0 0 #27c93f,
+      0 0 0 1px rgba(0, 0, 0, 0.1) inset;
+  }
+
+  .code-group pre::before,
+  .code-group pre::after {
+    display: none;
+  }
+
+  .code-group pre {
+    padding-top: 1rem;
+  }
+</style>
+
+<script>
+  const LANG_LABELS: Record<string, string> = {
+    java: 'Java',
+    typescript: 'TypeScript',
+    ts: 'TypeScript',
+    csharp: 'C#',
+    cs: 'C#',
+    javascript: 'JavaScript',
+    js: 'JavaScript',
+    python: 'Python',
+    py: 'Python',
+    kotlin: 'Kotlin',
+    go: 'Go',
+    rust: 'Rust',
+    swift: 'Swift',
+  };
+
+  function getLangFromPre(pre: Element): string {
+    const lang = pre.getAttribute('data-language');
+    if (!lang) return 'code';
+    return LANG_LABELS[lang] || lang;
+  }
+
+  function syncAllGroups(lang: string) {
+    document.querySelectorAll('.code-group').forEach((group) => {
+      const tabs = group.querySelectorAll<HTMLButtonElement>('button[role="tab"]');
+      const wrappers = group.querySelectorAll<HTMLElement>(':scope > .code-block-wrapper');
+
+      let targetIndex = -1;
+      tabs.forEach((tab, i) => {
+        if (tab.getAttribute('data-lang') === lang) targetIndex = i;
+      });
+      if (targetIndex === -1) return;
+
+      tabs.forEach((t) => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tabs[targetIndex]?.classList.add('active');
+      tabs[targetIndex]?.setAttribute('aria-selected', 'true');
+      wrappers.forEach((w, i) => {
+        w.hidden = i !== targetIndex;
+      });
+    });
+  }
+
+  function processCodeGroups(content: HTMLElement) {
+    const walker = document.createTreeWalker(content, NodeFilter.SHOW_COMMENT);
+    const groupStarts: Comment[] = [];
+
+    while (walker.nextNode()) {
+      const comment = walker.currentNode as Comment;
+      if (comment.textContent?.trim() === 'code-group') {
+        groupStarts.push(comment);
+      }
+    }
+
+    groupStarts.forEach((startComment) => {
+      const preBlocks: Element[] = [];
+      let node = startComment.nextSibling;
+
+      while (node) {
+        if (
+          node.nodeType === Node.COMMENT_NODE &&
+          (node as Comment).textContent?.trim() === '/code-group'
+        ) {
+          const endComment = node;
+
+          const group = document.createElement('div');
+          group.className = 'code-group';
+
+          const tabs = document.createElement('div');
+          tabs.className = 'code-group-tabs';
+          tabs.setAttribute('role', 'tablist');
+          group.appendChild(tabs);
+
+          const template = document.getElementById('copy-button-template') as HTMLTemplateElement;
+
+          if (template) {
+            const copyBtn = template.content.cloneNode(true) as DocumentFragment;
+            tabs.appendChild(copyBtn);
+          }
+
+          preBlocks.forEach((pre, i) => {
+            const lang = getLangFromPre(pre);
+            const rawLang = pre.getAttribute('data-language') || 'code';
+            const btn = document.createElement('button');
+            btn.textContent = lang;
+            btn.setAttribute('role', 'tab');
+            btn.setAttribute('data-lang', rawLang);
+            if (i === 0) btn.classList.add('active');
+            btn.addEventListener('click', () => {
+              syncAllGroups(rawLang);
+            });
+            tabs.appendChild(btn);
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'code-block-wrapper';
+            if (i > 0) wrapper.hidden = true;
+            wrapper.appendChild(pre);
+            group.appendChild(wrapper);
+          });
+
+          const copyButton = tabs.querySelector('.copy-button');
+          if (copyButton) tabs.appendChild(copyButton);
+
+          startComment.parentNode?.insertBefore(group, startComment);
+          startComment.remove();
+          endComment.remove();
+          break;
+        }
+
+        const next = node.nextSibling;
+        if (node.nodeType === Node.ELEMENT_NODE && (node as Element).tagName === 'PRE') {
+          preBlocks.push(node as Element);
+          node.parentNode?.removeChild(node);
+        }
+        node = next;
+      }
+    });
+  }
+
+  function makeCodeBlockAccessible(pre: Element, label: string) {
+    // WCAG 2.1 SC 2.1.1 — scrollable regions must be keyboard-operable.
+    if (!pre.hasAttribute('tabindex')) pre.setAttribute('tabindex', '0');
+    if (!pre.hasAttribute('role')) pre.setAttribute('role', 'region');
+    if (!pre.hasAttribute('aria-label')) pre.setAttribute('aria-label', label);
+  }
+
+  function wrapStandaloneCodeBlocks(content: HTMLElement, label: string) {
+    const template = document.getElementById('copy-button-template') as HTMLTemplateElement;
+    if (!template) return;
+
+    const preBlocks = content.querySelectorAll(
+      'pre:not(.code-block-wrapper pre):not(.code-group pre)',
+    );
+
+    preBlocks.forEach((pre) => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      const button = template.content.cloneNode(true) as DocumentFragment;
+      pre.parentNode?.replaceChild(wrapper, pre);
+      wrapper.appendChild(pre);
+      wrapper.appendChild(button);
+      makeCodeBlockAccessible(pre, label);
+    });
+  }
+
+  function initCodeBlocks() {
+    const content = document.getElementById('article-content');
+    if (!content) return;
+
+    const label = content.dataset.codeBlockLabel || 'Code block';
+
+    processCodeGroups(content);
+    wrapStandaloneCodeBlocks(content, label);
+    content
+      .querySelectorAll('.code-group pre')
+      .forEach((pre) => makeCodeBlockAccessible(pre, label));
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCodeBlocks);
+  } else {
+    initCodeBlocks();
+  }
+
+  document.addEventListener('astro:page-load', initCodeBlocks);
+</script>
