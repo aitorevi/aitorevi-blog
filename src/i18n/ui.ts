@@ -104,6 +104,7 @@ export const ui: Record<Lang, Record<string, string>> = {
     'portfolio.ims.gallery.mobileDesc': 'PWA instalable. Acceso rápido desde el móvil sin necesidad de App Store.',
     'blog.copyCode': 'Copiar',
     'blog.copied': '¡Copiado!',
+    'blog.codeBlock': 'Bloque de código',
     'home.p1':
       'Soy un superhéroe detrás del teclado, embarcándome en una épica aventura para desentrañar los misterios del Código de Calidad. No es cualquier código... es código para humanos.',
     'home.p2':
@@ -233,6 +234,7 @@ export const ui: Record<Lang, Record<string, string>> = {
     'portfolio.ims.gallery.mobileDesc': 'Installable PWA. Fast access from mobile without the App Store.',
     'blog.copyCode': 'Copy',
     'blog.copied': 'Copied!',
+    'blog.codeBlock': 'Code block',
     'home.p1':
       "I'm a keyboard superhero, embarking on an epic adventure to unravel the mysteries of Quality Code. Not just any code... code for humans. My mission is clear: writing elegant code.",
     'home.p2':
