@@ -24,6 +24,8 @@ const {
 } = Astro.props;
 
 const alternatePath = alternateUrl.replace('https://www.aitorevi.dev', '');
+const canonicalUrl = `https://www.aitorevi.dev${Astro.url.pathname}`;
+const ogImageUrl = 'https://www.aitorevi.dev/og-image.png';
 ---
 
 <!doctype html>
@@ -44,6 +46,21 @@ const alternatePath = alternateUrl.replace('https://www.aitorevi.dev', '');
 		{alternateUrl && alternateLang && (
 			<link rel="alternate" hreflang={alternateLang} href={alternateUrl} />
 		)}
+		<!-- Open Graph -->
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="aitorevi.dev" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:image" content={ogImageUrl} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageUrl} />
 		<title>{title}</title>
 		<script is:inline>
 			(function() {
