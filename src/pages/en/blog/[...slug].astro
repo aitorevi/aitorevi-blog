@@ -5,7 +5,7 @@ import Layout from '../../../layouts/Layout.astro';
 import Tag from '../../../components/atoms/Tag.astro';
 import DateDisplay from '../../../components/atoms/DateDisplay.astro';
 import ReadingTime from '../../../components/atoms/ReadingTime.astro';
-import CopyButton from '../../../components/atoms/CopyButton.astro';
+import CodeBlockEnhancer from '../../../components/blog/CodeBlockEnhancer.astro';
 import { calculateReadingTime } from '../../../lib/blog';
 import { formatDate, formatDateISO } from '../../../lib/date';
 import DotField from '../../../components/atoms/DotField.astro';
@@ -186,13 +186,12 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
       class="prose prose-slate dark:prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:text-blue-700 dark:hover:prose-a:text-blue-300 prose-img:rounded-lg prose-img:max-h-[600px] prose-img:w-auto prose-img:mx-auto prose-img:object-contain"
       itemprop="articleBody"
       id="article-content"
+      data-code-block-label={t(lang, 'blog.codeBlock')}
     >
       <Content />
     </div>
 
-    <template id="copy-button-template">
-      <CopyButton copyLabel={t(lang, 'blog.copyCode')} copiedLabel={t(lang, 'blog.copied')} />
-    </template>
+    <CodeBlockEnhancer lang={lang} />
 
     <footer class="mt-12 border-t border-slate-200 dark:border-slate-700 pt-8">
       <div class="flex items-center justify-between">
@@ -254,3 +253,30 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
     }
   </style>
 </Layout>
+
+<style is:global>
+  /**
+   * Page-specific prose tweaks on top of @tailwindcss/typography.
+   * Code block styling lives in CodeBlockEnhancer.
+   */
+
+  .prose h2 {
+    @apply mt-12 mb-4;
+  }
+
+  .prose h3 {
+    @apply mt-8 mb-3;
+  }
+
+  .prose blockquote {
+    @apply border-l-4 border-blue-600 bg-slate-50 py-1 italic;
+  }
+
+  .dark .prose blockquote {
+    background-color: #1a1f2e;
+  }
+
+  .prose table {
+    @apply block overflow-x-auto;
+  }
+</style>
