@@ -15,7 +15,14 @@ const testimonials = lang === 'es'
         author: 'Aitor Santana',
         role: 'Software Developer · Lean Mind',
         avatar: '/images/testimonials/aitor-santana.webp',
-        url: 'https://github.com/Sstark97',
+        url: 'https://www.linkedin.com/in/aitorscinfo/',
+      },
+      {
+        text: 'Una persona hecha a sí misma, alguien resiliente, capaz de enfrentarse a una situación nueva y salir fortalecido, alguien que afronta lo desconocido con ilusión y curiosidad, sumando a su mochila de saberes todas las experiencias y conocimientos de cada empresa que afronta. Una persona dialogante con la que te da gusto interactuar, alguien que escucha y reflexiona, alguien que apoya y resuelve. El compañero que te gusta tener contigo en la trinchera. Sin duda, un amigo.',
+        author: 'Fran Correa',
+        role: 'Head of Employee Engagement · Lean Mind',
+        avatar: '/images/testimonials/francisco-correa.webp',
+        url: 'https://www.linkedin.com/in/francisco-correa-82a142234/',
       },
     ]
   : [
@@ -24,7 +31,14 @@ const testimonials = lang === 'es'
         author: 'Aitor Santana',
         role: 'Software Developer · Lean Mind',
         avatar: '/images/testimonials/aitor-santana.webp',
-        url: 'https://github.com/Sstark97',
+        url: 'https://www.linkedin.com/in/aitorscinfo/',
+      },
+      {
+        text: 'A self-made person, someone resilient, capable of facing a new situation and coming out stronger. Someone who embraces the unknown with excitement and curiosity, adding to their backpack of knowledge all the experiences from every company they work with. A person easy to talk to, someone who listens and reflects, who supports and solves. The teammate you want by your side in the trenches. Without a doubt, a friend.',
+        author: 'Fran Correa',
+        role: 'Head of Employee Engagement · Lean Mind',
+        avatar: '/images/testimonials/francisco-correa.webp',
+        url: 'https://www.linkedin.com/in/francisco-correa-82a142234/',
       },
     ];
 ---
@@ -57,7 +71,7 @@ const testimonials = lang === 'es'
             tabindex={i === 0 ? 0 : -1}
             aria-labelledby={`testimonial-tab-${i}`}
             class:list={[
-              'carousel-slide relative overflow-hidden rounded-xl border border-secondary/15 bg-white px-7 py-8 dark:border-accent-violet/20 dark:bg-ink-800',
+              'carousel-slide relative flex flex-col overflow-hidden rounded-xl border border-secondary/15 bg-white px-7 py-8 dark:border-accent-violet/20 dark:bg-ink-800',
               i === 0 ? 'opacity-100' : 'opacity-0 pointer-events-none',
             ]}
             aria-hidden={i !== 0 ? 'true' : undefined}
@@ -82,7 +96,7 @@ const testimonials = lang === 'es'
               </p>
             </blockquote>
             <!-- Author -->
-            <footer class="relative z-10 mt-6">
+            <footer class="relative z-10 mt-auto pt-6">
               {item.url ? (
                 <a href={item.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 transition-opacity duration-200 hover:opacity-80">
                   {item.avatar
