@@ -24,6 +24,14 @@ const posts = sortPostsByDate(filterDrafts(all))
   .filter((post) => post.id.startsWith(`${lang}/`))
   .slice(0, 3);
 
+const isSingle = posts.length === 1;
+const listClass = isSingle
+  ? 'mt-14 flex justify-center'
+  : 'mt-14 flex flex-wrap justify-center gap-6';
+const itemSizingClass = isSingle
+  ? 'w-full max-w-md'
+  : 'basis-full sm:basis-[calc((100%-1.5rem)/2)] lg:basis-[calc((100%-3rem)/3)]';
+
 ---
 
 <section
@@ -45,10 +53,10 @@ const posts = sortPostsByDate(filterDrafts(all))
 
     {
       posts.length > 0 ? (
-        <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div class={listClass}>
           {posts.map((post, i) => (
             <div
-              class="home-post-wrapper"
+              class:list={['home-post-wrapper', itemSizingClass]}
               data-stagger-item
               style={`--stagger-delay:${i * 120}ms`}
             >
