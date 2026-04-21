@@ -12,6 +12,17 @@ interface Props {
 const { lang } = Astro.props;
 
 const sorted = [...katas].sort((a, b) => (a.date < b.date ? 1 : -1));
+
+const techFrequency = new Map<string, number>();
+for (const kata of sorted) {
+  for (const label of kata.tech) {
+    techFrequency.set(label, (techFrequency.get(label) ?? 0) + 1);
+  }
+}
+const techs = [...techFrequency.entries()]
+  .filter(([, count]) => count >= 2)
+  .sort((a, b) => (b[1] - a[1]) || a[0].localeCompare(b[0]))
+  .map(([name]) => name);
 ---
 
 <div class="relative min-h-screen">
@@ -30,11 +41,69 @@ const sorted = [...katas].sort((a, b) => (a.date < b.date ? 1 : -1));
       </p>
     </header>
 
-    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <div
+      class="mb-8 flex flex-wrap justify-center gap-2"
+      role="group"
+      aria-label={t(lang, 'katas.filter.groupLabel')}
+      data-kata-filters
+    >
+      <button
+        type="button"
+        data-kata-filter="all"
+        aria-pressed="true"
+        class="kata-chip inline-flex items-center rounded-full border border-secondary/30 bg-secondary/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.15em] text-secondary transition hover:border-secondary/50 hover:bg-secondary/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 aria-pressed:bg-secondary aria-pressed:text-white dark:border-accent-blue/30 dark:bg-accent-blue/10 dark:text-accent-blue dark:hover:border-accent-blue/50 dark:hover:bg-accent-blue/20 dark:aria-pressed:bg-accent-blue dark:aria-pressed:text-ink-900 dark:focus-visible:ring-offset-ink-900"
+      >
+        {t(lang, 'katas.filter.all')}
+      </button>
+      {techs.map((tech) => (
+        <button
+          type="button"
+          data-kata-filter={tech}
+          aria-pressed="false"
+          class="kata-chip inline-flex items-center rounded-full border border-slate-300 bg-white px-3 py-1 font-mono text-[11px] uppercase tracking-[0.15em] text-slate-600 transition hover:border-secondary/40 hover:text-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 aria-pressed:border-secondary aria-pressed:bg-secondary aria-pressed:text-white dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300 dark:hover:border-accent-blue/40 dark:hover:text-accent-blue dark:aria-pressed:border-accent-blue dark:aria-pressed:bg-accent-blue dark:aria-pressed:text-ink-900 dark:focus-visible:ring-offset-ink-900"
+        >
+          {tech}
+        </button>
+      ))}
+    </div>
+
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-kata-grid>
       {sorted.map((kata) => <KataCard kata={kata} lang={lang} />)}
     </div>
   </section>
 </div>
+
+<script>
+  function setupKataFilters() {
+    const root = document.querySelector<HTMLElement>('[data-kata-filters]');
+    const cards = document.querySelectorAll<HTMLElement>('[data-kata-card]');
+    if (!root || cards.length === 0) return;
+
+    const buttons = root.querySelectorAll<HTMLButtonElement>('[data-kata-filter]');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const active = btn.dataset.kataFilter ?? 'all';
+
+        buttons.forEach((b) => {
+          b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+        });
+
+        cards.forEach((card) => {
+          if (active === 'all') {
+            card.hidden = false;
+            return;
+          }
+          const tech = (card.dataset.tech ?? '').split('|');
+          card.hidden = !tech.includes(active);
+        });
+      });
+    });
+  }
+
+  setupKataFilters();
+  document.addEventListener('astro:page-load', setupKataFilters);
+</script>
 
 <style is:global>
   body:has(.katas-page) {
