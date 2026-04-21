@@ -1,7 +1,6 @@
 import type { Lang } from './cv';
 
 export interface Kata {
-  slug: string;
   title: string;
   description: Record<Lang, string>;
   tech: string[];
@@ -50,7 +49,6 @@ export function buildKatasCollectionSchema(lang: Lang, canonicalUrl: string, met
 
 export const katas: Kata[] = [
   {
-    slug: 'mars-rover-java',
     title: 'Mars Rover',
     description: {
       es: 'Rover en una cuadrícula con comandos y obstáculos. Iteración outside-in desde el acceptance test.',
@@ -62,7 +60,6 @@ export const katas: Kata[] = [
     date: '2023-10-25',
   },
   {
-    slug: 'mars-rover-kotlin',
     title: 'Mars Rover',
     description: {
       es: 'Misma kata en Kotlin, resuelta en estilo outside-in. La versión inside-out queda como reto pendiente.',
@@ -74,7 +71,6 @@ export const katas: Kata[] = [
     date: '2023-04-19',
   },
   {
-    slug: 'ai-mars-rover',
     title: 'AI Mars Rover',
     description: {
       es: 'Mars Rover íntegramente con IA en NestJS y arquitectura hexagonal. Deploy, move y rotate con tests unitarios y e2e. Análisis comparativo contra la versión manual pendiente.',
@@ -86,7 +82,6 @@ export const katas: Kata[] = [
     date: '2025-11-28',
   },
   {
-    slug: 'fizz-buzz-7-styles',
     title: 'FizzBuzz · 7 estilos',
     description: {
       es: 'Siete soluciones al mismo problema: desde if/else clásico hasta patrón Specification con Predicates. Un laboratorio para comparar estilos y ver cómo cambia el diseño.',
@@ -98,7 +93,6 @@ export const katas: Kata[] = [
     date: '2023-03-07',
   },
   {
-    slug: 'string-calculator-tdd',
     title: 'String Calculator',
     description: {
       es: 'Clásico de Roy Osherove resuelto paso a paso con TDD red-green-refactor: delimitadores custom, multi-línea, excepción para negativos y filtrado de números > 1000.',
@@ -110,7 +104,6 @@ export const katas: Kata[] = [
     date: '2023-04-04',
   },
   {
-    slug: 'roman-numerals',
     title: 'Roman Numerals',
     description: {
       es: 'Transformar enteros a numeración romana hasta 3000, con excepción al superar el máximo. TDD estricto y mutation testing con pitest para medir la calidad de los tests.',
@@ -122,7 +115,6 @@ export const katas: Kata[] = [
     date: '2023-03-24',
   },
   {
-    slug: 'strong-password',
     title: 'Strong Password',
     description: {
       es: 'Validación mínima viable de contraseñas: longitud, mayúscula, minúscula, dígito y guión bajo. Kata corta ideal para practicar TDD red-green-refactor con checklist incremental.',
@@ -134,7 +126,6 @@ export const katas: Kata[] = [
     date: '2023-04-05',
   },
   {
-    slug: 'print-date',
     title: 'Print Date',
     description: {
       es: 'Taller Mock-101: dónde y cómo usar dobles de test sin acoplarte al detalle de implementación.',
@@ -146,7 +137,6 @@ export const katas: Kata[] = [
     date: '2024-11-16',
   },
   {
-    slug: 'word-wrap',
     title: 'Word Wrap',
     description: {
       es: 'Envolver texto a N columnas. Ejercicio perfecto para pensar edge cases antes de teclear.',
@@ -158,7 +148,6 @@ export const katas: Kata[] = [
     date: '2023-11-21',
   },
   {
-    slug: 'leaderboard',
     title: 'Leaderboard',
     description: {
       es: 'Ranking con empates y ordenaciones. Pequeño pero muy expresivo para modelar dominio.',

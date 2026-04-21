@@ -6,26 +6,14 @@ describe('katas data', () => {
     expect(katas.length).toBeGreaterThan(0);
   });
 
-  it('all slugs are unique', () => {
-    const slugs = katas.map((k) => k.slug);
-    expect(new Set(slugs).size).toBe(slugs.length);
-  });
-
   it('all githubUrls are unique', () => {
     const urls = katas.map((k) => k.githubUrl);
     expect(new Set(urls).size).toBe(urls.length);
   });
 
-  it('every slug is kebab-case', () => {
-    const kebab = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-    for (const k of katas) {
-      expect(k.slug, `slug "${k.slug}" is not kebab-case`).toMatch(kebab);
-    }
-  });
-
   it('every kata has a non-empty title', () => {
     for (const k of katas) {
-      expect(k.title.trim().length, `kata ${k.slug} has empty title`).toBeGreaterThan(0);
+      expect(k.title.trim().length, `kata "${k.title}" has empty title`).toBeGreaterThan(0);
     }
   });
 
@@ -33,11 +21,11 @@ describe('katas data', () => {
     for (const k of katas) {
       expect(
         k.description.es.trim().length,
-        `kata ${k.slug} has too-short ES description`,
+        `kata "${k.title}" has too-short ES description`,
       ).toBeGreaterThan(20);
       expect(
         k.description.en.trim().length,
-        `kata ${k.slug} has too-short EN description`,
+        `kata "${k.title}" has too-short EN description`,
       ).toBeGreaterThan(20);
     }
   });
@@ -45,7 +33,7 @@ describe('katas data', () => {
   it('every githubUrl points to https://github.com/aitorevi/...', () => {
     const pattern = /^https:\/\/github\.com\/aitorevi\/[A-Za-z0-9._-]+$/;
     for (const k of katas) {
-      expect(k.githubUrl, `kata ${k.slug} has unexpected githubUrl`).toMatch(pattern);
+      expect(k.githubUrl, `kata "${k.title}" has unexpected githubUrl`).toMatch(pattern);
     }
   });
 
@@ -54,16 +42,16 @@ describe('katas data', () => {
     const now = Date.now();
     for (const k of katas) {
       const t = new Date(k.date).getTime();
-      expect(Number.isFinite(t), `kata ${k.slug} has invalid date "${k.date}"`).toBe(true);
-      expect(t, `kata ${k.slug} date is before 2020`).toBeGreaterThan(floor);
-      expect(t, `kata ${k.slug} date is in the future`).toBeLessThanOrEqual(now);
+      expect(Number.isFinite(t), `kata "${k.title}" has invalid date "${k.date}"`).toBe(true);
+      expect(t, `kata "${k.title}" date is before 2020`).toBeGreaterThan(floor);
+      expect(t, `kata "${k.title}" date is in the future`).toBeLessThanOrEqual(now);
     }
   });
 
   it('every kata has at least one tech and one concept', () => {
     for (const k of katas) {
-      expect(k.tech.length, `kata ${k.slug} has no tech tags`).toBeGreaterThan(0);
-      expect(k.concepts.length, `kata ${k.slug} has no concept tags`).toBeGreaterThan(0);
+      expect(k.tech.length, `kata "${k.title}" has no tech tags`).toBeGreaterThan(0);
+      expect(k.concepts.length, `kata "${k.title}" has no concept tags`).toBeGreaterThan(0);
     }
   });
 });
