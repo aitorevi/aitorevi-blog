@@ -21,6 +21,21 @@ const publishedPosts = sortPostsByDate(filterDrafts(allPosts)).filter((post) =>
 
 const featuredPosts = publishedPosts.filter((post) => post.data.featured);
 const regularPosts = publishedPosts.filter((post) => !post.data.featured);
+
+const gridItemClass = 'basis-full sm:basis-[calc((100%-2rem)/2)] lg:basis-[calc((100%-4rem)/3)]';
+const featuredList = featuredPosts.slice(0, 3);
+const featuredListClass = featuredList.length === 1
+  ? 'flex justify-center'
+  : 'flex flex-wrap justify-center gap-8';
+const featuredItemClass = featuredList.length === 1
+  ? 'w-full max-w-md'
+  : gridItemClass;
+const regularListClass = regularPosts.length === 1
+  ? 'flex justify-center'
+  : 'flex flex-wrap justify-center gap-8';
+const regularItemClass = regularPosts.length === 1
+  ? 'w-full max-w-md'
+  : gridItemClass;
 ---
 
 <Layout
@@ -68,9 +83,9 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
     {featuredPosts.length > 0 && (
       <section class="mb-16" aria-labelledby="featured-heading">
         <h2 id="featured-heading" class="sr-only">{t(lang, 'blog.featured')}</h2>
-        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {featuredPosts.slice(0, 3).map((post, index) => (
-            <div data-reveal-item style={`--reveal-delay:${(index + 1) * 100}ms`}>
+        <div class={featuredListClass}>
+          {featuredList.map((post, index) => (
+            <div class={featuredItemClass} data-reveal-item style={`--reveal-delay:${(index + 1) * 100}ms`}>
               <PostCard post={post} priority={index < 2} showFeaturedBadge={true} lang={lang} />
             </div>
           ))}
@@ -88,9 +103,9 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
         >
           {featuredPosts.length > 0 ? t(lang, 'blog.allPosts') : t(lang, 'blog.latestPosts')}
         </h2>
-        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div class={regularListClass}>
           {regularPosts.map((post, index) => (
-            <div data-reveal-item style={`--reveal-delay:${(featuredPosts.length + index + 2) * 100}ms`}>
+            <div class={regularItemClass} data-reveal-item style={`--reveal-delay:${(featuredPosts.length + index + 2) * 100}ms`}>
               <PostCard post={post} priority={featuredPosts.length === 0 && index < 3} showFeaturedBadge={false} lang={lang} />
             </div>
           ))}
