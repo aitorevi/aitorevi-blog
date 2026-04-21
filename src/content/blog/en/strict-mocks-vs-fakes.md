@@ -143,6 +143,6 @@ And if you have eight tests sharing the same fake, you wrote the fake once. With
 
 ## If you want to see it in more languages
 
-We took this idea to a workshop with [Aitor Santana](https://www.linkedin.com/in/aitorsantanacabrera/) at Nerdearla: **Mock 101**. We covered dummies, stubs, spies, strict mocks, and fakes, with parallel examples in Java, Kotlin, TypeScript, Python, C#, and Go. All the code lives at [github.com/Sstark97/mock-101](https://github.com/Sstark97/mock-101), and the official recap is on the [Lean Mind blog](https://leanmind.es/es/blog/mock-101-el-arte-del-testing-una-experiencia-unica-en-nerdearla).
+We took this idea to a workshop with [Aitor Santana](https://www.linkedin.com/in/aitorscinfo/) at Nerdearla: **Mock 101**. We covered dummies, stubs, spies, strict mocks, and fakes, with parallel examples in Java, Kotlin, TypeScript, Python, C#, and Go. All the code lives at [mock-101](https://github.com/Sstark97/mock-101), and the official recap is on the [Lean Mind blog](https://leanmind.es/es/blog/mock-101-el-arte-del-testing-una-experiencia-unica-en-nerdearla).
 
 If you take one thing from all this: before writing `verify(...)` in your next test, ask yourself whether what you care about is the call or the effect. If it is the effect, write a fake. Green will go back to meaning things actually work.

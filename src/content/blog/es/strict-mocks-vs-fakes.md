@@ -143,6 +143,6 @@ Y si tienes ocho tests que usan el mismo fake, el fake lo escribiste una vez. Si
 
 ## Si quieres verlo en más lenguajes
 
-Esta idea la llevamos a un taller con [Aitor Santana](https://www.linkedin.com/in/aitorsantanacabrera/) en Nerdearla: **Mock 101**. Allí tocamos dummies, stubs, spies, mocks estrictos y fakes, con ejemplos paralelos en Java, Kotlin, TypeScript, Python, C# y Go. El código está todo en [github.com/Sstark97/mock-101](https://github.com/Sstark97/mock-101), y la crónica oficial en el [blog de Lean Mind](https://leanmind.es/es/blog/mock-101-el-arte-del-testing-una-experiencia-unica-en-nerdearla).
+Esta idea la llevamos a un taller con [Aitor Santana](https://www.linkedin.com/in/aitorscinfo/) en Nerdearla: **Mock 101**. Allí tocamos dummies, stubs, spies, mocks estrictos y fakes, con ejemplos paralelos en Java, Kotlin, TypeScript, Python, C# y Go. El código está todo en [mock-101](https://github.com/Sstark97/mock-101), y la crónica oficial en el [blog de Lean Mind](https://leanmind.es/es/blog/mock-101-el-arte-del-testing-una-experiencia-unica-en-nerdearla).
 
 Si te llevas una sola cosa de aquí: antes de escribir `verify(...)` en tu próximo test, pregúntate si lo que te importa es la llamada o el efecto. Si es el efecto, escribe un fake. El verde volverá a significar que las cosas funcionan.
