@@ -32,7 +32,7 @@ const techs = [...techFrequency.entries()]
   <KatasScrollReveal />
 
   <section class="katas-page mx-auto max-w-7xl mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:px-20 lg:pt-10 lg:pb-20">
-    <header class="reveal-fade mb-12 text-center">
+    <header class="reveal-fade mb-16 text-center md:mb-20 lg:mb-24">
       <h1 class="mb-4 pb-2 font-display text-5xl font-black tracking-tight text-ink-900 dark:bg-home-gradient-text dark:bg-clip-text dark:text-transparent sm:text-6xl lg:text-7xl">
         {t(lang, 'katas.title')}
       </h1>
@@ -48,7 +48,7 @@ const techs = [...techFrequency.entries()]
     </header>
 
     <div
-      class="reveal-fade mb-8 flex flex-wrap justify-center gap-2"
+      class="reveal-fade mb-12 flex flex-wrap justify-center gap-2 md:mb-16"
       role="group"
       aria-label={t(lang, 'katas.filter.groupLabel')}
       data-kata-filters
@@ -77,7 +77,7 @@ const techs = [...techFrequency.entries()]
       {sorted.map((kata) => <KataCard kata={kata} lang={lang} />)}
     </div>
 
-    <div class="reveal-fade mt-16">
+    <div class="reveal-fade mt-24 md:mt-32 lg:mt-40">
       <h2 class="text-center font-display text-2xl font-bold tracking-tight text-ink-900 dark:text-slate-100 sm:text-3xl">
         {t(lang, 'katas.cta.heading')}
       </h2>
