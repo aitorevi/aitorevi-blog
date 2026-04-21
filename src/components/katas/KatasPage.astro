@@ -1,5 +1,6 @@
 ---
 import KataCard from './KataCard.astro';
+import KatasScrollReveal from './KatasScrollReveal.astro';
 import DotField from '../atoms/DotField.astro';
 import { katas } from '../../data/katas';
 import type { Lang } from '../../data/cv';
@@ -27,9 +28,10 @@ const techs = [...techFrequency.entries()]
 
 <div class="relative min-h-screen">
   <DotField position="fixed" />
+  <KatasScrollReveal />
 
   <section class="katas-page mx-auto max-w-7xl mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:px-20 lg:pt-10 lg:pb-20">
-    <header class="mb-12 text-center">
+    <header class="reveal-fade mb-12 text-center">
       <h1 class="mb-4 pb-2 font-display text-5xl font-black tracking-tight text-ink-900 dark:bg-home-gradient-text dark:bg-clip-text dark:text-transparent sm:text-6xl lg:text-7xl">
         {t(lang, 'katas.title')}
       </h1>
@@ -45,7 +47,7 @@ const techs = [...techFrequency.entries()]
     </header>
 
     <div
-      class="mb-8 flex flex-wrap justify-center gap-2"
+      class="reveal-fade mb-8 flex flex-wrap justify-center gap-2"
       role="group"
       aria-label={t(lang, 'katas.filter.groupLabel')}
       data-kata-filters
@@ -70,7 +72,7 @@ const techs = [...techFrequency.entries()]
       ))}
     </div>
 
-    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-kata-grid>
+    <div class="reveal-group grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-kata-grid>
       {sorted.map((kata) => <KataCard kata={kata} lang={lang} />)}
     </div>
 
@@ -123,10 +125,13 @@ const techs = [...techFrequency.entries()]
         cards.forEach((card) => {
           if (active === 'all') {
             card.hidden = false;
+            card.classList.add('is-visible');
             return;
           }
           const tech = (card.dataset.tech ?? '').split('|');
-          card.hidden = !tech.includes(active);
+          const match = tech.includes(active);
+          card.hidden = !match;
+          if (match) card.classList.add('is-visible');
         });
       });
     });

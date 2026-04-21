@@ -1,0 +1,95 @@
+---
+/**
+ * Drop this component once on the Katas page.
+ * Provides reveal-on-scroll styles + Intersection Observer.
+ *
+ * All CSS is scoped under .katas-page to avoid conflicts with other pages.
+ * The katas <section> already carries the .katas-page class.
+ */
+---
+
+<style is:global>
+  .katas-page .reveal-fade {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+    transition:
+      opacity 600ms ease,
+      transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--stagger, 0ms);
+  }
+
+  .katas-page .is-visible.reveal-fade,
+  .katas-page .is-visible .reveal-fade {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .katas-page .reveal-fade {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  }
+
+  @media print {
+    .katas-page .reveal-fade {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>
+
+<script>
+  function initKatasReveals() {
+    const page = document.querySelector('.katas-page');
+    if (!page) return;
+
+    const groups = page.querySelectorAll<HTMLElement>('.reveal-group');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+        visible.forEach((entry, i) => {
+          const el = entry.target as HTMLElement;
+          el.style.setProperty('--stagger', `${i * 60}ms`);
+
+          requestAnimationFrame(() => {
+            el.classList.add('is-visible');
+          });
+
+          observer.unobserve(el);
+        });
+      },
+      { threshold: 0.08 },
+    );
+
+    groups.forEach((group) => {
+      const items = group.querySelectorAll<HTMLElement>(
+        ':scope > [class*="reveal-"]',
+      );
+
+      items.forEach((item) => {
+        item.classList.remove('is-visible');
+        item.style.removeProperty('--stagger');
+        observer.observe(item);
+      });
+    });
+
+    const standalones = page.querySelectorAll<HTMLElement>(
+      '.reveal-fade:not(.reveal-group *)',
+    );
+
+    standalones.forEach((el) => {
+      el.classList.remove('is-visible');
+      el.style.removeProperty('--stagger');
+      observer.observe(el);
+    });
+  }
+
+  document.addEventListener('astro:page-load', initKatasReveals);
+  document.addEventListener('astro:after-swap', initKatasReveals);
+</script>
