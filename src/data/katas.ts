@@ -96,18 +96,6 @@ export const katas: Kata[] = [
     date: '2023-04-05',
   },
   {
-    slug: 'video-surveillance',
-    title: 'Video Surveillance',
-    description: {
-      es: 'Sistema de vigilancia con colaboradores mockeados. Kata avanzada para distinguir state vs interaction testing.',
-      en: 'Surveillance system with mocked collaborators. Advanced kata to tell state vs interaction testing apart.',
-    },
-    tech: ['TypeScript'],
-    concepts: ['TDD', 'Mocks', 'Sustainable Testing'],
-    githubUrl: 'https://github.com/aitorevi/kata-video-surveillance',
-    date: '2024-10-25',
-  },
-  {
     slug: 'print-date',
     title: 'Print Date',
     description: {
