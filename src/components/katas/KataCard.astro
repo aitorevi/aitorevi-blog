@@ -24,7 +24,15 @@ const formattedDate = new Date(kata.date).toLocaleDateString(dateLocale, {
   <header class="flex items-start justify-between gap-3">
     <div class="min-w-0">
       <h3 class="font-display text-xl font-bold tracking-tight text-ink-900 dark:text-slate-100">
-        {kata.title}
+        <a
+          href={kata.githubUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="after:absolute after:inset-0 after:rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 dark:focus-visible:ring-offset-ink-900"
+        >
+          {kata.title}
+          <span class="sr-only"> — {t(lang, 'katas.card.openOnGithub')}</span>
+        </a>
       </h3>
       <p class="mt-1 font-mono text-[11px] uppercase tracking-[0.25em] text-secondary/80 dark:text-accent-blue/70">
         {formattedDate}
@@ -32,22 +40,14 @@ const formattedDate = new Date(kata.date).toLocaleDateString(dateLocale, {
     </div>
   </header>
 
-  <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+  <p class="relative text-sm leading-relaxed text-slate-600 dark:text-slate-300">
     {kata.description[lang]}
   </p>
 
-  <div class="mt-auto flex flex-wrap gap-2">
+  <div class="relative mt-auto flex flex-wrap gap-2">
     {kata.tech.map((label) => <Tag label={label} variant="accent" />)}
     {kata.concepts.map((label) => <Tag label={label} variant="muted" />)}
   </div>
-
-  <a
-    href={kata.githubUrl}
-    target="_blank"
-    rel="noopener noreferrer"
-    class="absolute inset-0 rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
-    aria-label={`${kata.title} — ${t(lang, 'katas.card.openOnGithub')}`}
-  ></a>
 
   <span class="pointer-events-none absolute right-4 top-4 text-quaternary opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100 dark:text-slate-400">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5" aria-hidden="true">
