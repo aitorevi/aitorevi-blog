@@ -8,7 +8,7 @@ export interface Talk {
   coPresenters?: string[];
   description: Record<Lang, string>;
   tags: string[];
-  articleUrl?: string;
+  articleUrl?: Record<Lang, string>;
   githubUrl?: string;
 }
 
@@ -23,7 +23,10 @@ export const talks: Talk[] = [
       en: 'Workshop covering the fundamentals of test doubles: dummies, stubs, spies, strict mocks, and fakes. Examples in Java, Python, TypeScript, C#, Go, and Kotlin to grasp when and why to use each.',
     },
     tags: ['Testing', 'Mocks', 'TDD'],
-    articleUrl: 'https://leanmind.es/es/blog/mock-101-el-arte-del-testing-una-experiencia-unica-en-nerdearla',
+    articleUrl: {
+      es: '/blog/strict-mocks-vs-fakes',
+      en: '/en/blog/strict-mocks-vs-fakes',
+    },
     githubUrl: 'https://github.com/Sstark97/mock-101',
   },
 ];
