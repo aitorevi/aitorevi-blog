@@ -1,9 +1,10 @@
 ---
 title: 'Strict mocks vs fakes: when green is a lie'
 description: >-
-  A test can be green and still hide a bug. The difference between a strict
-  mock and a fake is not theoretical — it changes what you are verifying.
+  A test can be green and still hide a bug. The difference between a strict mock and a fake is not theoretical — it changes what you are verifying.
 publishDate: 2026-04-21
+coverImage: /images/blog/mock-fake/mock-fake.webp
+coverImageAlt: 'Green check-mark shield breaking apart with red glowing cracks over a dark circuit board.'
 tags:
   - Testing
   - TDD
