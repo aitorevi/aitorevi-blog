@@ -1,48 +1,17 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import KataCard from '../../components/katas/KataCard.astro';
-import DotField from '../../components/atoms/DotField.astro';
-import { katas } from '../../data/katas';
+import KatasPage from '../../components/katas/KatasPage.astro';
+import { buildKatasCollectionSchema } from '../../data/katas';
 import { t } from '../../i18n/utils';
 
 const lang = 'es';
-const sorted = [...katas].sort((a, b) => (a.date < b.date ? 1 : -1));
+const metaTitle = t(lang, 'katas.meta.title');
+const metaDescription = t(lang, 'katas.meta.description');
+const canonicalUrl = `https://www.aitorevi.dev${Astro.url.pathname}`;
+const schema = buildKatasCollectionSchema(lang, canonicalUrl, metaTitle, metaDescription);
 ---
 
-<Layout title={`Katas | aitorevi`}>
-  <div class="relative min-h-screen">
-    <DotField position="fixed" />
-
-    <section class="katas-page mx-auto max-w-7xl mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:px-20 lg:pt-10 lg:pb-20">
-      <header class="mb-12 text-center">
-        <h1 class="mb-4 pb-2 font-display text-5xl font-black tracking-tight text-ink-900 dark:bg-home-gradient-text dark:bg-clip-text dark:text-transparent sm:text-6xl lg:text-7xl">
-          {t(lang, 'katas.title')}
-        </h1>
-        <p class="mx-auto mt-3 max-w-xl font-mono text-xs uppercase tracking-[0.3em] text-secondary/70 dark:text-accent-blue/50">
-          {t(lang, 'katas.subtitle')}
-        </p>
-        <p class="mx-auto mt-4 max-w-2xl text-base text-slate-600 dark:text-slate-300 sm:text-lg">
-          {t(lang, 'katas.intro')}
-        </p>
-      </header>
-
-      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {sorted.map((kata) => <KataCard kata={kata} lang={lang} />)}
-      </div>
-    </section>
-  </div>
-
-  <style is:global>
-    body:has(.katas-page) {
-      background-color: #f8fafc;
-      background-image: none;
-    }
-    html.dark body:has(.katas-page),
-    html.dark body:has(.katas-page) main {
-      background-color: #020617;
-      background-image: radial-gradient(ellipse at 30% 20%, #0f172a 0%, #020617 55%, #000 100%);
-      background-attachment: fixed;
-      background-size: cover;
-    }
-  </style>
+<Layout title={metaTitle} description={metaDescription} lang={lang}>
+  <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+  <KatasPage lang={lang} />
 </Layout>
