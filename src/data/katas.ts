@@ -108,18 +108,6 @@ export const katas: Kata[] = [
     date: '2024-11-22',
   },
   {
-    slug: 'gilded-rose',
-    title: 'Gilded Rose',
-    description: {
-      es: 'Refactor clásico sobre código legacy. Tests de caracterización primero; luego, respiramos.',
-      en: 'The classic refactor over legacy code. Characterization tests first; breathe after.',
-    },
-    tech: ['Java'],
-    concepts: ['Refactor', 'Legacy Code'],
-    githubUrl: 'https://github.com/aitorevi/kata_gilded_rose',
-    date: '2023-05-31',
-  },
-  {
     slug: 'word-wrap',
     title: 'Word Wrap',
     description: {
