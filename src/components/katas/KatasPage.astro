@@ -5,7 +5,7 @@ import DotField from '../atoms/DotField.astro';
 import Button from '../atoms/Button.astro';
 import { katas } from '../../data/katas';
 import type { Lang } from '../../data/cv';
-import { t } from '../../i18n/utils';
+import { getLocalePath, t } from '../../i18n/utils';
 
 interface Props {
   lang: Lang;
@@ -91,7 +91,7 @@ const techs = [...techFrequency.entries()]
           </svg>
           <span>{t(lang, 'katas.cta.github')}</span>
         </Button>
-        <Button href="mailto:info@aitorevi.dev" tone="violet">
+        <Button href={`${getLocalePath('/', lang)}#contact`} tone="violet">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 transition-transform group-hover:-translate-y-0.5" aria-hidden="true">
             <rect x="3" y="5" width="18" height="14" rx="2" />
             <path d="m3 7 9 6 9-6" />
