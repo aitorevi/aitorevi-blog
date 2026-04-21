@@ -6,12 +6,13 @@
     "prepare": "git config core.hooksPath .githooks",
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build && node scripts/generate-og-image.mjs && node scripts/generate-cv-pdf.mjs",
-    "vercel-build": "astro check && astro build && node scripts/generate-og-image.mjs && node scripts/generate-cv-pdf.mjs",
+    "build": "astro check && astro build && node scripts/generate-og-image.mjs && node scripts/generate-og-katas.mjs && node scripts/generate-cv-pdf.mjs",
+    "vercel-build": "astro check && astro build && node scripts/generate-og-image.mjs && node scripts/generate-og-katas.mjs && node scripts/generate-cv-pdf.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest",
     "og:generate": "node scripts/generate-og-image.mjs",
+    "og:katas": "node scripts/generate-og-katas.mjs",
     "check:katas": "node scripts/check-kata-links.mjs"
   },
   "dependencies": {
