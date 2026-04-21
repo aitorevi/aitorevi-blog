@@ -1,10 +1,10 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import KatasPage from '../../components/katas/KatasPage.astro';
-import { buildKatasCollectionSchema } from '../../data/katas';
-import { t } from '../../i18n/utils';
+import Layout from '../../../layouts/Layout.astro';
+import KatasPage from '../../../components/katas/KatasPage.astro';
+import { buildKatasCollectionSchema } from '../../../data/katas';
+import { t } from '../../../i18n/utils';
 
-const lang = 'es';
+const lang = 'en';
 const metaTitle = t(lang, 'katas.meta.title');
 const metaDescription = t(lang, 'katas.meta.description');
 const canonicalUrl = `https://www.aitorevi.dev${Astro.url.pathname}`;

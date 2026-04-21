@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import Button from '../atoms/Button.astro';
 
 interface Props {
   pdfPath: string;
@@ -12,22 +13,14 @@ const { pdfPath, jsonPath, label } = Astro.props;
 
 <div class="reveal-fade mt-16">
   <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
-    <a
-      href={pdfPath}
-      download
-      class="group inline-flex items-center justify-center gap-2 rounded-lg border border-accent-blue/40 bg-accent-blue/5 dark:bg-accent-blue/10 px-6 py-3 font-mono text-sm font-semibold text-accent-blue tracking-wide transition-all duration-300 hover:border-accent-blue/70 hover:bg-accent-blue/10 dark:hover:bg-accent-blue/20 hover:shadow-[0_0_30px_rgba(96,165,250,0.2)] dark:hover:shadow-[0_0_40px_rgba(96,165,250,0.3)]"
-    >
+    <Button href={pdfPath} download tone="blue">
       <Icon name="download" class="w-4 h-4 transition-transform group-hover:-translate-y-0.5" />
       <span>{label} · PDF</span>
-    </a>
-    <a
-      href={jsonPath}
-      download
-      class="group inline-flex items-center justify-center gap-2 rounded-lg border border-accent-violet/40 bg-accent-violet/5 dark:bg-accent-violet/10 px-6 py-3 font-mono text-sm font-semibold text-accent-violet tracking-wide transition-all duration-300 hover:border-accent-violet/70 hover:bg-accent-violet/10 dark:hover:bg-accent-violet/20 hover:shadow-[0_0_30px_rgba(167,139,250,0.2)] dark:hover:shadow-[0_0_40px_rgba(167,139,250,0.3)]"
-    >
+    </Button>
+    <Button href={jsonPath} download tone="violet">
       <Icon name="download" class="w-4 h-4 transition-transform group-hover:-translate-y-0.5" />
       <span>{label} · JSON</span>
-    </a>
+    </Button>
   </div>
   <p class="mt-6 text-center font-mono text-[10px] uppercase tracking-[0.25em] text-slate-500 dark:text-slate-500">
     ATS-friendly · Json Resume schema

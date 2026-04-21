@@ -12,6 +12,7 @@
 import { Icon } from 'astro-icon/components';
 import type { Lang } from '../../data/cv';
 import { t } from '../../i18n/utils';
+import Button from '../atoms/Button.astro';
 
 interface Props {
   lang: Lang;
@@ -148,16 +149,13 @@ const { lang } = Astro.props;
       </label>
 
       <div class="mt-6 flex justify-end">
-        <button
-          type="submit"
-          class="group inline-flex items-center justify-center gap-2 rounded-lg border border-secondary/50 bg-gradient-to-r from-secondary/10 to-accent-violet/10 px-6 py-3 font-mono text-sm font-semibold text-secondary transition-all duration-300 hover:border-secondary/80 hover:from-secondary/20 hover:to-accent-violet/20 hover:shadow-[0_10px_30px_-10px_rgba(94,58,238,0.4)] dark:border-accent-blue/40 dark:from-accent-blue/15 dark:to-accent-violet/15 dark:text-accent-blue dark:hover:border-accent-blue/80 dark:hover:from-accent-blue/25 dark:hover:to-accent-violet/25 dark:hover:shadow-[0_0_40px_rgba(96,165,250,0.3)]"
-        >
+        <Button type="submit" variant="gradient" tone="brand">
           <span>{t(lang, 'home.contact.submit')}</span>
           <span
             aria-hidden="true"
             class="transition-transform duration-300 group-hover:translate-x-1"
           >→</span>
-        </button>
+        </Button>
       </div>
 
 

@@ -1,0 +1,56 @@
+---
+import {
+  buildButtonClasses,
+  resolveButtonProps,
+  type ButtonTone,
+  type ButtonVariant,
+  type ButtonType,
+} from './buttonStyles';
+
+interface Props {
+  tone?: ButtonTone;
+  variant?: ButtonVariant;
+  href?: string;
+  target?: string;
+  rel?: string;
+  type?: ButtonType;
+  download?: boolean | string;
+  disabled?: boolean;
+  class?: string;
+  [key: `data-${string}`]: string | boolean | number | undefined;
+  [key: `aria-${string}`]: string | boolean | number | undefined;
+}
+
+const {
+  tone = 'blue',
+  variant = 'ghost',
+  href,
+  target,
+  rel,
+  type,
+  download,
+  disabled,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const classes = buildButtonClasses({ tone, variant, className });
+const resolved = resolveButtonProps({ href, target, rel, type });
+---
+
+{resolved.tag === 'a' ? (
+  <a
+    class={classes}
+    href={resolved.href}
+    target={resolved.target}
+    rel={resolved.rel}
+    download={download}
+    {...rest}
+  >
+    <slot />
+  </a>
+) : (
+  <button class={classes} type={resolved.type} disabled={disabled} {...rest}>
+    <slot />
+  </button>
+)}

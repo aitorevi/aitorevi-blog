@@ -12,6 +12,7 @@ interface Props {
 	description?: string;
 	alternateUrl?: string;
 	alternateLang?: Lang;
+	ogImage?: string;
 }
 
 const currentLang = getLangFromUrl(Astro.url);
@@ -21,11 +22,12 @@ const {
 	description = t(lang, 'site.description'),
 	alternateUrl = `https://www.aitorevi.dev${getAlternateUrl(Astro.url.pathname, lang)}`,
 	alternateLang = lang === 'es' ? 'en' : 'es',
+	ogImage = '/og-image.png',
 } = Astro.props;
 
 const alternatePath = alternateUrl.replace('https://www.aitorevi.dev', '');
 const canonicalUrl = `https://www.aitorevi.dev${Astro.url.pathname}`;
-const ogImageUrl = 'https://www.aitorevi.dev/og-image.png';
+const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.dev${ogImage}`;
 ---
 
 <!doctype html>
