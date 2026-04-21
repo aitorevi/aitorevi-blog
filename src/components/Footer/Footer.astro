@@ -1,10 +1,10 @@
 ---
 import {Icon} from "astro-icon/components";
-import EmailLinkToCopy from '../EmailLinkToCopy/EmailLink.astro';
-import { getLangFromUrl } from '../../i18n/utils';
+import { getLangFromUrl, getLocalePath } from '../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const isES = lang === 'es';
+const contactHref = `${getLocalePath('/', lang)}#contact`;
 ---
 <footer class="relative flex flex-col w-full items-center justify-center gap-2 py-5 md:py-6 bg-white/90 dark:bg-ink-800/60 backdrop-blur-md border-t border-gray-200 dark:border-white/10 transition-colors duration-200">
     <div class="flex items-center justify-center gap-8">
@@ -14,9 +14,9 @@ const isES = lang === 'es';
         <a href="https://github.com/aitorevi" target="_blank" rel="noopener noreferrer" aria-label={isES ? 'Ver repositorios en GitHub' : 'View GitHub repositories'}>
             <Icon name="github" class="p-0.5 w-[1.6rem] h-[1.6rem] md:w-[1.8rem] md:h-[1.8rem] inline-block text-quaternary hover:text-secondary transition ease-linear delay-50 duration-200" />
         </a>
-        <EmailLinkToCopy position="footer" copiedLabel={isES ? 'Copiado' : 'Copied'} buttonLabel={isES ? 'Copiar email' : 'Copy email'}>
+        <a href={contactHref} aria-label={isES ? 'Ir al formulario de contacto' : 'Go to contact form'}>
             <Icon name="mail" class="w-[1.6rem] h-[1.6rem] md:w-[1.9rem] md:h-[1.9rem] text-quaternary hover:text-secondary inline-block transition ease-linear delay-50 duration-200" aria-hidden="true" />
-        </EmailLinkToCopy>
+        </a>
     </div>
     <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-quaternary/70 dark:text-slate-500">
         &copy; {new Date().getFullYear()} aitorevi · Crafted with Astro
