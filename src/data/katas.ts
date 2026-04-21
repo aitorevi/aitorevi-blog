@@ -7,6 +7,7 @@ export interface Kata {
   tech: string[];
   concepts: string[];
   githubUrl: string;
+  /** ISO date of the first commit in the repo — when the kata was practiced. */
   date: string;
 }
 
@@ -58,7 +59,7 @@ export const katas: Kata[] = [
     tech: ['Java', 'Spring'],
     concepts: ['TDD', 'Outside-In', 'Clean Architecture'],
     githubUrl: 'https://github.com/aitorevi/mars-rover-kata',
-    date: '2023-12-15',
+    date: '2023-10-25',
   },
   {
     slug: 'mars-rover-kotlin',
@@ -70,7 +71,7 @@ export const katas: Kata[] = [
     tech: ['Kotlin'],
     concepts: ['TDD', 'Outside-In'],
     githubUrl: 'https://github.com/aitorevi/kata_mars_rover',
-    date: '2023-05-09',
+    date: '2023-04-19',
   },
   {
     slug: 'ai-mars-rover',
@@ -94,7 +95,7 @@ export const katas: Kata[] = [
     tech: ['Java'],
     concepts: ['TDD', 'Refactor', 'Design Exploration'],
     githubUrl: 'https://github.com/aitorevi/kata_fizz_buzz',
-    date: '2023-03-17',
+    date: '2023-03-07',
   },
   {
     slug: 'string-calculator-tdd',
@@ -106,7 +107,7 @@ export const katas: Kata[] = [
     tech: ['Java'],
     concepts: ['TDD', 'Parsing', 'Red-Green-Refactor'],
     githubUrl: 'https://github.com/aitorevi/kata_string_calculator_TDD',
-    date: '2023-04-05',
+    date: '2023-04-04',
   },
   {
     slug: 'roman-numerals',
@@ -118,7 +119,7 @@ export const katas: Kata[] = [
     tech: ['Java'],
     concepts: ['TDD', 'Red-Green-Refactor', 'Mutation Testing'],
     githubUrl: 'https://github.com/aitorevi/kata_roman_numerals',
-    date: '2023-03-27',
+    date: '2023-03-24',
   },
   {
     slug: 'strong-password',
@@ -142,7 +143,7 @@ export const katas: Kata[] = [
     tech: ['Java'],
     concepts: ['TDD', 'Mocks'],
     githubUrl: 'https://github.com/aitorevi/kata-print-date',
-    date: '2024-11-22',
+    date: '2024-11-16',
   },
   {
     slug: 'word-wrap',
@@ -154,7 +155,7 @@ export const katas: Kata[] = [
     tech: ['Kotlin'],
     concepts: ['TDD', 'Edge Cases'],
     githubUrl: 'https://github.com/aitorevi/kata-word-wrap-kotlin',
-    date: '2023-11-22',
+    date: '2023-11-21',
   },
   {
     slug: 'leaderboard',
@@ -166,7 +167,7 @@ export const katas: Kata[] = [
     tech: ['TypeScript'],
     concepts: ['TDD', 'Domain Modeling'],
     githubUrl: 'https://github.com/aitorevi/leaderboard-kata',
-    date: '2023-11-14',
+    date: '2023-11-08',
   },
 ];
 
