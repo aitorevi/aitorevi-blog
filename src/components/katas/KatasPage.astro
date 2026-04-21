@@ -77,6 +77,25 @@ const techs = [...techFrequency.entries()]
       {sorted.map((kata) => <KataCard kata={kata} lang={lang} />)}
     </div>
 
+    <div
+      class="mt-12 text-center"
+      data-kata-empty
+      hidden
+      role="status"
+      aria-live="polite"
+    >
+      <p class="text-sm text-slate-600 dark:text-slate-300">
+        {t(lang, 'katas.empty.title')}
+      </p>
+      <button
+        type="button"
+        data-kata-empty-reset
+        class="mt-4 inline-flex items-center rounded-full border border-secondary/40 bg-secondary/5 px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.15em] text-secondary transition hover:border-secondary/70 hover:bg-secondary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 dark:border-accent-blue/40 dark:bg-accent-blue/10 dark:text-accent-blue dark:hover:border-accent-blue/70 dark:hover:bg-accent-blue/20 dark:focus-visible:ring-accent-blue dark:focus-visible:ring-offset-ink-900"
+      >
+        {t(lang, 'katas.empty.reset')}
+      </button>
+    </div>
+
     <div class="reveal-fade mt-24 md:mt-32 lg:mt-40">
       <h2 class="text-center font-display text-2xl font-bold tracking-tight text-ink-900 dark:text-slate-100 sm:text-3xl">
         {t(lang, 'katas.cta.heading')}
@@ -110,28 +129,43 @@ const techs = [...techFrequency.entries()]
     if (!root || cards.length === 0) return;
 
     const buttons = root.querySelectorAll<HTMLButtonElement>('[data-kata-filter]');
+    const empty = document.querySelector<HTMLElement>('[data-kata-empty]');
+    const emptyReset = document.querySelector<HTMLButtonElement>('[data-kata-empty-reset]');
+    const allChip = root.querySelector<HTMLButtonElement>('[data-kata-filter="all"]');
+
+    const applyFilter = (btn: HTMLButtonElement) => {
+      const active = btn.dataset.kataFilter ?? 'all';
+      buttons.forEach((b) => {
+        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+      });
+
+      let visibleCount = 0;
+      cards.forEach((card) => {
+        if (active === 'all') {
+          card.hidden = false;
+          card.classList.add('is-visible');
+          visibleCount++;
+          return;
+        }
+        const tech = (card.dataset.tech ?? '').split('|');
+        const match = tech.includes(active);
+        card.hidden = !match;
+        if (match) {
+          card.classList.add('is-visible');
+          visibleCount++;
+        }
+      });
+
+      if (empty) empty.hidden = visibleCount > 0;
+    };
 
     buttons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const active = btn.dataset.kataFilter ?? 'all';
-
-        buttons.forEach((b) => {
-          b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
-        });
-
-        cards.forEach((card) => {
-          if (active === 'all') {
-            card.hidden = false;
-            card.classList.add('is-visible');
-            return;
-          }
-          const tech = (card.dataset.tech ?? '').split('|');
-          const match = tech.includes(active);
-          card.hidden = !match;
-          if (match) card.classList.add('is-visible');
-        });
-      });
+      btn.addEventListener('click', () => applyFilter(btn));
     });
+
+    if (emptyReset && allChip) {
+      emptyReset.addEventListener('click', () => applyFilter(allChip));
+    }
   }
 
   setupKataFilters();
