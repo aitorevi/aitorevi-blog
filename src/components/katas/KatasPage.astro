@@ -73,7 +73,7 @@ const techs = [...techFrequency.entries()]
       ))}
     </div>
 
-    <div class="reveal-group grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-kata-grid>
+    <div class="reveal-group flex flex-wrap justify-center gap-5" data-kata-grid>
       {sorted.map((kata) => <KataCard kata={kata} lang={lang} />)}
     </div>
 
