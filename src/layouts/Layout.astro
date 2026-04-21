@@ -13,6 +13,8 @@ interface Props {
 	alternateUrl?: string;
 	alternateLang?: Lang;
 	ogImage?: string;
+	/** Background variant. `dark-radial` applies the slate palette + radial gradient used on content pages (cv, blog, katas). */
+	variant?: 'default' | 'dark-radial';
 }
 
 const currentLang = getLangFromUrl(Astro.url);
@@ -23,6 +25,7 @@ const {
 	alternateUrl = `https://www.aitorevi.dev${getAlternateUrl(Astro.url.pathname, lang)}`,
 	alternateLang = lang === 'es' ? 'en' : 'es',
 	ogImage = '/og-image.png',
+	variant = 'default',
 } = Astro.props;
 
 const alternatePath = alternateUrl.replace('https://www.aitorevi.dev', '');
@@ -75,7 +78,10 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 		<ClientRouter />
 		<slot name="head" />
 	</head>
-	<body class="flex flex-col min-h-dvh bg-white dark:bg-[#0f1419] text-primary dark:text-[#f1f5f9] scrollbar scrollbar-thumb-primary scrollbar-w-2 scrollbar-corner-rounded-xl">
+	<body
+		class="flex flex-col min-h-dvh bg-white dark:bg-[#0f1419] text-primary dark:text-[#f1f5f9] scrollbar scrollbar-thumb-primary scrollbar-w-2 scrollbar-corner-rounded-xl"
+		data-bg={variant === 'default' ? undefined : variant}
+	>
 		<a
 			href="#main-content"
 			class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:rounded focus:bg-white dark:focus:bg-ink-900 focus:px-4 focus:py-2 focus:text-secondary focus:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
@@ -91,6 +97,18 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 	</body>
 </html>
 <style is:global>
+	body[data-bg="dark-radial"] {
+		background-color: #f8fafc;
+		background-image: none;
+	}
+	html.dark body[data-bg="dark-radial"],
+	html.dark body[data-bg="dark-radial"] main {
+		background-color: #020617;
+		background-image: radial-gradient(ellipse at 30% 20%, #0f172a 0%, #020617 55%, #000 100%);
+		background-attachment: fixed;
+		background-size: cover;
+	}
+
 	::-webkit-scrollbar {
 		height: .6rem;
 		width: .5rem;

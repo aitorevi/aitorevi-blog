@@ -26,6 +26,7 @@ const jsonPath = getJsonPath(lang);
   title={data.labels.pageTitle}
   lang={lang}
   description={data.labels.pageDescription}
+  variant="dark-radial"
 >
   <div class="relative isolate min-h-[calc(100vh-3.5rem)] md:min-h-[calc(100vh-5rem)]">
     <!-- Dark-mode-only dot field — same logic as home hero -->
@@ -42,17 +43,4 @@ const jsonPath = getJsonPath(lang);
       <CvPdfDownload pdfPath={pdfPath} jsonPath={jsonPath} label={data.labels.downloadPdf} />
     </section>
   </div>
-  <style is:global>
-    body:has(.cv-page) {
-      background-color: #f8fafc;
-      background-image: none;
-    }
-    html.dark body:has(.cv-page),
-    html.dark body:has(.cv-page) main {
-      background-color: #020617;
-      background-image: radial-gradient(ellipse at 30% 20%, #0f172a 0%, #020617 55%, #000 100%);
-      background-attachment: fixed;
-      background-size: cover;
-    }
-  </style>
 </Layout>

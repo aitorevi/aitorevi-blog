@@ -26,6 +26,7 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
 <Layout
   title="Blog | aitorevi"
   description={t(lang, 'blog.description')}
+  variant="dark-radial"
 >
   <Fragment slot="head">
     <meta property="og:type" content="website" />
@@ -108,19 +109,6 @@ const regularPosts = publishedPosts.filter((post) => !post.data.featured);
     )}
   </div>
   </div>
-  <style is:global>
-    body:has(.blog-page) {
-      background-color: #f8fafc;
-      background-image: none;
-    }
-    html.dark body:has(.blog-page),
-    html.dark body:has(.blog-page) main {
-      background-color: #020617;
-      background-image: radial-gradient(ellipse at 30% 20%, #0f172a 0%, #020617 55%, #000 100%);
-      background-attachment: fixed;
-      background-size: cover;
-    }
-  </style>
 </Layout>
 
 <style>
