@@ -17,6 +17,8 @@ const legalLinks = isES
         { label: 'Cookies', href: '/en/cookies' },
         { label: 'Legal Notice', href: '/en/legal-notice' },
       ];
+
+const manageCookiesLabel = isES ? 'Gestionar cookies' : 'Manage cookies';
 ---
 <footer class="relative flex flex-col w-full items-center justify-center gap-2 py-5 md:py-6 bg-white/90 dark:bg-ink-800/60 backdrop-blur-md border-t border-gray-200 dark:border-white/10 transition-colors duration-200">
     <div class="flex items-center justify-center gap-8">
@@ -42,5 +44,19 @@ const legalLinks = isES
                 </a>
             </>
         ))}
+        <span aria-hidden="true">·</span>
+        <button type="button" id="manage-cookies" class="hover:text-secondary dark:hover:text-accent-blue transition-colors duration-200 uppercase tracking-[0.2em]">
+            {manageCookiesLabel}
+        </button>
     </nav>
 </footer>
+
+<script is:inline>
+    document.addEventListener('astro:page-load', function () {
+        var btn = document.getElementById('manage-cookies');
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+            document.dispatchEvent(new CustomEvent('aitorevi:reopen-consent'));
+        });
+    });
+</script>
