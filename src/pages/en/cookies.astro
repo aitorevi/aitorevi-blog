@@ -1,0 +1,122 @@
+---
+import LegalPageLayout from '../../components/legal/LegalPageLayout.astro';
+---
+
+<LegalPageLayout
+  lang="en"
+  title="Cookie Policy"
+  description="Cookies used by aitorevi.dev: what they are, their purpose, retention, and how to manage or withdraw your consent."
+  updatedDate="2026-04-22"
+>
+  <p>
+    This policy complements the <a href="/en/privacy">Privacy Policy</a> and explains which
+    cookies <strong>aitorevi.dev</strong> uses, for what purpose, and how you can manage
+    them or withdraw your consent at any time.
+  </p>
+
+  <h2>1. What are cookies</h2>
+  <p>
+    A cookie is a small file a website stores in your browser to remember information
+    across pages or visits: preferences, session state, statistical data, etc.
+  </p>
+
+  <h2>2. Types of cookies used</h2>
+  <p>This site uses two types:</p>
+  <ul>
+    <li>
+      <strong>Technical (necessary)</strong>: essential for basic functionality. No
+      consent required (Spanish LSSI-CE art. 22.2).
+    </li>
+    <li>
+      <strong>Analytics (third-party)</strong>: measure site usage in aggregate form.
+      <strong>Only active if you accepted via the cookie banner</strong>. You can reject
+      them without losing functionality.
+    </li>
+  </ul>
+  <p>No advertising, marketing or profiling cookies are used.</p>
+
+  <h2>3. Cookie details</h2>
+  <div class="not-prose overflow-x-auto my-6">
+    <table class="min-w-full text-sm border-collapse">
+      <thead>
+        <tr class="border-b border-slate-300 dark:border-white/20">
+          <th class="text-left py-2 px-3 font-semibold">Name</th>
+          <th class="text-left py-2 px-3 font-semibold">Owner</th>
+          <th class="text-left py-2 px-3 font-semibold">Purpose</th>
+          <th class="text-left py-2 px-3 font-semibold">Type</th>
+          <th class="text-left py-2 px-3 font-semibold">Retention</th>
+        </tr>
+      </thead>
+      <tbody class="text-slate-600 dark:text-slate-300">
+        <tr class="border-b border-slate-200 dark:border-white/10">
+          <td class="py-2 px-3 font-mono text-xs">aitorevi_consent</td>
+          <td class="py-2 px-3">aitorevi.dev</td>
+          <td class="py-2 px-3">Remember your cookie consent choice.</td>
+          <td class="py-2 px-3">Technical · First-party</td>
+          <td class="py-2 px-3">1 year</td>
+        </tr>
+        <tr class="border-b border-slate-200 dark:border-white/10">
+          <td class="py-2 px-3 font-mono text-xs">_ga</td>
+          <td class="py-2 px-3">Google LLC</td>
+          <td class="py-2 px-3">Anonymously identify unique users in Google Analytics 4.</td>
+          <td class="py-2 px-3">Analytics · Third-party</td>
+          <td class="py-2 px-3">2 years</td>
+        </tr>
+        <tr>
+          <td class="py-2 px-3 font-mono text-xs">_ga_&lt;ID&gt;</td>
+          <td class="py-2 px-3">Google LLC</td>
+          <td class="py-2 px-3">Persist Google Analytics 4 session state.</td>
+          <td class="py-2 px-3">Analytics · Third-party</td>
+          <td class="py-2 px-3">2 years</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Vercel (hosting and Web Vitals) does not install identifying persistent cookies;
+    Web Vitals are collected anonymously and in aggregate.
+  </p>
+
+  <h2>4. Legal basis</h2>
+  <ul>
+    <li><strong>Technical cookies</strong>: legitimate interest (GDPR art. 6.1.f) and consent exclusion (Spanish LSSI-CE art. 22.2).</li>
+    <li><strong>Analytics cookies</strong>: explicit consent via the banner (GDPR art. 6.1.a and LSSI-CE art. 22.2).</li>
+  </ul>
+
+  <h2>5. How to manage or withdraw consent</h2>
+  <p>You can change your choice at any time in any of these ways:</p>
+  <ul>
+    <li>
+      <strong>From the site</strong>: click "Manage cookies" in the footer to reopen the
+      banner and change your choice.
+    </li>
+    <li>
+      <strong>From your browser</strong>: delete the <code>aitorevi_consent</code> cookie
+      (and <code>_ga*</code> if you also want to clear analytics). The banner will show
+      again on your next visit.
+    </li>
+    <li>
+      <strong>Google Analytics opt-out</strong>: install the official
+      <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">Google Analytics Opt-out</a>
+      browser add-on.
+    </li>
+    <li>
+      <strong>Per-browser settings</strong>: each browser has its own panel to list and
+      delete cookies (Chrome, Firefox, Safari, Edge, etc.).
+    </li>
+  </ul>
+
+  <h2>6. International transfers</h2>
+  <p>
+    Google Analytics cookies imply data transfer to the USA, covered by the Standard
+    Contractual Clauses approved by the European Commission. More detail in the
+    <a href="/en/privacy">Privacy Policy</a>.
+  </p>
+
+  <h2>7. Changes to this policy</h2>
+  <p>
+    If the tools used by the site change, this policy will be updated and the new date
+    will appear at the top. Substantial changes will prompt you for consent again via
+    the banner.
+  </p>
+</LegalPageLayout>

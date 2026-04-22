@@ -1,0 +1,108 @@
+---
+import LegalPageLayout from '../components/legal/LegalPageLayout.astro';
+---
+
+<LegalPageLayout
+  lang="es"
+  title="Política de Privacidad"
+  description="Política de privacidad de aitorevi.dev: datos que tratamos, encargados, base legal y cómo ejercer tus derechos."
+  updatedDate="2026-04-22"
+>
+  <p>
+    En esta página se explica qué datos personales se tratan a través de
+    <a href="https://www.aitorevi.dev">aitorevi.dev</a>, con qué finalidad, qué encargados
+    intervienen y cómo puedes ejercer los derechos que te reconoce el Reglamento General
+    de Protección de Datos (RGPD) y la Ley Orgánica 3/2018 (LOPDGDD).
+  </p>
+
+  <h2>1. Responsable del tratamiento</h2>
+  <ul>
+    <li><strong>Titular:</strong> Aitor Reviriego Amor.</li>
+    <li><strong>Email de contacto:</strong> <a href="mailto:info@aitorevi.dev">info@aitorevi.dev</a>.</li>
+    <li><strong>Actividad:</strong> blog personal sobre desarrollo de software.</li>
+  </ul>
+
+  <h2>2. Datos que se tratan y finalidad</h2>
+  <h3>2.1 Formulario de contacto</h3>
+  <p>
+    Cuando envías un mensaje a través del formulario se tratan los siguientes datos:
+    <strong>nombre, email y contenido del mensaje</strong>. La finalidad es responderte
+    a lo que plantees. Los datos se eliminan cuando la conversación deja de ser relevante
+    o cuando lo solicitas expresamente.
+  </p>
+
+  <h3>2.2 Navegación y analítica</h3>
+  <p>
+    Cuando accedes al sitio se recogen datos técnicos como dirección IP, tipo de navegador,
+    páginas visitadas y referrer. Una parte se almacena anonimizada en Google Analytics 4
+    con fines estadísticos. La analítica <strong>solo se activa si has consentido las cookies
+    analíticas</strong> en el banner que ves en tu primera visita.
+  </p>
+
+  <h3>2.3 Limitación de abuso (rate limiting)</h3>
+  <p>
+    El formulario de contacto aplica un límite de envíos por IP para evitar spam y abuso
+    automatizado. Para ello se almacena temporalmente un hash de tu IP en Upstash Redis
+    durante como máximo 1 hora.
+  </p>
+
+  <h2>3. Base legal</h2>
+  <ul>
+    <li><strong>Formulario de contacto</strong>: consentimiento al enviar el mensaje (art. 6.1.a RGPD).</li>
+    <li><strong>Analítica</strong>: consentimiento mediante banner de cookies (art. 6.1.a RGPD y art. 22 LSSI-CE).</li>
+    <li><strong>Rate limiting</strong>: interés legítimo en prevenir usos abusivos (art. 6.1.f RGPD).</li>
+  </ul>
+
+  <h2>4. Encargados y cesionarios</h2>
+  <p>Para ofrecer el servicio se apoya en los siguientes proveedores:</p>
+  <ul>
+    <li><strong>Vercel Inc.</strong> — hosting y analítica de rendimiento (Web Vitals). EE. UU., transferencia internacional cubierta por Cláusulas Contractuales Tipo aprobadas por la Comisión Europea.</li>
+    <li><strong>Google LLC</strong> — Google Analytics 4 (solo con consent) y Google Search Console (solo datos agregados de indexación, no personales). EE. UU., CCT.</li>
+    <li><strong>Resend, Inc.</strong> — envío transaccional del email de confirmación del formulario de contacto. EE. UU., CCT.</li>
+    <li><strong>Upstash Inc.</strong> — almacenamiento efímero de hashes de IP para rate limiting. EE. UU., CCT.</li>
+    <li><strong>GitHub, Inc.</strong> — almacenamiento del código fuente y, a través de Keystatic, del contenido editable. EE. UU., CCT.</li>
+  </ul>
+  <p>
+    No se ceden datos a terceros fuera de estos encargados salvo obligación legal. No se
+    realiza toma de decisiones automatizada ni elaboración de perfiles.
+  </p>
+
+  <h2>5. Plazos de conservación</h2>
+  <ul>
+    <li><strong>Mensajes del formulario</strong>: hasta que dejen de ser necesarios o lo solicites.</li>
+    <li><strong>Cookies analíticas</strong>: según la política de cookies (ver <a href="/cookies">/cookies</a>). Máximo 2 años.</li>
+    <li><strong>Rate limiting</strong>: máximo 1 hora.</li>
+  </ul>
+
+  <h2>6. Tus derechos</h2>
+  <p>Como titular de los datos puedes ejercer en cualquier momento los siguientes derechos:</p>
+  <ul>
+    <li>Acceso a tus datos.</li>
+    <li>Rectificación de datos inexactos.</li>
+    <li>Supresión ("derecho al olvido").</li>
+    <li>Limitación del tratamiento.</li>
+    <li>Oposición al tratamiento.</li>
+    <li>Portabilidad de los datos.</li>
+    <li>Retirar el consentimiento prestado.</li>
+  </ul>
+  <p>
+    Para ejercerlos escribe a <a href="mailto:info@aitorevi.dev">info@aitorevi.dev</a>
+    indicando el derecho que quieres ejercer. Si consideras que no se ha atendido
+    adecuadamente, puedes reclamar ante la Agencia Española de Protección de Datos
+    (<a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">aepd.es</a>).
+  </p>
+
+  <h2>7. Seguridad</h2>
+  <p>
+    Se aplican medidas técnicas y organizativas razonables para proteger los datos:
+    conexiones cifradas con TLS, uso de proveedores con políticas RGPD actualizadas,
+    acceso limitado a los datos y principio de minimización.
+  </p>
+
+  <h2>8. Cambios en esta política</h2>
+  <p>
+    Esta política puede actualizarse para reflejar cambios legales o técnicos. La fecha
+    de última actualización aparece arriba. Los cambios sustanciales se comunicarán en el
+    sitio con antelación.
+  </p>
+</LegalPageLayout>

@@ -1,0 +1,105 @@
+---
+import LegalPageLayout from '../../components/legal/LegalPageLayout.astro';
+---
+
+<LegalPageLayout
+  lang="en"
+  title="Privacy Policy"
+  description="Privacy policy for aitorevi.dev: what personal data we process, processors involved, legal basis, and how to exercise your rights."
+  updatedDate="2026-04-22"
+>
+  <p>
+    This page explains what personal data is processed through
+    <a href="https://www.aitorevi.dev">aitorevi.dev</a>, the purposes, the processors
+    involved, and how you can exercise the rights granted by the General Data Protection
+    Regulation (GDPR) and the Spanish Organic Law 3/2018 (LOPDGDD).
+  </p>
+
+  <h2>1. Data controller</h2>
+  <ul>
+    <li><strong>Owner:</strong> Aitor Reviriego Amor.</li>
+    <li><strong>Contact email:</strong> <a href="mailto:info@aitorevi.dev">info@aitorevi.dev</a>.</li>
+    <li><strong>Activity:</strong> personal blog about software development.</li>
+  </ul>
+
+  <h2>2. Data processed and purpose</h2>
+  <h3>2.1 Contact form</h3>
+  <p>
+    When you submit the form, the following data is processed: <strong>name, email and
+    message content</strong>. The purpose is to reply to your enquiry. Data is deleted
+    when the conversation is no longer relevant, or whenever you explicitly request it.
+  </p>
+
+  <h3>2.2 Browsing and analytics</h3>
+  <p>
+    When you access the site, technical data such as IP address, browser type, pages
+    visited and referrer is collected. Part of it is stored (anonymised) in Google
+    Analytics 4 for statistical purposes. Analytics <strong>is only activated if you
+    consent to analytics cookies</strong> via the banner shown on your first visit.
+  </p>
+
+  <h3>2.3 Abuse prevention (rate limiting)</h3>
+  <p>
+    The contact form applies a submission limit per IP to prevent spam and automated
+    abuse. A hash of your IP is stored temporarily in Upstash Redis for up to 1 hour.
+  </p>
+
+  <h2>3. Legal basis</h2>
+  <ul>
+    <li><strong>Contact form</strong>: your consent when submitting the message (GDPR art. 6.1.a).</li>
+    <li><strong>Analytics</strong>: consent via the cookie banner (GDPR art. 6.1.a and LSSI-CE art. 22).</li>
+    <li><strong>Rate limiting</strong>: legitimate interest in preventing abuse (GDPR art. 6.1.f).</li>
+  </ul>
+
+  <h2>4. Processors and recipients</h2>
+  <p>The service relies on the following providers:</p>
+  <ul>
+    <li><strong>Vercel Inc.</strong> — hosting and performance analytics (Web Vitals). US-based; international transfer covered by Standard Contractual Clauses approved by the European Commission.</li>
+    <li><strong>Google LLC</strong> — Google Analytics 4 (only with consent) and Google Search Console (aggregated indexing data only, no personal data). US-based, SCCs.</li>
+    <li><strong>Resend, Inc.</strong> — transactional email sending (contact form confirmation). US-based, SCCs.</li>
+    <li><strong>Upstash Inc.</strong> — ephemeral storage of IP hashes for rate limiting. US-based, SCCs.</li>
+    <li><strong>GitHub, Inc.</strong> — source code and editable content storage (via Keystatic). US-based, SCCs.</li>
+  </ul>
+  <p>
+    No data is shared with third parties outside these processors except where legally
+    required. No automated decision-making or profiling is performed.
+  </p>
+
+  <h2>5. Retention periods</h2>
+  <ul>
+    <li><strong>Contact form messages</strong>: until they are no longer needed or you request deletion.</li>
+    <li><strong>Analytics cookies</strong>: see the cookies policy (<a href="/en/cookies">/en/cookies</a>). Maximum 2 years.</li>
+    <li><strong>Rate limiting</strong>: maximum 1 hour.</li>
+  </ul>
+
+  <h2>6. Your rights</h2>
+  <p>As data subject you may exercise the following rights at any time:</p>
+  <ul>
+    <li>Access to your data.</li>
+    <li>Rectification of inaccurate data.</li>
+    <li>Erasure ("right to be forgotten").</li>
+    <li>Restriction of processing.</li>
+    <li>Objection to processing.</li>
+    <li>Data portability.</li>
+    <li>Withdrawal of consent.</li>
+  </ul>
+  <p>
+    To exercise them, write to <a href="mailto:info@aitorevi.dev">info@aitorevi.dev</a>
+    stating which right you wish to exercise. If you consider your request has not been
+    properly handled, you may lodge a complaint with the Spanish Data Protection Agency
+    (<a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">aepd.es</a>).
+  </p>
+
+  <h2>7. Security</h2>
+  <p>
+    Reasonable technical and organisational measures are applied to protect your data:
+    TLS-encrypted connections, providers with up-to-date GDPR policies, limited data
+    access, and data-minimisation principles.
+  </p>
+
+  <h2>8. Changes to this policy</h2>
+  <p>
+    This policy may be updated to reflect legal or technical changes. The "last updated"
+    date is shown at the top. Substantial changes will be announced on the site in advance.
+  </p>
+</LegalPageLayout>
