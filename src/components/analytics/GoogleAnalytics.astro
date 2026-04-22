@@ -1,0 +1,35 @@
+---
+const id = import.meta.env.PUBLIC_GA4_MEASUREMENT_ID;
+const path = Astro.url.pathname;
+const isExcluded = path.includes('/print') || path.startsWith('/keystatic');
+const shouldLoad = Boolean(id) && !isExcluded;
+---
+{shouldLoad && (
+  <>
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${id}`}></script>
+    <script is:inline define:vars={{ id }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      window.gtag = gtag;
+
+      gtag('consent', 'default', {
+        analytics_storage: 'granted',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+      });
+
+      gtag('js', new Date());
+      gtag('config', id, { send_page_view: false, anonymize_ip: true });
+
+      function trackPageView() {
+        gtag('event', 'page_view', {
+          page_title: document.title,
+          page_location: window.location.href,
+          page_path: window.location.pathname + window.location.search,
+        });
+      }
+      document.addEventListener('astro:page-load', trackPageView);
+    </script>
+  </>
+)}
