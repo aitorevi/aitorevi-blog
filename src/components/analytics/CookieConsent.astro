@@ -1,0 +1,131 @@
+---
+import { getLangFromUrl } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const isES = lang === 'es';
+
+const copy = isES
+  ? {
+      message:
+        'Uso cookies propias para recordar tu preferencia de consentimiento y, solo si aceptas, cookies de Google Analytics para entender el uso del sitio de forma agregada.',
+      moreInfoLabel: 'Política de Cookies',
+      moreInfoHref: '/cookies',
+      privacyLabel: 'Privacidad',
+      privacyHref: '/privacidad',
+      accept: 'Aceptar',
+      reject: 'Rechazar',
+      ariaLabel: 'Aviso de cookies',
+    }
+  : {
+      message:
+        'I use a first-party cookie to remember your consent choice and, only if you accept, Google Analytics cookies to understand aggregate site usage.',
+      moreInfoLabel: 'Cookie Policy',
+      moreInfoHref: '/en/cookies',
+      privacyLabel: 'Privacy',
+      privacyHref: '/en/privacy',
+      accept: 'Accept',
+      reject: 'Reject',
+      ariaLabel: 'Cookie notice',
+    };
+---
+
+<div
+  id="cookie-consent"
+  role="dialog"
+  aria-live="polite"
+  aria-label={copy.ariaLabel}
+  hidden
+  class="fixed inset-x-0 bottom-0 z-50 border-t border-slate-200 bg-white/95 backdrop-blur-md shadow-[0_-10px_40px_-15px_rgba(15,23,42,0.2)] dark:border-white/10 dark:bg-ink-900/95"
+>
+  <div class="mx-auto flex max-w-5xl flex-col gap-4 px-6 py-4 md:flex-row md:items-center md:justify-between">
+    <p class="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+      {copy.message}
+      <br class="hidden md:block" />
+      <span class="font-mono text-[11px] uppercase tracking-[0.15em]">
+        <a href={copy.moreInfoHref} class="text-secondary hover:text-accent-violet dark:text-accent-blue dark:hover:text-accent-violet underline-offset-2 hover:underline">
+          {copy.moreInfoLabel}
+        </a>
+        <span aria-hidden="true" class="mx-2 text-slate-400">·</span>
+        <a href={copy.privacyHref} class="text-secondary hover:text-accent-violet dark:text-accent-blue dark:hover:text-accent-violet underline-offset-2 hover:underline">
+          {copy.privacyLabel}
+        </a>
+      </span>
+    </p>
+    <div class="flex shrink-0 items-center gap-2">
+      <button
+        type="button"
+        data-cookie-reject
+        class="rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:border-slate-500 hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary dark:border-white/20 dark:text-slate-200 dark:hover:bg-white/5"
+      >
+        {copy.reject}
+      </button>
+      <button
+        type="button"
+        data-cookie-accept
+        class="rounded-full bg-secondary px-4 py-2 text-sm font-semibold text-white shadow-md transition-colors hover:bg-accent-violet focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 dark:bg-accent-violet dark:hover:bg-accent-blue"
+      >
+        {copy.accept}
+      </button>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var COOKIE_NAME = 'aitorevi_consent';
+    var MAX_AGE = 60 * 60 * 24 * 365; // 1 year
+
+    function readConsent() {
+      var m = document.cookie.match(/(?:^|; )aitorevi_consent=(granted|denied)/);
+      return m ? m[1] : null;
+    }
+
+    function writeConsent(value) {
+      var secure = location.protocol === 'https:' ? '; Secure' : '';
+      document.cookie =
+        COOKIE_NAME + '=' + value + '; max-age=' + MAX_AGE + '; path=/; SameSite=Lax' + secure;
+    }
+
+    function updateGtag(value) {
+      if (typeof window.gtag !== 'function') return;
+      window.gtag('consent', 'update', {
+        analytics_storage: value === 'granted' ? 'granted' : 'denied',
+      });
+    }
+
+    function init() {
+      var banner = document.getElementById('cookie-consent');
+      if (!banner) return;
+
+      var current = readConsent();
+      if (!current) {
+        banner.hidden = false;
+      }
+
+      banner.querySelectorAll('[data-cookie-accept]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          writeConsent('granted');
+          updateGtag('granted');
+          banner.hidden = true;
+        });
+      });
+
+      banner.querySelectorAll('[data-cookie-reject]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          writeConsent('denied');
+          updateGtag('denied');
+          banner.hidden = true;
+        });
+      });
+    }
+
+    // Re-init after each view transition (fresh DOM references).
+    document.addEventListener('astro:page-load', init);
+
+    // External trigger to reopen the banner (footer "Manage cookies" link).
+    document.addEventListener('aitorevi:reopen-consent', function () {
+      var banner = document.getElementById('cookie-consent');
+      if (banner) banner.hidden = false;
+    });
+  })();
+</script>

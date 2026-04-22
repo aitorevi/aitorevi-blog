@@ -13,11 +13,16 @@ const shouldLoad = Boolean(id) && !isExcluded;
       window.gtag = gtag;
 
       gtag('consent', 'default', {
-        analytics_storage: 'granted',
+        analytics_storage: 'denied',
         ad_storage: 'denied',
         ad_user_data: 'denied',
         ad_personalization: 'denied',
       });
+
+      var storedConsent = (document.cookie.match(/(?:^|; )aitorevi_consent=(granted|denied)/) || [])[1];
+      if (storedConsent === 'granted') {
+        gtag('consent', 'update', { analytics_storage: 'granted' });
+      }
 
       gtag('js', new Date());
       gtag('config', id, { send_page_view: false, anonymize_ip: true });
