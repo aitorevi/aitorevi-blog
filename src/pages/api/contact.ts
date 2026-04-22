@@ -208,10 +208,18 @@ export const POST: APIRoute = async ({ request }) => {
   const email = (data.email ?? '').toString().trim();
   const subject = (data.subject ?? '').toString().trim();
   const message = (data.message ?? '').toString().trim();
+  const consent = (data.consent ?? '').toString().trim();
   const lang: 'es' | 'en' = (data.lang ?? '') === 'en' ? 'en' : 'es';
 
   if (!name || !email || !subject || !message) {
     return new Response(JSON.stringify({ error: 'missing_fields' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  if (consent !== 'true') {
+    return new Response(JSON.stringify({ error: 'consent_required' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' },
     });

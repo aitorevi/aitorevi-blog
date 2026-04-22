@@ -54,6 +54,7 @@ const { lang } = Astro.props;
       data-msg-subject-required={t(lang, 'home.contact.validation.subjectRequired')}
       data-msg-message-required={t(lang, 'home.contact.validation.messageRequired')}
       data-msg-message-short={t(lang, 'home.contact.validation.messageTooShort')}
+      data-msg-consent-required={t(lang, 'home.contact.validation.consentRequired')}
       data-msg-success={t(lang, 'home.contact.status.success')}
       data-msg-too-many={t(lang, 'home.contact.status.tooMany')}
       data-msg-error={t(lang, 'home.contact.status.error')}
@@ -148,6 +149,46 @@ const { lang } = Astro.props;
         <span id="contact-message-error" data-field-error="message" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
       </label>
 
+      <!-- RGPD — cláusula informativa básica -->
+      <div class="mt-8 rounded-xl border border-slate-200 bg-slate-50/80 p-4 text-[13px] leading-relaxed text-slate-700 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-300">
+        <p class="mb-2 flex items-center gap-2 font-semibold text-ink-900 dark:text-slate-100">
+          <span aria-hidden="true">🔒</span>
+          {t(lang, 'home.contact.privacy.heading')}
+        </p>
+        <ul class="space-y-1 list-none p-0">
+          <li><strong>{t(lang, 'home.contact.privacy.responsable')}</strong> {t(lang, 'home.contact.privacy.responsableValue')}</li>
+          <li><strong>{t(lang, 'home.contact.privacy.finalidad')}</strong> {t(lang, 'home.contact.privacy.finalidadValue')}</li>
+          <li><strong>{t(lang, 'home.contact.privacy.legitimacion')}</strong> {t(lang, 'home.contact.privacy.legitimacionValue')}</li>
+          <li><strong>{t(lang, 'home.contact.privacy.destinatarios')}</strong> {t(lang, 'home.contact.privacy.destinatariosValue')}</li>
+          <li><strong>{t(lang, 'home.contact.privacy.derechos')}</strong> {t(lang, 'home.contact.privacy.derechosValue')}</li>
+        </ul>
+      </div>
+
+      <!-- Consent checkbox — required -->
+      <label class="mt-5 flex items-start gap-2.5 text-sm text-slate-700 dark:text-slate-300" for="contact-consent">
+        <input
+          id="contact-consent"
+          type="checkbox"
+          name="consent"
+          required
+          data-field="consent"
+          aria-describedby="contact-consent-error"
+          class="mt-0.5 h-4 w-4 flex-shrink-0 rounded border border-slate-300 text-secondary accent-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-1 dark:border-white/20 dark:accent-accent-violet"
+        />
+        <span>
+          {t(lang, 'home.contact.consent.label')}
+          {' '}
+          <a href={lang === 'es' ? '/privacidad' : '/en/privacy'} class="text-secondary hover:text-accent-violet dark:text-accent-blue dark:hover:text-accent-violet underline-offset-2 hover:underline">
+            {t(lang, 'home.contact.consent.linkLabel')}
+          </a>
+          <span aria-hidden="true"> *</span>
+          <span class="ml-1 text-rose-500 dark:text-rose-400 font-medium">
+            {t(lang, 'home.contact.consent.required')}
+          </span>
+        </span>
+      </label>
+      <span id="contact-consent-error" data-field-error="consent" class="mt-1 ml-7 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
+
       <div class="mt-6 flex justify-end">
         <Button type="submit" variant="gradient" tone="brand">
           <span>{t(lang, 'home.contact.submit')}</span>
@@ -202,6 +243,7 @@ const { lang } = Astro.props;
     subjectRequired: string;
     messageRequired: string;
     messageShort: string;
+    consentRequired: string;
     success: string;
     tooMany: string;
     error: string;
@@ -223,6 +265,9 @@ const { lang } = Astro.props;
     if (name === 'message') {
       if (!value) return msgs.messageRequired;
       if (value.length < 20) return msgs.messageShort;
+    }
+    if (name === 'consent') {
+      if (value !== 'true') return msgs.consentRequired;
     }
     return null;
   }
@@ -260,6 +305,7 @@ const { lang } = Astro.props;
       subjectRequired: d.msgSubjectRequired || '',
       messageRequired: d.msgMessageRequired || '',
       messageShort:    d.msgMessageShort    || '',
+      consentRequired: d.msgConsentRequired || '',
       success:         d.msgSuccess         || '',
       tooMany:         d.msgTooMany         || '',
       error:           d.msgError           || '',
@@ -278,15 +324,23 @@ const { lang } = Astro.props;
       status.classList.remove('hidden');
     };
 
+    // Read the current value of any tracked field — checkbox or text.
+    const readFieldValue = (el: HTMLElement): string => {
+      if (el instanceof HTMLInputElement && el.type === 'checkbox') {
+        return el.checked ? 'true' : '';
+      }
+      return (el as HTMLInputElement | HTMLTextAreaElement).value.trim();
+    };
+
     // Validate on blur
     form.querySelectorAll<HTMLElement>('[data-field]').forEach((el) => {
       el.addEventListener('blur', () => {
         const fieldName = el.getAttribute('data-field')!;
-        const value = (el as HTMLInputElement | HTMLTextAreaElement).value.trim();
-        setFieldError(form, fieldName, validate(fieldName, value, msgs));
+        setFieldError(form, fieldName, validate(fieldName, readFieldValue(el), msgs));
       });
-      // Clear error while typing
-      el.addEventListener('input', () => {
+      // Clear error while typing / checking
+      const clearEvent = el instanceof HTMLInputElement && el.type === 'checkbox' ? 'change' : 'input';
+      el.addEventListener(clearEvent, () => {
         const fieldName = el.getAttribute('data-field')!;
         setFieldError(form, fieldName, null);
       });
@@ -295,17 +349,20 @@ const { lang } = Astro.props;
     const onSubmit = async (e: SubmitEvent) => {
       e.preventDefault();
       const fd = new FormData(form);
+      const consentEl = form.querySelector<HTMLInputElement>('[data-field="consent"]');
       const fields = {
         name:    (fd.get('name')    || '').toString().trim(),
         email:   (fd.get('email')   || '').toString().trim(),
         subject: (fd.get('subject') || '').toString().trim(),
         message: (fd.get('message') || '').toString().trim(),
+        consent: consentEl?.checked ? 'true' : '',
         lang:    form.dataset.lang ?? 'es',
       };
 
       // Validate all fields and show errors
       let firstInvalid: HTMLElement | null = null;
       for (const [fieldName, value] of Object.entries(fields)) {
+        if (fieldName === 'lang') continue;
         const err = validate(fieldName, value, msgs);
         setFieldError(form, fieldName, err);
         if (err && !firstInvalid) {

@@ -111,6 +111,7 @@ const validBody = {
   email: 'alice@example.com',
   subject: 'Hello',
   message: 'This is a test message that is long enough.',
+  consent: 'true',
   lang: 'en',
 };
 
@@ -133,6 +134,21 @@ describe('POST /api/contact — handler', () => {
     expect(res.status).toBe(400);
     const json = await res.json();
     expect(json.error).toBe('missing_fields');
+  });
+
+  it('returns 400 when consent is missing', async () => {
+    const { consent: _consent, ...withoutConsent } = validBody;
+    const req = makeRequest(withoutConsent);
+    const res = await POST({ request: req } as any);
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toBe('consent_required');
+  });
+
+  it('returns 400 when consent is not "true"', async () => {
+    const req = makeRequest({ ...validBody, consent: 'false' });
+    const res = await POST({ request: req } as any);
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toBe('consent_required');
   });
 
   it('returns 400 when name exceeds 100 characters', async () => {
