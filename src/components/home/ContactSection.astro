@@ -150,19 +150,18 @@ const { lang } = Astro.props;
       </label>
 
       <!-- RGPD — cláusula informativa básica -->
-      <div class="mt-8 rounded-xl border border-slate-200 bg-slate-50/80 p-4 text-[13px] leading-relaxed text-slate-700 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-300">
-        <p class="mb-2 flex items-center gap-2 font-semibold text-ink-900 dark:text-slate-100">
-          <span aria-hidden="true">🔒</span>
+      <section class="mt-6 border-t border-slate-200/70 pt-4 dark:border-white/5" aria-labelledby="contact-privacy-heading">
+        <p id="contact-privacy-heading" class="mb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-secondary/70 dark:text-accent-blue/50">
           {t(lang, 'home.contact.privacy.heading')}
         </p>
-        <ul class="space-y-1 list-none p-0">
-          <li><strong>{t(lang, 'home.contact.privacy.responsable')}</strong> {t(lang, 'home.contact.privacy.responsableValue')}</li>
-          <li><strong>{t(lang, 'home.contact.privacy.finalidad')}</strong> {t(lang, 'home.contact.privacy.finalidadValue')}</li>
-          <li><strong>{t(lang, 'home.contact.privacy.legitimacion')}</strong> {t(lang, 'home.contact.privacy.legitimacionValue')}</li>
-          <li><strong>{t(lang, 'home.contact.privacy.destinatarios')}</strong> {t(lang, 'home.contact.privacy.destinatariosValue')}</li>
-          <li><strong>{t(lang, 'home.contact.privacy.derechos')}</strong> {t(lang, 'home.contact.privacy.derechosValue')}</li>
+        <ul class="space-y-0.5 list-none p-0 text-[11px] leading-relaxed text-slate-500 dark:text-slate-500">
+          <li><span class="text-slate-600 dark:text-slate-400">{t(lang, 'home.contact.privacy.responsable')}</span> {t(lang, 'home.contact.privacy.responsableValue')}</li>
+          <li><span class="text-slate-600 dark:text-slate-400">{t(lang, 'home.contact.privacy.finalidad')}</span> {t(lang, 'home.contact.privacy.finalidadValue')}</li>
+          <li><span class="text-slate-600 dark:text-slate-400">{t(lang, 'home.contact.privacy.legitimacion')}</span> {t(lang, 'home.contact.privacy.legitimacionValue')}</li>
+          <li><span class="text-slate-600 dark:text-slate-400">{t(lang, 'home.contact.privacy.destinatarios')}</span> {t(lang, 'home.contact.privacy.destinatariosValue')}</li>
+          <li><span class="text-slate-600 dark:text-slate-400">{t(lang, 'home.contact.privacy.derechos')}</span> {t(lang, 'home.contact.privacy.derechosValue')}</li>
         </ul>
-      </div>
+      </section>
 
       <!-- Consent checkbox — required -->
       <label class="mt-5 flex items-start gap-2.5 text-sm text-slate-700 dark:text-slate-300" for="contact-consent">
