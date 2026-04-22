@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import Analytics from '@vercel/analytics/astro';
+import GoogleAnalytics from '../components/analytics/GoogleAnalytics.astro';
 import Nav from "../components/Nav/Nav.astro";
 import Footer from "../components/Footer/Footer.astro";
 import { getLangFromUrl, getAlternateUrl, t } from '../i18n/utils';
@@ -76,7 +77,11 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 			})();
 		</script>
 		<ClientRouter />
+		{import.meta.env.PUBLIC_GSC_VERIFICATION && (
+			<meta name="google-site-verification" content={import.meta.env.PUBLIC_GSC_VERIFICATION} />
+		)}
 		<slot name="head" />
+		<GoogleAnalytics />
 	</head>
 	<body
 		class="flex flex-col min-h-dvh bg-white dark:bg-[#0f1419] text-primary dark:text-[#f1f5f9] scrollbar scrollbar-thumb-primary scrollbar-w-2 scrollbar-corner-rounded-xl"
