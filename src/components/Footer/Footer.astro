@@ -5,6 +5,18 @@ import { getLangFromUrl, getLocalePath } from '../../i18n/utils';
 const lang = getLangFromUrl(Astro.url);
 const isES = lang === 'es';
 const contactHref = `${getLocalePath('/', lang)}#contact`;
+
+const legalLinks = isES
+    ? [
+        { label: 'Privacidad', href: '/privacidad' },
+        { label: 'Cookies', href: '/cookies' },
+        { label: 'Aviso Legal', href: '/aviso-legal' },
+      ]
+    : [
+        { label: 'Privacy', href: '/en/privacy' },
+        { label: 'Cookies', href: '/en/cookies' },
+        { label: 'Legal Notice', href: '/en/legal-notice' },
+      ];
 ---
 <footer class="relative flex flex-col w-full items-center justify-center gap-2 py-5 md:py-6 bg-white/90 dark:bg-ink-800/60 backdrop-blur-md border-t border-gray-200 dark:border-white/10 transition-colors duration-200">
     <div class="flex items-center justify-center gap-8">
@@ -21,4 +33,14 @@ const contactHref = `${getLocalePath('/', lang)}#contact`;
     <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-quaternary/70 dark:text-slate-500">
         &copy; {new Date().getFullYear()} aitorevi · Crafted with Astro
     </p>
+    <nav class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 font-mono text-[10px] uppercase tracking-[0.2em] text-quaternary/70 dark:text-slate-500" aria-label={isES ? 'Enlaces legales' : 'Legal links'}>
+        {legalLinks.map((link, i) => (
+            <>
+                {i > 0 && <span aria-hidden="true">·</span>}
+                <a href={link.href} class="hover:text-secondary dark:hover:text-accent-blue transition-colors duration-200">
+                    {link.label}
+                </a>
+            </>
+        ))}
+    </nav>
 </footer>
