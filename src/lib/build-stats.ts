@@ -28,7 +28,9 @@ export function fetchBuildStats(root: string) {
   return {
     commits:      run('git rev-list --count HEAD', 416),
     prs:          run('gh pr list --state all --limit 1000 --json number --jq length', 47),
-    tests:        run("grep -rE '^\\s*(it|test)\\(' tests/ --include='*.ts' | wc -l | tr -d ' '", 135),
+    unitTests:        run("grep -rE '^\\s*(it|test)\\(' tests/unit/ --include='*.ts' | wc -l | tr -d ' '", 135),
+    integrationTests: run("grep -rE '^\\s*(it|test)\\(' tests/integration/ --include='*.ts' | wc -l | tr -d ' '", 24),
+    e2eTests:         run("grep -rE '^\\s*test\\(' tests/e2e/ --include='*.ts' | wc -l | tr -d ' '", 10),
     workflows:    run('ls .github/workflows/*.yml 2>/dev/null | wc -l | tr -d " "', 2),
     legalPages:   countLegalPages(root),
   };
