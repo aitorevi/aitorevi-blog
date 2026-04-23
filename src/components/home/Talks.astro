@@ -69,10 +69,10 @@ const itemSizingClass = isSingle
                   href={articleUrl}
                   class="after:absolute after:inset-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2"
                 >
-                  {talk.title}
+                  {talk.title[lang]}
                 </a>
               ) : (
-                talk.title
+                talk.title[lang]
               )}
             </h3>
 
