@@ -86,9 +86,9 @@ interface TechItem {
 }
 
 // Icon sources per item:
-//  - simple-icons:* → brands with an SC-listed logo.
-//  - logos:*         → broader set (has Upstash, GitHub Actions mark variants).
-//  - bare name        → local SVG under src/icons/ (no prefix).
+//  - simple-icons:* → brands with a Simple-Icons entry; monochrome, uses currentColor.
+//  - bare name        → local SVG under src/icons/; also monochrome. All icons
+//                       share a single flat tone so no brand pops out over the rest.
 const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = {
   frontend: [
     { name: 'Astro', icon: 'simple-icons:astro', version: astroVersion },
@@ -104,7 +104,7 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
   ],
   infra: [
     { name: 'Vercel', icon: 'simple-icons:vercel' },
-    { name: 'Upstash', icon: 'logos:upstash-icon', note: 'Redis' },
+    { name: 'Upstash', icon: 'upstash', note: 'Redis' },
     { name: 'Resend', icon: 'resend', note: 'email' },
     { name: 'GitHub Actions', icon: 'simple-icons:githubactions' },
   ],
