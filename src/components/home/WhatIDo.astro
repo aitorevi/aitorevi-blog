@@ -11,6 +11,7 @@
  */
 import type { Lang } from '../../data/cv';
 import { t } from '../../i18n/utils';
+import ServiceCard from './ServiceCard.astro';
 
 interface Props {
   lang: Lang;
@@ -87,32 +88,13 @@ const cards = [
     >
       {
         cards.map((card, i) => (
-          <li
-            class={`group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-lg backdrop-blur-md transition-[border-color,box-shadow,background-color] duration-500 hover:border-secondary/40 hover:shadow-[0_20px_50px_-20px_rgba(94,58,238,0.35)] dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:hover:border-accent-blue/40 dark:hover:bg-white/[0.07] dark:hover:shadow-[0_0_60px_rgba(96,165,250,0.15)]`}
-            data-stagger-item
-            data-tilt-card
-            style={`--stagger-delay:${i * 120}ms`}
-          >
-            <div
-              class={`pointer-events-none absolute -top-px left-0 h-32 w-full bg-gradient-to-b ${card.accent} opacity-0 transition-opacity duration-500 group-hover:opacity-100`}
-              aria-hidden="true"
-            />
-
-            <div class="relative">
-              <span
-                class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-secondary/30 bg-secondary/5 font-mono text-lg text-secondary transition-colors duration-300 group-hover:border-secondary/70 group-hover:text-accent-violet dark:border-accent-blue/20 dark:bg-accent-blue/5 dark:text-accent-blue dark:group-hover:border-accent-blue/60 dark:group-hover:text-accent-violet"
-                aria-hidden="true"
-              >
-                {card.icon}
-              </span>
-              <h3 class="mt-4 font-display text-lg font-semibold text-ink-900 dark:text-slate-100">
-                {t(lang, card.titleKey)}
-              </h3>
-              <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                {t(lang, card.descKey)}
-              </p>
-            </div>
-          </li>
+          <ServiceCard
+            icon={card.icon}
+            title={t(lang, card.titleKey)}
+            desc={t(lang, card.descKey)}
+            accent={card.accent}
+            index={i}
+          />
         ))
       }
     </ul>

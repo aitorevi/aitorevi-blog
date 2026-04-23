@@ -11,6 +11,7 @@
  */
 import type { Lang } from '../../data/cv';
 import { t } from '../../i18n/utils';
+import StatCard from './StatCard.astro';
 
 interface Props {
   lang: Lang;
@@ -64,27 +65,11 @@ const stats = [
   >
     {
       stats.map((stat) => (
-        <div
-          class="group relative overflow-hidden rounded-xl border border-secondary/15 bg-slate-50/30 px-6 py-10 text-center transition-[border-color,box-shadow] duration-300 hover:border-secondary/40 hover:shadow-[0_0_12px_rgba(94,58,238,0.08)] dark:border-accent-violet/20 dark:bg-ink-800 dark:hover:border-accent-violet/40 dark:hover:shadow-[0_0_30px_rgba(167,139,250,0.15)]"
-          data-stat
-          data-stat-target={stat.value}
-          data-stat-suffix={stat.suffix}
-          data-tilt-stat
-        >
-          <div
-            class="pointer-events-none absolute inset-x-0 -top-20 h-40 bg-gradient-to-b from-secondary/10 to-transparent opacity-60 dark:from-accent-violet/10"
-            aria-hidden="true"
-          />
-          <div
-            class="relative bg-home-gradient-text-light bg-clip-text font-display text-5xl font-black leading-none text-transparent dark:bg-home-gradient-text sm:text-6xl"
-            data-stat-value
-          >
-            {stat.suffix ? '0' : stat.value}
-          </div>
-          <div class="relative mt-3 font-mono text-[11px] uppercase tracking-[0.25em] text-secondary dark:text-accent-violet group-hover:dark:text-accent-violet transition-colors">
-            {t(lang, stat.labelKey)}
-          </div>
-        </div>
+        <StatCard
+          value={stat.value}
+          suffix={stat.suffix}
+          label={t(lang, stat.labelKey)}
+        />
       ))
     }
   </div>
