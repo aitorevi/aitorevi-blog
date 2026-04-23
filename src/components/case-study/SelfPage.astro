@@ -23,7 +23,7 @@ const buildBlogPostPath = (slug: string) => (isES ? `/blog/${slug}` : `/en/blog/
 const timelineItems = [1, 2, 3, 4, 5] as const;
 const decisions = ['astro', 'i18n', 'cms', 'consent', 'tests', 'ci', 'a11y'] as const;
 
-const buildStats = fetchBuildStats(new URL('../../../', import.meta.url).pathname);
+const buildStats = await fetchBuildStats(new URL('../../../', import.meta.url).pathname);
 
 // `static: true` skips the count-up tween — used for the year so it
 // doesn't spin from 0 → 2024 on every page load.
