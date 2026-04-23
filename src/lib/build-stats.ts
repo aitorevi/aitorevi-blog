@@ -12,6 +12,25 @@ function run(cmd: string, fallback: number): number {
   }
 }
 
+async function githubCount(repo: string, path: string, fallback: number): Promise<number> {
+  try {
+    const resp = await fetch(
+      `https://api.github.com/repos/${repo}/${path}?per_page=1`,
+      { headers: { 'User-Agent': 'aitorevi-blog-build' } }
+    );
+    if (!resp.ok) return fallback;
+    // Total count is in the Link header: rel="last" page=N
+    const link = resp.headers.get('link') ?? '';
+    const match = link.match(/[?&]page=(\d+)>;\s*rel="last"/);
+    if (match) return parseInt(match[1], 10);
+    // Only one page of results — count items in body
+    const data = await resp.json() as unknown[];
+    return data.length > 0 ? data.length : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 async function fetchPRCount(repo: string, fallback: number): Promise<number> {
   try {
     const resp = await fetch(
@@ -39,13 +58,13 @@ function countLegalPages(root: string): number {
 }
 
 export async function fetchBuildStats(root: string) {
-  // Unshallow the clone so git rev-list --count returns the full history
-  run('git fetch --unshallow 2>/dev/null || true', 0);
-
-  const prs = await fetchPRCount('aitorevi/aitorevi-blog', 68);
+  const [commits, prs] = await Promise.all([
+    githubCount('aitorevi/aitorevi-blog', 'commits', 427),
+    fetchPRCount('aitorevi/aitorevi-blog', 68),
+  ]);
 
   return {
-    commits:          run('git rev-list --count HEAD', 427),
+    commits,
     prs,
     unitTests:        run("grep -rE '^\\s*(it|test)\\(' tests/unit/ --include='*.ts' | wc -l | tr -d ' '", 135),
     integrationTests: run("grep -rE '^\\s*(it|test)\\(' tests/integration/ --include='*.ts' | wc -l | tr -d ' '", 24),
