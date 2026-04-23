@@ -4,7 +4,6 @@ import Button from '../atoms/Button.astro';
 import { Icon } from 'astro-icon/components';
 import { t } from '../../i18n/utils';
 import type { Lang } from '../../data/cv';
-import pkg from '../../../package.json';
 import { fetchBuildStats } from '../../lib/build-stats';
 
 interface Props {
@@ -14,13 +13,6 @@ interface Props {
 const { lang } = Astro.props;
 const isES = lang === 'es';
 
-const trimVersion = (raw: string | undefined) => (raw ? raw.replace(/^[\^~]/, '') : '');
-const astroVersion = trimVersion(pkg.dependencies?.astro);
-const tailwindVersion = trimVersion(pkg.dependencies?.tailwindcss);
-const reactVersion = trimVersion(pkg.dependencies?.react);
-const vitestVersion = trimVersion(pkg.devDependencies?.vitest);
-const playwrightVersion = trimVersion(pkg.devDependencies?.['@playwright/test']);
-const keystaticVersion = trimVersion(pkg.dependencies?.['@keystatic/astro']);
 
 const blogPath = isES ? '/blog' : '/en/blog';
 const contactPath = isES ? '/#contact' : '/en/#contact';
@@ -94,26 +86,26 @@ interface TechItem {
 //                       share a single flat tone so no brand pops out over the rest.
 const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = {
   frontend: [
-    { name: 'Astro', icon: 'simple-icons:astro', version: astroVersion },
-    { name: 'TypeScript', icon: 'simple-icons:typescript' },
-    { name: 'Tailwind CSS', icon: 'simple-icons:tailwindcss', version: tailwindVersion },
-    { name: 'React', icon: 'simple-icons:react', version: reactVersion, note: isES ? 'selectivo' : 'selective' },
+    { name: 'Astro', icon: 'simple-icons:astro', note: isES ? 'SSG + islas' : 'SSG + islands' },
+    { name: 'TypeScript', icon: 'simple-icons:typescript', note: isES ? 'tipado estático' : 'static typing' },
+    { name: 'Tailwind CSS', icon: 'simple-icons:tailwindcss', note: isES ? 'design tokens' : 'design tokens' },
+    { name: 'React', icon: 'simple-icons:react', note: isES ? 'islas interactivas' : 'interactive islands' },
   ],
   content: [
-    { name: 'Keystatic', icon: 'keystatic', version: keystaticVersion },
-    { name: 'Markdoc', icon: 'simple-icons:markdown' },
+    { name: 'Keystatic', icon: 'keystatic', note: isES ? 'CMS git-based' : 'git-based CMS' },
+    { name: 'Markdoc', icon: 'simple-icons:markdown', note: isES ? 'formato artículos' : 'article format' },
     { name: 'Satori', icon: 'satori', note: 'OG images' },
     { name: 'Puppeteer', icon: 'simple-icons:puppeteer', note: isES ? 'PDF del CV' : 'CV PDF' },
   ],
   infra: [
-    { name: 'Vercel', icon: 'simple-icons:vercel' },
+    { name: 'Vercel', icon: 'simple-icons:vercel', note: isES ? 'hosting + previews' : 'hosting + previews' },
     { name: 'Upstash', icon: 'upstash', note: 'Redis' },
-    { name: 'Resend', icon: 'resend', note: 'email' },
-    { name: 'GitHub Actions', icon: 'simple-icons:githubactions' },
+    { name: 'Resend', icon: 'resend', note: isES ? 'formulario contacto' : 'contact form' },
+    { name: 'GitHub Actions', icon: 'simple-icons:githubactions', note: 'CI/CD' },
   ],
   testing: [
-    { name: 'Vitest', icon: 'simple-icons:vitest', version: vitestVersion, note: isES ? 'unitarios + integración' : 'unit + integration' },
-    { name: 'Playwright', icon: 'simple-icons:playwright', version: playwrightVersion, note: 'E2E' },
+    { name: 'Vitest', icon: 'simple-icons:vitest', note: isES ? 'unitarios + integración' : 'unit + integration' },
+    { name: 'Playwright', icon: 'simple-icons:playwright', note: 'E2E' },
   ],
 };
 ---
@@ -263,7 +255,7 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
           {t(lang, 'portfolio.self.stack.subtitle')}
         </p>
 
-        <div class="mt-14 grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="mt-14 grid grid-cols-2 gap-12 lg:grid-cols-4">
           {(['frontend', 'content', 'infra', 'testing'] as const).map((category) => (
             <div class="flex flex-col items-center text-center">
               <h3 class="font-mono text-[10px] uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
@@ -272,7 +264,7 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
               <div class="mt-4 h-px w-8 bg-secondary/40 dark:bg-accent-violet/40" aria-hidden="true" />
               <ul class="mt-6 space-y-6">
                 {stack[category].map((item) => (
-                  <li class="flex flex-col items-center">
+                  <li class="flex flex-col items-center min-h-[5.5rem]">
                     {item.icon ? (
                       <Icon
                         name={item.icon}
