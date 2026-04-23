@@ -158,21 +158,50 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
           {t(lang, 'portfolio.self.timeline.subtitle')}
         </p>
 
-        <ol class="relative mt-12 space-y-8 border-l border-slate-200 pl-6 dark:border-white/10">
-          {timelineItems.map((n) => (
-            <li class="relative">
-              <span class="absolute -left-[29px] top-1 flex h-3 w-3 items-center justify-center rounded-full bg-secondary dark:bg-accent-violet" aria-hidden="true" />
-              <p class="font-mono text-[11px] uppercase tracking-[0.2em] text-secondary/70 dark:text-accent-blue/60">
-                {t(lang, `portfolio.self.timeline.${n}.period`)}
-              </p>
-              <h3 class="mt-1 font-display text-lg font-semibold text-ink-900 dark:text-slate-100">
-                {t(lang, `portfolio.self.timeline.${n}.heading`)}
-              </h3>
-              <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                {t(lang, `portfolio.self.timeline.${n}.text`)}
-              </p>
-            </li>
-          ))}
+        <ol class="mt-12">
+          {timelineItems.map((n, i) => {
+            const isFirst = i === 0;
+            const isLast = i === timelineItems.length - 1;
+            return (
+              <li class="flex items-stretch">
+                {/* Period column */}
+                <div class="w-28 shrink-0 pt-1 text-right pr-6">
+                  <span class="font-mono text-[11px] uppercase tracking-[0.2em] text-secondary/70 dark:text-accent-blue/60">
+                    {t(lang, `portfolio.self.timeline.${n}.period`)}
+                  </span>
+                </div>
+
+                {/* Timeline track */}
+                <div class="flex shrink-0 flex-col items-center w-5">
+                  <div
+                    class:list={[
+                      "relative shrink-0 rounded-full z-10",
+                      isFirst
+                        ? "mt-[5px] h-4 w-4 border-2 border-secondary bg-secondary shadow-[0_0_10px_rgba(94,58,238,0.5)] dark:border-accent-violet dark:bg-accent-violet dark:shadow-[0_0_10px_rgba(167,139,250,0.5)]"
+                        : "mt-[5px] h-3 w-3 border-2 border-secondary/50 dark:border-accent-violet/40 bg-white dark:bg-ink-800",
+                    ]}
+                  >
+                    {isFirst && (
+                      <span class="absolute -inset-1 rounded-full bg-secondary/20 dark:bg-accent-violet/20 animate-pulse" aria-hidden="true" />
+                    )}
+                  </div>
+                  {!isLast && (
+                    <div class="w-0.5 flex-1 mb-[-5px] bg-secondary/25 dark:bg-accent-violet/30 shadow-[0_0_4px_rgba(94,58,238,0.15)] dark:shadow-[0_0_6px_rgba(167,139,250,0.25)]" aria-hidden="true" />
+                  )}
+                </div>
+
+                {/* Content column */}
+                <div class:list={["flex-1 pl-6", isLast ? "pb-0" : "pb-8"]}>
+                  <h3 class="font-display text-lg font-semibold text-ink-900 dark:text-slate-100">
+                    {t(lang, `portfolio.self.timeline.${n}.heading`)}
+                  </h3>
+                  <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                    {t(lang, `portfolio.self.timeline.${n}.text`)}
+                  </p>
+                </div>
+              </li>
+            );
+          })}
         </ol>
       </div>
     </section>
