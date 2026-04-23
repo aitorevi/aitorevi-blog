@@ -26,10 +26,19 @@ const PUBLIC_DIR = join(ROOT, 'public');
 
 // Rules: pick the first rule whose `match` returns true. Match receives
 // a path RELATIVE TO PUBLIC_DIR (e.g. "images/blog/foo/cover.webp").
+// Sizes picked as ~1.5-2× the real display size; PageSpeed flags anything
+// wider than that for mobile.
+//
+// Some images are exempt because they must be served at a specific size:
+// - og-*.png  → Open Graph cards require 1200×630 minimum; never downsize.
+// - images/portfolio/ → gallery lightbox enlarges them to near-full-viewport,
+//   so we keep the originals. If this grows, add per-project rules here.
 const RULES = [
-  { name: 'avatar', match: (p) => /^avatar(-light)?\.(webp|png|jpe?g)$/.test(p), maxSide: 480 },
-  { name: 'testimonial', match: (p) => p.startsWith('images/testimonials/'), maxSide: 224 },
-  { name: 'default', match: () => true, maxSide: 1280 },
+  { name: 'og-social', match: (p) => /^og-.*\.(png|jpe?g|webp)$/.test(p), skip: true },
+  { name: 'portfolio-gallery', match: (p) => p.startsWith('images/portfolio/'), skip: true },
+  { name: 'avatar', match: (p) => /^avatar(-light)?\.(webp|png|jpe?g)$/.test(p), maxSide: 440 },
+  { name: 'testimonial', match: (p) => p.startsWith('images/testimonials/'), maxSide: 112 },
+  { name: 'default', match: () => true, maxSide: 960 },
 ];
 
 const EXTENSIONS = new Set(['.webp', '.jpg', '.jpeg', '.png']);
@@ -63,6 +72,8 @@ async function processFile(absPath) {
   const image = sharp(absPath, { failOn: 'none' });
   const meta = await image.metadata();
   if (!meta.width || !meta.height) return null;
+
+  if (rule.skip) return { relPath, skipped: true, meta, rule };
 
   const longestSide = Math.max(meta.width, meta.height);
   if (longestSide <= rule.maxSide) return { relPath, skipped: true, meta, rule };

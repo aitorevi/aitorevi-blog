@@ -26,6 +26,14 @@ export default defineConfig({
     }),
   ],
   site: "https://www.aitorevi.dev/",
+  build: {
+    // Inline every stylesheet into the HTML <head>.
+    // Rationale: the shared Tailwind utilities chunk (~12.8 KiB) is the
+    // single biggest render-blocker (~650 ms). Linking it externally costs
+    // a round-trip that dominates critical path in mobile. Inlining trades
+    // ~14 KiB of extra HTML per page for three fewer blocking requests.
+    inlineStylesheets: 'always',
+  },
   redirects: {
     '/sitemap.xml': '/sitemap-index.xml',
     '/cv/en': '/en/cv',
