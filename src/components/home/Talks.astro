@@ -33,7 +33,7 @@ const itemSizingClass = isSingle
       {t(lang, 'home.talks.title')}
     </h2>
     <p
-      class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary/85 dark:text-accent-blue/70"
+      class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary dark:text-accent-blue"
     >
       {t(lang, 'home.talks.subtitle')}
     </p>
@@ -82,7 +82,7 @@ const itemSizingClass = isSingle
               </p>
             )}
 
-            <p class="mt-3 font-mono text-[11px] uppercase tracking-[0.15em] text-secondary/70 dark:text-accent-blue/60">
+            <p class="mt-3 font-mono text-[11px] uppercase tracking-[0.15em] text-secondary dark:text-accent-blue">
               {talk.event} · <time datetime={formatDateISO(talk.date)}>{formatDate(talk.date, locale)}</time>
             </p>
 

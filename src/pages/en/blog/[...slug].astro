@@ -117,11 +117,11 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
     itemtype="https://schema.org/BlogPosting"
   >
     <header class="mb-8 space-y-4">
-      <div class="flex flex-wrap gap-2" role="list" aria-label="Article tags">
+      <ul class="flex flex-wrap gap-2 list-none p-0" aria-label="Article tags">
         {data.tags.map((tag) => (
-          <Tag label={tag} variant="accent" />
+          <li><Tag label={tag} variant="accent" /></li>
         ))}
-      </div>
+      </ul>
       <h1
         class="text-4xl font-display font-bold leading-tight text-ink-900 dark:text-slate-100 sm:text-5xl lg:text-6xl"
         itemprop="headline"

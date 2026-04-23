@@ -146,11 +146,11 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
   <div class="flex flex-1 flex-col p-6">
     <!-- Header: Tags -->
     <header class="mb-3">
-      <div class="flex flex-wrap gap-2" role="list" aria-label="Post tags">
+      <ul class="flex flex-wrap gap-2 list-none p-0" aria-label="Post tags">
         {data.tags.slice(0, 3).map((tag) => (
-          <Tag label={tag} variant="accent" />
+          <li><Tag label={tag} variant="accent" /></li>
         ))}
-      </div>
+      </ul>
     </header>
 
     <!-- Main Content -->
