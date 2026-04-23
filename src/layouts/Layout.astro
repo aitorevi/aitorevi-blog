@@ -43,13 +43,13 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<!-- Fonts: JetBrains Mono (code/accents) + Outfit (display) -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			rel="stylesheet"
-			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@600;700;900&display=swap"
-		/>
+		<!-- Self-hosted fonts: JetBrains Mono (code/accents) + Outfit (display).
+		     Preloading Outfit 900 (hero LCP) and JetBrains Mono 400 (eyebrows everywhere)
+		     so they arrive in the first round-trip. Unicode-range in fonts.css means
+		     only the subsets actually used on the page get fetched by the browser. -->
+		<link rel="preload" href="/fonts/outfit-900-latin.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/jetbrains-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="stylesheet" href="/fonts/fonts.css" />
 		{alternateUrl && alternateLang && (
 			<link rel="alternate" hreflang={alternateLang} href={alternateUrl} />
 		)}
