@@ -44,11 +44,16 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<!-- Self-hosted fonts: JetBrains Mono (code/accents) + Outfit (display).
-		     Preloading Outfit 900 (hero LCP) and JetBrains Mono 400 (eyebrows everywhere)
-		     so they arrive in the first round-trip. Unicode-range in fonts.css means
-		     only the subsets actually used on the page get fetched by the browser. -->
+		     Preloading all six weights the public site uses so they start
+		     downloading in parallel with the fonts.css parse, not chained
+		     behind it. Unicode-range in fonts.css still means only the
+		     latin subset is actually used unless a latin-ext character appears. -->
 		<link rel="preload" href="/fonts/outfit-900-latin.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/outfit-700-latin.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/outfit-600-latin.woff2" as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href="/fonts/jetbrains-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/jetbrains-mono-600-latin.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/jetbrains-mono-700-latin.woff2" as="font" type="font/woff2" crossorigin />
 		<link rel="stylesheet" href="/fonts/fonts.css" />
 		{alternateUrl && alternateLang && (
 			<link rel="alternate" hreflang={alternateLang} href={alternateUrl} />
