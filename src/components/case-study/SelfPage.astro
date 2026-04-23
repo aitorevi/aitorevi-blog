@@ -233,11 +233,16 @@ const stack = {
           {t(lang, 'portfolio.self.scores.subtitle')}
         </p>
 
-        <ul class="mt-12 grid grid-cols-2 gap-6 md:grid-cols-4" aria-label={t(lang, 'portfolio.self.scores.title')}>
+        <ul
+          class="mt-12 grid grid-cols-2 gap-6 md:grid-cols-4"
+          aria-label={t(lang, 'portfolio.self.scores.title')}
+          data-scores-root
+        >
           {lighthouseScores.map((score) => {
             const tone = scoreTone(score.value);
             const circumference = 2 * Math.PI * 42;
-            const offset = circumference * (1 - score.value / 100);
+            // Initial state: empty ring, number at zero. The script animates
+            // both to the target on intersection.
             return (
               <li class="flex flex-col items-center text-center">
                 <div class="relative h-28 w-28" aria-hidden="true">
@@ -247,18 +252,27 @@ const stack = {
                       cx="50"
                       cy="50"
                       r="42"
-                      class:list={['transition-all duration-1000', tone.ring]}
+                      class:list={[tone.ring]}
                       stroke="currentColor"
                       stroke-width="8"
                       stroke-linecap="round"
                       fill="none"
                       stroke-dasharray={circumference}
-                      stroke-dashoffset={offset}
+                      stroke-dashoffset={circumference}
+                      data-score-ring
+                      data-score-target={score.value}
+                      data-score-circumference={circumference}
                     />
                   </svg>
-                  <span class:list={['absolute inset-0 flex items-center justify-center font-display text-3xl font-bold', tone.text]}>
-                    {score.value}
+                  <span
+                    class:list={['absolute inset-0 flex items-center justify-center font-display text-3xl font-bold', tone.text]}
+                    data-score-value
+                    data-score-target={score.value}
+                    aria-hidden="true"
+                  >
+                    0
                   </span>
+                  <span class="sr-only">{score.value}</span>
                 </div>
                 <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-slate-600 dark:text-slate-400">
                   {t(lang, score.labelKey)}
@@ -299,3 +313,85 @@ const stack = {
 
   </div>
 </Layout>
+
+<script>
+  // Lighthouse-score badges: same IntersectionObserver + ease-out pattern
+  // StatsCounter uses, extended to drive stroke-dashoffset of the ring
+  // in sync with the text counting up. Runs on initial page-load and
+  // after every view transition swap.
+  const EASE_OUT_CUBIC = (t: number) => 1 - Math.pow(1 - t, 3);
+  const DURATION_MS = 1400;
+
+  interface ScoreEl extends HTMLElement {
+    __animated?: boolean;
+  }
+
+  function animateScore(item: ScoreEl) {
+    if (item.__animated) return;
+    item.__animated = true;
+
+    const valueEl = item.querySelector<HTMLElement>('[data-score-value]');
+    const ringEl = item.querySelector<SVGCircleElement>('[data-score-ring]');
+    if (!valueEl || !ringEl) return;
+
+    const target = Number(valueEl.dataset.scoreTarget || '0');
+    const circumference = Number(ringEl.dataset.scoreCircumference || '0');
+    const finalOffset = circumference * (1 - target / 100);
+
+    const start = performance.now();
+    const step = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(1, elapsed / DURATION_MS);
+      const eased = EASE_OUT_CUBIC(progress);
+      valueEl.textContent = String(Math.round(target * eased));
+      ringEl.setAttribute(
+        'stroke-dashoffset',
+        String(circumference - (circumference - finalOffset) * eased)
+      );
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        valueEl.textContent = String(target);
+        ringEl.setAttribute('stroke-dashoffset', String(finalOffset));
+      }
+    };
+    requestAnimationFrame(step);
+  }
+
+  function initScores() {
+    const root = document.querySelector('[data-scores-root]');
+    if (!root) return;
+    const items = Array.from(root.querySelectorAll<ScoreEl>('li'));
+    if (items.length === 0) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      items.forEach((item) => {
+        const valueEl = item.querySelector<HTMLElement>('[data-score-value]');
+        const ringEl = item.querySelector<SVGCircleElement>('[data-score-ring]');
+        if (!valueEl || !ringEl) return;
+        const target = Number(valueEl.dataset.scoreTarget || '0');
+        const circumference = Number(ringEl.dataset.scoreCircumference || '0');
+        valueEl.textContent = String(target);
+        ringEl.setAttribute('stroke-dashoffset', String(circumference * (1 - target / 100)));
+      });
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animateScore(entry.target as ScoreEl);
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+    items.forEach((item) => io.observe(item));
+  }
+
+  document.addEventListener('astro:page-load', initScores);
+  document.addEventListener('astro:after-swap', initScores);
+</script>
