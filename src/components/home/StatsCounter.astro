@@ -52,7 +52,7 @@ const stats = [
       {t(lang, 'home.stats.title')}
     </h2>
     <p
-      class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary/85 dark:text-accent-blue/70"
+      class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary dark:text-accent-blue"
     >
       {t(lang, 'home.stats.subtitle')}
     </p>
@@ -81,7 +81,7 @@ const stats = [
           >
             {stat.suffix ? '0' : stat.value}
           </div>
-          <div class="relative mt-3 font-mono text-[11px] uppercase tracking-[0.25em] text-secondary/85 dark:text-accent-violet/70 group-hover:dark:text-accent-violet/80 transition-colors">
+          <div class="relative mt-3 font-mono text-[11px] uppercase tracking-[0.25em] text-secondary dark:text-accent-violet/70 group-hover:dark:text-accent-violet/80 transition-colors">
             {t(lang, stat.labelKey)}
           </div>
         </div>
