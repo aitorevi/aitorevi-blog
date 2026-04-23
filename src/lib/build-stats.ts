@@ -4,7 +4,7 @@ import { join } from 'node:path';
 
 function run(cmd: string, fallback: number): number {
   try {
-    const raw = execSync(cmd, { encoding: 'utf8', shell: true }).trim();
+    const raw = execSync(cmd, { encoding: 'utf8', shell: '/bin/sh' }).trim();
     const n = parseInt(raw, 10);
     return Number.isFinite(n) && n > 0 ? n : fallback;
   } catch {
