@@ -1,0 +1,72 @@
+---
+interface Props {
+  text: string;
+  author: string;
+  role: string;
+  avatar?: string;
+  url?: string;
+  index: number;
+  active: boolean;
+}
+
+const { text, author, role, avatar, url, index, active } = Astro.props;
+const initials = author.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase();
+---
+
+<div
+  id={`testimonial-panel-${index}`}
+  role="tabpanel"
+  tabindex={active ? 0 : -1}
+  aria-labelledby={`testimonial-tab-${index}`}
+  class:list={[
+    'carousel-slide relative flex flex-col overflow-hidden rounded-xl border border-secondary/15 bg-white px-7 py-8 dark:border-accent-violet/20 dark:bg-ink-800',
+    active ? 'opacity-100' : 'opacity-0 pointer-events-none',
+  ]}
+  aria-hidden={!active ? 'true' : undefined}
+  inert={!active ? true : undefined}
+>
+  <!-- Top gradient overlay -->
+  <div
+    class="pointer-events-none absolute inset-x-0 -top-20 h-40 bg-gradient-to-b from-secondary/10 to-transparent opacity-60 dark:from-accent-violet/10"
+    aria-hidden="true"
+  />
+  <!-- Decorative quote mark -->
+  <span
+    class="pointer-events-none absolute right-5 top-2 select-none font-display text-7xl font-black leading-none text-secondary/10 dark:text-accent-violet/10"
+    aria-hidden="true"
+  >
+    "
+  </span>
+  <!-- Quote -->
+  <blockquote class="relative z-10">
+    <p class="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+      "{text}"
+    </p>
+  </blockquote>
+  <!-- Author -->
+  <footer class="relative z-10 mt-auto pt-6">
+    {url ? (
+      <a href={url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 transition-opacity duration-200 hover:opacity-80">
+        {avatar
+          ? <img src={avatar} alt={author} class="h-8 w-8 shrink-0 rounded-full object-cover" />
+          : <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-xs font-bold text-secondary dark:bg-accent-violet/15 dark:text-accent-violet" aria-hidden="true">{initials}</div>
+        }
+        <div>
+          <p class="text-sm font-semibold text-ink-900 dark:text-slate-100">{author}</p>
+          <p class="font-mono text-[11px] text-secondary dark:text-accent-violet whitespace-nowrap">{role}</p>
+        </div>
+      </a>
+    ) : (
+      <div class="flex items-center gap-3">
+        {avatar
+          ? <img src={avatar} alt={author} class="h-8 w-8 shrink-0 rounded-full object-cover" />
+          : <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary/10 text-xs font-bold text-secondary dark:bg-accent-violet/15 dark:text-accent-violet" aria-hidden="true">{initials}</div>
+        }
+        <div>
+          <p class="text-sm font-semibold text-ink-900 dark:text-slate-100">{author}</p>
+          <p class="font-mono text-[11px] text-secondary dark:text-accent-violet whitespace-nowrap">{role}</p>
+        </div>
+      </div>
+    )}
+  </footer>
+</div>
