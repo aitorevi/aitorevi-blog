@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Button from '../atoms/Button.astro';
+import { Icon } from 'astro-icon/components';
 import { t } from '../../i18n/utils';
 import type { Lang } from '../../data/cv';
 import pkg from '../../../package.json';
@@ -77,11 +78,40 @@ function scoreTone(value: number) {
   };
 }
 
-const stack = {
-  frontend: [`Astro ${astroVersion}`, 'TypeScript', `Tailwind CSS ${tailwindVersion}`, `React ${reactVersion} (selective)`],
-  content: [`Keystatic ${keystaticVersion}`, 'Markdoc', 'Satori (OG images)', 'Puppeteer (CV PDF)'],
-  infra: ['Vercel', 'Upstash Redis', 'Resend', 'GitHub Actions'],
-  testing: [`Vitest ${vitestVersion}`, isES ? '~135 tests unitarios' : '~135 unit tests'],
+interface TechItem {
+  name: string;
+  icon?: string;              // iconify id, e.g. 'simple-icons:astro'
+  version?: string;
+  note?: string;              // small parenthetical under the name
+}
+
+// Only icons known to exist in @iconify-json/simple-icons. Everything
+// else falls back to a circle with the first letter — fine for small
+// projects like Keystatic / Satori / Resend that don't have a logo
+// published in the brand registry.
+const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = {
+  frontend: [
+    { name: 'Astro', icon: 'simple-icons:astro', version: astroVersion },
+    { name: 'TypeScript', icon: 'simple-icons:typescript' },
+    { name: 'Tailwind CSS', icon: 'simple-icons:tailwindcss', version: tailwindVersion },
+    { name: 'React', icon: 'simple-icons:react', version: reactVersion, note: isES ? 'selectivo' : 'selective' },
+  ],
+  content: [
+    { name: 'Keystatic', version: keystaticVersion, note: 'CMS' },
+    { name: 'Markdoc', icon: 'simple-icons:markdown' },
+    { name: 'Satori', note: 'OG images' },
+    { name: 'Puppeteer', icon: 'simple-icons:puppeteer', note: isES ? 'PDF del CV' : 'CV PDF' },
+  ],
+  infra: [
+    { name: 'Vercel', icon: 'simple-icons:vercel' },
+    { name: 'Upstash', icon: 'simple-icons:redis', note: 'Redis' },
+    { name: 'Resend', note: 'email' },
+    { name: 'GitHub Actions', icon: 'simple-icons:githubactions' },
+  ],
+  testing: [
+    { name: 'Vitest', icon: 'simple-icons:vitest', version: vitestVersion },
+    { name: isES ? '135 tests unitarios' : '135 unit tests' },
+  ],
 };
 ---
 
@@ -201,15 +231,46 @@ const stack = {
           {t(lang, 'portfolio.self.stack.subtitle')}
         </p>
 
-        <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="mt-14 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {(['frontend', 'content', 'infra', 'testing'] as const).map((category) => (
-            <div class="rounded-xl border border-slate-200 bg-slate-50 p-5 dark:border-white/10 dark:bg-white/[0.04]">
-              <h3 class="font-mono text-[10px] uppercase tracking-[0.25em] text-secondary/80 dark:text-accent-blue/60">
+            <div>
+              <h3 class="font-mono text-[10px] uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
                 {t(lang, `portfolio.self.stack.${category}`)}
               </h3>
-              <ul class="mt-3 space-y-1 text-sm text-slate-700 dark:text-slate-300">
+              <div class="mt-5 h-px w-8 bg-secondary/40 dark:bg-accent-violet/40" aria-hidden="true" />
+              <ul class="mt-5 space-y-4">
                 {stack[category].map((item) => (
-                  <li>{item}</li>
+                  <li class="flex items-center gap-3">
+                    {item.icon ? (
+                      <Icon
+                        name={item.icon}
+                        class="h-6 w-6 shrink-0 text-ink-900 dark:text-slate-200"
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      <span
+                        class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-secondary/30 text-[10px] font-mono font-bold text-secondary dark:border-accent-violet/40 dark:text-accent-violet"
+                        aria-hidden="true"
+                      >
+                        {item.name.charAt(0)}
+                      </span>
+                    )}
+                    <div class="flex flex-col leading-tight">
+                      <span class="font-display text-sm font-semibold text-ink-900 dark:text-slate-100">
+                        {item.name}
+                        {item.version && (
+                          <span class="ml-1 font-mono text-[11px] font-normal text-slate-500 dark:text-slate-500">
+                            {item.version}
+                          </span>
+                        )}
+                      </span>
+                      {item.note && (
+                        <span class="mt-0.5 font-mono text-[10px] uppercase tracking-[0.15em] text-slate-500 dark:text-slate-500">
+                          {item.note}
+                        </span>
+                      )}
+                    </div>
+                  </li>
                 ))}
               </ul>
             </div>
