@@ -36,7 +36,7 @@ const formattedDate = new Date(kata.date).toLocaleDateString(dateLocale, {
           <span class="sr-only"> — {t(lang, 'katas.card.openOnGithub')}</span>
         </a>
       </h3>
-      <p class="mt-1 font-mono text-[11px] uppercase tracking-[0.25em] text-secondary/80 dark:text-accent-blue">
+      <p class="mt-1 font-mono text-[11px] uppercase tracking-[0.25em] text-secondary dark:text-accent-blue">
         {formattedDate}
       </p>
     </div>
@@ -53,7 +53,7 @@ const formattedDate = new Date(kata.date).toLocaleDateString(dateLocale, {
     {kata.concepts.length > 0 && (
       <ul class="flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] tracking-wide text-quaternary/80 dark:text-slate-400">
         {kata.concepts.map((label) => (
-          <li class="before:mr-0.5 before:text-secondary/80 before:content-['#'] dark:before:text-accent-blue/60">
+          <li class="before:mr-0.5 before:text-secondary before:content-['#'] dark:before:text-accent-blue/60">
             {label}
           </li>
         ))}
