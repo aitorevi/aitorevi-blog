@@ -5,6 +5,7 @@ import { Icon } from 'astro-icon/components';
 import { t } from '../../i18n/utils';
 import type { Lang } from '../../data/cv';
 import pkg from '../../../package.json';
+import { fetchBuildStats } from '../../lib/build-stats';
 
 interface Props {
   lang: Lang;
@@ -29,18 +30,18 @@ const buildBlogPostPath = (slug: string) => (isES ? `/blog/${slug}` : `/en/blog/
 const timelineItems = [1, 2, 3, 4, 5] as const;
 const decisions = ['astro', 'i18n', 'cms', 'consent', 'tests', 'ci', 'a11y'] as const;
 
-// Stat tiles. Data collected from git/gh on 2026-04-23.
-// See docs/case-study-research.md for methodology.
-// `static: true` means "render as-is, skip the count-up" — only used for
-// the year, where a 0 → 2024 tween would read like a clock spinning.
+const buildStats = fetchBuildStats(new URL('../../../', import.meta.url).pathname);
+
+// `static: true` skips the count-up tween — used for the year so it
+// doesn't spin from 0 → 2024 on every page load.
 const stats = [
-  { value: 416, labelKey: 'portfolio.self.numbers.commits' },
-  { value: 47, labelKey: 'portfolio.self.numbers.prs' },
-  { value: 135, labelKey: 'portfolio.self.numbers.tests' },
-  { value: 2, labelKey: 'portfolio.self.numbers.languages' },
-  { value: 6, labelKey: 'portfolio.self.numbers.legalPages' },
-  { value: 2, labelKey: 'portfolio.self.numbers.workflows' },
-  { value: 2024, labelKey: 'portfolio.self.numbers.since', static: true },
+  { value: buildStats.commits,    labelKey: 'portfolio.self.numbers.commits' },
+  { value: buildStats.prs,        labelKey: 'portfolio.self.numbers.prs' },
+  { value: buildStats.tests,      labelKey: 'portfolio.self.numbers.tests' },
+  { value: 2,                     labelKey: 'portfolio.self.numbers.languages' },
+  { value: buildStats.legalPages, labelKey: 'portfolio.self.numbers.legalPages' },
+  { value: buildStats.workflows,  labelKey: 'portfolio.self.numbers.workflows' },
+  { value: 2024,                  labelKey: 'portfolio.self.numbers.since', static: true },
 ];
 
 // Lighthouse / PageSpeed Insights scores (mobile, measured on
