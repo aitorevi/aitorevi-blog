@@ -69,12 +69,12 @@ const projects = [
     </p>
 
     <ul
-      class="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+      class="mt-14 flex flex-wrap justify-center gap-5"
       data-stagger-root
     >
       {projects.map((project, i) => (
         <li
-          class="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-lg backdrop-blur-md transition-[border-color,box-shadow,background-color] duration-500 hover:border-secondary/40 hover:shadow-[0_20px_50px_-20px_rgba(94,58,238,0.35)] dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:hover:border-accent-blue/40 dark:hover:bg-white/[0.07] dark:hover:shadow-[0_0_60px_rgba(96,165,250,0.15)]"
+          class="group relative basis-full overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-lg backdrop-blur-md transition-[border-color,box-shadow,background-color] duration-500 hover:border-secondary/40 hover:shadow-[0_20px_50px_-20px_rgba(94,58,238,0.35)] dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:hover:border-accent-blue/40 dark:hover:bg-white/[0.07] dark:hover:shadow-[0_0_60px_rgba(96,165,250,0.15)] sm:basis-[calc((100%-1.25rem)/2)] lg:basis-[calc((100%-2.5rem)/3)]"
           data-stagger-item
           data-tilt-card
           style={`--stagger-delay:${i * 120}ms`}
