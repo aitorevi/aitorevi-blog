@@ -43,26 +43,13 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<!-- Fonts: JetBrains Mono (code/accents) + Outfit (display) — loaded async to avoid blocking render -->
+		<!-- Fonts: JetBrains Mono (code/accents) + Outfit (display) -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
-			rel="preload"
-			as="style"
-			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@600;700;900&display=swap"
-		/>
-		<link
 			rel="stylesheet"
 			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@600;700;900&display=swap"
-			media="print"
-			onload="this.media='all'"
 		/>
-		<noscript>
-			<link
-				rel="stylesheet"
-				href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@600;700;900&display=swap"
-			/>
-		</noscript>
 		{alternateUrl && alternateLang && (
 			<link rel="alternate" hreflang={alternateLang} href={alternateUrl} />
 		)}
