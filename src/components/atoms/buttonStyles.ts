@@ -20,7 +20,7 @@ export type ResolvedButtonProps =
   | { tag: 'button'; type: ButtonType };
 
 const BASE_CLASSES =
-  'group inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 font-mono text-sm font-semibold tracking-wide transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-ink-900';
+  'group inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-mono text-sm font-semibold tracking-wide transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-ink-900';
 
 const TONE_RING: Record<ButtonTone, string> = {
   blue: 'focus-visible:ring-accent-blue',
