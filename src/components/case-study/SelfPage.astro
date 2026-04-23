@@ -325,9 +325,8 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
                 class="relative bg-home-gradient-text-light bg-clip-text font-display text-5xl font-black leading-none tabular-nums text-transparent dark:bg-home-gradient-text sm:text-6xl"
                 data-stat-value
                 data-stat-target={String(stat.value)}
-                data-stat-static={stat.static ? 'true' : undefined}
               >
-                {stat.static ? stat.value : 0}
+                {0}
               </div>
               <div class="relative mt-3 font-mono text-[11px] uppercase tracking-[0.25em] text-secondary dark:text-accent-violet">
                 {t(lang, stat.labelKey)}
