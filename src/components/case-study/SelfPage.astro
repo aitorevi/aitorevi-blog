@@ -31,14 +31,30 @@ const decisions = ['astro', 'i18n', 'cms', 'consent', 'tests', 'ci', 'a11y'] as 
 // Stat tiles. Data collected from git/gh on 2026-04-23.
 // See docs/case-study-research.md for methodology.
 const stats = [
-  { value: '397', labelKey: 'portfolio.self.numbers.commits' },
-  { value: '41', labelKey: 'portfolio.self.numbers.prs' },
+  { value: '416', labelKey: 'portfolio.self.numbers.commits' },
+  { value: '47', labelKey: 'portfolio.self.numbers.prs' },
   { value: '135', labelKey: 'portfolio.self.numbers.tests' },
   { value: '2', labelKey: 'portfolio.self.numbers.languages' },
   { value: '6', labelKey: 'portfolio.self.numbers.legalPages' },
   { value: '2', labelKey: 'portfolio.self.numbers.workflows' },
   { value: '2024', labelKey: 'portfolio.self.numbers.since' },
 ];
+
+// Lighthouse / PageSpeed Insights scores (mobile, measured on
+// https://www.aitorevi.dev on 2026-04-23 after all perf iterations).
+const lighthouseScores = [
+  { value: 92, labelKey: 'portfolio.self.scores.performance' },
+  { value: 100, labelKey: 'portfolio.self.scores.accessibility' },
+  { value: 100, labelKey: 'portfolio.self.scores.bestPractices' },
+  { value: 100, labelKey: 'portfolio.self.scores.seo' },
+];
+
+// Color ring matching Lighthouse's own badges: 0-49 red, 50-89 amber, 90-100 green.
+function scoreTone(value: number) {
+  if (value >= 90) return { ring: 'text-emerald-500', text: 'text-emerald-600 dark:text-emerald-400' };
+  if (value >= 50) return { ring: 'text-amber-500', text: 'text-amber-600 dark:text-amber-400' };
+  return { ring: 'text-rose-500', text: 'text-rose-600 dark:text-rose-400' };
+}
 
 const stack = {
   frontend: [`Astro ${astroVersion}`, 'TypeScript', `Tailwind CSS ${tailwindVersion}`, `React ${reactVersion} (selective)`],
@@ -204,9 +220,56 @@ const stack = {
           ))}
         </dl>
 
-        <p class="mt-6 text-center text-[11px] font-mono uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500">
-          {/* TODO: Web Vitals — pegar cifras reales desde el dashboard de Vercel Analytics */}
-          {t(lang, 'portfolio.self.numbers.vitalsTodo')}
+      </div>
+    </section>
+
+    <!-- PageSpeed / Lighthouse scores — visual block mimicking Lighthouse badges -->
+    <section class="bg-white py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="self-scores">
+      <div class="mx-auto max-w-5xl px-6">
+        <h2 id="self-scores" class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl">
+          {t(lang, 'portfolio.self.scores.title')}
+        </h2>
+        <p class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
+          {t(lang, 'portfolio.self.scores.subtitle')}
+        </p>
+
+        <ul class="mt-12 grid grid-cols-2 gap-6 md:grid-cols-4" aria-label={t(lang, 'portfolio.self.scores.title')}>
+          {lighthouseScores.map((score) => {
+            const tone = scoreTone(score.value);
+            const circumference = 2 * Math.PI * 42;
+            const offset = circumference * (1 - score.value / 100);
+            return (
+              <li class="flex flex-col items-center text-center">
+                <div class="relative h-28 w-28" aria-hidden="true">
+                  <svg class="h-full w-full -rotate-90" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="42" class="stroke-slate-200 dark:stroke-white/10" stroke-width="8" fill="none" />
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="42"
+                      class:list={['transition-all duration-1000', tone.ring]}
+                      stroke="currentColor"
+                      stroke-width="8"
+                      stroke-linecap="round"
+                      fill="none"
+                      stroke-dasharray={circumference}
+                      stroke-dashoffset={offset}
+                    />
+                  </svg>
+                  <span class:list={['absolute inset-0 flex items-center justify-center font-display text-3xl font-bold', tone.text]}>
+                    {score.value}
+                  </span>
+                </div>
+                <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-slate-600 dark:text-slate-400">
+                  {t(lang, score.labelKey)}
+                </p>
+              </li>
+            );
+          })}
+        </ul>
+
+        <p class="mt-8 text-center text-[11px] font-mono uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500">
+          {t(lang, 'portfolio.self.scores.source')}
         </p>
       </div>
     </section>
