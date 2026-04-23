@@ -1,7 +1,7 @@
 import type { Lang } from './cv';
 
 export interface Talk {
-  title: string;
+  title: Record<Lang, string>;
   event: string;
   /** ISO date of the talk. */
   date: string;
@@ -14,7 +14,10 @@ export interface Talk {
 
 export const talks: Talk[] = [
   {
-    title: 'Mock 101: El Arte del Testing',
+    title: {
+      es: 'Mock 101: El Arte del Testing',
+      en: 'Mock 101: The Art of Testing',
+    },
     event: 'Nerdearla',
     date: '2025-11-15',
     coPresenters: ['Aitor Santana Cabrera'],
