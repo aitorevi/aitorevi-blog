@@ -47,7 +47,16 @@ const shouldLoad = Boolean(id) && !isExcluded;
     // Safety net: passive readers who never interact still get tracked.
     setTimeout(loadGtag, 8000);
 
+    function readConsent() {
+      return (document.cookie.match(/(?:^|; )aitorevi_consent=(granted|denied)/) || [])[1];
+    }
+
     function trackPageView() {
+      // Belt-and-suspenders gate on top of Consent Mode v2: only queue
+      // the page_view if the user has explicitly accepted. Pending and
+      // rejected visitors never fire a hit, regardless of gtag's
+      // internal consent handling.
+      if (readConsent() !== 'granted') return;
       gtag('event', 'page_view', {
         page_title: document.title,
         page_location: window.location.href,
