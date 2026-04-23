@@ -319,8 +319,11 @@ const stack = {
   // StatsCounter uses, extended to drive stroke-dashoffset of the ring
   // in sync with the text counting up. Runs on initial page-load and
   // after every view transition swap.
-  const EASE_OUT_CUBIC = (t: number) => 1 - Math.pow(1 - t, 3);
-  const DURATION_MS = 1400;
+  // Quint ease-out — more pronounced slowdown than the cubic in
+  // StatsCounter. The number sprints the first half and the last
+  // few units visibly settle, which reads better for a 0–100 score.
+  const EASE_OUT_QUINT = (t: number) => 1 - Math.pow(1 - t, 5);
+  const DURATION_MS = 1600;
 
   interface ScoreEl extends HTMLElement {
     __animated?: boolean;
@@ -342,7 +345,7 @@ const stack = {
     const step = (now: number) => {
       const elapsed = now - start;
       const progress = Math.min(1, elapsed / DURATION_MS);
-      const eased = EASE_OUT_CUBIC(progress);
+      const eased = EASE_OUT_QUINT(progress);
       valueEl.textContent = String(Math.round(target * eased));
       ringEl.setAttribute(
         'stroke-dashoffset',
