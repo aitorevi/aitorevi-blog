@@ -6,14 +6,18 @@
     "prepare": "git config core.hooksPath .githooks",
     "dev": "astro dev",
     "start": "astro dev",
+    "prebuild": "node scripts/optimize-images.mjs",
     "build": "astro check && astro build && node scripts/generate-og-image.mjs && node scripts/generate-og-katas.mjs && node scripts/generate-cv-pdf.mjs",
+    "prevercel-build": "node scripts/optimize-images.mjs",
     "vercel-build": "astro check && astro build && node scripts/generate-og-image.mjs && node scripts/generate-og-katas.mjs && node scripts/generate-cv-pdf.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest",
     "og:generate": "node scripts/generate-og-image.mjs",
     "og:katas": "node scripts/generate-og-katas.mjs",
-    "check:katas": "node scripts/check-kata-links.mjs"
+    "check:katas": "node scripts/check-kata-links.mjs",
+    "optimize:images": "node scripts/optimize-images.mjs",
+    "optimize:images:dry": "node scripts/optimize-images.mjs --dry-run"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",
@@ -42,6 +46,7 @@
     "@tailwindcss/typography": "^0.5.19",
     "playwright-core": "^1.59.1",
     "satori": "^0.26.0",
+    "sharp": "^0.34.5",
     "vitest": "^1.1.1"
   }
 }

@@ -70,13 +70,13 @@ const { lang } = Astro.props;
         aria-hidden="true"
         style="position:absolute;left:-9999px;opacity:0;height:0;width:0;"
       />
-      <p class="mb-4 font-mono text-[10px] text-secondary/80 dark:text-accent-blue/80">
+      <p class="mb-4 font-mono text-[10px] text-secondary dark:text-accent-blue">
         <span aria-hidden="true">* </span>{lang === 'es' ? 'Campos obligatorios' : 'Required fields'}
       </p>
 
       <div class="grid gap-5 sm:grid-cols-2">
         <label for="contact-name" class="block">
-          <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary/80 dark:text-accent-blue">
+          <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
             {t(lang, 'home.contact.name')}<span aria-hidden="true"> *</span>
           </span>
           <input
@@ -94,7 +94,7 @@ const { lang } = Astro.props;
           <span id="contact-name-error" data-field-error="name" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
         </label>
         <label for="contact-email" class="block">
-          <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary/80 dark:text-accent-blue">
+          <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
             {t(lang, 'home.contact.email')}<span aria-hidden="true"> *</span>
           </span>
           <input
@@ -114,7 +114,7 @@ const { lang } = Astro.props;
       </div>
 
       <label for="contact-subject" class="mt-5 block">
-        <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary/80 dark:text-accent-blue">
+        <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
           {t(lang, 'home.contact.subject')}<span aria-hidden="true"> *</span>
         </span>
         <input
@@ -132,7 +132,7 @@ const { lang } = Astro.props;
       </label>
 
       <label for="contact-message" class="mt-5 block">
-        <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary/80 dark:text-accent-blue">
+        <span class="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
           {t(lang, 'home.contact.message')}<span aria-hidden="true"> *</span>
         </span>
         <textarea
@@ -151,7 +151,7 @@ const { lang } = Astro.props;
 
       <!-- RGPD — cláusula informativa básica -->
       <section class="mt-6 border-t border-slate-200/70 pt-4 dark:border-white/5" aria-labelledby="contact-privacy-heading">
-        <p id="contact-privacy-heading" class="mb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue/80">
+        <p id="contact-privacy-heading" class="mb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
           {t(lang, 'home.contact.privacy.heading')}
         </p>
         <p class="text-[11px] leading-relaxed text-slate-500 dark:text-slate-500">
@@ -181,7 +181,7 @@ const { lang } = Astro.props;
             {t(lang, 'home.contact.consent.linkLabel')}
           </a>
           <span aria-hidden="true"> *</span>
-          <span class="ml-1 text-slate-500/70 dark:text-slate-500/70">
+          <span class="ml-1 text-slate-500 dark:text-slate-500">
             {t(lang, 'home.contact.consent.required')}
           </span>
         </span>
