@@ -9,6 +9,7 @@ interface Props {
 const { lang } = Astro.props;
 
 const imsUrl = lang === 'en' ? '/en/portfolio/ims' : '/portfolio/ims';
+const selfUrl = lang === 'en' ? '/en/portfolio/aitorevi-dev' : '/portfolio/aitorevi-dev';
 
 const projects = [
   {
@@ -36,6 +37,15 @@ const projects = [
     descKey: 'home.portfolio.ims.desc',
     tech: 'Astro 5, Supabase, PWA',
     accent: 'from-accent-violet/20 to-transparent',
+    external: false,
+  },
+  {
+    name: 'aitorevi.dev',
+    url: selfUrl,
+    tagKey: 'home.portfolio.tag.blog',
+    descKey: 'home.portfolio.self.desc',
+    tech: 'Astro 5, Keystatic, Tailwind',
+    accent: 'from-accent-blue/20 to-transparent',
     external: false,
   },
 ];
