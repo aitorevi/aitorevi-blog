@@ -68,6 +68,34 @@ describe('getAlternateUrl', () => {
   it('switches EN → ES for /en/cv', () => {
     expect(getAlternateUrl('/en/cv', 'en')).toBe('/cv');
   });
+
+  // Legal pages — some have translated slugs and need explicit mapping,
+  // others share the slug across languages.
+  it('maps /privacidad → /en/privacy (translated slug)', () => {
+    expect(getAlternateUrl('/privacidad', 'es')).toBe('/en/privacy');
+  });
+
+  it('maps /en/privacy → /privacidad (translated slug)', () => {
+    expect(getAlternateUrl('/en/privacy', 'en')).toBe('/privacidad');
+  });
+
+  it('maps /aviso-legal → /en/legal-notice (translated slug)', () => {
+    expect(getAlternateUrl('/aviso-legal', 'es')).toBe('/en/legal-notice');
+  });
+
+  it('maps /en/legal-notice → /aviso-legal (translated slug)', () => {
+    expect(getAlternateUrl('/en/legal-notice', 'en')).toBe('/aviso-legal');
+  });
+
+  it('keeps /cookies shared slug working in both directions', () => {
+    expect(getAlternateUrl('/cookies', 'es')).toBe('/en/cookies');
+    expect(getAlternateUrl('/en/cookies', 'en')).toBe('/cookies');
+  });
+
+  it('handles trailing slashes on translated-slug pages', () => {
+    expect(getAlternateUrl('/privacidad/', 'es')).toBe('/en/privacy');
+    expect(getAlternateUrl('/en/legal-notice/', 'en')).toBe('/aviso-legal');
+  });
 });
 
 describe('getBlogSlugFromId', () => {
