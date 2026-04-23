@@ -1,29 +1,35 @@
 ---
 interface Props {
-  value: string;
-  suffix: string;
+  value: string | number;
   label: string;
+  suffix?: string;
+  tilt?: boolean;
+  class?: string;
 }
 
-const { value, suffix, label } = Astro.props;
+const { value, label, suffix = '', tilt = false, class: className } = Astro.props;
 ---
 
 <div
-  class="group relative overflow-hidden rounded-xl border border-secondary/15 bg-slate-50/30 px-6 py-10 text-center transition-[border-color,box-shadow] duration-300 hover:border-secondary/40 hover:shadow-[0_0_12px_rgba(94,58,238,0.08)] dark:border-accent-violet/20 dark:bg-ink-800 dark:hover:border-accent-violet/40 dark:hover:shadow-[0_0_30px_rgba(167,139,250,0.15)]"
+  class:list={[
+    'group relative overflow-hidden rounded-xl border border-secondary/15 bg-slate-50/30 px-6 py-10 text-center transition-[border-color,box-shadow] duration-300 hover:border-secondary/40 hover:shadow-[0_0_12px_rgba(94,58,238,0.08)] dark:border-accent-violet/20 dark:bg-ink-800 dark:hover:border-accent-violet/40 dark:hover:shadow-[0_0_30px_rgba(167,139,250,0.15)]',
+    className,
+  ]}
   data-stat
-  data-stat-target={value}
+  data-stat-target={String(value)}
   data-stat-suffix={suffix}
-  data-tilt-stat
+  data-tilt-stat={tilt ? '' : undefined}
 >
   <div
     class="pointer-events-none absolute inset-x-0 -top-20 h-40 bg-gradient-to-b from-secondary/10 to-transparent opacity-60 dark:from-accent-violet/10"
     aria-hidden="true"
   />
   <div
-    class="relative bg-home-gradient-text-light bg-clip-text font-display text-5xl font-black leading-none text-transparent dark:bg-home-gradient-text sm:text-6xl"
+    class="relative bg-home-gradient-text-light bg-clip-text font-display text-5xl font-black tabular-nums leading-none text-transparent dark:bg-home-gradient-text sm:text-6xl"
     data-stat-value
+    data-stat-target={String(value)}
   >
-    {suffix ? '0' : value}
+    {0}
   </div>
   <div class="relative mt-3 font-mono text-[11px] uppercase tracking-[0.25em] text-secondary transition-colors dark:text-accent-violet group-hover:dark:text-accent-violet">
     {label}

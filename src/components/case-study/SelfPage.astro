@@ -5,6 +5,7 @@ import { Icon } from 'astro-icon/components';
 import { t } from '../../i18n/utils';
 import type { Lang } from '../../data/cv';
 import { fetchBuildStats } from '../../lib/build-stats';
+import StatCard from '../home/StatCard.astro';
 
 interface Props {
   lang: Lang;
@@ -313,25 +314,11 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
 
         <div class="mt-14 flex flex-wrap justify-center gap-4 sm:gap-6" data-stats-root>
           {stats.map((stat) => (
-            <div
-              class="group relative basis-[calc((100%-1rem)/2)] overflow-hidden rounded-xl border border-secondary/15 bg-slate-50/30 px-6 py-10 text-center transition-[border-color,box-shadow] duration-300 hover:border-secondary/40 hover:shadow-[0_0_12px_rgba(94,58,238,0.08)] dark:border-accent-violet/20 dark:bg-ink-800 dark:hover:border-accent-violet/40 dark:hover:shadow-[0_0_30px_rgba(167,139,250,0.15)] sm:basis-[calc((100%-1.5rem)/2)] md:basis-[calc((100%-4.5rem)/4)]"
-              data-stat
-            >
-              <div
-                class="pointer-events-none absolute inset-x-0 -top-20 h-40 bg-gradient-to-b from-secondary/10 to-transparent opacity-60 dark:from-accent-violet/10"
-                aria-hidden="true"
-              />
-              <div
-                class="relative bg-home-gradient-text-light bg-clip-text font-display text-5xl font-black leading-none tabular-nums text-transparent dark:bg-home-gradient-text sm:text-6xl"
-                data-stat-value
-                data-stat-target={String(stat.value)}
-              >
-                {0}
-              </div>
-              <div class="relative mt-3 font-mono text-[11px] uppercase tracking-[0.25em] text-secondary dark:text-accent-violet">
-                {t(lang, stat.labelKey)}
-              </div>
-            </div>
+            <StatCard
+              value={stat.value}
+              label={t(lang, stat.labelKey)}
+              class="basis-[calc((100%-1rem)/2)] sm:basis-[calc((100%-1.5rem)/2)] md:basis-[calc((100%-4.5rem)/4)]"
+            />
           ))}
         </div>
 
