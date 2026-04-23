@@ -5,36 +5,55 @@ const isExcluded = path.includes('/print') || path.startsWith('/keystatic');
 const shouldLoad = Boolean(id) && !isExcluded;
 ---
 {shouldLoad && (
-  <>
-    <script async src={`https://www.googletagmanager.com/gtag/js?id=${id}`}></script>
-    <script is:inline define:vars={{ id }}>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){ dataLayer.push(arguments); }
-      window.gtag = gtag;
+  <script is:inline define:vars={{ id }}>
+    // Cheap inline setup — runs on every page load. The actual gtag.js
+    // payload (~150 KiB, 60 KiB of which is unused on first paint) is
+    // deferred until the visitor actually interacts with the page, or
+    // 8 seconds as a safety net for passive readers.
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    window.gtag = gtag;
 
-      gtag('consent', 'default', {
-        analytics_storage: 'denied',
-        ad_storage: 'denied',
-        ad_user_data: 'denied',
-        ad_personalization: 'denied',
+    gtag('consent', 'default', {
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+    });
+
+    var storedConsent = (document.cookie.match(/(?:^|; )aitorevi_consent=(granted|denied)/) || [])[1];
+    if (storedConsent === 'granted') {
+      gtag('consent', 'update', { analytics_storage: 'granted' });
+    }
+
+    gtag('js', new Date());
+    gtag('config', id, { send_page_view: false, anonymize_ip: true });
+
+    // Lazy-load gtag.js on first interaction.
+    var gtagLoaded = false;
+    function loadGtag() {
+      if (gtagLoaded) return;
+      gtagLoaded = true;
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
+      document.head.appendChild(s);
+    }
+    var events = ['scroll', 'click', 'touchstart', 'keydown', 'mouseover'];
+    var opts = { once: true, passive: true };
+    events.forEach(function(ev) {
+      window.addEventListener(ev, loadGtag, opts);
+    });
+    // Safety net: passive readers who never interact still get tracked.
+    setTimeout(loadGtag, 8000);
+
+    function trackPageView() {
+      gtag('event', 'page_view', {
+        page_title: document.title,
+        page_location: window.location.href,
+        page_path: window.location.pathname + window.location.search,
       });
-
-      var storedConsent = (document.cookie.match(/(?:^|; )aitorevi_consent=(granted|denied)/) || [])[1];
-      if (storedConsent === 'granted') {
-        gtag('consent', 'update', { analytics_storage: 'granted' });
-      }
-
-      gtag('js', new Date());
-      gtag('config', id, { send_page_view: false, anonymize_ip: true });
-
-      function trackPageView() {
-        gtag('event', 'page_view', {
-          page_title: document.title,
-          page_location: window.location.href,
-          page_path: window.location.pathname + window.location.search,
-        });
-      }
-      document.addEventListener('astro:page-load', trackPageView);
-    </script>
-  </>
+    }
+    document.addEventListener('astro:page-load', trackPageView);
+  </script>
 )}
