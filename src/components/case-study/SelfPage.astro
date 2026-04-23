@@ -1,0 +1,616 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Button from '../atoms/Button.astro';
+import { Icon } from 'astro-icon/components';
+import { t } from '../../i18n/utils';
+import type { Lang } from '../../data/cv';
+import pkg from '../../../package.json';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const isES = lang === 'es';
+
+const trimVersion = (raw: string | undefined) => (raw ? raw.replace(/^[\^~]/, '') : '');
+const astroVersion = trimVersion(pkg.dependencies?.astro);
+const tailwindVersion = trimVersion(pkg.dependencies?.tailwindcss);
+const reactVersion = trimVersion(pkg.dependencies?.react);
+const vitestVersion = trimVersion(pkg.devDependencies?.vitest);
+const keystaticVersion = trimVersion(pkg.dependencies?.['@keystatic/astro']);
+
+const blogPath = isES ? '/blog' : '/en/blog';
+const contactPath = isES ? '/#contact' : '/en/#contact';
+const repoUrl = 'https://github.com/aitorevi/aitorevi-blog';
+
+const buildBlogPostPath = (slug: string) => (isES ? `/blog/${slug}` : `/en/blog/${slug}`);
+
+const timelineItems = [1, 2, 3, 4, 5] as const;
+const decisions = ['astro', 'i18n', 'cms', 'consent', 'tests', 'ci', 'a11y'] as const;
+
+// Stat tiles. Data collected from git/gh on 2026-04-23.
+// See docs/case-study-research.md for methodology.
+// `static: true` means "render as-is, skip the count-up" — only used for
+// the year, where a 0 → 2024 tween would read like a clock spinning.
+const stats = [
+  { value: 416, labelKey: 'portfolio.self.numbers.commits' },
+  { value: 47, labelKey: 'portfolio.self.numbers.prs' },
+  { value: 135, labelKey: 'portfolio.self.numbers.tests' },
+  { value: 2, labelKey: 'portfolio.self.numbers.languages' },
+  { value: 6, labelKey: 'portfolio.self.numbers.legalPages' },
+  { value: 2, labelKey: 'portfolio.self.numbers.workflows' },
+  { value: 2024, labelKey: 'portfolio.self.numbers.since', static: true },
+];
+
+// Lighthouse / PageSpeed Insights scores (mobile, measured on
+// https://www.aitorevi.dev on 2026-04-23 after all perf iterations).
+const lighthouseScores = [
+  { value: 92, labelKey: 'portfolio.self.scores.performance' },
+  { value: 100, labelKey: 'portfolio.self.scores.accessibility' },
+  { value: 100, labelKey: 'portfolio.self.scores.bestPractices' },
+  { value: 100, labelKey: 'portfolio.self.scores.seo' },
+];
+
+// Lighthouse-tier palette. Each tier ships three things the badge needs:
+//  - gradId: the <linearGradient> id the ring stroke references.
+//  - text:   Tailwind class for the numeric label.
+//  - glow:   Tailwind gradient utility for the soft blurred backdrop.
+//  - shadow: rgba used inline on the ring's drop-shadow filter.
+function scoreTone(value: number) {
+  if (value >= 90) return {
+    gradId: 'score-grad-high',
+    text: 'text-emerald-600 dark:text-emerald-400',
+    glow: 'from-emerald-500/25',
+    shadow: 'rgba(16,185,129,0.45)',
+  };
+  if (value >= 50) return {
+    gradId: 'score-grad-mid',
+    text: 'text-amber-600 dark:text-amber-400',
+    glow: 'from-amber-500/25',
+    shadow: 'rgba(245,158,11,0.45)',
+  };
+  return {
+    gradId: 'score-grad-low',
+    text: 'text-rose-600 dark:text-rose-400',
+    glow: 'from-rose-500/25',
+    shadow: 'rgba(244,63,94,0.45)',
+  };
+}
+
+interface TechItem {
+  name: string;
+  icon?: string;              // iconify id, e.g. 'simple-icons:astro'
+  version?: string;
+  note?: string;              // small parenthetical under the name
+}
+
+// Icon sources per item:
+//  - simple-icons:* → brands with a Simple-Icons entry; monochrome, uses currentColor.
+//  - bare name        → local SVG under src/icons/; also monochrome. All icons
+//                       share a single flat tone so no brand pops out over the rest.
+const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = {
+  frontend: [
+    { name: 'Astro', icon: 'simple-icons:astro', version: astroVersion },
+    { name: 'TypeScript', icon: 'simple-icons:typescript' },
+    { name: 'Tailwind CSS', icon: 'simple-icons:tailwindcss', version: tailwindVersion },
+    { name: 'React', icon: 'simple-icons:react', version: reactVersion, note: isES ? 'selectivo' : 'selective' },
+  ],
+  content: [
+    { name: 'Keystatic', icon: 'keystatic', version: keystaticVersion },
+    { name: 'Markdoc', icon: 'simple-icons:markdown' },
+    { name: 'Satori', icon: 'satori', note: 'OG images' },
+    { name: 'Puppeteer', icon: 'simple-icons:puppeteer', note: isES ? 'PDF del CV' : 'CV PDF' },
+  ],
+  infra: [
+    { name: 'Vercel', icon: 'simple-icons:vercel' },
+    { name: 'Upstash', icon: 'upstash', note: 'Redis' },
+    { name: 'Resend', icon: 'resend', note: 'email' },
+    { name: 'GitHub Actions', icon: 'simple-icons:githubactions' },
+  ],
+  testing: [
+    { name: 'Vitest', icon: 'simple-icons:vitest', version: vitestVersion, note: isES ? '135 tests unitarios' : '135 unit tests' },
+  ],
+};
+---
+
+<Layout
+  title={t(lang, 'portfolio.self.meta.title')}
+  description={t(lang, 'portfolio.self.meta.description')}
+  lang={lang}
+>
+  <div class="relative bg-slate-50 text-ink-900 dark:bg-ink-900 dark:text-slate-100">
+
+    <!-- Hero -->
+    <section class="relative overflow-hidden py-24 sm:py-32" aria-labelledby="self-hero">
+      <div class="absolute inset-0 bg-gradient-to-b from-secondary/5 to-transparent dark:from-accent-blue/5" aria-hidden="true" />
+      <div class="relative mx-auto max-w-3xl px-6 text-center">
+        <span class="inline-flex items-center rounded-full border border-secondary/20 bg-secondary/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-secondary dark:border-accent-violet/30 dark:bg-accent-violet/20 dark:text-accent-violet">
+          {t(lang, 'portfolio.self.hero.tag')}
+        </span>
+        <h1 id="self-hero" class="mt-6 font-display text-4xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-5xl">
+          {t(lang, 'portfolio.self.hero.title')}
+        </h1>
+        <p class="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">
+          {t(lang, 'portfolio.self.hero.subtitle')}
+        </p>
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <Button href={repoUrl} target="_blank" tone="blue">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+              <path d="M12 .5C5.37.5 0 5.87 0 12.5a12 12 0 0 0 8.21 11.41c.6.11.82-.26.82-.58v-2.23c-3.34.73-4.04-1.61-4.04-1.61-.55-1.4-1.33-1.78-1.33-1.78-1.08-.74.08-.73.08-.73 1.2.08 1.83 1.24 1.83 1.24 1.07 1.83 2.8 1.3 3.49.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.34-5.47-5.95 0-1.32.47-2.39 1.24-3.24-.13-.3-.54-1.52.11-3.18 0 0 1.01-.32 3.3 1.24a11.4 11.4 0 0 1 6 0c2.29-1.56 3.3-1.24 3.3-1.24.66 1.66.24 2.88.12 3.18.77.85 1.23 1.92 1.23 3.24 0 4.62-2.81 5.65-5.49 5.94.43.38.82 1.12.82 2.26v3.35c0 .32.22.7.83.58A12 12 0 0 0 24 12.5C24 5.87 18.63.5 12 .5Z" />
+            </svg>
+            <span>{t(lang, 'portfolio.self.hero.ctaRepo')}</span>
+          </Button>
+          <Button href={blogPath} tone="violet">
+            <span>{t(lang, 'portfolio.self.hero.ctaBlog')}</span>
+          </Button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="bg-white py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="self-timeline">
+      <div class="mx-auto max-w-3xl px-6">
+        <h2 id="self-timeline" class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl">
+          {t(lang, 'portfolio.self.timeline.title')}
+        </h2>
+        <p class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary/85 dark:text-accent-blue/70">
+          {t(lang, 'portfolio.self.timeline.subtitle')}
+        </p>
+
+        <ol class="mt-12">
+          {timelineItems.map((n, i) => {
+            const isFirst = i === 0;
+            const isLast = i === timelineItems.length - 1;
+            return (
+              <li class="flex items-stretch">
+                {/* Period column */}
+                <div class="w-28 shrink-0 pt-1 text-right pr-6">
+                  <span class="font-mono text-[11px] uppercase tracking-[0.2em] text-secondary/70 dark:text-accent-blue/60">
+                    {t(lang, `portfolio.self.timeline.${n}.period`)}
+                  </span>
+                </div>
+
+                {/* Timeline track */}
+                <div class="flex shrink-0 flex-col items-center w-5">
+                  <div
+                    class:list={[
+                      "relative shrink-0 rounded-full z-10",
+                      isFirst
+                        ? "mt-[5px] h-4 w-4 border-2 border-secondary bg-secondary shadow-[0_0_10px_rgba(94,58,238,0.5)] dark:border-accent-violet dark:bg-accent-violet dark:shadow-[0_0_10px_rgba(167,139,250,0.5)]"
+                        : "mt-[5px] h-3 w-3 border-2 border-secondary/50 dark:border-accent-violet/40 bg-white dark:bg-ink-800",
+                    ]}
+                  >
+                    {isFirst && (
+                      <span class="absolute -inset-1 rounded-full bg-secondary/20 dark:bg-accent-violet/20 animate-pulse" aria-hidden="true" />
+                    )}
+                  </div>
+                  {!isLast && (
+                    <div class="w-0.5 flex-1 mb-[-5px] bg-secondary/25 dark:bg-accent-violet/30 shadow-[0_0_4px_rgba(94,58,238,0.15)] dark:shadow-[0_0_6px_rgba(167,139,250,0.25)]" aria-hidden="true" />
+                  )}
+                </div>
+
+                {/* Content column */}
+                <div class:list={["flex-1 pl-6", isLast ? "pb-0" : "pb-8"]}>
+                  <h3 class="font-display text-lg font-semibold text-ink-900 dark:text-slate-100">
+                    {t(lang, `portfolio.self.timeline.${n}.heading`)}
+                  </h3>
+                  <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                    {t(lang, `portfolio.self.timeline.${n}.text`)}
+                  </p>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Decisions -->
+    <section class="bg-slate-50 py-20 dark:bg-ink-900 sm:py-24" aria-labelledby="self-decisions">
+      <div class="mx-auto max-w-5xl px-6">
+        <h2 id="self-decisions" class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl">
+          {t(lang, 'portfolio.self.decisions.title')}
+        </h2>
+        <p class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary/85 dark:text-accent-blue/70">
+          {t(lang, 'portfolio.self.decisions.subtitle')}
+        </p>
+
+        <ul class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {decisions.map((key) => {
+            const hasInlinePost = key === 'tests' || key === 'ci';
+            const postSlug = hasInlinePost ? t(lang, `portfolio.self.decisions.${key}.postSlug`) : '';
+            return (
+              <li class="rounded-xl border border-slate-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.04]">
+                <h3 class="font-display text-base font-semibold text-ink-900 dark:text-slate-100">
+                  {t(lang, `portfolio.self.decisions.${key}.heading`)}
+                </h3>
+                <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                  {hasInlinePost ? (
+                    <>
+                      {t(lang, `portfolio.self.decisions.${key}.textBefore`)}
+                      {' '}
+                      <a
+                        href={buildBlogPostPath(postSlug)}
+                        class="text-secondary hover:text-accent-violet dark:text-accent-blue dark:hover:text-accent-violet underline underline-offset-2"
+                      >
+                        {t(lang, `portfolio.self.decisions.${key}.postLabel`)}
+                      </a>
+                      {t(lang, `portfolio.self.decisions.${key}.textAfter`)}
+                    </>
+                  ) : (
+                    t(lang, `portfolio.self.decisions.${key}.text`)
+                  )}
+                </p>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Stack -->
+    <section class="bg-white py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="self-stack">
+      <div class="mx-auto max-w-5xl px-6">
+        <h2 id="self-stack" class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl">
+          {t(lang, 'portfolio.self.stack.title')}
+        </h2>
+        <p class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary/85 dark:text-accent-blue/70">
+          {t(lang, 'portfolio.self.stack.subtitle')}
+        </p>
+
+        <div class="mt-14 grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
+          {(['frontend', 'content', 'infra', 'testing'] as const).map((category) => (
+            <div class="flex flex-col items-center text-center">
+              <h3 class="font-mono text-[10px] uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
+                {t(lang, `portfolio.self.stack.${category}`)}
+              </h3>
+              <div class="mt-4 h-px w-8 bg-secondary/40 dark:bg-accent-violet/40" aria-hidden="true" />
+              <ul class="mt-6 space-y-6">
+                {stack[category].map((item) => (
+                  <li class="flex flex-col items-center">
+                    {item.icon ? (
+                      <Icon
+                        name={item.icon}
+                        class="h-8 w-8 text-ink-900 dark:text-slate-200"
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      <span
+                        class="flex h-8 w-8 items-center justify-center rounded-full border border-secondary/30 text-[11px] font-mono font-bold text-secondary dark:border-accent-violet/40 dark:text-accent-violet"
+                        aria-hidden="true"
+                      >
+                        {item.name.charAt(0)}
+                      </span>
+                    )}
+                    <span class="mt-2 font-display text-sm font-semibold text-ink-900 dark:text-slate-100">
+                      {item.name}
+                      {item.version && (
+                        <span class="ml-1 font-mono text-[11px] font-normal text-slate-500 dark:text-slate-500">
+                          {item.version}
+                        </span>
+                      )}
+                    </span>
+                    {item.note && (
+                      <span class="mt-1 font-mono text-[10px] uppercase tracking-[0.15em] text-slate-500 dark:text-slate-500">
+                        {item.note}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Numbers -->
+    <section class="bg-slate-50 py-20 dark:bg-ink-900 sm:py-24" aria-labelledby="self-numbers">
+      <div class="mx-auto max-w-5xl px-6">
+        <h2 id="self-numbers" class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl">
+          {t(lang, 'portfolio.self.numbers.title')}
+        </h2>
+        <p class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary/85 dark:text-accent-blue/70">
+          {t(lang, 'portfolio.self.numbers.subtitle')}
+        </p>
+
+        <div class="mt-14 flex flex-wrap justify-center gap-4 sm:gap-6" data-stats-root>
+          {stats.map((stat) => (
+            <div
+              class="group relative basis-[calc((100%-1rem)/2)] overflow-hidden rounded-xl border border-secondary/15 bg-slate-50/30 px-6 py-10 text-center transition-[border-color,box-shadow] duration-300 hover:border-secondary/40 hover:shadow-[0_0_12px_rgba(94,58,238,0.08)] dark:border-accent-violet/20 dark:bg-ink-800 dark:hover:border-accent-violet/40 dark:hover:shadow-[0_0_30px_rgba(167,139,250,0.15)] sm:basis-[calc((100%-1.5rem)/2)] md:basis-[calc((100%-4.5rem)/4)]"
+              data-stat
+            >
+              <div
+                class="pointer-events-none absolute inset-x-0 -top-20 h-40 bg-gradient-to-b from-secondary/10 to-transparent opacity-60 dark:from-accent-violet/10"
+                aria-hidden="true"
+              />
+              <div
+                class="relative bg-home-gradient-text-light bg-clip-text font-display text-5xl font-black leading-none tabular-nums text-transparent dark:bg-home-gradient-text sm:text-6xl"
+                data-stat-value
+                data-stat-target={String(stat.value)}
+                data-stat-static={stat.static ? 'true' : undefined}
+              >
+                {stat.static ? stat.value : 0}
+              </div>
+              <div class="relative mt-3 font-mono text-[11px] uppercase tracking-[0.25em] text-secondary dark:text-accent-violet">
+                {t(lang, stat.labelKey)}
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PageSpeed / Lighthouse scores — visual block mimicking Lighthouse badges -->
+    <section class="relative bg-white py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="self-scores">
+      <!-- Shared SVG gradient defs — referenced by every ring via url(#…). -->
+      <svg class="pointer-events-none absolute h-0 w-0" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="score-grad-high" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#34d399" />
+            <stop offset="55%" stop-color="#10b981" />
+            <stop offset="100%" stop-color="#047857" />
+          </linearGradient>
+          <linearGradient id="score-grad-mid" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fcd34d" />
+            <stop offset="55%" stop-color="#f59e0b" />
+            <stop offset="100%" stop-color="#b45309" />
+          </linearGradient>
+          <linearGradient id="score-grad-low" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fb7185" />
+            <stop offset="55%" stop-color="#f43f5e" />
+            <stop offset="100%" stop-color="#be123c" />
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <div class="mx-auto max-w-5xl px-6">
+        <h2 id="self-scores" class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl">
+          {t(lang, 'portfolio.self.scores.title')}
+        </h2>
+        <p class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
+          {t(lang, 'portfolio.self.scores.subtitle')}
+        </p>
+
+        <ul
+          class="mt-14 grid grid-cols-2 gap-8 md:grid-cols-4"
+          aria-label={t(lang, 'portfolio.self.scores.title')}
+          data-scores-root
+        >
+          {lighthouseScores.map((score) => {
+            const tone = scoreTone(score.value);
+            const circumference = 2 * Math.PI * 42;
+            // Initial state: empty ring, number at zero. The script animates
+            // both to the target on intersection.
+            return (
+              <li class="group flex flex-col items-center text-center">
+                <div class="relative h-36 w-36" aria-hidden="true">
+                  {/* Soft coloured blur behind the badge — gives depth without a hard card frame. */}
+                  <div
+                    class:list={[
+                      'pointer-events-none absolute inset-0 rounded-full bg-gradient-to-br to-transparent blur-2xl opacity-80 transition-opacity duration-500 group-hover:opacity-100',
+                      tone.glow,
+                    ]}
+                    aria-hidden="true"
+                  />
+                  <svg class="relative h-full w-full -rotate-90" viewBox="0 0 100 100">
+                    {/* Track: subtle, slightly wider than progress so the progress ring sits on top. */}
+                    <circle cx="50" cy="50" r="42" class="stroke-slate-200/80 dark:stroke-white/10" stroke-width="6" fill="none" />
+                    {/* Progress ring: gradient stroke + tier-tinted drop-shadow for a soft glow. */}
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="42"
+                      stroke={`url(#${tone.gradId})`}
+                      stroke-width="8"
+                      stroke-linecap="round"
+                      fill="none"
+                      stroke-dasharray={circumference}
+                      stroke-dashoffset={circumference}
+                      style={`filter: drop-shadow(0 0 6px ${tone.shadow});`}
+                      data-score-ring
+                      data-score-target={score.value}
+                      data-score-circumference={circumference}
+                    />
+                  </svg>
+                  <span
+                    class:list={[
+                      'absolute inset-0 flex items-center justify-center font-display text-4xl font-black tabular-nums leading-none tracking-tight',
+                      tone.text,
+                    ]}
+                    data-score-value
+                    data-score-target={score.value}
+                    aria-hidden="true"
+                  >
+                    0
+                  </span>
+                  <span class="sr-only">{score.value}</span>
+                </div>
+                <p class="mt-4 font-mono text-[11px] uppercase tracking-[0.25em] text-slate-600 dark:text-slate-400">
+                  {t(lang, score.labelKey)}
+                </p>
+              </li>
+            );
+          })}
+        </ul>
+
+        <p class="mt-10 text-center text-[11px] font-mono uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500">
+          {t(lang, 'portfolio.self.scores.source')}
+        </p>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="bg-white py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="self-cta">
+      <div class="mx-auto max-w-2xl px-6 text-center">
+        <h2 id="self-cta" class="font-display text-2xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-3xl">
+          {t(lang, 'portfolio.self.cta.title')}
+        </h2>
+        <p class="mx-auto mt-3 text-base leading-relaxed text-slate-600 dark:text-slate-400">
+          {t(lang, 'portfolio.self.cta.text')}
+        </p>
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <Button href={repoUrl} target="_blank" tone="blue">
+            <span>{t(lang, 'portfolio.self.cta.github')}</span>
+          </Button>
+          <Button href={blogPath} tone="blue">
+            <span>{t(lang, 'portfolio.self.cta.blog')}</span>
+          </Button>
+          <Button href={contactPath} tone="violet">
+            <span>{t(lang, 'portfolio.self.cta.contact')}</span>
+          </Button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</Layout>
+
+<script>
+  // Lighthouse-score badges: same IntersectionObserver + ease-out pattern
+  // StatsCounter uses, extended to drive stroke-dashoffset of the ring
+  // in sync with the text counting up. Runs on initial page-load and
+  // after every view transition swap.
+  // Expo ease-out — the first half sprints near the target and the last
+  // handful of units crawl into place, which reads as "settling" and
+  // gives the ring time to visibly close on the final position.
+  const EASE_OUT_EXPO = (t: number) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
+  const DURATION_MS = 2400;
+
+  interface ScoreEl extends HTMLElement {
+    __animated?: boolean;
+  }
+
+  function animateScore(item: ScoreEl) {
+    if (item.__animated) return;
+    item.__animated = true;
+
+    const valueEl = item.querySelector<HTMLElement>('[data-score-value]');
+    const ringEl = item.querySelector<SVGCircleElement>('[data-score-ring]');
+    if (!valueEl || !ringEl) return;
+
+    const target = Number(valueEl.dataset.scoreTarget || '0');
+    const circumference = Number(ringEl.dataset.scoreCircumference || '0');
+    const finalOffset = circumference * (1 - target / 100);
+
+    const start = performance.now();
+    const step = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(1, elapsed / DURATION_MS);
+      const eased = EASE_OUT_EXPO(progress);
+      valueEl.textContent = String(Math.round(target * eased));
+      ringEl.setAttribute(
+        'stroke-dashoffset',
+        String(circumference - (circumference - finalOffset) * eased)
+      );
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        valueEl.textContent = String(target);
+        ringEl.setAttribute('stroke-dashoffset', String(finalOffset));
+      }
+    };
+    requestAnimationFrame(step);
+  }
+
+  function initScores() {
+    const root = document.querySelector('[data-scores-root]');
+    if (!root) return;
+    const items = Array.from(root.querySelectorAll<ScoreEl>('li'));
+    if (items.length === 0) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      items.forEach((item) => {
+        const valueEl = item.querySelector<HTMLElement>('[data-score-value]');
+        const ringEl = item.querySelector<SVGCircleElement>('[data-score-ring]');
+        if (!valueEl || !ringEl) return;
+        const target = Number(valueEl.dataset.scoreTarget || '0');
+        const circumference = Number(ringEl.dataset.scoreCircumference || '0');
+        valueEl.textContent = String(target);
+        ringEl.setAttribute('stroke-dashoffset', String(circumference * (1 - target / 100)));
+      });
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animateScore(entry.target as ScoreEl);
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+    items.forEach((item) => io.observe(item));
+  }
+
+  // Numbers section — same pattern without the ring, and with an
+  // opt-out flag for values (like the year) that shouldn't tween.
+  interface StatEl extends HTMLElement {
+    __animated?: boolean;
+  }
+
+  function animateStat(item: StatEl) {
+    if (item.__animated) return;
+    item.__animated = true;
+    const valueEl = item.querySelector<HTMLElement>('[data-stat-value]');
+    if (!valueEl) return;
+    if (valueEl.dataset.statStatic === 'true') return;
+    const target = Number(valueEl.dataset.statTarget || '0');
+    if (!Number.isFinite(target)) return;
+
+    const start = performance.now();
+    const step = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(1, elapsed / DURATION_MS);
+      const eased = EASE_OUT_EXPO(progress);
+      valueEl.textContent = String(Math.round(target * eased));
+      if (progress < 1) requestAnimationFrame(step);
+      else valueEl.textContent = String(target);
+    };
+    requestAnimationFrame(step);
+  }
+
+  function initStats() {
+    const root = document.querySelector('[data-stats-root]');
+    if (!root) return;
+    const items = Array.from(root.querySelectorAll<StatEl>('[data-stat]'));
+    if (items.length === 0) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      items.forEach((item) => {
+        const valueEl = item.querySelector<HTMLElement>('[data-stat-value]');
+        if (!valueEl) return;
+        valueEl.textContent = valueEl.dataset.statTarget || '';
+      });
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animateStat(entry.target as StatEl);
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+    items.forEach((item) => io.observe(item));
+  }
+
+  function initAll() {
+    initScores();
+    initStats();
+  }
+
+  document.addEventListener('astro:page-load', initAll);
+  document.addEventListener('astro:after-swap', initAll);
+</script>

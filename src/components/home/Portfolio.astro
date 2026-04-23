@@ -9,6 +9,7 @@ interface Props {
 const { lang } = Astro.props;
 
 const imsUrl = lang === 'en' ? '/en/portfolio/ims' : '/portfolio/ims';
+const selfUrl = lang === 'en' ? '/en/portfolio/aitorevi-dev' : '/portfolio/aitorevi-dev';
 
 const projects = [
   {
@@ -38,7 +39,23 @@ const projects = [
     accent: 'from-accent-violet/20 to-transparent',
     external: false,
   },
+  {
+    name: 'aitorevi.dev',
+    url: selfUrl,
+    tagKey: 'home.portfolio.tag.blog',
+    descKey: 'home.portfolio.self.desc',
+    tech: 'Astro 5, Keystatic, Tailwind',
+    accent: 'from-accent-blue/20 to-transparent',
+    external: false,
+  },
 ];
+
+// With exactly 4 cards, a 3-column grid leaves one orphan in the
+// second row. Drop to 2 columns at lg so the layout splits 2+2.
+// Other counts (3, 5, 6, …) keep the 3-column layout.
+const itemBasisClass = projects.length === 4
+  ? 'basis-full sm:basis-[calc((100%-1.25rem)/2)]'
+  : 'basis-full sm:basis-[calc((100%-1.25rem)/2)] lg:basis-[calc((100%-2.5rem)/3)]';
 ---
 
 <section
@@ -59,12 +76,15 @@ const projects = [
     </p>
 
     <ul
-      class="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+      class="mt-14 flex flex-wrap justify-center gap-5"
       data-stagger-root
     >
       {projects.map((project, i) => (
         <li
-          class="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-lg backdrop-blur-md transition-[border-color,box-shadow,background-color] duration-500 hover:border-secondary/40 hover:shadow-[0_20px_50px_-20px_rgba(94,58,238,0.35)] dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:hover:border-accent-blue/40 dark:hover:bg-white/[0.07] dark:hover:shadow-[0_0_60px_rgba(96,165,250,0.15)]"
+          class:list={[
+            'group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-lg backdrop-blur-md transition-[border-color,box-shadow,background-color] duration-500 hover:border-secondary/40 hover:shadow-[0_20px_50px_-20px_rgba(94,58,238,0.35)] dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:hover:border-accent-blue/40 dark:hover:bg-white/[0.07] dark:hover:shadow-[0_0_60px_rgba(96,165,250,0.15)]',
+            itemBasisClass,
+          ]}
           data-stagger-item
           data-tilt-card
           style={`--stagger-delay:${i * 120}ms`}

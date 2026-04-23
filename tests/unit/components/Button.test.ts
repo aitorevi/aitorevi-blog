@@ -5,7 +5,7 @@ describe('buildButtonClasses', () => {
   const BASE_TOKENS = [
     'group',
     'inline-flex',
-    'rounded-lg',
+    'rounded-full',
     'px-6',
     'py-3',
     'font-mono',
