@@ -19,6 +19,7 @@ const astroVersion = trimVersion(pkg.dependencies?.astro);
 const tailwindVersion = trimVersion(pkg.dependencies?.tailwindcss);
 const reactVersion = trimVersion(pkg.dependencies?.react);
 const vitestVersion = trimVersion(pkg.devDependencies?.vitest);
+const playwrightVersion = trimVersion(pkg.devDependencies?.['@playwright/test']);
 const keystaticVersion = trimVersion(pkg.dependencies?.['@keystatic/astro']);
 
 const blogPath = isES ? '/blog' : '/en/blog';
@@ -110,7 +111,8 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
     { name: 'GitHub Actions', icon: 'simple-icons:githubactions' },
   ],
   testing: [
-    { name: 'Vitest', icon: 'simple-icons:vitest', version: vitestVersion, note: isES ? '135 tests unitarios' : '135 unit tests' },
+    { name: 'Vitest', icon: 'simple-icons:vitest', version: vitestVersion, note: isES ? 'unitarios + integración' : 'unit + integration' },
+    { name: 'Playwright', icon: 'simple-icons:playwright', version: playwrightVersion, note: 'E2E' },
   ],
 };
 ---
