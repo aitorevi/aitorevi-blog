@@ -55,9 +55,9 @@ const lighthouseScores = [
 function scoreTone(value: number) {
   if (value >= 90) return {
     gradId: 'score-grad-high',
-    text: 'text-emerald-600 dark:text-emerald-400',
-    glow: 'from-emerald-500/25',
-    shadow: 'rgba(16,185,129,0.45)',
+    text: 'text-accent-blue dark:text-accent-violet',
+    glow: 'from-accent-blue/20 dark:from-accent-violet/25',
+    shadow: 'rgba(96,165,250,0.45)',
   };
   if (value >= 50) return {
     gradId: 'score-grad-mid',
@@ -344,9 +344,9 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
       <svg class="pointer-events-none absolute h-0 w-0" aria-hidden="true" focusable="false">
         <defs>
           <linearGradient id="score-grad-high" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#34d399" />
-            <stop offset="55%" stop-color="#10b981" />
-            <stop offset="100%" stop-color="#047857" />
+            <stop offset="0%" stop-color="#60a5fa" />
+            <stop offset="55%" stop-color="#818cf8" />
+            <stop offset="100%" stop-color="#a78bfa" />
           </linearGradient>
           <linearGradient id="score-grad-mid" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#fcd34d" />
