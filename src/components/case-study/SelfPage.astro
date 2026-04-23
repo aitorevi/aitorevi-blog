@@ -49,11 +49,30 @@ const lighthouseScores = [
   { value: 100, labelKey: 'portfolio.self.scores.seo' },
 ];
 
-// Color ring matching Lighthouse's own badges: 0-49 red, 50-89 amber, 90-100 green.
+// Lighthouse-tier palette. Each tier ships three things the badge needs:
+//  - gradId: the <linearGradient> id the ring stroke references.
+//  - text:   Tailwind class for the numeric label.
+//  - glow:   Tailwind gradient utility for the soft blurred backdrop.
+//  - shadow: rgba used inline on the ring's drop-shadow filter.
 function scoreTone(value: number) {
-  if (value >= 90) return { ring: 'text-emerald-500', text: 'text-emerald-600 dark:text-emerald-400' };
-  if (value >= 50) return { ring: 'text-amber-500', text: 'text-amber-600 dark:text-amber-400' };
-  return { ring: 'text-rose-500', text: 'text-rose-600 dark:text-rose-400' };
+  if (value >= 90) return {
+    gradId: 'score-grad-high',
+    text: 'text-emerald-600 dark:text-emerald-400',
+    glow: 'from-emerald-500/25',
+    shadow: 'rgba(16,185,129,0.45)',
+  };
+  if (value >= 50) return {
+    gradId: 'score-grad-mid',
+    text: 'text-amber-600 dark:text-amber-400',
+    glow: 'from-amber-500/25',
+    shadow: 'rgba(245,158,11,0.45)',
+  };
+  return {
+    gradId: 'score-grad-low',
+    text: 'text-rose-600 dark:text-rose-400',
+    glow: 'from-rose-500/25',
+    shadow: 'rgba(244,63,94,0.45)',
+  };
 }
 
 const stack = {
@@ -224,7 +243,28 @@ const stack = {
     </section>
 
     <!-- PageSpeed / Lighthouse scores — visual block mimicking Lighthouse badges -->
-    <section class="bg-white py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="self-scores">
+    <section class="relative bg-white py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="self-scores">
+      <!-- Shared SVG gradient defs — referenced by every ring via url(#…). -->
+      <svg class="pointer-events-none absolute h-0 w-0" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="score-grad-high" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#34d399" />
+            <stop offset="55%" stop-color="#10b981" />
+            <stop offset="100%" stop-color="#047857" />
+          </linearGradient>
+          <linearGradient id="score-grad-mid" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fcd34d" />
+            <stop offset="55%" stop-color="#f59e0b" />
+            <stop offset="100%" stop-color="#b45309" />
+          </linearGradient>
+          <linearGradient id="score-grad-low" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fb7185" />
+            <stop offset="55%" stop-color="#f43f5e" />
+            <stop offset="100%" stop-color="#be123c" />
+          </linearGradient>
+        </defs>
+      </svg>
+
       <div class="mx-auto max-w-5xl px-6">
         <h2 id="self-scores" class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl">
           {t(lang, 'portfolio.self.scores.title')}
@@ -234,7 +274,7 @@ const stack = {
         </p>
 
         <ul
-          class="mt-12 grid grid-cols-2 gap-6 md:grid-cols-4"
+          class="mt-14 grid grid-cols-2 gap-8 md:grid-cols-4"
           aria-label={t(lang, 'portfolio.self.scores.title')}
           data-scores-root
         >
@@ -244,28 +284,41 @@ const stack = {
             // Initial state: empty ring, number at zero. The script animates
             // both to the target on intersection.
             return (
-              <li class="flex flex-col items-center text-center">
-                <div class="relative h-28 w-28" aria-hidden="true">
-                  <svg class="h-full w-full -rotate-90" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="42" class="stroke-slate-200 dark:stroke-white/10" stroke-width="8" fill="none" />
+              <li class="group flex flex-col items-center text-center">
+                <div class="relative h-36 w-36" aria-hidden="true">
+                  {/* Soft coloured blur behind the badge — gives depth without a hard card frame. */}
+                  <div
+                    class:list={[
+                      'pointer-events-none absolute inset-0 rounded-full bg-gradient-to-br to-transparent blur-2xl opacity-80 transition-opacity duration-500 group-hover:opacity-100',
+                      tone.glow,
+                    ]}
+                    aria-hidden="true"
+                  />
+                  <svg class="relative h-full w-full -rotate-90" viewBox="0 0 100 100">
+                    {/* Track: subtle, slightly wider than progress so the progress ring sits on top. */}
+                    <circle cx="50" cy="50" r="42" class="stroke-slate-200/80 dark:stroke-white/10" stroke-width="6" fill="none" />
+                    {/* Progress ring: gradient stroke + tier-tinted drop-shadow for a soft glow. */}
                     <circle
                       cx="50"
                       cy="50"
                       r="42"
-                      class:list={[tone.ring]}
-                      stroke="currentColor"
+                      stroke={`url(#${tone.gradId})`}
                       stroke-width="8"
                       stroke-linecap="round"
                       fill="none"
                       stroke-dasharray={circumference}
                       stroke-dashoffset={circumference}
+                      style={`filter: drop-shadow(0 0 6px ${tone.shadow});`}
                       data-score-ring
                       data-score-target={score.value}
                       data-score-circumference={circumference}
                     />
                   </svg>
                   <span
-                    class:list={['absolute inset-0 flex items-center justify-center font-display text-3xl font-bold', tone.text]}
+                    class:list={[
+                      'absolute inset-0 flex items-center justify-center font-display text-4xl font-black tabular-nums leading-none tracking-tight',
+                      tone.text,
+                    ]}
                     data-score-value
                     data-score-target={score.value}
                     aria-hidden="true"
@@ -274,7 +327,7 @@ const stack = {
                   </span>
                   <span class="sr-only">{score.value}</span>
                 </div>
-                <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-slate-600 dark:text-slate-400">
+                <p class="mt-4 font-mono text-[11px] uppercase tracking-[0.25em] text-slate-600 dark:text-slate-400">
                   {t(lang, score.labelKey)}
                 </p>
               </li>
@@ -282,7 +335,7 @@ const stack = {
           })}
         </ul>
 
-        <p class="mt-8 text-center text-[11px] font-mono uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500">
+        <p class="mt-10 text-center text-[11px] font-mono uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500">
           {t(lang, 'portfolio.self.scores.source')}
         </p>
       </div>
@@ -319,11 +372,11 @@ const stack = {
   // StatsCounter uses, extended to drive stroke-dashoffset of the ring
   // in sync with the text counting up. Runs on initial page-load and
   // after every view transition swap.
-  // Quint ease-out — more pronounced slowdown than the cubic in
-  // StatsCounter. The number sprints the first half and the last
-  // few units visibly settle, which reads better for a 0–100 score.
-  const EASE_OUT_QUINT = (t: number) => 1 - Math.pow(1 - t, 5);
-  const DURATION_MS = 1600;
+  // Expo ease-out — the first half sprints near the target and the last
+  // handful of units crawl into place, which reads as "settling" and
+  // gives the ring time to visibly close on the final position.
+  const EASE_OUT_EXPO = (t: number) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
+  const DURATION_MS = 2400;
 
   interface ScoreEl extends HTMLElement {
     __animated?: boolean;
@@ -345,7 +398,7 @@ const stack = {
     const step = (now: number) => {
       const elapsed = now - start;
       const progress = Math.min(1, elapsed / DURATION_MS);
-      const eased = EASE_OUT_QUINT(progress);
+      const eased = EASE_OUT_EXPO(progress);
       valueEl.textContent = String(Math.round(target * eased));
       ringEl.setAttribute(
         'stroke-dashoffset',
