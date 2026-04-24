@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { katas } from '../../../src/data/katas';
+import { katas, sortedKatas, buildKatasCollectionSchema } from '../../../src/data/katas';
 
 describe('katas data', () => {
   it('has at least one kata', () => {
@@ -53,5 +53,61 @@ describe('katas data', () => {
       expect(k.tech.length, `kata "${k.title}" has no tech tags`).toBeGreaterThan(0);
       expect(k.concepts.length, `kata "${k.title}" has no concept tags`).toBeGreaterThan(0);
     }
+  });
+});
+
+describe('sortedKatas', () => {
+  it('returns katas ordered newest first', () => {
+    const sorted = sortedKatas();
+    for (let i = 0; i < sorted.length - 1; i++) {
+      expect(sorted[i].date >= sorted[i + 1].date).toBe(true);
+    }
+  });
+
+  it('returns all katas (no items dropped)', () => {
+    expect(sortedKatas().length).toBe(katas.length);
+  });
+});
+
+describe('buildKatasCollectionSchema', () => {
+  const url = 'https://www.aitorevi.dev/katas';
+  const title = 'Katas';
+  const desc = 'Code katas';
+
+  it('returns a valid schema.org CollectionPage', () => {
+    const schema = buildKatasCollectionSchema('es', url, title, desc);
+    expect(schema['@context']).toBe('https://schema.org');
+    expect(schema['@type']).toBe('CollectionPage');
+  });
+
+  it('sets inLanguage to es-ES for lang "es"', () => {
+    const schema = buildKatasCollectionSchema('es', url, title, desc);
+    expect(schema.inLanguage).toBe('es-ES');
+  });
+
+  it('sets inLanguage to en-US for lang "en"', () => {
+    const schema = buildKatasCollectionSchema('en', url, title, desc);
+    expect(schema.inLanguage).toBe('en-US');
+  });
+
+  it('includes one ListItem per kata', () => {
+    const schema = buildKatasCollectionSchema('es', url, title, desc);
+    expect(schema.mainEntity.numberOfItems).toBe(katas.length);
+    expect(schema.mainEntity.itemListElement.length).toBe(katas.length);
+  });
+
+  it('ListItems are 1-indexed', () => {
+    const schema = buildKatasCollectionSchema('es', url, title, desc);
+    const positions = schema.mainEntity.itemListElement.map((i: { position: number }) => i.position);
+    expect(positions[0]).toBe(1);
+    expect(positions[positions.length - 1]).toBe(katas.length);
+  });
+
+  it('uses the correct description language per kata', () => {
+    const schemaEs = buildKatasCollectionSchema('es', url, title, desc);
+    const schemaEn = buildKatasCollectionSchema('en', url, title, desc);
+    const firstKata = sortedKatas()[0];
+    expect(schemaEs.mainEntity.itemListElement[0].item.description).toBe(firstKata.description.es);
+    expect(schemaEn.mainEntity.itemListElement[0].item.description).toBe(firstKata.description.en);
   });
 });
