@@ -1,6 +1,10 @@
 import type { Lang } from '@/i18n/types';
 import { sortedKatas } from '@/data/katas';
 
+export function safeJsonLd(obj: unknown): string {
+  return JSON.stringify(obj).replace(/<\//g, '<\\/');
+}
+
 export function buildKatasCollectionSchema(
   lang: Lang,
   canonicalUrl: string,

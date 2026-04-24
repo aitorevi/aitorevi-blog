@@ -41,6 +41,7 @@ import { formatDate, formatDateISO } from '@/lib/date';
 import DotField from '@/components/shared/DotField.astro';
 import Button from '@/components/shared/Button.astro';
 import { t, getBlogSlugFromId } from '@/i18n/utils';
+import { safeJsonLd } from '@/lib/schema-org';
 
 const lang = 'es';
 
@@ -127,7 +128,7 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
     <link rel="canonical" href={canonicalUrl} />
 
     <!-- Schema.org JSON-LD -->
-    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+    <script is:inline type="application/ld+json" set:html={safeJsonLd({
       "@context": "https://schema.org",
       "@type": "BlogPosting",
       "headline": data.title,

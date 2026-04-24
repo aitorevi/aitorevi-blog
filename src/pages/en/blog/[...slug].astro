@@ -11,6 +11,7 @@ import { formatDate, formatDateISO } from '@/lib/date';
 import DotField from '@/components/shared/DotField.astro';
 import Button from '@/components/shared/Button.astro';
 import { t, getBlogSlugFromId } from '@/i18n/utils';
+import { safeJsonLd } from '@/lib/schema-org';
 
 const lang = 'en';
 
@@ -81,7 +82,7 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
     <meta name="twitter:description" content={data.description} />
     <meta name="twitter:image" content={ogImageAbsolute} />
     <link rel="canonical" href={canonicalUrl} />
-    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+    <script is:inline type="application/ld+json" set:html={safeJsonLd({
       "@context": "https://schema.org",
       "@type": "BlogPosting",
       "headline": data.title,

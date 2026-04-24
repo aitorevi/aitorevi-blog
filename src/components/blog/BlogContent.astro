@@ -7,6 +7,7 @@ import Button from '@/components/shared/Button.astro';
 import { sortPostsByDate, filterDrafts } from '@/lib/blog';
 import { t, getBlogSlugFromId, getLocalePath } from '@/i18n/utils';
 import type { Lang } from '@/i18n/types';
+import { safeJsonLd } from '@/lib/schema-org';
 
 interface Props {
   lang: Lang;
@@ -50,7 +51,7 @@ const regularItemClass = regularPosts.length === 1
     <meta property="og:description" content={t(lang, 'blog.description')} />
     <link rel="canonical" href={new URL(blogPath, Astro.site).href} />
 
-    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+    <script is:inline type="application/ld+json" set:html={safeJsonLd({
       "@context": "https://schema.org",
       "@type": "Blog",
       "name": "aitorevi Blog",

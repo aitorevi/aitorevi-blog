@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import HomeContent from '@/components/home/HomeContent.astro';
+import { safeJsonLd } from '@/lib/schema-org';
 
 const personSchema = {
     '@context': 'https://schema.org',
@@ -24,6 +25,6 @@ const personSchema = {
 <Layout title="aitorevi.dev">
     <link slot="head" rel="preload" as="image" href="/avatar-light.webp" fetchpriority="high" media="(prefers-color-scheme: light)" />
     <link slot="head" rel="preload" as="image" href="/avatar.webp" fetchpriority="high" media="(prefers-color-scheme: dark)" />
-    <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)}></script>
+    <script slot="head" is:inline type="application/ld+json" set:html={safeJsonLd(personSchema)}></script>
     <HomeContent lang="en" />
 </Layout>
