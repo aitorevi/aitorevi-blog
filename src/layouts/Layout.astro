@@ -1,12 +1,12 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import Analytics from '@vercel/analytics/astro';
-import GoogleAnalytics from '../components/analytics/GoogleAnalytics.astro';
-import CookieConsent from '../components/analytics/CookieConsent.astro';
-import Nav from "../components/nav/Nav.astro";
-import Footer from "../components/footer/Footer.astro";
-import { getLangFromUrl, getAlternateUrl, t } from '../i18n/utils';
-import type { Lang } from '../i18n/types';
+import GoogleAnalytics from '@/components/analytics/GoogleAnalytics.astro';
+import CookieConsent from '@/components/analytics/CookieConsent.astro';
+import Nav from "@/components/nav/Nav.astro";
+import Footer from "@/components/footer/Footer.astro";
+import { getLangFromUrl, getAlternateUrl, t } from '@/i18n/utils';
+import type { Lang } from '@/i18n/types';
 
 interface Props {
 	title: string;

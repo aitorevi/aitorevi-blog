@@ -31,12 +31,12 @@
 
 import type { CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
-import Tag from '../shared/Tag.astro';
-import DateDisplay from '../shared/DateDisplay.astro';
-import ReadingTime from '../shared/ReadingTime.astro';
-import { calculateReadingTime } from '../../lib/blog';
-import { formatDate } from '../../lib/date';
-import { t, getBlogSlugFromId } from '../../i18n/utils';
+import Tag from '@/components/shared/Tag.astro';
+import DateDisplay from '@/components/shared/DateDisplay.astro';
+import ReadingTime from '@/components/shared/ReadingTime.astro';
+import { calculateReadingTime } from '@/lib/blog';
+import { formatDate } from '@/lib/date';
+import { t, getBlogSlugFromId } from '@/i18n/utils';
 
 interface Props {
   /**

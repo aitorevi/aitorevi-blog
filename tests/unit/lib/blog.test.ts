@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculateReadingTime, sortPostsByDate, filterDrafts } from '../../../src/lib/blog';
+import { calculateReadingTime, sortPostsByDate, filterDrafts } from '@/lib/blog';
 
 describe('calculateReadingTime', () => {
   it('returns minimum 1 minute for empty content', () => {

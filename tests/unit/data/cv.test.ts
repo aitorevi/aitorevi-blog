@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { cvES, cvEN, getCvData, getPdfPath, getJsonPath, getAlternateLangUrl } from '../../../src/data/cv';
+import { cvES, cvEN, getCvData, getPdfPath, getJsonPath, getAlternateLangUrl } from '@/data/cv';
 
 describe('getCvData', () => {
   it('returns cvES for lang "es"', () => {

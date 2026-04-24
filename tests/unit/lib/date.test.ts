@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { formatDate, formatDateISO, getRelativeTime } from '../../../src/lib/date';
+import { formatDate, formatDateISO, getRelativeTime } from '@/lib/date';
 
 describe('formatDate', () => {
   it('formats a Date object in en-US', () => {

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { ui } from '../../../src/i18n/ui';
+import { ui } from '@/i18n/ui';
 
 describe('i18n dictionary consistency', () => {
   const esKeys = Object.keys(ui.es);

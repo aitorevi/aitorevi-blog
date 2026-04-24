@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { truncate, slugify } from '../../../src/lib/strings';
+import { truncate, slugify } from '@/lib/strings';
 
 describe('truncate', () => {
   it('returns text unchanged if shorter than maxLength', () => {
