@@ -3,6 +3,7 @@ import type { Lang } from '../../data/cv';
 import { t } from '../../i18n/utils';
 import SectionHeader from '../atoms/SectionHeader.astro';
 import EyebrowTag from '../atoms/EyebrowTag.astro';
+import GlassCard from '../atoms/GlassCard.astro';
 
 interface Props {
   lang: Lang;
@@ -76,20 +77,7 @@ const itemBasisClass = projects.length === 4
       data-stagger-root
     >
       {projects.map((project, i) => (
-        <li
-          class:list={[
-            'group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-lg backdrop-blur-md transition-[border-color,box-shadow,background-color] duration-500 hover:border-secondary/40 hover:shadow-[0_20px_50px_-20px_rgba(94,58,238,0.35)] dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:hover:border-accent-blue/40 dark:hover:bg-white/[0.07] dark:hover:shadow-[0_0_60px_rgba(96,165,250,0.15)]',
-            itemBasisClass,
-          ]}
-          data-stagger-item
-          data-tilt-card
-          style={`--stagger-delay:${i * 120}ms`}
-        >
-          <div
-            class={`pointer-events-none absolute -top-px left-0 h-32 w-full bg-gradient-to-b ${project.accent} opacity-0 transition-opacity duration-500 group-hover:opacity-100`}
-            aria-hidden="true"
-          />
-
+        <GlassCard accent={project.accent} index={i} tilt class={itemBasisClass}>
           <div class="relative flex h-full flex-col">
             <EyebrowTag label={t(lang, project.tagKey)} class="mb-3" />
 
@@ -111,7 +99,7 @@ const itemBasisClass = projects.length === 4
               {project.tech}
             </p>
           </div>
-        </li>
+        </GlassCard>
       ))}
     </ul>
   </div>
