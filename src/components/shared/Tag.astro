@@ -56,9 +56,6 @@ const baseStyles = 'inline-flex items-center px-3 py-1 text-xs font-medium round
 const combinedClasses = `${baseStyles} ${variantStyles[variant]} ${className}`;
 ---
 
-<span
-  class={combinedClasses}
-  transition:name={`tag-${label}`}
->
+<span class={combinedClasses}>
   {label}
 </span>
