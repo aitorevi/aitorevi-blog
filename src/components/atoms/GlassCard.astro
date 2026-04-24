@@ -1,4 +1,6 @@
 ---
+import { staggerDelay } from './glassCardStyles';
+
 interface Props {
   accent: string;
   index: number;
@@ -16,7 +18,7 @@ const { accent, index, tilt = false, class: className } = Astro.props;
   ]}
   data-stagger-item
   data-tilt-card={tilt ? '' : undefined}
-  style={`--stagger-delay:${index * 120}ms`}
+  style={`--stagger-delay:${staggerDelay(index)}`}
 >
   <div
     class:list={[
