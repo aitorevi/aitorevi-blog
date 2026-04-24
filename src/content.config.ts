@@ -1,5 +1,6 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { z } from 'zod';
 
 /**
  * Blog Collection Schema
@@ -26,8 +27,7 @@ const blogCollection = defineCollection({
       .max(160, 'Description should not exceed 160 characters for SEO'),
 
     publishDate: z.coerce.date({
-      required_error: 'Publication date is required',
-      invalid_type_error: 'Invalid date format',
+      error: 'Publication date is required or has an invalid format',
     }),
 
     // Optional at the schema level so drafts can be saved from Keystatic
