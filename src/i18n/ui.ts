@@ -1,4 +1,4 @@
-import type { Lang } from '../data/cv';
+import type { Lang } from '../i18n/types';
 
 export const ui: Record<Lang, Record<string, string>> = {
   es: {

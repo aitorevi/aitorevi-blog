@@ -1,4 +1,5 @@
-import type { CvData, Lang } from '../data/cv';
+import type { CvData } from '../data/cv';
+import type { Lang } from '../i18n/types';
 
 interface JsonResumeBasics {
   name: string;
