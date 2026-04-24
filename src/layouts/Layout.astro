@@ -3,8 +3,8 @@ import { ClientRouter } from 'astro:transitions';
 import Analytics from '@vercel/analytics/astro';
 import GoogleAnalytics from '../components/analytics/GoogleAnalytics.astro';
 import CookieConsent from '../components/analytics/CookieConsent.astro';
-import Nav from "../components/Nav/Nav.astro";
-import Footer from "../components/Footer/Footer.astro";
+import Nav from "../components/nav/Nav.astro";
+import Footer from "../components/footer/Footer.astro";
 import { getLangFromUrl, getAlternateUrl, t } from '../i18n/utils';
 import type { Lang } from '../data/cv';
 
@@ -26,7 +26,7 @@ const {
 	description = t(lang, 'site.description'),
 	alternateUrl = `https://www.aitorevi.dev${getAlternateUrl(Astro.url.pathname, lang)}`,
 	alternateLang = lang === 'es' ? 'en' : 'es',
-	ogImage = '/og-image.png',
+	ogImage = '/og/og-image.png',
 	variant = 'default',
 } = Astro.props;
 

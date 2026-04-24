@@ -5,7 +5,6 @@
     "jsxImportSource": "react"
   },
   "include": [
-    "src/**/*",
-    "types/types.ts"
+    "src/**/*"
   ]
 }
