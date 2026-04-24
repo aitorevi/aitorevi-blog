@@ -172,7 +172,8 @@ export const POST: APIRoute = async ({ request }) => {
   const ratelimiter = getRatelimiter();
   if (ratelimiter) {
     try {
-      const ip = request.headers.get('x-forwarded-for') ?? 'anonymous';
+      const forwarded = request.headers.get('x-forwarded-for') ?? '';
+      const ip = forwarded.split(',')[0].trim() || 'anonymous';
       const { success } = await ratelimiter.limit(ip);
       if (!success) {
         return new Response(JSON.stringify({ error: 'too_many_requests' }), {
