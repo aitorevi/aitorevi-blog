@@ -9,6 +9,7 @@ import SectionHeader from '../atoms/SectionHeader.astro';
 import EyebrowTag from '../atoms/EyebrowTag.astro';
 import DecisionCard from './DecisionCard.astro';
 import StackCategory from './StackCategory.astro';
+import ScoreBadge from './ScoreBadge.astro';
 
 interface Props {
   lang: Lang;
@@ -51,31 +52,6 @@ const lighthouseScores = [
   { value: 100, labelKey: 'portfolio.self.scores.seo' },
 ];
 
-// Lighthouse-tier palette. Each tier ships three things the badge needs:
-//  - gradId: the <linearGradient> id the ring stroke references.
-//  - text:   Tailwind class for the numeric label.
-//  - glow:   Tailwind gradient utility for the soft blurred backdrop.
-//  - shadow: rgba used inline on the ring's drop-shadow filter.
-function scoreTone(value: number) {
-  if (value >= 90) return {
-    gradId: 'score-grad-high',
-    text: 'text-accent-blue dark:text-accent-violet',
-    glow: 'from-accent-blue/20 dark:from-accent-violet/25',
-    shadow: 'rgba(96,165,250,0.45)',
-  };
-  if (value >= 50) return {
-    gradId: 'score-grad-mid',
-    text: 'text-amber-600 dark:text-amber-400',
-    glow: 'from-amber-500/25',
-    shadow: 'rgba(245,158,11,0.45)',
-  };
-  return {
-    gradId: 'score-grad-low',
-    text: 'text-rose-600 dark:text-rose-400',
-    glow: 'from-rose-500/25',
-    shadow: 'rgba(244,63,94,0.45)',
-  };
-}
 
 interface TechItem {
   name: string;
@@ -310,61 +286,9 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
           aria-label={t(lang, 'portfolio.self.scores.title')}
           data-scores-root
         >
-          {lighthouseScores.map((score) => {
-            const tone = scoreTone(score.value);
-            const circumference = 2 * Math.PI * 42;
-            // Initial state: empty ring, number at zero. The script animates
-            // both to the target on intersection.
-            return (
-              <li class="group flex flex-col items-center text-center">
-                <div class="relative h-36 w-36" aria-hidden="true">
-                  {/* Soft coloured blur behind the badge — gives depth without a hard card frame. */}
-                  <div
-                    class:list={[
-                      'pointer-events-none absolute inset-0 rounded-full bg-gradient-to-br to-transparent blur-2xl opacity-80 transition-opacity duration-500 group-hover:opacity-100',
-                      tone.glow,
-                    ]}
-                    aria-hidden="true"
-                  />
-                  <svg class="relative h-full w-full -rotate-90" viewBox="0 0 100 100">
-                    {/* Track: subtle, slightly wider than progress so the progress ring sits on top. */}
-                    <circle cx="50" cy="50" r="42" class="stroke-slate-200/80 dark:stroke-white/10" stroke-width="6" fill="none" />
-                    {/* Progress ring: gradient stroke + tier-tinted drop-shadow for a soft glow. */}
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="42"
-                      stroke={`url(#${tone.gradId})`}
-                      stroke-width="8"
-                      stroke-linecap="round"
-                      fill="none"
-                      stroke-dasharray={circumference}
-                      stroke-dashoffset={circumference}
-                      style={`filter: drop-shadow(0 0 6px ${tone.shadow});`}
-                      data-score-ring
-                      data-score-target={score.value}
-                      data-score-circumference={circumference}
-                    />
-                  </svg>
-                  <span
-                    class:list={[
-                      'absolute inset-0 flex items-center justify-center font-display text-4xl font-black tabular-nums leading-none tracking-tight',
-                      tone.text,
-                    ]}
-                    data-score-value
-                    data-score-target={score.value}
-                    aria-hidden="true"
-                  >
-                    0
-                  </span>
-                  <span class="sr-only">{score.value}</span>
-                </div>
-                <p class="mt-4 font-mono text-[11px] uppercase tracking-[0.25em] text-slate-600 dark:text-slate-400">
-                  {t(lang, score.labelKey)}
-                </p>
-              </li>
-            );
-          })}
+          {lighthouseScores.map((score) => (
+            <ScoreBadge value={score.value} label={t(lang, score.labelKey)} />
+          ))}
         </ul>
 
         <p class="mt-10 text-center text-[11px] font-mono uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500">
