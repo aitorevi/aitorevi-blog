@@ -1,5 +1,5 @@
-import type { Lang } from '../i18n/types';
-import { sortedKatas } from '../data/katas';
+import type { Lang } from '@/i18n/types';
+import { sortedKatas } from '@/data/katas';
 
 export function buildKatasCollectionSchema(
   lang: Lang,

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { scoreTone } from '../../../src/components/case-study/scoreBadgeStyles';
+import { scoreTone } from '@/components/case-study/scoreBadgeStyles';
 
 describe('scoreTone', () => {
   describe('high tier (≥90)', () => {

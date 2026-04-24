@@ -6,7 +6,7 @@ import {
   getBlogSlugFromId,
   getBlogLangFromId,
   getLocalePath,
-} from '../../../src/i18n/utils';
+} from '@/i18n/utils';
 
 describe('t — translation lookup', () => {
   it('returns the translation for a known key in Spanish', () => {

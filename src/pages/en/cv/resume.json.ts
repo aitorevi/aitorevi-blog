@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
-import { getCvData } from '../../../data/cv';
-import { cvDataToJsonResume } from '../../../lib/cv-to-json-resume';
+import { getCvData } from '@/data/cv';
+import { cvDataToJsonResume } from '@/lib/cv-to-json-resume';
 
 export const GET: APIRoute = () => {
   const data = getCvData('en');

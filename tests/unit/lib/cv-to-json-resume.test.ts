@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { cvDataToJsonResume } from '../../../src/lib/cv-to-json-resume';
-import { cvES, cvEN } from '../../../src/data/cv';
+import { cvDataToJsonResume } from '@/lib/cv-to-json-resume';
+import { cvES, cvEN } from '@/data/cv';
 
 describe('cvDataToJsonResume — structure', () => {
   it('includes the JSON Resume schema URL', () => {

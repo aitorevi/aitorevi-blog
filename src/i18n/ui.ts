@@ -1,4 +1,4 @@
-import type { Lang } from '../i18n/types';
+import type { Lang } from '@/i18n/types';
 import { nav } from './messages/nav';
 import { katas } from './messages/katas';
 import { site } from './messages/site';

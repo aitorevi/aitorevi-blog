@@ -1,4 +1,4 @@
-import type { Lang } from '../i18n/types';
+import type { Lang } from '@/i18n/types';
 export type { Lang };
 
 export interface ContactInfo {

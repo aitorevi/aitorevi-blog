@@ -8,11 +8,11 @@
  * just rendering what's available.
  */
 import { getCollection } from 'astro:content';
-import PostCard from '../blog/PostCard.astro';
-import SectionHeader from '../shared/SectionHeader.astro';
-import { sortPostsByDate, filterDrafts } from '../../lib/blog';
-import { t } from '../../i18n/utils';
-import type { Lang } from '../../i18n/types';
+import PostCard from '@/components/blog/PostCard.astro';
+import SectionHeader from '@/components/shared/SectionHeader.astro';
+import { sortPostsByDate, filterDrafts } from '@/lib/blog';
+import { t } from '@/i18n/utils';
+import type { Lang } from '@/i18n/types';
 
 interface Props {
   lang: Lang;

@@ -1,4 +1,4 @@
-import type { Lang } from '../i18n/types';
+import type { Lang } from '@/i18n/types';
 import { ui } from './ui';
 
 export function t(lang: Lang, key: string): string {
