@@ -107,14 +107,9 @@ const testimonials = lang === 'es'
 </section>
 
 <style>
-  /* Stack all cards in the same grid cell */
+  /* Stack all cards in the same grid cell — slide rules live in TestimonialCard.astro */
   .carousel-track {
     display: grid;
-  }
-  .carousel-slide {
-    grid-column: 1;
-    grid-row: 1;
-    transition: opacity 0.7s ease;
   }
 
   /* Dot base */
@@ -163,7 +158,6 @@ const testimonials = lang === 'es'
 
   @media (prefers-reduced-motion: reduce) {
     .dot.active .dot-fill { animation: none; transform: scaleX(1); }
-    .carousel-slide { transition: none; }
   }
 </style>
 

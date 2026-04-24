@@ -70,3 +70,15 @@ const initials = author.split(' ').map((n: string) => n[0]).join('').slice(0, 2)
     )}
   </footer>
 </div>
+
+<style>
+  .carousel-slide {
+    grid-column: 1;
+    grid-row: 1;
+    transition: opacity 0.7s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .carousel-slide { transition: none; }
+  }
+</style>
