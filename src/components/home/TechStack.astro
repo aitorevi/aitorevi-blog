@@ -7,6 +7,7 @@
 import type { Lang } from '../../data/cv';
 import { t } from '../../i18n/utils';
 import TechConstellation from './TechConstellation.tsx';
+import SectionHeader from '../atoms/SectionHeader.astro';
 
 interface Props {
   lang: Lang;
@@ -17,15 +18,11 @@ const { lang } = Astro.props;
 
 <section class="relative bg-slate-50 py-24 text-ink-900 dark:bg-ink-900 dark:text-slate-100 sm:py-32" aria-labelledby="tech-stack-heading">
   <div class="mx-auto max-w-5xl px-6">
-    <h2
+    <SectionHeader
       id="tech-stack-heading"
-      class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
-    >
-      {t(lang, 'home.stack.title')}
-    </h2>
-    <p class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
-      {t(lang, 'home.stack.hint')}
-    </p>
+      title={t(lang, 'home.stack.title')}
+      subtitle={t(lang, 'home.stack.hint')}
+    />
 
     <div class="mt-16 overflow-hidden">
       <TechConstellation client:visible lang={lang} />

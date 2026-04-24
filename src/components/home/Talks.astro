@@ -3,6 +3,7 @@ import type { Lang } from '../../data/cv';
 import { t } from '../../i18n/utils';
 import { talks } from '../../data/talks';
 import { formatDate, formatDateISO } from '../../lib/date';
+import SectionHeader from '../atoms/SectionHeader.astro';
 
 interface Props {
   lang: Lang;
@@ -26,17 +27,11 @@ const itemSizingClass = isSingle
   aria-labelledby="talks-heading"
 >
   <div class="mx-auto max-w-5xl px-6">
-    <h2
+    <SectionHeader
       id="talks-heading"
-      class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
-    >
-      {t(lang, 'home.talks.title')}
-    </h2>
-    <p
-      class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary dark:text-accent-blue"
-    >
-      {t(lang, 'home.talks.subtitle')}
-    </p>
+      title={t(lang, 'home.talks.title')}
+      subtitle={t(lang, 'home.talks.subtitle')}
+    />
 
     <ul
       class={listClass}

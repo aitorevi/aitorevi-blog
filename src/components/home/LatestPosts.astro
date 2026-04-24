@@ -9,6 +9,7 @@
  */
 import { getCollection } from 'astro:content';
 import PostCard from '../molecules/PostCard.astro';
+import SectionHeader from '../atoms/SectionHeader.astro';
 import { sortPostsByDate, filterDrafts } from '../../lib/utils';
 import { t } from '../../i18n/utils';
 import type { Lang } from '../../data/cv';
@@ -39,17 +40,11 @@ const itemSizingClass = isSingle
   aria-labelledby="latest-posts-heading"
 >
   <div class="mx-auto max-w-5xl px-6">
-    <div class="flex flex-col items-center gap-3 text-center">
-      <h2
-        id="latest-posts-heading"
-        class="font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
-      >
-        {t(lang, 'home.posts.title')}
-      </h2>
-      <p class="font-mono text-xs uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
-        {t(lang, 'home.posts.subtitle')}
-      </p>
-    </div>
+    <SectionHeader
+      id="latest-posts-heading"
+      title={t(lang, 'home.posts.title')}
+      subtitle={t(lang, 'home.posts.subtitle')}
+    />
 
     {
       posts.length > 0 ? (

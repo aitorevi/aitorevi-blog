@@ -1,6 +1,7 @@
 ---
 import type { Lang } from '../../data/cv';
 import { t } from '../../i18n/utils';
+import SectionHeader from '../atoms/SectionHeader.astro';
 
 interface Props {
   lang: Lang;
@@ -63,17 +64,11 @@ const itemBasisClass = projects.length === 4
   aria-labelledby="portfolio-heading"
 >
   <div class="mx-auto max-w-5xl px-6">
-    <h2
+    <SectionHeader
       id="portfolio-heading"
-      class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
-    >
-      {t(lang, 'home.portfolio.title')}
-    </h2>
-    <p
-      class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary dark:text-accent-blue"
-    >
-      {t(lang, 'home.portfolio.subtitle')}
-    </p>
+      title={t(lang, 'home.portfolio.title')}
+      subtitle={t(lang, 'home.portfolio.subtitle')}
+    />
 
     <ul
       class="mt-14 flex flex-wrap justify-center gap-5"

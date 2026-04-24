@@ -2,6 +2,7 @@
 import { t } from '../../i18n/utils';
 import type { Lang } from '../../data/cv';
 import TestimonialCard from './TestimonialCard.astro';
+import SectionHeader from '../atoms/SectionHeader.astro';
 
 interface Props {
   lang: Lang;
@@ -63,15 +64,11 @@ const testimonials = lang === 'es'
   aria-labelledby="testimonials-heading"
 >
   <div class="mb-14 text-center">
-    <h2
+    <SectionHeader
       id="testimonials-heading"
-      class="font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
-    >
-      {t(lang, 'home.testimonials.title')}
-    </h2>
-    <p class="mt-3 font-mono text-xs uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
-      {t(lang, 'home.testimonials.subtitle')}
-    </p>
+      title={t(lang, 'home.testimonials.title')}
+      subtitle={t(lang, 'home.testimonials.subtitle')}
+    />
   </div>
 
   <div class="carousel-wrapper mx-auto max-w-[640px] px-6">

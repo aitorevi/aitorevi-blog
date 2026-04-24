@@ -6,6 +6,7 @@ import { t } from '../../i18n/utils';
 import type { Lang } from '../../data/cv';
 import { fetchBuildStats } from '../../lib/build-stats';
 import StatCard from '../home/StatCard.astro';
+import SectionHeader from '../atoms/SectionHeader.astro';
 
 interface Props {
   lang: Lang;
@@ -148,12 +149,11 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
     <!-- Timeline -->
     <section class="bg-white py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="self-timeline">
       <div class="mx-auto max-w-3xl px-6">
-        <h2 id="self-timeline" class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl">
-          {t(lang, 'portfolio.self.timeline.title')}
-        </h2>
-        <p class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary/85 dark:text-accent-blue/70">
-          {t(lang, 'portfolio.self.timeline.subtitle')}
-        </p>
+        <SectionHeader
+          id="self-timeline"
+          title={t(lang, 'portfolio.self.timeline.title')}
+          subtitle={t(lang, 'portfolio.self.timeline.subtitle')}
+        />
 
         <ol class="mt-12">
           {timelineItems.map((n, i) => {
@@ -206,12 +206,11 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
     <!-- Decisions -->
     <section class="bg-slate-50 py-20 dark:bg-ink-900 sm:py-24" aria-labelledby="self-decisions">
       <div class="mx-auto max-w-5xl px-6">
-        <h2 id="self-decisions" class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl">
-          {t(lang, 'portfolio.self.decisions.title')}
-        </h2>
-        <p class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary/85 dark:text-accent-blue/70">
-          {t(lang, 'portfolio.self.decisions.subtitle')}
-        </p>
+        <SectionHeader
+          id="self-decisions"
+          title={t(lang, 'portfolio.self.decisions.title')}
+          subtitle={t(lang, 'portfolio.self.decisions.subtitle')}
+        />
 
         <ul class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {decisions.map((key) => {
@@ -249,12 +248,11 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
     <!-- Stack -->
     <section class="bg-white py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="self-stack">
       <div class="mx-auto max-w-5xl px-6">
-        <h2 id="self-stack" class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl">
-          {t(lang, 'portfolio.self.stack.title')}
-        </h2>
-        <p class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary/85 dark:text-accent-blue/70">
-          {t(lang, 'portfolio.self.stack.subtitle')}
-        </p>
+        <SectionHeader
+          id="self-stack"
+          title={t(lang, 'portfolio.self.stack.title')}
+          subtitle={t(lang, 'portfolio.self.stack.subtitle')}
+        />
 
         <div class="mt-14 grid grid-cols-2 gap-12 lg:grid-cols-4">
           {(['frontend', 'content', 'infra', 'testing'] as const).map((category) => (
@@ -305,12 +303,11 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
     <!-- Numbers -->
     <section class="bg-slate-50 py-20 dark:bg-ink-900 sm:py-24" aria-labelledby="self-numbers">
       <div class="mx-auto max-w-5xl px-6">
-        <h2 id="self-numbers" class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl">
-          {t(lang, 'portfolio.self.numbers.title')}
-        </h2>
-        <p class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary/85 dark:text-accent-blue/70">
-          {t(lang, 'portfolio.self.numbers.subtitle')}
-        </p>
+        <SectionHeader
+          id="self-numbers"
+          title={t(lang, 'portfolio.self.numbers.title')}
+          subtitle={t(lang, 'portfolio.self.numbers.subtitle')}
+        />
 
         <div class="mt-14 flex flex-wrap justify-center gap-4 sm:gap-6" data-stats-root>
           {stats.map((stat) => (
@@ -349,12 +346,11 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
       </svg>
 
       <div class="mx-auto max-w-5xl px-6">
-        <h2 id="self-scores" class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl">
-          {t(lang, 'portfolio.self.scores.title')}
-        </h2>
-        <p class="mx-auto mt-3 max-w-xl text-center font-mono text-xs uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
-          {t(lang, 'portfolio.self.scores.subtitle')}
-        </p>
+        <SectionHeader
+          id="self-scores"
+          title={t(lang, 'portfolio.self.scores.title')}
+          subtitle={t(lang, 'portfolio.self.scores.subtitle')}
+        />
 
         <ul
           class="mt-14 grid grid-cols-2 gap-8 md:grid-cols-4"
