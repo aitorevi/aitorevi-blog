@@ -1,9 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import PostCard from '../molecules/PostCard.astro';
-import DotField from '../atoms/DotField.astro';
-import Button from '../atoms/Button.astro';
+import PostCard from './PostCard.astro';
+import DotField from '../shared/DotField.astro';
+import Button from '../shared/Button.astro';
 import { sortPostsByDate, filterDrafts } from '../../lib/blog';
 import { t, getBlogSlugFromId, getLocalePath } from '../../i18n/utils';
 import type { Lang } from '../../i18n/types';

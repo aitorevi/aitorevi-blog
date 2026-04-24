@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { buildButtonClasses, resolveButtonProps } from '../../../src/components/atoms/buttonStyles';
+import { buildButtonClasses, resolveButtonProps } from '../../../src/components/shared/buttonStyles';
 
 describe('buildButtonClasses', () => {
   const BASE_TOKENS = [

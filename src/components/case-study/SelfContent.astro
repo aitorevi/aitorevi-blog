@@ -1,12 +1,12 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Button from '../atoms/Button.astro';
+import Button from '../shared/Button.astro';
 import { t } from '../../i18n/utils';
 import type { Lang } from '../../i18n/types';
 import { fetchBuildStats } from '../../lib/build-time/build-stats';
-import StatCard from '../home/StatCard.astro';
-import SectionHeader from '../atoms/SectionHeader.astro';
-import EyebrowTag from '../atoms/EyebrowTag.astro';
+import StatCard from '../shared/StatCard.astro';
+import SectionHeader from '../shared/SectionHeader.astro';
+import EyebrowTag from '../shared/EyebrowTag.astro';
 import DecisionCard from './DecisionCard.astro';
 import StackCategory from './StackCategory.astro';
 import ScoreBadge from './ScoreBadge.astro';

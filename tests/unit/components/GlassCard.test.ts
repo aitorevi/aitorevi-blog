@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { staggerDelay } from '../../../src/components/atoms/glassCardStyles';
+import { staggerDelay } from '../../../src/components/shared/glassCardStyles';
 
 describe('staggerDelay', () => {
   it('returns 0ms for the first item', () => {

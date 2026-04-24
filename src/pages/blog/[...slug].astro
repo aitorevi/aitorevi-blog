@@ -32,14 +32,14 @@
 import { getCollection, type CollectionEntry, render } from 'astro:content';
 import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
-import Tag from '../../components/atoms/Tag.astro';
-import DateDisplay from '../../components/atoms/DateDisplay.astro';
-import ReadingTime from '../../components/atoms/ReadingTime.astro';
+import Tag from '../../components/shared/Tag.astro';
+import DateDisplay from '../../components/shared/DateDisplay.astro';
+import ReadingTime from '../../components/shared/ReadingTime.astro';
 import CodeBlockEnhancer from '../../components/blog/CodeBlockEnhancer.astro';
 import { calculateReadingTime } from '../../lib/blog';
 import { formatDate, formatDateISO } from '../../lib/date';
-import DotField from '../../components/atoms/DotField.astro';
-import Button from '../../components/atoms/Button.astro';
+import DotField from '../../components/shared/DotField.astro';
+import Button from '../../components/shared/Button.astro';
 import { t, getBlogSlugFromId } from '../../i18n/utils';
 
 const lang = 'es';
