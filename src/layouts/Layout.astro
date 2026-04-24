@@ -81,6 +81,20 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 					document.documentElement.classList.add('dark');
 				}
 			})();
+			// Swallow the benign race condition from Chrome's View Transitions
+			// API. When navigations overlap (quick clicks, back/forward during
+			// animation) the .finished promise rejects with InvalidStateError.
+			// Astro ClientRouter doesn't catch it, so it surfaces as noisy
+			// "Uncaught (in promise)" with no functional effect. Registered
+			// inline so it runs before any ClientRouter navigation.
+			window.addEventListener('unhandledrejection', function(event) {
+				var reason = event.reason;
+				if (reason && reason.name === 'InvalidStateError' &&
+					typeof reason.message === 'string' &&
+					reason.message.indexOf('Transition was aborted') !== -1) {
+					event.preventDefault();
+				}
+			});
 		</script>
 		<ClientRouter />
 		{import.meta.env.PUBLIC_GSC_VERIFICATION && (
@@ -117,7 +131,6 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 	html.dark body[data-bg="dark-radial"] main {
 		background-color: #020617;
 		background-image: radial-gradient(ellipse at 30% 20%, #0f172a 0%, #020617 55%, #000 100%);
-		background-attachment: fixed;
 		background-size: cover;
 	}
 
