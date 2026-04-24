@@ -13,7 +13,7 @@ import { Resvg } from '@resvg/resvg-js';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-const OUTPUT_PATH = path.resolve('public/og-image.png');
+const OUTPUT_PATH = path.resolve('public/og/og-image.png');
 const WIDTH = 1200;
 const HEIGHT = 630;
 

@@ -11,7 +11,7 @@ const canonicalUrl = `https://www.aitorevi.dev${Astro.url.pathname}`;
 const schema = buildKatasCollectionSchema(lang, canonicalUrl, metaTitle, metaDescription);
 ---
 
-<Layout title={metaTitle} description={metaDescription} lang={lang} ogImage="/og-katas.png" variant="dark-radial">
+<Layout title={metaTitle} description={metaDescription} lang={lang} ogImage="/og/og-katas.png" variant="dark-radial">
   <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
   <KatasPage lang={lang} />
 </Layout>
