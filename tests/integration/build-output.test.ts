@@ -43,12 +43,12 @@ describe('hreflang', () => {
 
 describe('OG images', () => {
   it('og-image.png exists and is non-empty', () => {
-    const file = join(dist, 'og-image.png');
+    const file = join(dist, 'og', 'og-image.png');
     expect(existsSync(file)).toBe(true);
     expect(statSync(file).size).toBeGreaterThan(1000);
   });
   it('og-katas.png exists and is non-empty', () => {
-    const file = join(dist, 'og-katas.png');
+    const file = join(dist, 'og', 'og-katas.png');
     expect(existsSync(file)).toBe(true);
     expect(statSync(file).size).toBeGreaterThan(1000);
   });

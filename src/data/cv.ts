@@ -1,4 +1,5 @@
-export type Lang = 'es' | 'en';
+import type { Lang } from '../i18n/types';
+export type { Lang };
 
 export interface ContactInfo {
   name: string;

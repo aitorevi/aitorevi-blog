@@ -1,0 +1,22 @@
+export const misc = {
+  es: {
+    '404.routeNoAdapters': 'no tiene adaptadores. Protege el core.',
+    '404.tagline': 'Eres el {core} de una arquitectura hexagonal. Rota para que los {adapters} entren por los lados correctos y esquiva los {couplings}.',
+    '404.keysLeft': 'izquierda',
+    '404.keysRight': 'derecha',
+    '404.touch': '(o toca pantalla izquierda / derecha en móvil)',
+    '404.start': 'Empezar',
+    '404.gameOver': '💥 Core comprometido',
+    '404.restart': 'Reintentar',
+  },
+  en: {
+    '404.routeNoAdapters': 'has no adapters. Protect the core.',
+    '404.tagline': 'You are the {core} of a hexagonal architecture. Rotate so {adapters} enter through the right sides and dodge the {couplings}.',
+    '404.keysLeft': 'left',
+    '404.keysRight': 'right',
+    '404.touch': '(or tap left / right side of the screen on mobile)',
+    '404.start': 'Start',
+    '404.gameOver': '💥 Core compromised',
+    '404.restart': 'Retry',
+  },
+};
