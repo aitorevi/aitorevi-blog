@@ -95,6 +95,14 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 					event.preventDefault();
 				}
 			});
+			// Gate Vercel Analytics behind consent. The Analytics component
+			// reads window.webAnalyticsBeforeSend before sending any event;
+			// returning null cancels it. Must be set before the custom element
+			// mounts (end of body), which is why it lives here in the head.
+			window.webAnalyticsBeforeSend = function(event) {
+				var m = document.cookie.match(/(?:^|; )aitorevi_consent=(granted|denied)/);
+				return m && m[1] === 'granted' ? event : null;
+			};
 		</script>
 		<ClientRouter />
 		{import.meta.env.PUBLIC_GSC_VERIFICATION && (
