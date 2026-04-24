@@ -65,6 +65,11 @@ const KEYSTATIC_SAVE_FEEDBACK_SCRIPT = `
 `;
 
 export const onRequest = defineMiddleware(async (context, next) => {
+  // GHSA-mr6q-rp88-fx84 — strip the header that @astrojs/vercel uses for
+  // path-override before the adapter can read it.
+  context.request.headers.delete('x-astro-path');
+  context.request.headers.delete('x_astro_path');
+
   const response = await next();
 
   if (!context.url.pathname.startsWith('/keystatic')) {
