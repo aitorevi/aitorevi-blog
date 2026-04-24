@@ -119,6 +119,11 @@ const copy = isES
           // trackPageView in GoogleAnalytics.astro gated on consent, so the
           // initial astro:page-load hit was suppressed.
           trackPageViewAfterConsent();
+          // Same for Vercel Analytics: beforeSend blocked the initial hit,
+          // so fire it manually now that consent is granted.
+          if (window.va) {
+            window.va('pageview', { path: window.location.pathname });
+          }
           banner.hidden = true;
         });
       });
