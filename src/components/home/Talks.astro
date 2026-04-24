@@ -4,6 +4,7 @@ import { t } from '../../i18n/utils';
 import { talks } from '../../data/talks';
 import { formatDate, formatDateISO } from '../../lib/date';
 import SectionHeader from '../atoms/SectionHeader.astro';
+import EyebrowTag from '../atoms/EyebrowTag.astro';
 
 interface Props {
   lang: Lang;
@@ -54,9 +55,7 @@ const itemSizingClass = isSingle
           />
 
           <div class="relative flex h-full flex-col">
-            <span class="mb-3 inline-flex w-fit items-center rounded-full border border-secondary/20 bg-secondary/10 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.15em] text-secondary dark:border-accent-violet/30 dark:bg-accent-violet/20 dark:text-accent-violet">
-              {t(lang, 'home.talks.tag.workshop')}
-            </span>
+            <EyebrowTag label={t(lang, 'home.talks.tag.workshop')} class="mb-3" />
 
             <h3 class="font-display text-lg font-semibold text-ink-900 dark:text-slate-100">
               {articleUrl ? (

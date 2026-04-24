@@ -7,6 +7,7 @@ import type { Lang } from '../../data/cv';
 import { fetchBuildStats } from '../../lib/build-stats';
 import StatCard from '../home/StatCard.astro';
 import SectionHeader from '../atoms/SectionHeader.astro';
+import EyebrowTag from '../atoms/EyebrowTag.astro';
 
 interface Props {
   lang: Lang;
@@ -123,9 +124,7 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
     <section class="relative overflow-hidden py-24 sm:py-32" aria-labelledby="self-hero">
       <div class="absolute inset-0 bg-gradient-to-b from-secondary/5 to-transparent dark:from-accent-blue/5" aria-hidden="true" />
       <div class="relative mx-auto max-w-3xl px-6 text-center">
-        <span class="inline-flex items-center rounded-full border border-secondary/20 bg-secondary/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-secondary dark:border-accent-violet/30 dark:bg-accent-violet/20 dark:text-accent-violet">
-          {t(lang, 'portfolio.self.hero.tag')}
-        </span>
+        <EyebrowTag label={t(lang, 'portfolio.self.hero.tag')} class="px-3 py-1" />
         <h1 id="self-hero" class="mt-6 font-display text-4xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-5xl">
           {t(lang, 'portfolio.self.hero.title')}
         </h1>
