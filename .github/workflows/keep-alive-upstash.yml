@@ -5,6 +5,8 @@ on:
     - cron: '0 9 * * 1,4' # Mondays and Thursdays at 09:00 UTC
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   ping:
     runs-on: ubuntu-latest
