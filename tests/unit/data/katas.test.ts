@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { katas, sortedKatas, buildKatasCollectionSchema } from '../../../src/data/katas';
+import { katas, sortedKatas } from '../../../src/data/katas';
+import { buildKatasCollectionSchema } from '../../../src/lib/schema-org';
 
 describe('katas data', () => {
   it('has at least one kata', () => {
