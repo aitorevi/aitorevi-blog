@@ -89,11 +89,25 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 			// inline so it runs before any ClientRouter navigation.
 			window.addEventListener('unhandledrejection', function(event) {
 				var reason = event.reason;
+				console.warn('[DEBUG-REJECTION]', {
+					name: reason && reason.name,
+					message: reason && reason.message,
+					stack: reason && reason.stack,
+					reason: reason
+				});
 				if (reason && reason.name === 'InvalidStateError' &&
 					typeof reason.message === 'string' &&
 					reason.message.indexOf('Transition was aborted') !== -1) {
 					event.preventDefault();
 				}
+			});
+			window.addEventListener('error', function(event) {
+				console.warn('[DEBUG-ERROR]', {
+					message: event.message,
+					filename: event.filename,
+					lineno: event.lineno,
+					error: event.error
+				});
 			});
 		</script>
 		<ClientRouter />
