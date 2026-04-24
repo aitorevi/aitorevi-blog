@@ -1,0 +1,39 @@
+---
+interface PostLink {
+  href: string;
+  label: string;
+  textBefore: string;
+  textAfter: string;
+}
+
+interface Props {
+  heading: string;
+  text?: string;
+  postLink?: PostLink;
+}
+
+const { heading, text, postLink } = Astro.props;
+---
+
+<li class="rounded-xl border border-slate-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.04]">
+  <h3 class="font-display text-base font-semibold text-ink-900 dark:text-slate-100">
+    {heading}
+  </h3>
+  <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+    {postLink ? (
+      <>
+        {postLink.textBefore}
+        {' '}
+        <a
+          href={postLink.href}
+          class="text-secondary underline underline-offset-2 hover:text-accent-violet dark:text-accent-blue dark:hover:text-accent-violet"
+        >
+          {postLink.label}
+        </a>
+        {postLink.textAfter}
+      </>
+    ) : (
+      text
+    )}
+  </p>
+</li>
