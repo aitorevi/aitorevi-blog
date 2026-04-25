@@ -38,8 +38,8 @@ function h(type, props = null, ...children) {
 async function main() {
   console.log('Fetching fonts…');
   const [outfitRegular, outfitBold] = await Promise.all([
-    fetchFont('https://cdn.jsdelivr.net/fontsource/fonts/outfit@latest/latin-400-normal.ttf'),
-    fetchFont('https://cdn.jsdelivr.net/fontsource/fonts/outfit@latest/latin-900-normal.ttf'),
+    fetchFont('https://cdn.jsdelivr.net/fontsource/fonts/outfit@5.2.8/latin-400-normal.ttf'),
+    fetchFont('https://cdn.jsdelivr.net/fontsource/fonts/outfit@5.2.8/latin-900-normal.ttf'),
   ]);
 
   // Satori doesn't decode webp — use a PNG copy kept alongside the script.
