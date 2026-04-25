@@ -63,24 +63,30 @@ describe('sortPostsByDate', () => {
   });
 });
 
-// Note: import.meta.env.PROD is statically replaced at compile time by Vite,
-// so runtime stubbing has no effect. Tests verify the filtering logic itself.
 describe('filterDrafts', () => {
-  it('excludes posts where draft=true', () => {
+  it('excludes posts where draft=true in production', () => {
     const posts = [
       { data: { draft: true }, title: 'Draft' },
       { data: { draft: false }, title: 'Published' },
       { data: {}, title: 'No flag' },
     ];
-    const result = filterDrafts(posts);
+    const result = filterDrafts(posts, true);
     expect(result.every((p) => !p.data.draft)).toBe(true);
   });
 
-  it('keeps non-draft posts', () => {
+  it('keeps all posts in dev mode', () => {
+    const posts = [
+      { data: { draft: true }, title: 'Draft' },
+      { data: { draft: false }, title: 'Published' },
+    ];
+    expect(filterDrafts(posts, false)).toHaveLength(2);
+  });
+
+  it('keeps non-draft posts in production', () => {
     const posts = [
       { data: { draft: false }, title: 'Published' },
       { data: {}, title: 'No flag' },
     ];
-    expect(filterDrafts(posts)).toHaveLength(2);
+    expect(filterDrafts(posts, true)).toHaveLength(2);
   });
 });

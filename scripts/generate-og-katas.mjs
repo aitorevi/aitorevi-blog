@@ -39,9 +39,9 @@ async function countKatas() {
 async function main() {
   console.log('Fetching fonts…');
   const [outfitRegular, outfitBold, jetBrainsMono] = await Promise.all([
-    fetchFont('https://cdn.jsdelivr.net/fontsource/fonts/outfit@latest/latin-400-normal.ttf'),
-    fetchFont('https://cdn.jsdelivr.net/fontsource/fonts/outfit@latest/latin-900-normal.ttf'),
-    fetchFont('https://cdn.jsdelivr.net/fontsource/fonts/jetbrains-mono@latest/latin-600-normal.ttf'),
+    fetchFont('https://cdn.jsdelivr.net/fontsource/fonts/outfit@5.2.8/latin-400-normal.ttf'),
+    fetchFont('https://cdn.jsdelivr.net/fontsource/fonts/outfit@5.2.8/latin-900-normal.ttf'),
+    fetchFont('https://cdn.jsdelivr.net/fontsource/fonts/jetbrains-mono@5.2.8/latin-600-normal.ttf'),
   ]);
 
   const katasCount = await countKatas();

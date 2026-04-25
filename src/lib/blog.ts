@@ -53,9 +53,8 @@ export function sortPostsByDate<T extends { data: { publishDate: Date } }>(
  * @returns Filtered array without drafts (in dev, all posts are returned)
  */
 export function filterDrafts<T extends { data: { draft?: boolean } }>(
-  posts: T[]
+  posts: T[],
+  isProd = import.meta.env.PROD
 ): T[] {
-  return import.meta.env.PROD
-    ? posts.filter((post) => !post.data.draft)
-    : posts;
+  return isProd ? posts.filter((post) => !post.data.draft) : posts;
 }
