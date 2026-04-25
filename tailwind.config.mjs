@@ -24,6 +24,10 @@ export default {
 					violet: '#a78bfa',
 					sky: '#38bdf8',
 				},
+				code: {
+					bg: '#1a1f2e',     // dark code block / blockquote background
+					header: '#1e2533', // dark code block title bar
+				},
 			},
 			backgroundImage: {
 				'home-radial': 'radial-gradient(ellipse at 30% 20%, #0f172a 0%, #020617 55%, #000 100%)',
