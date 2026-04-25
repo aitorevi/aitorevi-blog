@@ -7,8 +7,8 @@ const { position = 'absolute' } = Astro.props;
 
 const DOT_COUNT = 60;
 const dots = Array.from({ length: DOT_COUNT }, (_, i) => ({
-  x: ((i * 37) % 100) + Math.random() * 2,
-  y: ((i * 53) % 95) + Math.random() * 2,
+  x: Math.min(((i * 37) % 100) + Math.random() * 2, 97),
+  y: Math.min(((i * 53) % 95) + Math.random() * 2, 97),
   size: 1 + ((i * 13) % 4) * 0.6,
   opacity: 0.12 + ((i * 7) % 10) * 0.025,
 }));
@@ -17,7 +17,7 @@ const dots = Array.from({ length: DOT_COUNT }, (_, i) => ({
 <div
   aria-hidden="true"
   class:list={[
-    'pointer-events-none inset-0 hidden dark:block text-accent-blue',
+    'pointer-events-none inset-0 hidden dark:block text-accent-blue overflow-hidden',
     position === 'fixed' ? 'fixed' : 'absolute',
   ]}
 >
