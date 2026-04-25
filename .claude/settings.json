@@ -1,0 +1,12 @@
+{
+  "$schema": "https://code.claude.com/schemas/settings-schema.json",
+  "permissions": {
+    "deny": [
+      "Read(**/.env*)",
+      "Read(**/*secret*)",
+      "Read(**/*credentials*)",
+      "Bash(cat ~/.ssh/**)",
+      "Bash(cat ~/.config/vercel/**)"
+    ]
+  }
+}
