@@ -80,17 +80,21 @@ describe('buildConfirmationHtml', () => {
 // ---------------------------------------------------------------------------
 
 vi.mock('resend', () => ({
-  Resend: vi.fn().mockImplementation(() => ({
-    emails: {
-      send: vi.fn().mockResolvedValue({ error: null }),
-    },
-  })),
+  Resend: vi.fn(function () {
+    return {
+      emails: {
+        send: vi.fn().mockResolvedValue({ error: null }),
+      },
+    };
+  }),
 }));
 
 vi.mock('@upstash/ratelimit', () => ({
-  Ratelimit: vi.fn().mockImplementation(() => ({
-    limit: vi.fn().mockResolvedValue({ success: true }),
-  })),
+  Ratelimit: vi.fn(function () {
+    return {
+      limit: vi.fn().mockResolvedValue({ success: true }),
+    };
+  }),
   // static method stub
 }));
 
@@ -192,11 +196,13 @@ describe('POST /api/contact — handler', () => {
 
   it('returns 500 when Resend returns an error', async () => {
     const { Resend } = await import('resend');
-    (Resend as ReturnType<typeof vi.fn>).mockImplementationOnce(() => ({
-      emails: {
-        send: vi.fn().mockResolvedValue({ error: { message: 'fail' } }),
-      },
-    }));
+    (Resend as ReturnType<typeof vi.fn>).mockImplementationOnce(function () {
+      return {
+        emails: {
+          send: vi.fn().mockResolvedValue({ error: { message: 'fail' } }),
+        },
+      };
+    });
     const req = makeRequest(validBody);
     const res = await POST({ request: req } as any);
     expect(res.status).toBe(500);
