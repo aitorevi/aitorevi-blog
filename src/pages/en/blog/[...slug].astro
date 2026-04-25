@@ -118,7 +118,7 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
     itemtype="https://schema.org/BlogPosting"
   >
     <header class="mb-8 space-y-4">
-      <ul class="flex flex-wrap gap-2 list-none p-0" aria-label="Article tags">
+      <ul class="flex flex-wrap gap-2 list-none p-0" aria-label={t(lang, 'blog.tags')}>
         {data.tags.map((tag) => (
           <li><Tag label={tag} variant="accent" /></li>
         ))}
@@ -138,7 +138,7 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
       <div class="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-b border-slate-200 dark:border-slate-700 py-4">
         <DateDisplay date={data.publishDate} showIcon={true} lang="en" />
         <span class="text-slate-400" aria-hidden="true">&bull;</span>
-        <ReadingTime text={readingTime.text} />
+        <ReadingTime text={readingTime.text} label={t(lang, 'blog.readingTime.label')} />
         {data.updatedDate && (
           <>
             <span class="text-slate-400" aria-hidden="true">&bull;</span>

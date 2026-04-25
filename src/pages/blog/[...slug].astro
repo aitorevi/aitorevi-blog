@@ -167,7 +167,7 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
     <!-- Article Header -->
     <header class="mb-8 space-y-4">
       <!-- Tags -->
-      <ul class="flex flex-wrap gap-2 list-none p-0" aria-label="Article tags">
+      <ul class="flex flex-wrap gap-2 list-none p-0" aria-label={t(lang, 'blog.tags')}>
         {data.tags.map((tag) => (
           <li><Tag label={tag} variant="accent" /></li>
         ))}
@@ -195,7 +195,7 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
 
         <span class="text-slate-400" aria-hidden="true">•</span>
 
-        <ReadingTime text={readingTime.text} />
+        <ReadingTime text={readingTime.text} label={t(lang, 'blog.readingTime.label')} />
 
         {data.updatedDate && (
           <>
