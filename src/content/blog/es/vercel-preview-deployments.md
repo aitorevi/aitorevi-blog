@@ -4,7 +4,7 @@ description: >-
   Cada rama que subes a Vercel genera una URL pública automáticamente. Te
   explico cómo sacarle partido y cómo limpiar lo que se acumula.
 publishDate: 2026-04-14
-coverImageAlt: 'Terminal mostrando el listado de deployments de Vercel con URLs de preview '
+coverImageAlt: 'Terminal mostrando el listado de deployments de Vercel con URLs de preview'
 tags:
   - Vercel
   - DevOps
