@@ -70,6 +70,12 @@ const requestedPath = Astro.url.pathname;
         document.documentElement.classList.remove('page-404-en');
         document.documentElement.lang = 'es';
       }
+
+      // Step 5: update aria-labels for game canvas and audio toggle
+      var canvas = document.getElementById('game');
+      if (canvas) canvas.setAttribute('aria-label', canvas.dataset['label' + (isEN ? 'En' : 'Es')] || canvas.getAttribute('aria-label'));
+      var audioBtn = document.getElementById('audioToggle');
+      if (audioBtn) audioBtn.setAttribute('aria-label', audioBtn.dataset['label' + (isEN ? 'En' : 'Es')] || audioBtn.getAttribute('aria-label'));
     }
     // astro:page-load fires on initial load AND after every View Transition swap
     document.addEventListener('astro:page-load', fix404Nav);
@@ -82,7 +88,7 @@ const requestedPath = Astro.url.pathname;
     </p>
 
     <div class="game-wrapper relative flex-1 min-h-0">
-      <canvas id="game" role="application" aria-label="Hexagonal Rush — juego de arcade interactivo"></canvas>
+      <canvas id="game" role="application" aria-label={t('es', '404.game.label')} data-label-en={t('en', '404.game.label')} data-label-es={t('es', '404.game.label')}></canvas>
 
       <div class="hud">
         <span class="hud-item hud-time">⏱ <span id="time">0.00</span>s</span>
@@ -90,7 +96,7 @@ const requestedPath = Astro.url.pathname;
         <span class="hud-item hud-best">⭐ <span id="best">0.00</span>s</span>
       </div>
 
-      <button class="audio-toggle" id="audioToggle" aria-label="Toggle audio" aria-pressed="true"><span aria-hidden="true">🔊</span></button>
+      <button class="audio-toggle" id="audioToggle" aria-label={t('es', '404.audio.toggle')} data-label-es={t('es', '404.audio.toggle')} data-label-en={t('en', '404.audio.toggle')} aria-pressed="true"><span aria-hidden="true">🔊</span></button>
 
       <!-- Touch zones (left / right) -->
       <div class="touch-zones">

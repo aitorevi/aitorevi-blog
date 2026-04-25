@@ -204,7 +204,7 @@ export default function TechConstellation({ lang = 'es' }: Props) {
       className="relative mx-auto w-full max-w-2xl"
       style={{ height: dims.h }}
       role="group"
-      aria-label="Tech stack"
+      aria-label={lang === 'es' ? 'Constelación de tecnologías' : 'Tech constellation'}
     >
       <svg
         width={dims.w}

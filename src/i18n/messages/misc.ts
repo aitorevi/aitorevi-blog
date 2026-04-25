@@ -8,6 +8,8 @@ export const misc = {
     '404.start': 'Empezar',
     '404.gameOver': '💥 Core comprometido',
     '404.restart': 'Reintentar',
+    '404.game.label': 'Hexagonal Rush — juego de arcade interactivo',
+    '404.audio.toggle': 'Activar/desactivar audio',
   },
   en: {
     '404.routeNoAdapters': 'has no adapters. Protect the core.',
@@ -18,5 +20,7 @@ export const misc = {
     '404.start': 'Start',
     '404.gameOver': '💥 Core compromised',
     '404.restart': 'Retry',
+    '404.game.label': 'Hexagonal Rush — interactive arcade game',
+    '404.audio.toggle': 'Toggle audio',
   },
 };

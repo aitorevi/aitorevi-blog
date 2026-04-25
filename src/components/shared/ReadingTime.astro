@@ -9,29 +9,18 @@
  */
 
 interface Props {
-  /**
-   * Reading time text (e.g., "5 min read")
-   */
   text: string;
-
-  /**
-   * Show icon before text
-   * @default true
-   */
+  label?: string;
   showIcon?: boolean;
-
-  /**
-   * Additional CSS classes
-   */
   class?: string;
 }
 
-const { text, showIcon = true, class: className = '' } = Astro.props;
+const { text, label = 'Estimated reading time', showIcon = true, class: className = '' } = Astro.props;
 ---
 
 <span
   class={`inline-flex items-center gap-1.5 text-sm text-quaternary ${className}`}
-  aria-label={`Estimated reading time: ${text}`}
+  aria-label={`${label}: ${text}`}
 >
   {showIcon && (
     <svg

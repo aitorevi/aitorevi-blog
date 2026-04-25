@@ -105,9 +105,9 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
   {data.draft && import.meta.env.DEV && (
     <div
       class="absolute right-4 top-4 z-[1] rounded-full bg-amber-400 px-3 py-1 text-xs font-semibold text-amber-900 shadow-md"
-      aria-label="Draft"
+      aria-label={t(lang, 'blog.draft')}
     >
-      Draft
+      {t(lang, 'blog.draft')}
     </div>
   )}
 
@@ -146,7 +146,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
   <div class="flex flex-1 flex-col p-6">
     <!-- Header: Tags -->
     <header class="mb-3">
-      <ul class="flex flex-wrap gap-2 list-none p-0" aria-label="Post tags">
+      <ul class="flex flex-wrap gap-2 list-none p-0" aria-label={t(lang, 'blog.tags')}>
         {data.tags.slice(0, 3).map((tag) => (
           <li><Tag label={tag} variant="accent" /></li>
         ))}
@@ -186,7 +186,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
         lang={lang}
       />
 
-      <ReadingTime text={readingTime.text} />
+      <ReadingTime text={readingTime.text} label={t(lang, 'blog.readingTime.label')} />
 
       {data.updatedDate && (
         <>
