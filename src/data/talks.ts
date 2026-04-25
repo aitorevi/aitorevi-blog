@@ -15,6 +15,20 @@ export interface Talk {
 export const talks: Talk[] = [
   {
     title: {
+      es: 'Git Hands-on',
+      en: 'Git Hands-on',
+    },
+    event: 'Lean Mind',
+    date: '2026-04-25',
+    description: {
+      es: 'Taller práctico de Git para aprendices en prácticas. Repasamos los comandos principales, el uso de Git en entornos corporativos y las distintas formas de trabajar con él. Los asistentes contaron con un repositorio preparado con ejemplos para practicar.',
+      en: 'Hands-on Git workshop for junior apprentices. Covered the main commands, Git usage in corporate environments, and different workflows. Attendees had a purpose-built repository with examples to practice on their own.',
+    },
+    tags: ['Git'],
+    githubUrl: 'https://github.com/aitorevi/git-hands-on',
+  },
+  {
+    title: {
       es: 'Mock 101: El Arte del Testing',
       en: 'Mock 101: The Art of Testing',
     },

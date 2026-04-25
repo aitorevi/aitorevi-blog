@@ -19,7 +19,7 @@ npm run og:katas         # genera public/og/og-katas.png
 |---|---|
 | `src/pages/` | Páginas ES (raíz) + `en/` para inglés |
 | `src/components/` | Atomic design: `atoms/`, `shared/`, `home/`, `cv/`, etc. |
-| `src/content/blog/` | Posts en Markdoc con frontmatter tipado |
+| `src/content/blog/` | Posts en Markdown con frontmatter tipado |
 | `src/i18n/ui.ts` | Todas las traducciones ES/EN |
 | `src/lib/` | Utilidades puras y testeadas |
 | `src/data/` | Datos del CV y katas |
