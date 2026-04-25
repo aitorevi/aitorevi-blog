@@ -10,7 +10,7 @@ import { z } from 'zod';
  * zero runtime overhead for type checking
  */
 const blogCollection = defineCollection({
-  // Astro 5 Content Layer API - uses new loader pattern
+  // Astro 6 Content Layer API - uses new loader pattern
   loader: glob({
     pattern: '**/*.{md,mdx}',
     base: './src/content/blog'
