@@ -4,16 +4,7 @@ import { t } from '@/i18n/utils';
 
 const lang = 'es';
 
-const features = [
-  { icon: '📊', key: 'portfolio.ims.feat.dashboard' },
-  { icon: '📋', key: 'portfolio.ims.feat.installations' },
-  { icon: '📐', key: 'portfolio.ims.feat.measurements' },
-  { icon: '💰', key: 'portfolio.ims.feat.quotes' },
-  { icon: '📦', key: 'portfolio.ims.feat.suppliers' },
-  { icon: '🔐', key: 'portfolio.ims.feat.roles' },
-  { icon: '📱', key: 'portfolio.ims.feat.pwa' },
-  { icon: '🎨', key: 'portfolio.ims.feat.responsive' },
-];
+const featureKeys = ['dashboard', 'installations', 'measurements', 'quotes', 'suppliers', 'roles', 'pwa', 'responsive'] as const;
 
 const secondaryScreenshots = [
   { src: '/images/portfolio/ims/installations-list.webp', key: 'portfolio.ims.gallery.installations', url: 'app.ims.dev/installations' },
@@ -63,13 +54,13 @@ const stack = {
           {t(lang, 'portfolio.ims.features.title')}
         </h2>
         <ul class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {features.map((feat) => (
-            <li class="flex gap-4 rounded-xl border border-slate-200 bg-slate-50 p-5 dark:border-white/10 dark:bg-white/[0.04]">
-              <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-secondary/20 bg-secondary/5 text-lg dark:border-accent-blue/20 dark:bg-accent-blue/5" aria-hidden="true">
-                {feat.icon}
-              </span>
-              <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                {t(lang, feat.key)}
+          {featureKeys.map((key) => (
+            <li class="rounded-xl border border-slate-200 bg-slate-50 p-5 dark:border-white/10 dark:bg-white/[0.04]">
+              <h3 class="font-display text-base font-semibold text-ink-900 dark:text-slate-100">
+                {t(lang, `portfolio.ims.feat.${key}.title`)}
+              </h3>
+              <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                {t(lang, `portfolio.ims.feat.${key}`)}
               </p>
             </li>
           ))}
