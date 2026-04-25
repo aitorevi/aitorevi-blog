@@ -51,19 +51,20 @@ export function buildButtonClasses(opts: BuildClassesOpts = {}): string {
   return parts.join(' ').trim();
 }
 
-export function resolveButtonProps(opts: ResolvePropsOpts = {}): ResolvedButtonProps {
-  const { href, target, rel, type } = opts;
-
-  if (typeof href === 'string' && href.length > 0) {
-    const resolved: Extract<ResolvedButtonProps, { tag: 'a' }> = { tag: 'a', href };
-    if (target) resolved.target = target;
-    if (rel !== undefined) {
-      resolved.rel = rel;
-    } else if (target === '_blank') {
-      resolved.rel = 'noopener noreferrer';
-    }
-    return resolved;
+export function resolveButtonProps({
+  href,
+  target,
+  rel,
+  type = 'button',
+}: ResolvePropsOpts = {}): ResolvedButtonProps {
+  if (href) {
+    return {
+      tag: 'a',
+      href,
+      target,
+      rel: rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined),
+    };
   }
 
-  return { tag: 'button', type: type ?? 'button' };
+  return { tag: 'button', type };
 }
