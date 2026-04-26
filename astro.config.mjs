@@ -16,6 +16,13 @@ export default defineConfig({
     keystatic(),
     sitemap({
       filter: (page) => !page.includes('/print') && !page.includes('/keystatic'),
+      i18n: {
+        defaultLocale: 'es',
+        locales: {
+          es: 'es-ES',
+          en: 'en-US',
+        },
+      },
     }),
   ],
   site: "https://www.aitorevi.dev/",
