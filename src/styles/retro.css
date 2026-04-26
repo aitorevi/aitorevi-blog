@@ -405,6 +405,21 @@ html[data-retro] .retro-hide {
 }
 
 /*
+ * TechConstellation labels on mobile: the global span rule forces
+ * font-size: 12px (Press Start 2P), overriding the inline fontSize:9
+ * the React component sets. At 12px PS2P the labels are ~2× wider than
+ * normal mono and collide with neighbouring nodes on small screens.
+ * Hide the text-only labels below each circle; the 2-letter abbreviation
+ * inside the circle still identifies the technology. Desktop is wide
+ * enough that labels don't overlap so they stay visible there.
+ */
+@media (max-width: 767px) {
+  html[data-retro] [role="group"] span[class*="whitespace-nowrap"] {
+    display: none !important;
+  }
+}
+
+/*
  * Photographic images: push real photos toward the flat-shaded /
  * hand-painted feel of LucasArts adventure backgrounds. Aggressive
  * contrast + saturation knocks out subtle gradients and pushes blocks
