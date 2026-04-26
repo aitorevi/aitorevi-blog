@@ -192,6 +192,26 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 		}
 	}
 
+	// astro:before-swap fires while the incoming document is still off-DOM,
+	// so we can stamp data-retro / dark on its <html> *before* the swap is
+	// painted. Without this, the new page briefly renders without the
+	// retro/dark attributes (only set in after-swap), causing flickers like
+	// the retro toggle changing width during ES↔EN navigation.
+	document.addEventListener('astro:before-swap', (event) => {
+		const incoming = event.newDocument.documentElement;
+		const theme = localStorage.getItem('theme');
+		if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+			incoming.classList.add('dark');
+		} else {
+			incoming.classList.remove('dark');
+		}
+		if (localStorage.getItem('retro') === '1') {
+			incoming.dataset.retro = '';
+		} else {
+			delete incoming.dataset.retro;
+		}
+	});
+
 	document.addEventListener('astro:after-swap', applyTheme);
 	document.addEventListener('astro:after-swap', applyRetro);
 	document.addEventListener('astro:after-swap', () => {
