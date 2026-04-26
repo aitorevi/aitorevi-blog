@@ -44,6 +44,13 @@ html[data-retro] {
   --retro-text: #f5e6c8;
 }
 
+/* Light retro: clearly distinct from dark (medium electric blue vs near-black navy). */
+html[data-retro]:not(.dark) {
+  --retro-bg: #0d2a5e;
+  --retro-bg-mid: #143d82;
+  --retro-panel: #1e5299;
+}
+
 /* Body: tile wallpaper, pixel font, hard pixel image rendering. */
 html[data-retro] body {
   background-color: var(--retro-bg-mid) !important;
