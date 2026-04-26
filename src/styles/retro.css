@@ -314,9 +314,22 @@ html[data-retro] header button {
 }
 
 /* Re-claim the retro toggle's coloured fill — the broad header-button
-   override above zeroed out background/box-shadow for theme + hamburger. */
+   override above zeroed out background/box-shadow for theme + hamburger.
+   Lock its dimensions explicitly (id selector wins specificity vs the
+   header-button rule) and prevent flex-shrink so the cluster width
+   doesn't drift between locales. */
 html[data-retro] :is(#retro-toggle, #retro-toggle-mobile) {
   background: var(--retro-cyan) !important;
+  width: 36px !important;
+  min-width: 36px !important;
+  max-width: 36px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  flex-shrink: 0 !important;
+  flex-grow: 0 !important;
+  box-sizing: border-box !important;
+  padding: 0.5rem !important;
 }
 
 /* The retro toggle button: pulsing cyan ↔ yellow to call attention. */
@@ -382,6 +395,24 @@ html[data-retro] body::after {
    ES and EN renders that read as "different colors"). */
 html[data-retro] .retro-hide {
   display: none !important;
+}
+
+/*
+ * Photographic images: push real photos toward the flat-shaded /
+ * hand-painted feel of LucasArts adventure backgrounds. Aggressive
+ * contrast + saturation knocks out subtle gradients and pushes blocks
+ * of color, slight hue-rotate cools the palette toward the navy DOTT
+ * mood, slight sepia tint warms the midtones for a "painted cel"
+ * feeling. Selector is more specific than the universal `* { filter:
+ * none }` reset (img tag adds an extra type to specificity) so this
+ * filter survives. */
+html[data-retro] img {
+  filter:
+    contrast(1.7)
+    saturate(2)
+    brightness(0.9)
+    sepia(0.15)
+    hue-rotate(-10deg) !important;
 }
 
 /*
