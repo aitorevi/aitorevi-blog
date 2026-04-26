@@ -37,10 +37,6 @@ export default defineConfig({
   redirects: {
     '/sitemap.xml': '/sitemap-index.xml',
     '/cv/en': '/en/cv',
-    '/aviso-legal': '/legal-notice',
-    '/aviso-legal/': '/legal-notice',
-    '/privacidad': '/privacy',
-    '/privacidad/': '/privacy',
   },
   i18n: {
     defaultLocale: 'es',
