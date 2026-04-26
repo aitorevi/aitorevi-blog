@@ -7,6 +7,7 @@ import Nav from "@/components/nav/Nav.astro";
 import Footer from "@/components/footer/Footer.astro";
 import { getLangFromUrl, getAlternateUrl, t } from '@/i18n/utils';
 import type { Lang } from '@/i18n/types';
+import '@/styles/retro.css';
 
 interface Props {
 	title: string;
@@ -84,6 +85,9 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 				const theme = localStorage.getItem('theme');
 				if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
 					document.documentElement.classList.add('dark');
+				}
+				if (localStorage.getItem('retro') === '1') {
+					document.documentElement.dataset.retro = '';
 				}
 			})();
 			// Swallow the benign race condition from Chrome's View Transitions
@@ -180,7 +184,16 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 		}
 	}
 
+	function applyRetro() {
+		if (localStorage.getItem('retro') === '1') {
+			document.documentElement.dataset.retro = '';
+		} else {
+			delete document.documentElement.dataset.retro;
+		}
+	}
+
 	document.addEventListener('astro:after-swap', applyTheme);
+	document.addEventListener('astro:after-swap', applyRetro);
 	document.addEventListener('astro:after-swap', () => {
 		const main = document.getElementById('main-content');
 		if (!main) return;
