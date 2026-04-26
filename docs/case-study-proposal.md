@@ -65,7 +65,7 @@ Cards o párrafos cortos con pares *decisión → porqué*. Propongo **6 bloques
 Mismo formato que IMS (`stack.frontend`, `stack.content`, `stack.infra`, `stack.testing`). Fuente: `package.json` + configs. Ver §"Datos dinámicos" sobre de dónde sacar las versiones.
 
 - **Frontend**: Astro 5, TypeScript, Tailwind 3, React (selectivo).
-- **Contenido**: Keystatic, Markdoc, Satori (OG), Puppeteer (PDF CV).
+- **Contenido**: Keystatic, Markdoc, Satori (OG), Playwright (PDF CV).
 - **Infra**: Vercel, Upstash Redis, Resend, GitHub Actions.
 - **Testing**: Vitest, ~135 tests unitarios.
 

@@ -76,7 +76,7 @@ Fechas reales extraídas de `git log --all --format='%h %ai'`. Primer commit
 | **@astrojs/tailwind, @astrojs/react, @astrojs/mdx, @astrojs/markdoc** | varias | `astro.config.mjs` | Integraciones oficiales. |
 | **@vercel/analytics** | 2.0.1 | `src/layouts/Layout.astro` | Web Vitals. |
 | **Vitest** | 1.1.1 | `vitest.config.ts` | Unit tests — 135 actualmente (i18n, contact API, Button, data). |
-| **Puppeteer** | dev-dep | `scripts/generate-cv-pdf.mjs` | Render del CV a PDF ATS en build time. |
+| **Playwright** | dev-dep | `scripts/generate-cv-pdf.mjs` | Render del CV a PDF ATS en build time. |
 
 ## 3. Features por área
 

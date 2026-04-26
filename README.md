@@ -42,7 +42,7 @@ tests/unit/        Tests de lib, api, i18n y datos
 ## Contenido
 
 - **Blog** — posts en `src/content/blog/{es,en}/` como Markdown con frontmatter validado por Zod. Editables desde el panel de Keystatic en `/keystatic` (o pulsa `g` y luego `a` en cualquier página para abrirlo).
-- **CV** — datos estructurados en `src/data/cv.ts`. Al hacer `npm run build` se generan dos PDFs (ES/EN) en `public/cv/` usando Puppeteer contra la ruta `/cv/print/`.
+- **CV** — datos estructurados en `src/data/cv.ts`. Al hacer `npm run build` se generan dos PDFs (ES/EN) en `public/cv/` usando Playwright contra la ruta `/cv/print/`.
 
 ## i18n
 

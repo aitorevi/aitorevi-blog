@@ -1,6 +1,6 @@
 ---
 name: security-agent
-description: Úsalo PROACTIVAMENTE antes de hacer merge a `main`, al añadir/actualizar dependencias, al tocar el formulario de contacto (Resend), las integraciones con Upstash, la generación de OG images (Satori) o del PDF del CV (Puppeteer), al modificar workflows de GitHub Actions, al cambiar configuración de Vercel (variables de entorno, headers, middleware, previews) o al introducir nuevas islas React con input de usuario. También bajo petición explícita de revisión de seguridad, modelo de amenazas o auditoría de superficie de ataque.
+description: Úsalo PROACTIVAMENTE antes de hacer merge a `main`, al añadir/actualizar dependencias, al tocar el formulario de contacto (Resend), las integraciones con Upstash, la generación de OG images (Satori) o del PDF del CV (Playwright), al modificar workflows de GitHub Actions, al cambiar configuración de Vercel (variables de entorno, headers, middleware, previews) o al introducir nuevas islas React con input de usuario. También bajo petición explícita de revisión de seguridad, modelo de amenazas o auditoría de superficie de ataque.
 model: opus
 color: red
 maxTurns: 15
@@ -20,7 +20,7 @@ Blog personal `aitorevi.dev`, mantenido por una sola persona, con contenido téc
 **Stack real:**
 
 - **Frontend**: Astro (SSG + islas selectivas), TypeScript, Tailwind CSS con design tokens propios, React solo en las islas interactivas.
-- **Contenido**: Keystatic (CMS git-based, cada entrada es un commit), Markdoc para artículos, Satori para OG images, Puppeteer para el PDF del CV.
+- **Contenido**: Keystatic (CMS git-based, cada entrada es un commit), Markdoc para artículos, Satori para OG images, Playwright para el PDF del CV.
 - **Infra**: Vercel (hosting + preview deployments), Upstash Redis, Resend para el formulario de contacto, GitHub Actions para CI/CD.
 - **Testing**: Vitest (unitarios + integración sobre el build), Playwright (E2E, incluye consent, i18n, dark mode).
 - **Privacidad**: banner de consentimiento propio (sin CMP de terceros), GA4 con Consent Mode v2 y `analytics_storage` denegado por defecto, páginas legales completas.
@@ -70,9 +70,9 @@ Blog personal `aitorevi.dev`, mantenido por una sola persona, con contenido téc
    - Evitar `'unsafe-inline'` en `script-src`; si Astro requiere hashes o nonces, usarlos.
    - `Strict-Transport-Security` con `preload` si el dominio está en la preload list (o listo para estarlo).
    - `Permissions-Policy` negando por defecto lo que no uses (camera, microphone, geolocation, etc.).
-9. **Satori (OG images) y Puppeteer (PDF CV)**:
+9. **Satori (OG images) y Playwright (PDF CV)**:
    - **Satori**: si toma texto o URLs de imagen desde fuentes externas, validar/whitelist. Fuentes remotas con `fetch`: riesgo de SSRF si la URL es user-controlled. En este proyecto, probablemente todo es build-time y controlado; confirmar.
-   - **Puppeteer**: si corre en CI sobre contenido que no controlas al 100%, considera `--no-sandbox` con cuidado, aislar el proceso y no renderizar HTML arbitrario de usuario. Riesgo real: XSS stored → ejecución dentro del headless → robo de secretos del runner.
+   - **Playwright**: si corre en CI sobre contenido que no controlas al 100%, considera `--no-sandbox` con cuidado, aislar el proceso y no renderizar HTML arbitrario de usuario. Riesgo real: XSS stored → ejecución dentro del headless → robo de secretos del runner.
 10. **Privacidad (ya implementada, vigilar regresiones)**:
     - Que GA4 siga arrancando con `analytics_storage='denied'` y solo cambie tras consentimiento explícito.
     - Que no se carguen scripts de terceros antes del consent.
