@@ -240,4 +240,55 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 			lastKey = '';
 		}
 	});
+
+	// Hidden retro mode trigger.
+	// Desktop: classic Konami code (↑↑↓↓←→←→BA).
+	// Mobile: three rapid taps on the brand wordmark's violet dot
+	// ([data-retro-tap]). The dot is inside the home <a>, so we
+	// preventDefault on taps 2+ to stop the navigation chain while we
+	// count, while the first tap still navigates home harmlessly.
+	function toggleRetro() {
+		const html = document.documentElement;
+		if (html.hasAttribute('data-retro')) {
+			html.removeAttribute('data-retro');
+			localStorage.removeItem('retro');
+		} else {
+			html.setAttribute('data-retro', '');
+			localStorage.setItem('retro', '1');
+		}
+	}
+
+	const KONAMI = [
+		'ArrowUp','ArrowUp','ArrowDown','ArrowDown',
+		'ArrowLeft','ArrowRight','ArrowLeft','ArrowRight',
+		'b','a',
+	];
+	let konamiIdx = 0;
+	document.addEventListener('keydown', (e) => {
+		if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+		const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+		if (key === KONAMI[konamiIdx]) {
+			konamiIdx++;
+			if (konamiIdx === KONAMI.length) {
+				toggleRetro();
+				konamiIdx = 0;
+			}
+		} else {
+			konamiIdx = key === KONAMI[0] ? 1 : 0;
+		}
+	});
+
+	let retroTaps: number[] = [];
+	document.addEventListener('click', (e) => {
+		const target = e.target instanceof Element ? e.target.closest('[data-retro-tap]') : null;
+		if (!target) return;
+		const now = Date.now();
+		retroTaps = retroTaps.filter((t) => now - t < 800);
+		retroTaps.push(now);
+		if (retroTaps.length >= 2) e.preventDefault();
+		if (retroTaps.length >= 3) {
+			toggleRetro();
+			retroTaps = [];
+		}
+	});
 </script>

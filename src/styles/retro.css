@@ -306,12 +306,11 @@ html[data-retro] header > div > nav {
   gap: 1.25rem !important;
 }
 
-/* Header buttons (theme toggle, retro toggle, hamburger): keep their
-   original p-2 (0.5rem) padding instead of inheriting the wider button
-   padding from the global retro button rule, which would widen the
-   header's right cluster and shift the nav links horizontally when
-   retro turns on. Also force a square shape via fixed width/height so
-   icon size + padding is identical between modes. */
+/* Header buttons (theme toggle, hamburger): keep their original p-2
+   (0.5rem) padding instead of inheriting the wider global button
+   padding, which would widen the header's right cluster and shift the
+   nav links horizontally when retro turns on. Square shape locked via
+   fixed dimensions so icon + padding match between modes. */
 html[data-retro] header button {
   padding: 0.5rem !important;
   background: transparent !important;
@@ -320,44 +319,7 @@ html[data-retro] header button {
   height: 36px !important;
 }
 
-/* Re-claim the retro toggle's coloured fill — the broad header-button
-   override above zeroed out background/box-shadow for theme + hamburger.
-   Lock its dimensions explicitly (id selector wins specificity vs the
-   header-button rule) and prevent flex-shrink so the cluster width
-   doesn't drift between locales. */
-html[data-retro] :is(#retro-toggle, #retro-toggle-mobile) {
-  background: var(--retro-cyan) !important;
-  width: 36px !important;
-  min-width: 36px !important;
-  max-width: 36px !important;
-  height: 36px !important;
-  min-height: 36px !important;
-  max-height: 36px !important;
-  flex-shrink: 0 !important;
-  flex-grow: 0 !important;
-  box-sizing: border-box !important;
-  padding: 0.5rem !important;
-}
-
-/* The retro toggle button: pulsing cyan ↔ yellow to call attention. */
-html[data-retro] :is(#retro-toggle, #retro-toggle-mobile) {
-  background: var(--retro-cyan) !important;
-  color: var(--retro-bg) !important;
-  box-shadow: inset 0 0 0 2px var(--retro-bg) !important;
-  animation: retro-toggle-pulse 1.4s steps(2, end) infinite !important;
-}
-
-html[data-retro] :is(#retro-toggle, #retro-toggle-mobile) :is(svg, *) {
-  color: var(--retro-bg) !important;
-}
-
-@keyframes retro-toggle-pulse {
-  0%, 49% { background: var(--retro-cyan); }
-  50%, 100% { background: var(--retro-yellow); }
-}
-
-/* Other header SVGs (theme toggle, hamburger): cream icons. */
-html[data-retro] header button:not(#retro-toggle):not(#retro-toggle-mobile) :is(svg, svg *) {
+html[data-retro] header button :is(svg, svg *) {
   color: var(--retro-cream) !important;
 }
 
@@ -493,9 +455,3 @@ html[data-retro] :focus-visible {
   outline-offset: 2px !important;
 }
 
-/* Respect reduced motion: stop the toggle pulse. CRT overlay is static. */
-@media (prefers-reduced-motion: reduce) {
-  html[data-retro] :is(#retro-toggle, #retro-toggle-mobile) {
-    animation: none !important;
-  }
-}
