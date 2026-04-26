@@ -55,8 +55,13 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 		<link rel="preload" href="/fonts/jetbrains-mono-600-latin.woff2" as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href="/fonts/jetbrains-mono-700-latin.woff2" as="font" type="font/woff2" crossorigin />
 		<link rel="stylesheet" href="/fonts/fonts.css" />
+		<link rel="canonical" href={canonicalUrl} />
 		{alternateUrl && alternateLang && (
-			<link rel="alternate" hreflang={alternateLang} href={alternateUrl} />
+			<>
+				<link rel="alternate" hreflang={lang} href={canonicalUrl} />
+				<link rel="alternate" hreflang={alternateLang} href={alternateUrl} />
+				<link rel="alternate" hreflang="x-default" href={lang === 'es' ? canonicalUrl : alternateUrl} />
+			</>
 		)}
 		<!-- Open Graph -->
 		<meta property="og:type" content="website" />
