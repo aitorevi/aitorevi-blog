@@ -46,7 +46,7 @@ async function fetchPRCount(repo: string, fallback: number): Promise<number> {
 }
 
 function countLegalPages(root: string): number {
-  const legalSlugs = ['aviso-legal', 'privacidad', 'cookies', 'legal-notice', 'privacy'];
+  const legalSlugs = ['legal-notice', 'privacy', 'cookies'];
   let count = 0;
   for (const dir of [join(root, 'src/pages'), join(root, 'src/pages/en')]) {
     try {

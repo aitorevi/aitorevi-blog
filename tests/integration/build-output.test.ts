@@ -12,9 +12,9 @@ describe('ES pages exist', () => {
   it('cv', () => { expect(exists('cv')).toBe(true); });
   it('katas', () => { expect(exists('katas')).toBe(true); });
   it('portfolio/aitorevi-dev', () => { expect(exists('portfolio/aitorevi-dev')).toBe(true); });
-  it('privacidad', () => { expect(exists('privacidad')).toBe(true); });
+  it('privacy', () => { expect(exists('privacy')).toBe(true); });
   it('cookies', () => { expect(exists('cookies')).toBe(true); });
-  it('aviso-legal', () => { expect(exists('aviso-legal')).toBe(true); });
+  it('legal-notice', () => { expect(exists('legal-notice')).toBe(true); });
 });
 
 describe('EN pages exist', () => {

@@ -69,22 +69,21 @@ describe('getAlternateUrl', () => {
     expect(getAlternateUrl('/en/cv', 'en')).toBe('/cv');
   });
 
-  // Legal pages — some have translated slugs and need explicit mapping,
-  // others share the slug across languages.
-  it('maps /privacidad → /en/privacy (translated slug)', () => {
-    expect(getAlternateUrl('/privacidad', 'es')).toBe('/en/privacy');
+  // Legal pages — all use shared slugs (prefix swap).
+  it('maps /privacy → /en/privacy', () => {
+    expect(getAlternateUrl('/privacy', 'es')).toBe('/en/privacy');
   });
 
-  it('maps /en/privacy → /privacidad (translated slug)', () => {
-    expect(getAlternateUrl('/en/privacy', 'en')).toBe('/privacidad');
+  it('maps /en/privacy → /privacy', () => {
+    expect(getAlternateUrl('/en/privacy', 'en')).toBe('/privacy');
   });
 
-  it('maps /aviso-legal → /en/legal-notice (translated slug)', () => {
-    expect(getAlternateUrl('/aviso-legal', 'es')).toBe('/en/legal-notice');
+  it('maps /legal-notice → /en/legal-notice', () => {
+    expect(getAlternateUrl('/legal-notice', 'es')).toBe('/en/legal-notice');
   });
 
-  it('maps /en/legal-notice → /aviso-legal (translated slug)', () => {
-    expect(getAlternateUrl('/en/legal-notice', 'en')).toBe('/aviso-legal');
+  it('maps /en/legal-notice → /legal-notice', () => {
+    expect(getAlternateUrl('/en/legal-notice', 'en')).toBe('/legal-notice');
   });
 
   it('keeps /cookies shared slug working in both directions', () => {
@@ -92,9 +91,9 @@ describe('getAlternateUrl', () => {
     expect(getAlternateUrl('/en/cookies', 'en')).toBe('/cookies');
   });
 
-  it('handles trailing slashes on translated-slug pages', () => {
-    expect(getAlternateUrl('/privacidad/', 'es')).toBe('/en/privacy');
-    expect(getAlternateUrl('/en/legal-notice/', 'en')).toBe('/aviso-legal');
+  it('handles trailing slashes on legal pages', () => {
+    expect(getAlternateUrl('/privacy/', 'es')).toBe('/en/privacy');
+    expect(getAlternateUrl('/en/legal-notice/', 'en')).toBe('/legal-notice');
   });
 });
 
