@@ -26,7 +26,7 @@ const repoUrl = 'https://github.com/aitorevi/aitorevi-blog';
 const buildBlogPostPath = (slug: string) => (isES ? `/blog/${slug}` : `/en/blog/${slug}`);
 
 const timelineItems = [1, 2, 3, 4, 5] as const;
-const decisions = ['astro', 'i18n', 'cms', 'consent', 'tests', 'ci', 'a11y'] as const;
+const decisions = ['astro', 'i18n', 'seo', 'cms', 'consent', 'tests', 'ci', 'a11y'] as const;
 
 const buildStats = await fetchBuildStats(new URL('../../../', import.meta.url).pathname);
 
