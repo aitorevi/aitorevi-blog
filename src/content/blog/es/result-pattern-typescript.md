@@ -1,21 +1,26 @@
 ---
-title: "Result Pattern en TypeScript: cuando tus errores dejan de ser una sorpresa"
-description: "Cuando una función puede fallar, que el tipo lo diga. Result Pattern en TypeScript: errores explícitos, type-safe y fáciles de testear."
+title: 'Result Pattern en TypeScript: cuando tus errores dejan de ser una sorpresa'
+description: >-
+  Cuando una función puede fallar, que el tipo lo diga. Result Pattern en
+  TypeScript: errores explícitos, type-safe y fáciles de testear.
 publishDate: 2026-02-03
 coverImage: /images/blog/result-pattern-typescript/result-pattern-typescript-cover.webp
-coverImageAlt: "Tubería en Y violeta dividiéndose en dos sobres: uno verde con check y otro rojo con X"
+coverImageAlt: >-
+  Tubería en Y violeta dividiéndose en dos sobres: uno verde con check y otro
+  rojo con X
 tags:
   - TypeScript
   - Patrones
   - Manejo de errores
 draft: false
+featured: true
 author:
   name: aitorevi
   avatar: /avatar.webp
-canonicalUrl: "https://leanmind.es/es/blog/result-pattern-en-typescript-cuando-tus-errores-dejan-de-ser-una-sorpresa"
-canonicalSource: "Leanmind"
+canonicalUrl: >-
+  https://leanmind.es/es/blog/result-pattern-en-typescript-cuando-tus-errores-dejan-de-ser-una-sorpresa
+canonicalSource: Leanmind
 ---
-
 ## El problema: Try-Catch, el amigo invisible que nadie pidió
 
 ¿Alguna vez has mirado el tipo de una función en TypeScript y pensado "genial, esto retorna un `User`", para luego descubrir (en producción, claro) que también puede explotar en tu cara? Bienvenido al club.
@@ -98,14 +103,17 @@ export function failure<E>(error: E): Result<never, E> {
 
 Ya está. Eso es el 80% del patrón. Lo demás son *helpers* útiles.
 
->  **Algo interesante**: No siempre es necesario usar `string` para el error. Puedes aprovechar el tipo `Error` de TypeScript:
->
+> **Algo interesante**: No siempre es necesario usar `string` para el error. Puedes aprovechar el tipo `Error` de TypeScript:
+> 
 > ```typescript
-> type Result<T> =
->   | { ok: true; value: T }
->   | { ok: false; error: Error }
-> ```
->
+```
+
+type Result<T> =
+| { ok: true; value: T }
+| { ok: false; error: Error }
+
+````
+> 
 > De esta forma el genérico queda solo para el caso correcto, mientras que para los errores aprovechas el tipo `Error` del lenguaje (o extensiones como `NotFoundError`). Esto permite gestionarlos con `instanceof` en lugar de parsear strings. No vamos a profundizar en este enfoque aquí, pero ten en cuenta que usarlo cambiaría también tus helpers y tests para trabajar con objetos `Error` en lugar de strings.
 
 ### Paso 2: Úsalo en tus funciones
@@ -121,7 +129,7 @@ async function getUserById(id: string): Promise<Result<User, string>> {
     return failure(`User not found: ${id}`)
   }
 }
-```
+````
 
 ¿Ves la diferencia? **El tipo ya no miente**. Dice claramente: "esto puede retornar un `User` o un `string` de error". TypeScript está de tu lado otra vez.
 

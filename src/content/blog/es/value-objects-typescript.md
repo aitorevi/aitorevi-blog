@@ -1,21 +1,25 @@
 ---
-title: "Value Objects en TypeScript: adiós a los primitivos"
-description: "Deja de pasar strings por todos lados. Value Objects en TypeScript: tipos que hablan el lenguaje de tu negocio y validan en su nacimiento."
+title: 'Value Objects en TypeScript: adiós a los primitivos'
+description: >-
+  Deja de pasar strings por todos lados. Value Objects en TypeScript: tipos que
+  hablan el lenguaje de tu negocio y validan en su nacimiento.
 publishDate: 2026-02-10
 coverImage: /images/blog/value-objects-typescript/value-objects-typescript-cover.webp
-coverImageAlt: "Cápsula violeta brillante con un token hexagonal cian en su interior, sobre fondo navy con líneas de circuito"
+coverImageAlt: >-
+  Cápsula violeta brillante con un token hexagonal cian en su interior, sobre
+  fondo navy con líneas de circuito
 tags:
   - TypeScript
   - DDD
   - Diseño
 draft: false
+featured: true
 author:
   name: aitorevi
   avatar: /avatar.webp
-canonicalUrl: "https://leanmind.es/es/blog/value-objects-en-typescript-adios-a-los-primitivos"
-canonicalSource: "Leanmind"
+canonicalUrl: https://leanmind.es/es/blog/value-objects-en-typescript-adios-a-los-primitivos
+canonicalSource: Leanmind
 ---
-
 ¿Alguna vez has pasado un `string` donde esperabas otro y TypeScript no te advirtió? ¿Has tenido que validar el mismo formato de datos en 15 lugares diferentes? Entonces necesitas conocer los **Value Objects**.
 
 Pero ojo, no se trata solo de validar datos. Se trata de que tu código deje de hablar de "cadenas de texto" y empiece a hablar el lenguaje de tu negocio.

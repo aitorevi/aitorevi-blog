@@ -64,6 +64,10 @@ const sharedBlogFields = {
   canonicalUrl: fields.url({
     label: 'Canonical URL (optional)',
   }),
+  canonicalSource: fields.text({
+    label: 'Canonical source (optional)',
+    description: 'Name of the original publication, e.g. "Leanmind".',
+  }),
 };
 
 const isLocal = process.env.NODE_ENV === 'development';
