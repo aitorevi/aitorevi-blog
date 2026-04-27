@@ -49,7 +49,6 @@ const regularItemClass = regularPosts.length === 1
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Blog | aitorevi" />
     <meta property="og:description" content={t(lang, 'blog.description')} />
-    <link rel="canonical" href={new URL(blogPath, Astro.site).href} />
 
     <script is:inline type="application/ld+json" set:html={safeJsonLd({
       "@context": "https://schema.org",

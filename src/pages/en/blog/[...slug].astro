@@ -6,6 +6,7 @@ import Tag from '@/components/shared/Tag.astro';
 import DateDisplay from '@/components/shared/DateDisplay.astro';
 import ReadingTime from '@/components/shared/ReadingTime.astro';
 import CodeBlockEnhancer from '@/components/blog/CodeBlockEnhancer.astro';
+import RepublishedNotice from '@/components/blog/RepublishedNotice.astro';
 import { calculateReadingTime } from '@/lib/blog';
 import { formatDate, formatDateISO } from '@/lib/date';
 import DotField from '@/components/shared/DotField.astro';
@@ -61,13 +62,13 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
   title={`${data.title} | aitorevi Blog`}
   description={data.description}
   alternateUrl={`https://www.aitorevi.dev${alternateUrl}`}
+  canonicalUrl={canonicalUrl}
   variant="dark-radial"
 >
   <Fragment slot="head">
     <meta property="og:type" content="article" />
     <meta property="og:title" content={data.title} />
     <meta property="og:description" content={data.description} />
-    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={ogImageAbsolute} />
     <meta property="article:published_time" content={data.publishDate.toISOString()} />
     {data.updatedDate && (
@@ -81,7 +82,6 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
     <meta name="twitter:title" content={data.title} />
     <meta name="twitter:description" content={data.description} />
     <meta name="twitter:image" content={ogImageAbsolute} />
-    <link rel="canonical" href={canonicalUrl} />
     <script is:inline type="application/ld+json" set:html={safeJsonLd({
       "@context": "https://schema.org",
       "@type": "BlogPosting",
@@ -151,6 +151,14 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
           </>
         )}
       </div>
+
+      {data.canonicalUrl && data.canonicalSource && (
+        <RepublishedNotice
+          lang={lang}
+          sourceUrl={data.canonicalUrl}
+          sourceName={data.canonicalSource}
+        />
+      )}
     </header>
 
     <figure class="mb-10">
