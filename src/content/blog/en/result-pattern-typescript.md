@@ -16,7 +16,7 @@ canonicalUrl: "https://leanmind.es/en/blog/result-pattern-in-typescript-when-you
 canonicalSource: "Leanmind"
 ---
 
-## The Problem: Try-Catch, the Invisible Friend Nobody Asked For 👻
+## The Problem: Try-Catch, the Invisible Friend Nobody Asked For
 
 Have you ever looked at a function type in TypeScript and thought "great, this returns a `User`", only to later discover (in production, of course) that it can also blow up in your face? Welcome to the club.
 
@@ -27,10 +27,10 @@ async function getUserById(id: string): Promise<User> {
 }
 
 // Later, in production...
-const user = await getUserById("123") // 💥 BOOM! User not found
+const user = await getUserById("123") //  BOOM! User not found
 ```
 
-The type says `Promise<User>`. It lies. It's a liar. It's actually `Promise<User | 💣>`.
+The type says `Promise<User>`. It lies. It's a liar. It's actually `Promise<User | Error>`.
 
 The problem isn't just that it can fail (everything can fail). The problem is that *the type* doesn't tell you. TypeScript, that friend who helps you avoid bugs, leaves you hanging here. There's no hint in the type that says "hey, maybe you should handle the error case."
 
@@ -61,7 +61,7 @@ async function getUserWithPosts(userId: string) {
 
 What error was it? User? Posts? Comments? Who knows. Everything is a generic `Error`. And if you want to know what happened, you have to parse error message strings like it's 1999.
 
-## The Solution: Result Pattern, the Error That Doesn't Hide 🔦
+## The Solution: Result Pattern, the Error That Doesn't Hide
 
 The **Result Pattern** comes from functional languages like Rust and Haskell, where exceptions don't exist (or almost). The idea is simple and brutal:
 
@@ -98,7 +98,7 @@ export function failure<E>(error: E): Result<never, E> {
 
 That's it. That's 80% of the pattern. The rest are useful *helpers*.
 
-> 💡 **Interesting Note**: It's not always necessary to use `string` for the error. You can leverage TypeScript's `Error` type:
+>  **Interesting Note**: It's not always necessary to use `string` for the error. You can leverage TypeScript's `Error` type:
 >
 > ```typescript
 > type Result<T> =
@@ -116,9 +116,9 @@ Now, instead of throwing exceptions, you return `Result`:
 async function getUserById(id: string): Promise<Result<User, string>> {
   try {
     const user = await database.findUser(id)
-    return success(user) // ✅
+    return success(user)
   } catch (error) {
-    return failure(`User not found: ${id}`) // ❌
+    return failure(`User not found: ${id}`)
   }
 }
 ```
@@ -194,7 +194,7 @@ if (result.ok) {
 
 Simple and direct. The error already comes with context from the function that failed.
 
-### Bonus: Helpers That Save Your Life 🦸
+### Bonus: Helpers That Save Your Life
 
 You can add useful functions to work with Results:
 
@@ -259,7 +259,7 @@ if (combined.ok) {
 }
 ```
 
-## Testing: Where Result Truly Shines ✨
+## Testing: Where Result Truly Shines
 
 The real advantage in testing is not the syntax, but the **symmetry**. With Result, success and failure are exactly the same: objects you return. There are no special cases.
 
@@ -286,7 +286,7 @@ it("returns_failure_when_user_not_found", async () => {
 
 No special syntax. No `.rejects`. No `try/catch` in the tests. **Both cases are first-class citizens**: you just verify an object and TypeScript does the narrowing for you.
 
-## Final Conclusion: The Power of the Explicit 💪
+## Final Conclusion: The Power of the Explicit
 
 The **Result Pattern** is not magic. It's just making explicit what was always there: *functions can fail*.
 
@@ -300,6 +300,6 @@ When handling **expected business errors** (user not found, validation errors, p
 
 For **unexpected errors** (out of memory, null pointer - those are bugs), **programming bugs** (assertions), or **critical system errors** (database crashed, config corrupted). Those are still legitimate exceptions.
 
-**TL;DR**: If your function can fail, let the type say so. **Result Pattern** makes errors explicit, type-safe, and easy to handle. Your future self (and your team) will thank you. 🙏
+**TL;DR**: If your function can fail, let the type say so. **Result Pattern** makes errors explicit, type-safe, and easy to handle. Your future self (and your team) will thank you.
 
-**Spoiler:** Do you know the **Either** monad? It's Result on steroids. Maybe a topic for another article… 👀
+**Spoiler:** Do you know the **Either** monad? It's Result on steroids. Maybe a topic for another article…
