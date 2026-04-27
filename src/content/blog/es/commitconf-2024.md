@@ -2,7 +2,7 @@
 title: "Cargando… CommitConf: Un encuentro no tan virtual"
 description: "Crónica de mi primera CommitConf: DDD con Codely, Astro vs Qwik, código legacy, networking y la mejor organización de conferencia que he visto."
 publishDate: 2024-11-19
-coverImage: /images/blog/commitconf-2024/commitconf-2024-1.webp
+coverImage: /images/blog/commitconf-2024/cover.webp
 coverImageAlt: "Pantalla de ordenador con cuatro personas en videollamada, imagen de portada del artículo sobre CommitConf"
 tags:
   - Comunidad

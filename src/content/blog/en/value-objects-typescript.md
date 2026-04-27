@@ -2,7 +2,7 @@
 title: "Value Objects in TypeScript: goodbye to primitives"
 description: "Stop passing strings everywhere. Value Objects in TypeScript: types that speak the language of your business and validate at birth."
 publishDate: 2026-02-10
-coverImage: /images/blog/value-objects-typescript/value-objects-typescript-1.webp
+coverImage: /images/blog/value-objects-typescript/cover.webp
 coverImageAlt: "Glowing violet capsule with a cyan hexagonal token inside, on a navy background with circuit lines"
 tags:
   - TypeScript

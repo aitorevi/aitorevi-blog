@@ -29,7 +29,7 @@ Para aprovechar esta ventaja proporcionada por el IDE, empleamos la técnica de 
 
 > Robert C. Martin: *"Escribe en los tests el código que sabes que quieres escribir".*
 
-![Alt+Enter para crear un record desde el test](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-1.webp)
+![Alt+Enter para crear un record desde el test](/images/blog/mars-rover-intellij-shortcuts/cover.webp)
 
 En este punto, seleccionamos la ubicación donde deseamos crear el `record`, ya sea en el directorio específico o en el paquete designado.
 

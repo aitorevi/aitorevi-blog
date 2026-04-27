@@ -2,7 +2,7 @@
 title: "Mock 101: El Arte del Testing, una experiencia única en Nerdearla"
 description: "Recapitulación del taller Mock 101 en Nerdearla 2025: enseñamos dummies, stubs, spies, mocks y fakes con katas prácticas en 6 lenguajes de programación."
 publishDate: 2025-11-18
-coverImage: /images/blog/mock-101-nerdearla/mock-101-nerdearla-1.webp
+coverImage: /images/blog/mock-101-nerdearla/cover.webp
 coverImageAlt: "Equipo de Lean Mind impartiendo el taller Mock 101: El Arte del Testing en Nerdearla 2025"
 tags:
   - Testing

@@ -2,7 +2,7 @@
 title: "Result Pattern in TypeScript: when your errors stop being a surprise"
 description: "When a function can fail, let the type say so. Result Pattern in TypeScript: explicit errors, type-safe, and easy to test."
 publishDate: 2026-02-03
-coverImage: /images/blog/result-pattern-typescript/result-pattern-typescript-1.webp
+coverImage: /images/blog/result-pattern-typescript/cover.webp
 coverImageAlt: "Violet Y-shaped pipe splitting into a green checkmark envelope and a red X envelope"
 tags:
   - TypeScript

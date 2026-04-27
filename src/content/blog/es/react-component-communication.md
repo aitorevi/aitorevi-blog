@@ -2,7 +2,7 @@
 title: "Comunicación entre componentes en React"
 description: "Guía práctica sobre cómo se comunican los componentes en React: props, eventos, estados internos y sincronización recíproca, con ejemplos paso a paso."
 publishDate: 2024-10-30
-coverImage: /images/blog/react-component-communication/react-component-communication-1.webp
+coverImage: /images/blog/react-component-communication/cover.webp
 coverImageAlt: "Ilustración que representa la comunicación entre componentes en una aplicación React"
 tags:
   - React
