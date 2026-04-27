@@ -16,6 +16,12 @@ interface Props {
 	alternateUrl?: string;
 	alternateLang?: Lang;
 	ogImage?: string;
+	/**
+	 * Override the canonical URL. Defaults to the current page's URL on aitorevi.dev.
+	 * Pass an external URL for republished/syndicated content where the source of truth
+	 * lives elsewhere. This value is used for both `<link rel="canonical">` and `<meta property="og:url">`.
+	 */
+	canonicalUrl?: string;
 	/** Background variant. `dark-radial` applies the slate palette + radial gradient used on content pages (cv, blog, katas). */
 	variant?: 'default' | 'dark-radial';
 }
@@ -28,11 +34,13 @@ const {
 	alternateUrl = `https://www.aitorevi.dev${getAlternateUrl(Astro.url.pathname, lang)}`,
 	alternateLang = lang === 'es' ? 'en' : 'es',
 	ogImage = '/og/og-image.png',
+	canonicalUrl: canonicalUrlProp,
 	variant = 'default',
 } = Astro.props;
 
 const alternatePath = alternateUrl.replace('https://www.aitorevi.dev', '');
-const canonicalUrl = `https://www.aitorevi.dev${Astro.url.pathname}`;
+const internalUrl = `https://www.aitorevi.dev${Astro.url.pathname}`;
+const canonicalUrl = canonicalUrlProp ?? internalUrl;
 const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.dev${ogImage}`;
 ---
 
@@ -59,9 +67,9 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 		<link rel="canonical" href={canonicalUrl} />
 		{alternateUrl && alternateLang && (
 			<>
-				<link rel="alternate" hreflang={lang} href={canonicalUrl} />
+				<link rel="alternate" hreflang={lang} href={internalUrl} />
 				<link rel="alternate" hreflang={alternateLang} href={alternateUrl} />
-				<link rel="alternate" hreflang="x-default" href={lang === 'es' ? canonicalUrl : alternateUrl} />
+				<link rel="alternate" hreflang="x-default" href={lang === 'es' ? internalUrl : alternateUrl} />
 			</>
 		)}
 		<!-- Open Graph -->

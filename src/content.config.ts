@@ -61,6 +61,8 @@ const blogCollection = defineCollection({
     ogImage: z.string().optional(),
 
     canonicalUrl: z.string().url().optional(),
+
+    canonicalSource: z.string().optional(),
   }),
 });
 

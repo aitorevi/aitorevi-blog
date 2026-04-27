@@ -21,6 +21,10 @@ export const blog = {
     'blog.cta.description': 'Si estos posts te han hecho pensar, las mismas ideas viven en mis katas — sin palabras, solo código. Y si tienes un tema para un próximo artículo, escríbeme.',
     'blog.cta.katas': 'Ver las katas',
     'blog.cta.topic': 'Proponer un tema',
+    'blog.republished.prefix': 'Publicado originalmente en',
+    'blog.republished.linkLabel': 'Leer en el sitio original',
+    'blog.crosspost.label': 'Crosspost',
+    'blog.crosspost.aria': 'Publicado originalmente fuera de este blog',
   },
   en: {
     'blog.copyCode': 'Copy',
@@ -44,5 +48,9 @@ export const blog = {
     'blog.cta.description': 'If these posts got you thinking, the same ideas live in my katas — no words, just code. And if you have a topic in mind for a future article, drop me a line.',
     'blog.cta.katas': 'See the katas',
     'blog.cta.topic': 'Suggest a topic',
+    'blog.republished.prefix': 'Originally published on',
+    'blog.republished.linkLabel': 'Read on the original site',
+    'blog.crosspost.label': 'Crosspost',
+    'blog.crosspost.aria': 'Originally published off-site',
   },
 };
