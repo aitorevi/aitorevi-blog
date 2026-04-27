@@ -211,39 +211,6 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
       )}
     </header>
 
-    <!-- Cover Image -->
-    <figure class="mb-10">
-      <div class="aspect-video w-full overflow-hidden rounded-xl">
-        {data.coverImage ? (
-          <img
-            src={data.coverImage}
-            alt={data.coverImageAlt || data.title}
-            width="1200"
-            height="630"
-            class="h-full w-full object-cover"
-            loading="eager"
-            decoding="sync"
-            itemprop="image"
-          />
-        ) : (
-          <div
-            class="flex h-full w-full items-center justify-center bg-home-radial"
-            aria-hidden="true"
-            itemprop="image"
-          >
-            <span class="select-none font-display text-6xl font-black tracking-tight text-white md:text-8xl">
-              aitorevi<span class="text-accent-violet">.</span>
-            </span>
-          </div>
-        )}
-      </div>
-      {data.coverImageAlt && (
-        <figcaption class="mt-2 text-center text-sm text-slate-500">
-          {data.coverImageAlt}
-        </figcaption>
-      )}
-    </figure>
-
     <!-- Article Content -->
     <div
       class="prose prose-slate dark:prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:text-blue-700 dark:hover:prose-a:text-blue-300 prose-img:rounded-lg prose-img:max-h-[600px] prose-img:w-auto prose-img:mx-auto prose-img:object-contain"

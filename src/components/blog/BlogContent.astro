@@ -86,7 +86,7 @@ const regularItemClass = regularPosts.length === 1
         <h2 id="featured-heading" class="sr-only">{t(lang, 'blog.featured')}</h2>
         <div class={featuredListClass}>
           {featuredList.map((post, index) => (
-            <div class={featuredItemClass} data-reveal-item style={`--reveal-delay:${(index + 1) * 100}ms`}>
+            <div class={featuredItemClass} data-reveal-item style={`--reveal-delay:${index * 75}ms`}>
               <PostCard post={post} priority={index < 2} showFeaturedBadge={true} lang={lang} />
             </div>
           ))}
@@ -100,13 +100,13 @@ const regularItemClass = regularPosts.length === 1
           id="all-posts-heading"
           class="mb-6 text-2xl font-display font-bold tracking-tight text-ink-900 dark:text-slate-100"
           data-reveal-item
-          style={`--reveal-delay:${(featuredPosts.length + 1) * 100}ms`}
+          style={`--reveal-delay:0ms`}
         >
           {featuredPosts.length > 0 ? t(lang, 'blog.allPosts') : t(lang, 'blog.latestPosts')}
         </h2>
         <div class={regularListClass}>
           {regularPosts.map((post, index) => (
-            <div class={regularItemClass} data-reveal-item style={`--reveal-delay:${(featuredPosts.length + index + 2) * 100}ms`}>
+            <div class={regularItemClass} data-reveal-item style={`--reveal-delay:${Math.min(index * 75, 300)}ms`}>
               <PostCard post={post} priority={featuredPosts.length === 0 && index < 3} showFeaturedBadge={false} lang={lang} />
             </div>
           ))}
@@ -165,8 +165,8 @@ const regularItemClass = regularPosts.length === 1
     opacity: 0;
     transform: translateY(20px);
     transition:
-      opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
     transition-delay: var(--reveal-delay, 0ms);
   }
   [data-reveal-item].is-visible {
