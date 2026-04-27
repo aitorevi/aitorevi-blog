@@ -25,7 +25,16 @@ const { label, items } = Astro.props;
   <div class="mt-4 h-px w-8 bg-secondary/40 dark:bg-accent-violet/40" aria-hidden="true" />
   <ul class="mt-6 space-y-6">
     {items.map((item) => (
-      <li class="flex flex-col items-center min-h-[5.5rem]" data-retro-tap={item.trigger ? '' : undefined}>
+      <li
+        class:list={[
+          'flex flex-col items-center min-h-[5.5rem]',
+          // iOS won't fire click on non-interactive elements via document
+          // delegation unless they look clickable — cursor-pointer is the
+          // documented workaround. On mobile it has no visual effect.
+          item.trigger && 'cursor-pointer',
+        ]}
+        data-retro-tap={item.trigger ? '' : undefined}
+      >
         {item.icon ? (
           <Icon
             name={item.icon}

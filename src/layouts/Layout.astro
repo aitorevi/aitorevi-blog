@@ -282,7 +282,7 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 		const target = e.target instanceof Element ? e.target.closest('[data-retro-tap]') : null;
 		if (!target) return;
 		const now = Date.now();
-		retroTaps = retroTaps.filter((t) => now - t < 800);
+		retroTaps = retroTaps.filter((t) => now - t < 1200);
 		retroTaps.push(now);
 		if (retroTaps.length >= 3) {
 			toggleRetro();
