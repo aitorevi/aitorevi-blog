@@ -3,7 +3,7 @@ title: 'Strict mocks vs fakes: cuando el verde es mentira'
 description: >-
   Un test puede estar en verde y aun así ocultar un bug. La diferencia entre strict mock y fake no es teórica: cambia qué estás verificando.
 publishDate: 2026-04-21
-coverImage: /images/blog/mock-fake/mock-fake-cover.webp
+coverImage: /images/blog/strict-mocks-vs-fakes/coverImage.webp
 coverImageAlt: 'Escudo con tick verde rompiéndose con grietas rojas brillantes sobre un circuito oscuro.'
 tags:
   - Testing

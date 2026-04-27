@@ -3,7 +3,7 @@
  * Pre-commit hook: normalizes image filenames in public/images/blog/
  *
  * Convention:
- *   {slug}-cover.{ext}   ← cover image (was coverImage.{ext})
+ *   coverImage.{ext}     ← cover image (Keystatic field name, required for GitHub mode preview)
  *   {slug}-1.{ext}       ← first content image (alphabetical order)
  *   {slug}-2.{ext}       ← second content image, etc.
  */
@@ -44,7 +44,7 @@ for (const slug of affectedSlugs) {
   if (rawFiles.length === 0) continue;
 
   // Separate cover from content images
-  const isCoverFile = (f) => f.startsWith('coverImage.') || f === `${slug}-cover${extname(f)}`;
+  const isCoverFile = (f) => f.startsWith('coverImage.') || f.startsWith(`${slug}-cover.`);
   const isNormalizedContent = (f) => new RegExp(`^${slug}-\\d+\\.[^.]+$`).test(f);
 
   const coverFile = rawFiles.find(isCoverFile);
@@ -57,7 +57,7 @@ for (const slug of affectedSlugs) {
 
   if (coverFile) {
     const ext = extname(coverFile);
-    const desired = `${slug}-cover${ext}`;
+    const desired = `coverImage${ext}`;
     if (coverFile !== desired) renameMap.set(coverFile, desired);
   }
 

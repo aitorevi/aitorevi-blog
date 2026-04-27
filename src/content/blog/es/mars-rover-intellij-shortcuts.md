@@ -2,7 +2,7 @@
 title: "La Saga Mars Rover: Shortcuts de IntelliJ"
 description: "Serie de shortcuts de IntelliJ que aumentaron nuestra eficiencia al hacer la kata Mars Rover: Alt+Enter, Shift+F6, F6, multicursor y más."
 publishDate: 2024-06-19
-coverImage: /images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-cover.webp
+coverImage: /images/blog/mars-rover-intellij-shortcuts/coverImage.webp
 coverImageAlt: "Aitor Reviriego y Aitor Santana Cabrera en el artículo sobre shortcuts de IntelliJ de la Saga Mars Rover"
 tags:
   - Java

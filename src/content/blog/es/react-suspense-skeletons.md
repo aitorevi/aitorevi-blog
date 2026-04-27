@@ -2,7 +2,7 @@
 title: "De las pantallas en blanco a los Skeletons: nuestra aventura con React Suspense en Next.js"
 description: "Cómo transformamos pantallas en blanco en experiencias de carga progresiva usando React Suspense con Server Components en Next.js, sin tocar el backend."
 publishDate: 2026-03-25
-coverImage: /images/blog/react-suspense-skeletons/react-suspense-skeletons-cover.webp
+coverImage: /images/blog/react-suspense-skeletons/coverImage.webp
 coverImageAlt: "Portada del artículo sobre React Suspense y skeletons en Next.js"
 tags:
   - React

@@ -2,7 +2,7 @@
 title: "De vuelta al espacio de la mano de Astro 3"
 description: "Introducción práctica a Astro 3: arquitectura de islas, View Transitions, Tailwind, layouts, interfaces y estructura de archivos del proyecto."
 publishDate: 2024-09-04
-coverImage: /images/blog/astro-3-intro/astro-3-intro-cover.webp
+coverImage: /images/blog/astro-3-intro/coverImage.webp
 coverImageAlt: "Imagen de portada del artículo de introducción a Astro 3"
 tags:
   - Astro

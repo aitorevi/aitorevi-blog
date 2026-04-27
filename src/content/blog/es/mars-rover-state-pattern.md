@@ -2,7 +2,7 @@
 title: "La Saga Mars Rover: Aplicando el patrón estado"
 description: "Saga Mars Rover parte 1: patrón State en Java para gestionar el direccionamiento del rover con sealed interfaces y tests parametrizados."
 publishDate: 2024-07-17
-coverImage: /images/blog/mars-rover-state-pattern/mars-rover-state-pattern-cover.webp
+coverImage: /images/blog/mars-rover-state-pattern/coverImage.webp
 coverImageAlt: "Mars Rover sobre la superficie marciana, ilustración de portada del artículo sobre el patrón estado"
 tags:
   - Java
