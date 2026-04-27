@@ -2,7 +2,7 @@
 title: "Mock 101: The Art of Testing, a Unique Experience at Nerdearla"
 description: "Recap of our Mock 101 workshop at Nerdearla 2025: we taught dummies, stubs, spies, mocks, and fakes with practical katas in 6 programming languages."
 publishDate: 2025-11-18
-coverImage: /images/blog/mock-101-nerdearla/coverImage.webp
+coverImage: /images/blog/mock-101-nerdearla/mock-101-nerdearla-1.webp
 coverImageAlt: "Lean Mind team delivering the Mock 101: The Art of Testing workshop at Nerdearla 2025"
 tags:
   - Testing

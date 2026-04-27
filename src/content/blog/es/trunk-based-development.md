@@ -2,7 +2,7 @@
 title: "Trunk Based Development: ¿equipo kamikaze o maduro?"
 description: "Opinión y reflexión sobre Trunk Based Development: qué es, qué necesita un equipo para adoptarlo y cómo el pair programming y los feature flags lo hacen viable."
 publishDate: 2025-04-15
-coverImage: /images/blog/trunk-based-development/coverImage.webp
+coverImage: /images/blog/trunk-based-development/trunk-based-development-1.webp
 coverImageAlt: "Diagrama de ramas de git con trunk based development, imagen de portada del artículo"
 tags:
   - Git

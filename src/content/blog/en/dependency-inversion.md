@@ -2,7 +2,7 @@
 title: "Dependency Inversion: stop coupling what shouldn't be together"
 description: "Coupling means touching one thing breaks five. Dependency Inversion is one of the most powerful tools to fight it."
 publishDate: 2026-03-30
-coverImage: /images/blog/dependency-inversion/coverImage.webp
+coverImage: /images/blog/dependency-inversion/dependency-inversion-1.webp
 coverImageAlt: "Illustration of pieces connecting through an abstract interface"
 tags:
   - SOLID
