@@ -6,6 +6,8 @@ interface StackItem {
   icon?: string;
   version?: string;
   note?: string;
+  /** Marks the <li> as the hidden retro-mode trigger (data-retro-tap). */
+  trigger?: boolean;
 }
 
 interface Props {
@@ -23,7 +25,7 @@ const { label, items } = Astro.props;
   <div class="mt-4 h-px w-8 bg-secondary/40 dark:bg-accent-violet/40" aria-hidden="true" />
   <ul class="mt-6 space-y-6">
     {items.map((item) => (
-      <li class="flex flex-col items-center min-h-[5.5rem]">
+      <li class="flex flex-col items-center min-h-[5.5rem]" data-retro-tap={item.trigger ? '' : undefined}>
         {item.icon ? (
           <Icon
             name={item.icon}

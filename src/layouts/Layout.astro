@@ -243,10 +243,9 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 
 	// Hidden retro mode trigger.
 	// Desktop: classic Konami code (↑↑↓↓←→←→BA).
-	// Mobile: three rapid taps on the brand wordmark's violet dot
-	// ([data-retro-tap]). The dot is inside the home <a>, so we
-	// preventDefault on taps 2+ to stop the navigation chain while we
-	// count, while the first tap still navigates home harmlessly.
+	// Anywhere (incl. mobile): three rapid taps on any element marked
+	// with [data-retro-tap] — currently the cassette tile in the
+	// case-study stack section.
 	function toggleRetro() {
 		const html = document.documentElement;
 		if (html.hasAttribute('data-retro')) {
@@ -285,7 +284,6 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 		const now = Date.now();
 		retroTaps = retroTaps.filter((t) => now - t < 800);
 		retroTaps.push(now);
-		if (retroTaps.length >= 2) e.preventDefault();
 		if (retroTaps.length >= 3) {
 			toggleRetro();
 			retroTaps = [];

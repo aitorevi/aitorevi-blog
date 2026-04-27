@@ -58,6 +58,7 @@ interface TechItem {
   icon?: string;              // iconify id, e.g. 'simple-icons:astro'
   version?: string;
   note?: string;              // small parenthetical under the name
+  trigger?: boolean;          // hidden retro-mode trigger (3 clicks)
 }
 
 // Icon sources per item:
@@ -75,6 +76,7 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
     { name: 'Keystatic', icon: 'keystatic', note: isES ? 'CMS git-based' : 'git-based CMS' },
     { name: 'Satori', icon: 'satori', note: 'OG images' },
     { name: 'Playwright', icon: 'simple-icons:playwright', note: isES ? 'PDF del CV' : 'CV PDF' },
+    { name: 'Konami', icon: 'cassette', trigger: true },
   ],
   infra: [
     { name: 'Vercel', icon: 'simple-icons:vercel', note: isES ? 'hosting + previews' : 'hosting + previews' },
