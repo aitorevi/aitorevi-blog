@@ -6,7 +6,7 @@
  *
  * Atomic Composition:
  * - Atoms: Tag, DateDisplay, ReadingTime
- * - Native: HTML5 semantic elements, Astro Image component
+ * - Native: HTML5 semantic elements
  *
  * Accessibility Features:
  * - Semantic HTML5 (article, header, footer)
@@ -18,7 +18,6 @@
  *
  * Performance Optimizations:
  * - Zero JavaScript (no hydration)
- * - Astro Image component for automatic optimization
  * - Lazy loading for below-the-fold images
  * - Aspect ratio boxes prevent layout shift (CLS)
  * - Minimal CSS via Tailwind utilities
@@ -30,7 +29,7 @@
  */
 
 import type { CollectionEntry } from 'astro:content';
-import { Image } from 'astro:assets';
+
 import Tag from '@/components/shared/Tag.astro';
 import DateDisplay from '@/components/shared/DateDisplay.astro';
 import ReadingTime from '@/components/shared/ReadingTime.astro';
@@ -125,11 +124,11 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
     aria-label={`Read full post: ${data.title}`}
   >
     {data.coverImage ? (
-      <Image
+      <img
         src={data.coverImage}
         alt={data.coverImageAlt || data.title}
-        width={800}
-        height={450}
+        width="800"
+        height="450"
         class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         loading={priority ? 'eager' : 'lazy'}
         decoding={priority ? 'sync' : 'async'}

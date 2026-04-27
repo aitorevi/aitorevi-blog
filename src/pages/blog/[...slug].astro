@@ -14,11 +14,6 @@
  * - Complete Open Graph metadata
  * - Schema.org Article markup
  * - Canonical URLs
- * - Image optimization with proper alt text
- *
- * Performance:
- * - Zero JavaScript by default
- * - Optimized images via Astro Image
  * - Minimal CSS (Tailwind utilities)
  * - View Transitions for SPA-like navigation
  *
@@ -30,7 +25,6 @@
  */
 
 import { getCollection, type CollectionEntry, render } from 'astro:content';
-import { Image } from 'astro:assets';
 import Layout from '@/layouts/Layout.astro';
 import Tag from '@/components/shared/Tag.astro';
 import DateDisplay from '@/components/shared/DateDisplay.astro';
@@ -221,11 +215,11 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
     <figure class="mb-10">
       <div class="aspect-video w-full overflow-hidden rounded-xl">
         {data.coverImage ? (
-          <Image
+          <img
             src={data.coverImage}
             alt={data.coverImageAlt || data.title}
-            width={1200}
-            height={630}
+            width="1200"
+            height="630"
             class="h-full w-full object-cover"
             loading="eager"
             decoding="sync"
