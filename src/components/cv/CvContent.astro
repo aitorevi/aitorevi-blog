@@ -6,6 +6,7 @@ import CvExperience from './CvExperience.astro';
 import CvSkills from './CvSkills.astro';
 import CvEducation from './CvEducation.astro';
 import CvCertifications from './CvCertifications.astro';
+import CvPractice from './CvPractice.astro';
 import CvPdfDownload from './CvPdfDownload.astro';
 import CvScrollReveal from './CvScrollReveal.astro';
 import DotField from '@/components/shared/DotField.astro';
@@ -40,6 +41,7 @@ const jsonPath = getJsonPath(lang);
       <CvEducation label={data.labels.education} entries={data.education} />
       <CvCertifications label={data.labels.certifications} entries={data.certifications} />
       <CvSkills label={data.labels.skills} categories={data.skills} />
+      <CvPractice data={data.practice} lang={lang} />
       <CvPdfDownload pdfPath={pdfPath} jsonPath={jsonPath} label={data.labels.downloadPdf} />
     </section>
   </div>

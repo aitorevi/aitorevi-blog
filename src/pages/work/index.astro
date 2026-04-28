@@ -1,0 +1,15 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Portfolio from '@/components/home/Portfolio.astro';
+import { t } from '@/i18n/utils';
+
+const lang = 'es';
+const title = `${t(lang, 'home.portfolio.title')} - Aitor Reviriego`;
+const description = 'Proyectos reales: SaaS, herramientas y casos de estudio con foco en arquitectura, accesibilidad y rendimiento.';
+---
+
+<Layout title={title} lang={lang} description={description} variant="dark-radial">
+  <main class="min-h-[calc(100vh-3.5rem)] md:min-h-[calc(100vh-5rem)] pt-16 md:pt-24">
+    <Portfolio lang={lang} />
+  </main>
+</Layout>

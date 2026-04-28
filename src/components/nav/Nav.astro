@@ -11,11 +11,11 @@ const isEs = lang === 'es';
 const currentPath = Astro.url.pathname;
 const isInBlog = currentPath.startsWith('/blog') || currentPath.startsWith('/en/blog');
 const isInCv = currentPath.startsWith('/cv') || currentPath.startsWith('/en/cv');
-const isInKatas = currentPath.startsWith('/katas') || currentPath.startsWith('/en/katas');
+const isInWork = currentPath.startsWith('/work') || currentPath.startsWith('/en/work');
 const homePath = getLocalePath('/', lang);
 const blogPath = getLocalePath('/blog', lang);
 const cvPath = getLocalePath('/cv', lang);
-const katasPath = getLocalePath('/katas', lang);
+const workPath = getLocalePath('/work', lang);
 ---
 <header class="flex w-full bg-white/90 dark:bg-ink-900/85 backdrop-blur-md border-b border-transparent dark:border-white/5 fixed z-10 transition-colors duration-200">
     <div class="flex w-[80rem] h-14 md:h-20 mx-auto justify-between items-center">
@@ -28,15 +28,15 @@ const katasPath = getLocalePath('/katas', lang);
 
         <!-- Desktop nav -->
         <nav aria-label={isEs ? 'Navegación principal' : 'Main navigation'} class="hidden md:flex items-center gap-8 mx-10 xl:mx-0 text-base font-mono">
+            <a href={workPath}
+               aria-current={isInWork ? 'page' : undefined}
+               class={`flex items-center cursor-pointer uppercase tracking-[0.15em] text-sm transition ease-linear delay-50 duration-200 ${isInWork ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
+                {t(lang, 'nav.work')}
+            </a>
             <a href={blogPath}
                aria-current={isInBlog ? 'page' : undefined}
                class={`flex items-center cursor-pointer uppercase tracking-[0.15em] text-sm transition ease-linear delay-50 duration-200 ${isInBlog ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
                 {t(lang, 'nav.blog')}
-            </a>
-            <a href={katasPath}
-               aria-current={isInKatas ? 'page' : undefined}
-               class={`flex items-center cursor-pointer uppercase tracking-[0.15em] text-sm transition ease-linear delay-50 duration-200 ${isInKatas ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
-                {t(lang, 'nav.katas')}
             </a>
             <a href={cvPath}
                aria-current={isInCv ? 'page' : undefined}
@@ -110,15 +110,15 @@ const katasPath = getLocalePath('/katas', lang);
     <!-- Mobile menu -->
     <div id="mobile-menu" class="md:hidden absolute top-14 left-0 w-full bg-white/95 dark:bg-ink-900/95 backdrop-blur-md border-t border-gray-200 dark:border-white/5 shadow-lg transition-all duration-300 ease-in-out overflow-hidden max-h-0 opacity-0">
         <nav aria-label={isEs ? 'Menú móvil' : 'Mobile menu'} class="flex flex-col p-8 gap-6 text-lg text-center font-mono uppercase tracking-[0.15em]">
+            <a href={workPath}
+               aria-current={isInWork ? 'page' : undefined}
+               class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isInWork ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
+                {t(lang, 'nav.work')}
+            </a>
             <a href={blogPath}
                aria-current={isInBlog ? 'page' : undefined}
                class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isInBlog ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
                 {t(lang, 'nav.blog')}
-            </a>
-            <a href={katasPath}
-               aria-current={isInKatas ? 'page' : undefined}
-               class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isInKatas ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
-                {t(lang, 'nav.katas')}
             </a>
             <a href={cvPath}
                aria-current={isInCv ? 'page' : undefined}

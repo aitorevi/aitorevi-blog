@@ -1,0 +1,112 @@
+---
+import CvSectionTitle from './CvSectionTitle.astro';
+import { sortedKatas } from '@/data/katas';
+import type { CvPracticeData } from '@/data/cv';
+import type { Lang } from '@/i18n/types';
+import { getLocalePath } from '@/i18n/utils';
+
+interface Props {
+  data: CvPracticeData;
+  lang: Lang;
+}
+
+const { data, lang } = Astro.props;
+
+const PROGRAMMING_LANGUAGES = new Set([
+  'Java',
+  'Kotlin',
+  'TypeScript',
+  'JavaScript',
+  'Python',
+  'Go',
+  'Rust',
+  'C#',
+  'C++',
+  'Ruby',
+  'Elixir',
+  'Scala',
+  'PHP',
+  'Swift',
+]);
+
+const all = sortedKatas();
+const totalKatas = all.length;
+
+const languageSet = new Set<string>();
+for (const k of all) {
+  for (const tech of k.tech) {
+    if (PROGRAMMING_LANGUAGES.has(tech)) languageSet.add(tech);
+  }
+}
+const totalLanguages = languageSet.size;
+
+const principleSet = new Set<string>();
+for (const k of all) {
+  for (const concept of k.concepts) principleSet.add(concept);
+}
+const totalPrinciples = principleSet.size;
+
+const katasPath = getLocalePath('/katas', lang);
+---
+
+<section class="mb-8 md:mb-10" aria-labelledby="cv-practice-title">
+  <CvSectionTitle label={data.title} />
+
+  <div class="reveal-fade rounded-xl border border-slate-200 dark:border-white/10 bg-white/60 dark:bg-white/[0.03] p-6 md:p-8">
+    <p class="text-sm md:text-base leading-relaxed text-slate-700 dark:text-slate-300 mb-6">
+      {data.intro}
+    </p>
+
+    <dl class="grid grid-cols-3 gap-4 md:gap-6 mb-6">
+      <div class="text-center">
+        <dt class="sr-only">{data.statKatas}</dt>
+        <dd class="font-display text-3xl md:text-4xl font-black tracking-tight text-secondary dark:text-accent-violet">
+          {totalKatas}
+        </dd>
+        <p class="mt-1 font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] text-quaternary">
+          {data.statKatas}
+        </p>
+      </div>
+      <div class="text-center">
+        <dt class="sr-only">{data.statLanguages}</dt>
+        <dd class="font-display text-3xl md:text-4xl font-black tracking-tight text-secondary dark:text-accent-blue">
+          {totalLanguages}
+        </dd>
+        <p class="mt-1 font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] text-quaternary">
+          {data.statLanguages}
+        </p>
+      </div>
+      <div class="text-center">
+        <dt class="sr-only">{data.statPrinciples}</dt>
+        <dd class="font-display text-3xl md:text-4xl font-black tracking-tight text-secondary dark:text-accent-violet">
+          {totalPrinciples}
+        </dd>
+        <p class="mt-1 font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] text-quaternary">
+          {data.statPrinciples}
+        </p>
+      </div>
+    </dl>
+
+    <div class="flex justify-center">
+      <a
+        href={katasPath}
+        class="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-secondary dark:text-accent-blue transition-colors hover:text-accent-violet dark:hover:text-accent-violet focus:outline-none focus-visible:underline"
+      >
+        <span>{data.cta}</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="h-3.5 w-3.5 transition-transform group-hover:translate-x-1"
+          aria-hidden="true"
+        >
+          <path d="M5 12h14M13 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
