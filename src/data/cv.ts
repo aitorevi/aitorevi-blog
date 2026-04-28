@@ -48,15 +48,6 @@ export interface CvLabels {
   pageDescription: string;
 }
 
-export interface CvPracticeData {
-  title: string;
-  intro: string;
-  statKatas: string;
-  statLanguages: string;
-  statPrinciples: string;
-  cta: string;
-}
-
 export interface CvData {
   contact: ContactInfo;
   summary: string;
@@ -64,7 +55,6 @@ export interface CvData {
   education: EducationEntry[];
   certifications: CertificationEntry[];
   skills: SkillCategoryData[];
-  practice: CvPracticeData;
   labels: CvLabels;
 }
 
@@ -170,14 +160,6 @@ export const cvES: CvData = {
     { name: 'Infraestructura', skills: ['Docker', 'GitHub Actions', 'Google Cloud', 'Digital Ocean', 'CI/CD'] },
     { name: 'Liderazgo', skills: ['Team Leadership', 'Business Vision', 'Transparent Communication', 'Mentoring'] },
   ],
-  practice: {
-    title: 'Práctica continua',
-    intro: 'Katas resueltas con TDD estricto y arquitecturas limpias para mantener afilados los fundamentos. Cada kata es código real en GitHub, no un ejercicio teórico.',
-    statKatas: 'katas',
-    statLanguages: 'lenguajes',
-    statPrinciples: 'principios aplicados',
-    cta: 'Ver todas las katas',
-  },
   labels: {
     profile: 'Perfil',
     experience: 'Experiencia',
@@ -287,14 +269,6 @@ export const cvEN: CvData = {
     { name: 'Infrastructure', skills: ['Docker', 'GitHub Actions', 'Google Cloud', 'Digital Ocean', 'CI/CD'] },
     { name: 'Leadership', skills: ['Team Leadership', 'Business Vision', 'Transparent Communication', 'Mentoring'] },
   ],
-  practice: {
-    title: 'Continuous Practice',
-    intro: 'Katas solved with strict TDD and clean architectures to keep the fundamentals sharp. Every kata is real code on GitHub, not a theoretical exercise.',
-    statKatas: 'katas',
-    statLanguages: 'languages',
-    statPrinciples: 'applied principles',
-    cta: 'View all katas',
-  },
   labels: {
     profile: 'Profile',
     experience: 'Experience',

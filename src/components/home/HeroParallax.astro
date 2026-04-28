@@ -203,7 +203,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
       <span class="text-[10px] uppercase tracking-[0.3em] text-secondary dark:text-accent-blue font-mono">
         Scroll
       </span>
-      <span class="block h-10 w-px bg-gradient-to-b from-secondary/50 to-transparent dark:from-accent-blue/50"></span>
+      <span class="hero-scroll-line"></span>
     </div>
   </div>
 </section>
@@ -245,6 +245,32 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
       opacity: 1;
       transform: none;
     }
+  }
+
+  /* Animated scroll line — same trail as /work cinematic */
+  .hero-scroll-line {
+    position: relative;
+    display: block;
+    width: 1px;
+    height: 56px;
+    background: linear-gradient(to bottom, transparent, rgba(148, 163, 184, 0.5), transparent);
+    overflow: hidden;
+  }
+  .hero-scroll-line::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent, currentColor, transparent);
+    color: rgb(139, 92, 246);
+    animation: heroScrollTrail 2s ease-in-out infinite;
+  }
+  @keyframes heroScrollTrail {
+    0%   { transform: translateY(-100%); opacity: 0; }
+    50%  { opacity: 1; }
+    100% { transform: translateY(100%); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-scroll-line::after { animation: none; }
   }
 
   .hero-photo {

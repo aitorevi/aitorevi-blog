@@ -1,0 +1,109 @@
+---
+/**
+ * Practice — three animated kata stats + intro + CTA, in the home palette.
+ *
+ * Mirrors the StatsCounter pattern (SectionHeader + grid of StatCards with
+ * `data-stats-root`) so the existing IntersectionObserver/count-up script in
+ * StatsCounter picks these stats up automatically.
+ *
+ * Stats are computed at build time from the kata dataset:
+ *  - total katas
+ *  - distinct programming languages (filtered set, frameworks excluded)
+ *  - distinct concepts/principles
+ */
+import type { Lang } from '@/i18n/types';
+import { t, getLocalePath } from '@/i18n/utils';
+import { sortedKatas } from '@/data/katas';
+import SectionHeader from '@/components/shared/SectionHeader.astro';
+import StatCard from '@/components/shared/StatCard.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const PROGRAMMING_LANGUAGES = new Set([
+  'Java',
+  'Kotlin',
+  'TypeScript',
+  'JavaScript',
+  'Python',
+  'Go',
+  'Rust',
+  'C#',
+  'C++',
+  'Ruby',
+  'Elixir',
+  'Scala',
+  'PHP',
+  'Swift',
+]);
+
+const all = sortedKatas();
+const totalKatas = all.length;
+
+const languageSet = new Set<string>();
+for (const k of all) {
+  for (const tech of k.tech) {
+    if (PROGRAMMING_LANGUAGES.has(tech)) languageSet.add(tech);
+  }
+}
+const totalLanguages = languageSet.size;
+
+const principleSet = new Set<string>();
+for (const k of all) {
+  for (const concept of k.concepts) principleSet.add(concept);
+}
+const totalPrinciples = principleSet.size;
+
+const katasPath = getLocalePath('/katas', lang);
+---
+
+<section
+  class="relative bg-slate-50 py-24 text-ink-900 dark:bg-ink-900 dark:text-slate-100 sm:py-32"
+  aria-labelledby="practice-heading"
+>
+  <div class="mx-auto max-w-5xl px-6">
+    <SectionHeader
+      id="practice-heading"
+      title={t(lang, 'home.practice.title')}
+      subtitle={t(lang, 'home.practice.subtitle')}
+    />
+
+    <p class="mx-auto mt-6 max-w-2xl text-center text-base leading-relaxed text-slate-600 dark:text-slate-400 sm:text-lg">
+      {t(lang, 'home.practice.intro')}
+    </p>
+  </div>
+
+  <div
+    class="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-4 px-6 sm:grid-cols-3 sm:gap-6"
+    data-stats-root
+  >
+    <StatCard value={totalKatas} label={t(lang, 'home.practice.statKatas')} tilt />
+    <StatCard value={totalLanguages} label={t(lang, 'home.practice.statLanguages')} tilt />
+    <StatCard value={totalPrinciples} label={t(lang, 'home.practice.statPrinciples')} tilt />
+  </div>
+
+  <div class="mx-auto mt-12 flex max-w-5xl justify-center px-6">
+    <a
+      href={katasPath}
+      class="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-secondary transition-colors hover:text-accent-violet focus:outline-none focus-visible:underline dark:text-accent-blue dark:hover:text-accent-violet"
+    >
+      <span>{t(lang, 'home.practice.cta')}</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="h-3.5 w-3.5 transition-transform group-hover:translate-x-1"
+        aria-hidden="true"
+      >
+        <path d="M5 12h14M13 5l7 7-7 7" />
+      </svg>
+    </a>
+  </div>
+</section>

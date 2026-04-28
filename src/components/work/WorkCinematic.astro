@@ -95,7 +95,7 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
   <!-- Intro / hero -->
   <header class="relative flex min-h-[80vh] items-center justify-center px-6 py-24 text-center">
     <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-      <div class="absolute left-1/2 top-1/2 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-conic from-accent-violet/30 via-accent-blue/20 to-accent-sky/30 blur-[120px]"></div>
+      <div class="absolute left-1/2 top-1/2 hidden h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-conic from-accent-violet/30 via-accent-blue/20 to-accent-sky/30 blur-[120px] dark:block"></div>
     </div>
 
     <div>
@@ -106,7 +106,7 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
         id="work-heading"
         class="mt-6 font-display text-6xl font-black leading-none tracking-tight text-ink-900 dark:text-slate-50 sm:text-7xl md:text-8xl"
       >
-        {lang === 'es' ? 'Trabajos' : 'Work'}
+        {lang === 'es' ? 'Proyectos' : 'Projects'}
       </h1>
       <p class="mx-auto mt-6 max-w-xl text-base leading-relaxed text-slate-600 dark:text-slate-400 sm:text-lg">
         {lang === 'es'
@@ -115,8 +115,8 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
       </p>
 
       <div class="mt-12 flex flex-col items-center gap-3" aria-hidden="true">
-        <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-slate-500">
-          {lang === 'es' ? 'desliza' : 'scroll'}
+        <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
+          Scroll
         </span>
         <div class="cinematic-scroll-line"></div>
       </div>
@@ -126,6 +126,7 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
   <!-- Project sections -->
   {projects.map((p, i) => {
     const accent = accentMap[p.accent];
+    const flip = i % 2 === 1;
     return (
       <article
         class="cinematic-section relative flex min-h-screen items-center px-6 py-24 md:py-32"
@@ -139,8 +140,8 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
 
         <div class="mx-auto grid w-full max-w-6xl grid-cols-1 gap-12 md:grid-cols-12 md:gap-12 lg:gap-16">
 
-          <!-- Left: sticky meta -->
-          <div class="md:col-span-5 lg:col-span-5" data-cinematic-meta>
+          <!-- Left: sticky meta (flip moves it visually to the right on even-indexed sections) -->
+          <div class={`md:col-span-5 lg:col-span-5 ${flip ? 'md:order-2' : ''}`} data-cinematic-meta>
             <div class="md:sticky md:top-32 space-y-8">
               <div class="flex items-baseline gap-4">
                 <span class={`font-display text-5xl font-black tracking-tighter ${accent.text} md:text-6xl`}>
@@ -204,10 +205,10 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
           </div>
 
           <!-- Right: visual mock -->
-          <div class="md:col-span-7 lg:col-span-7" data-cinematic-visual>
-            <div class={`cinematic-mock relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.01] p-1 shadow-2xl ring-1 ${accent.ring}`}>
+          <div class={`md:col-span-7 lg:col-span-7 ${flip ? 'md:order-1' : ''}`} data-cinematic-visual>
+            <div class={`cinematic-mock ${flip ? 'cinematic-mock--flip' : ''} relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-1 shadow-2xl ring-1 ${accent.ring}`}>
               {/* Browser chrome */}
-              <div class="flex items-center gap-1.5 border-b border-white/5 bg-black/30 px-4 py-2.5 backdrop-blur">
+              <div class="flex items-center gap-1.5 border-b border-white/5 bg-ink-800/95 px-4 py-2.5 backdrop-blur">
                 <span class="h-2.5 w-2.5 rounded-full bg-red-400/70"></span>
                 <span class="h-2.5 w-2.5 rounded-full bg-yellow-400/70"></span>
                 <span class="h-2.5 w-2.5 rounded-full bg-green-400/70"></span>
@@ -220,7 +221,7 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
               </div>
 
               {/* Body — different mock per project */}
-              <div class="relative aspect-[4/3] bg-black/40 p-4 md:p-6">
+              <div class="relative aspect-[4/3] bg-ink-900 p-4 md:p-6">
                 {p.mockType === 'dashboard' && (
                   <div class="grid h-full grid-cols-3 gap-3">
                     <div class="col-span-2 row-span-2 rounded-md bg-gradient-to-br from-accent-violet/40 via-accent-violet/10 to-transparent">
@@ -326,8 +327,8 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
     );
   })}
 
-  <!-- Outro / contact -->
-  <footer class="relative flex min-h-[60vh] items-center justify-center px-6 py-32 text-center">
+  <!-- Outro -->
+  <footer class="relative flex min-h-[45vh] items-center justify-center px-6 py-24 text-center">
     <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
       <div class="absolute inset-0 bg-gradient-to-b from-transparent via-accent-violet/5 to-transparent"></div>
     </div>
@@ -336,17 +337,8 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
         {lang === 'es' ? '// fin del recorrido' : '// end of tour'}
       </p>
       <h2 class="mt-6 font-display text-4xl font-black tracking-tight text-ink-900 dark:text-slate-50 md:text-6xl">
-        {lang === 'es' ? '¿Tu proyecto, el siguiente?' : 'Your project, next?'}
+        {lang === 'es' ? 'Cuatro proyectos. De momento.' : 'Four projects. For now.'}
       </h2>
-      <a
-        href={lang === 'en' ? '/en/#contact' : '/#contact'}
-        class="mt-10 inline-flex items-center gap-3 rounded-full border border-accent-violet/40 bg-accent-violet/10 px-6 py-3 font-mono text-xs uppercase tracking-[0.25em] text-accent-violet transition-all hover:border-accent-violet hover:bg-accent-violet/20"
-      >
-        {lang === 'es' ? 'Hablamos' : "Let's talk"}
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
-          <path d="M5 12h14M13 5l7 7-7 7" />
-        </svg>
-      </a>
     </div>
   </footer>
 </section>
@@ -379,7 +371,11 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
     transform: perspective(1400px) rotateX(2deg) rotateY(-3deg);
     transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .cinematic-mock:hover {
+  .cinematic-mock--flip {
+    transform: perspective(1400px) rotateX(2deg) rotateY(3deg);
+  }
+  .cinematic-mock:hover,
+  .cinematic-mock--flip:hover {
     transform: perspective(1400px) rotateX(0deg) rotateY(0deg);
   }
 
@@ -414,11 +410,6 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
     0% { transform: translateY(-100%); opacity: 0; }
     50% { opacity: 1; }
     100% { transform: translateY(100%); opacity: 0; }
-  }
-
-  /* Light mode tweak */
-  :global(html:not(.dark)) .cinematic-mock {
-    background: linear-gradient(to bottom right, rgba(15, 23, 42, 0.04), rgba(15, 23, 42, 0.01));
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -455,3 +455,23 @@ html[data-retro] :focus-visible {
   outline-offset: 2px !important;
 }
 
+/* /work cinematic — kill 3D tilt and reveal opacity so the page is fully
+   visible from the first paint when retro mode is on. The decorative
+   conic-gradient orbs already get caught by the generic bg-gradient rules. */
+html[data-retro] .cinematic-mock,
+html[data-retro] .cinematic-mock--flip {
+  transform: none !important;
+  perspective: none !important;
+}
+html[data-retro] .cinematic-section [data-cinematic-meta],
+html[data-retro] .cinematic-section [data-cinematic-visual] {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+html[data-retro] .cinematic-cursor,
+html[data-retro] .cinematic-scroll-line::after,
+html[data-retro] .hero-scroll-line::after {
+  animation: none !important;
+}
+
