@@ -1,0 +1,459 @@
+---
+/**
+ * WorkCinematic — full-screen scroll-snap project showcase.
+ *
+ * Each project is its own viewport: sticky number + meta on the left,
+ * visual mock on the right, scroll-driven reveals as the user moves
+ * through the showcase. Snap scrolling makes the transitions decisive
+ * instead of soft, mimicking a presentation deck.
+ */
+import type { Lang } from '@/i18n/types';
+import { t } from '@/i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const projects = [
+  {
+    id: 'ims',
+    number: '01',
+    name: 'IMS',
+    tagline: lang === 'es' ? 'SaaS para empresas de instalación' : 'SaaS for installation companies',
+    descKey: 'home.portfolio.ims.desc',
+    tagKey: 'home.portfolio.tag.saas',
+    year: '2024 — present',
+    stack: ['Astro 5', 'Supabase', 'PWA', 'Tailwind'],
+    accent: 'violet',
+    href: lang === 'en' ? '/en/work/ims' : '/work/ims',
+    external: false,
+    metric: { value: '6', label: lang === 'es' ? 'módulos' : 'modules' },
+    mockType: 'dashboard' as const,
+  },
+  {
+    id: 'self',
+    number: '02',
+    name: 'aitorevi.dev',
+    tagline: lang === 'es' ? 'Blog que también es laboratorio' : 'A blog that is also a lab',
+    descKey: 'home.portfolio.self.desc',
+    tagKey: 'home.portfolio.tag.blog',
+    year: '2024 — present',
+    stack: ['Astro 6', 'Keystatic', 'Tailwind', 'Vercel'],
+    accent: 'blue',
+    href: lang === 'en' ? '/en/work/aitorevi-dev' : '/work/aitorevi-dev',
+    external: false,
+    metric: { value: '161', label: lang === 'es' ? 'tests' : 'tests' },
+    mockType: 'terminal' as const,
+  },
+  {
+    id: 'colorprof',
+    number: '03',
+    name: 'Colorprof',
+    tagline: lang === 'es' ? 'Landing profesional para empresa de pintura' : 'Professional landing for a painting company',
+    descKey: 'home.portfolio.colorprof.desc',
+    tagKey: 'home.portfolio.tag.landing',
+    year: '2024',
+    stack: ['Astro 5', 'Tailwind', 'Resend'],
+    accent: 'emerald',
+    href: 'https://www.colorprof.es',
+    external: true,
+    metric: { value: '100', label: 'Lighthouse' },
+    mockType: 'landing' as const,
+  },
+  {
+    id: 'irph',
+    number: '04',
+    name: 'IRPH Calculator',
+    tagline: lang === 'es' ? 'Calculadora financiera conectada a Sheets' : 'Financial calculator wired to Sheets',
+    descKey: 'home.portfolio.irph.desc',
+    tagKey: 'home.portfolio.tag.tool',
+    year: '2024',
+    stack: ['Astro 5', 'Sheets API', 'TypeScript'],
+    accent: 'sky',
+    href: 'https://www.perjuicioirph.com',
+    external: true,
+    metric: { value: '€', label: lang === 'es' ? 'tiempo real' : 'real-time' },
+    mockType: 'calculator' as const,
+  },
+];
+
+const accentMap: Record<string, { text: string; bg: string; ring: string; glow: string }> = {
+  violet:  { text: 'text-accent-violet',  bg: 'bg-accent-violet',  ring: 'ring-accent-violet/40',  glow: 'from-accent-violet/30' },
+  blue:    { text: 'text-accent-blue',    bg: 'bg-accent-blue',    ring: 'ring-accent-blue/40',    glow: 'from-accent-blue/30' },
+  emerald: { text: 'text-emerald-400',    bg: 'bg-emerald-400',    ring: 'ring-emerald-400/40',    glow: 'from-emerald-400/25' },
+  sky:     { text: 'text-accent-sky',     bg: 'bg-accent-sky',     ring: 'ring-accent-sky/40',     glow: 'from-accent-sky/25' },
+};
+
+const ctaLabel = lang === 'es' ? 'Ver caso' : 'View case';
+const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
+---
+
+<section class="work-cinematic relative" aria-labelledby="work-heading">
+
+  <!-- Intro / hero -->
+  <header class="relative flex min-h-[80vh] items-center justify-center px-6 py-24 text-center">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute left-1/2 top-1/2 hidden h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-conic from-accent-violet/30 via-accent-blue/20 to-accent-sky/30 blur-[120px] dark:block"></div>
+    </div>
+
+    <div>
+      <p class="font-mono text-xs uppercase tracking-[0.4em] text-secondary dark:text-accent-blue">
+        {lang === 'es' ? '// proyectos seleccionados' : '// selected work'}
+      </p>
+      <h1
+        id="work-heading"
+        class="mt-6 font-display text-6xl font-black leading-none tracking-tight text-ink-900 dark:text-slate-50 sm:text-7xl md:text-8xl"
+      >
+        {lang === 'es' ? 'Proyectos' : 'Projects'}
+      </h1>
+      <p class="mx-auto mt-6 max-w-xl text-base leading-relaxed text-slate-600 dark:text-slate-400 sm:text-lg">
+        {lang === 'es'
+          ? 'Una selección de proyectos donde la arquitectura, la accesibilidad y el rendimiento son disciplina, no destino.'
+          : 'A selection of projects where architecture, accessibility and performance are discipline, not destination.'}
+      </p>
+
+      <div class="mt-12 flex flex-col items-center gap-3" aria-hidden="true">
+        <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
+          Scroll
+        </span>
+        <div class="cinematic-scroll-line"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Project sections -->
+  {projects.map((p, i) => {
+    const accent = accentMap[p.accent];
+    const flip = i % 2 === 1;
+    return (
+      <article
+        class="cinematic-section relative flex min-h-screen items-center px-6 py-24 md:py-32"
+        data-cinematic-section
+        style={`--cin-i:${i}`}
+        aria-labelledby={`proj-${p.id}`}
+      >
+        <!-- Per-section ambient glow -->
+        <div aria-hidden="true" class={`pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br ${accent.glow} via-transparent to-transparent opacity-70`}></div>
+        <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+
+        <div class="mx-auto grid w-full max-w-6xl grid-cols-1 gap-12 md:grid-cols-12 md:gap-12 lg:gap-16">
+
+          <!-- Left: sticky meta (flip moves it visually to the right on even-indexed sections) -->
+          <div class={`md:col-span-5 lg:col-span-5 ${flip ? 'md:order-2' : ''}`} data-cinematic-meta>
+            <div class="md:sticky md:top-32 space-y-8">
+              <div class="flex items-baseline gap-4">
+                <span class={`font-display text-5xl font-black tracking-tighter ${accent.text} md:text-6xl`}>
+                  {p.number}
+                </span>
+                <span class={`inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] ${accent.text}`}>
+                  <span class={`h-1.5 w-1.5 rounded-full ${accent.bg} animate-pulse`}></span>
+                  {t(lang, p.tagKey)}
+                </span>
+              </div>
+
+              <div>
+                <h2
+                  id={`proj-${p.id}`}
+                  class="font-display text-4xl font-black tracking-tight text-ink-900 dark:text-slate-50 md:text-5xl lg:text-6xl"
+                >
+                  {p.name}
+                </h2>
+                <p class={`mt-3 font-display text-lg italic ${accent.text}`}>
+                  {p.tagline}
+                </p>
+              </div>
+
+              <p class="max-w-md text-sm leading-relaxed text-slate-700 dark:text-slate-300 md:text-base">
+                {t(lang, p.descKey)}
+              </p>
+
+              <dl class="grid grid-cols-2 gap-x-6 gap-y-3 border-l border-white/10 pl-5 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+                <div>
+                  <dt class="text-[9px]">{lang === 'es' ? 'Año' : 'Year'}</dt>
+                  <dd class="mt-1 text-slate-700 dark:text-slate-200 normal-case tracking-normal text-xs">
+                    {p.year}
+                  </dd>
+                </div>
+                <div>
+                  <dt class="text-[9px]">{p.metric.label}</dt>
+                  <dd class={`mt-1 font-display text-2xl font-black ${accent.text} normal-case tracking-tight`}>
+                    {p.metric.value}
+                  </dd>
+                </div>
+              </dl>
+
+              <ul class="flex flex-wrap gap-2 font-mono text-[10px] uppercase tracking-[0.15em] text-slate-600 dark:text-slate-400">
+                {p.stack.map((s) => (
+                  <li class="rounded-full border border-white/10 bg-white/5 px-2.5 py-1">{s}</li>
+                ))}
+              </ul>
+
+              <a
+                href={p.href}
+                {...(p.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                class={`group inline-flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] ${accent.text} transition-colors hover:text-ink-900 dark:hover:text-white focus:outline-none focus-visible:underline`}
+              >
+                <span>{p.external ? externalLabel : ctaLabel}</span>
+                <span class={`relative h-px w-12 ${accent.bg} transition-all duration-500 group-hover:w-20`}></span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" aria-hidden="true">
+                  {p.external ? <path d="M7 17 17 7M7 7h10v10" /> : <path d="M5 12h14M13 5l7 7-7 7" />}
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: visual mock -->
+          <div class={`md:col-span-7 lg:col-span-7 ${flip ? 'md:order-1' : ''}`} data-cinematic-visual>
+            <div class={`cinematic-mock ${flip ? 'cinematic-mock--flip' : ''} relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-1 shadow-2xl ring-1 ${accent.ring}`}>
+              {/* Browser chrome */}
+              <div class="flex items-center gap-1.5 border-b border-white/5 bg-ink-800/95 px-4 py-2.5 backdrop-blur">
+                <span class="h-2.5 w-2.5 rounded-full bg-red-400/70"></span>
+                <span class="h-2.5 w-2.5 rounded-full bg-yellow-400/70"></span>
+                <span class="h-2.5 w-2.5 rounded-full bg-green-400/70"></span>
+                <span class="ml-4 font-mono text-[10px] text-slate-400 truncate">
+                  {p.id === 'ims' && 'app.ims.dev/dashboard'}
+                  {p.id === 'self' && 'aitorevi.dev'}
+                  {p.id === 'colorprof' && 'colorprof.es'}
+                  {p.id === 'irph' && 'perjuicioirph.com'}
+                </span>
+              </div>
+
+              {/* Body — different mock per project */}
+              <div class="relative aspect-[4/3] bg-ink-900 p-4 md:p-6">
+                {p.mockType === 'dashboard' && (
+                  <div class="grid h-full grid-cols-3 gap-3">
+                    <div class="col-span-2 row-span-2 rounded-md bg-gradient-to-br from-accent-violet/40 via-accent-violet/10 to-transparent">
+                      <div class="p-3 font-mono text-[9px] uppercase tracking-[0.2em] text-accent-violet/80">
+                        {lang === 'es' ? 'Instalaciones · activas' : 'Installations · active'}
+                      </div>
+                      <div class="mx-3 mb-3 mt-1 grid grid-cols-4 gap-1">
+                        {[8, 14, 11, 18, 16, 22, 19, 26].map((h) => (
+                          <div class="rounded-sm bg-accent-violet/30" style={`height:${h * 4}px`}></div>
+                        ))}
+                      </div>
+                    </div>
+                    <div class="rounded-md bg-accent-blue/15 p-2">
+                      <div class="font-mono text-[9px] text-accent-blue">€</div>
+                      <div class="mt-2 font-display text-lg font-black text-accent-blue/90">142k</div>
+                    </div>
+                    <div class="rounded-md bg-accent-sky/15 p-2">
+                      <div class="font-mono text-[9px] text-accent-sky">↑</div>
+                      <div class="mt-2 font-display text-lg font-black text-accent-sky/90">37</div>
+                    </div>
+                    <div class="col-span-3 rounded-md bg-white/5 p-2">
+                      <div class="space-y-1.5">
+                        <div class="h-2 rounded-full bg-white/10" style="width:78%"></div>
+                        <div class="h-2 rounded-full bg-white/10" style="width:54%"></div>
+                        <div class="h-2 rounded-full bg-white/10" style="width:91%"></div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {p.mockType === 'terminal' && (
+                  <div class="flex h-full flex-col gap-2 font-mono text-[11px] leading-relaxed text-accent-blue/90">
+                    <div class="text-slate-500">$ npm run test:unit</div>
+                    <div class="text-emerald-400">✓ 161 tests passed (12 files)</div>
+                    <div class="mt-1 text-slate-500">$ npm run build</div>
+                    <div>building <span class="text-accent-violet">aitorevi.dev</span> ...</div>
+                    <div class="text-slate-500">  ✓ 73 routes</div>
+                    <div class="text-slate-500">  ✓ OG images generated</div>
+                    <div class="text-slate-500">  ✓ CV PDFs (es, en)</div>
+                    <div class="text-emerald-400">build complete in 9.2s</div>
+                    <div class="mt-1 text-accent-violet">$ <span class="cinematic-cursor"></span></div>
+                  </div>
+                )}
+
+                {p.mockType === 'landing' && (
+                  <div class="flex h-full flex-col">
+                    <div class="flex items-center justify-between">
+                      <div class="font-display text-sm font-black text-emerald-400">colorprof</div>
+                      <div class="flex gap-3 font-mono text-[9px] uppercase tracking-[0.2em] text-slate-500">
+                        <span>servicios</span><span>contacto</span>
+                      </div>
+                    </div>
+                    <div class="my-auto text-center">
+                      <div class="font-display text-2xl font-black text-slate-200 md:text-3xl">
+                        {lang === 'es' ? 'Pintura profesional' : 'Professional painting'}
+                      </div>
+                      <div class="mt-2 font-mono text-[10px] uppercase tracking-[0.25em] text-emerald-400">
+                        Valencia · 2024
+                      </div>
+                      <button class="mt-5 rounded-full border border-emerald-400/40 bg-emerald-400/10 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-emerald-300">
+                        {lang === 'es' ? 'Pedir presupuesto' : 'Request quote'}
+                      </button>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                      <div class="aspect-square rounded bg-gradient-to-br from-emerald-400/30 to-emerald-400/5"></div>
+                      <div class="aspect-square rounded bg-gradient-to-br from-emerald-400/20 to-emerald-400/5"></div>
+                      <div class="aspect-square rounded bg-gradient-to-br from-emerald-400/15 to-emerald-400/5"></div>
+                    </div>
+                  </div>
+                )}
+
+                {p.mockType === 'calculator' && (
+                  <div class="flex h-full flex-col gap-3">
+                    <div class="font-mono text-[10px] uppercase tracking-[0.2em] text-accent-sky">
+                      {lang === 'es' ? 'Cálculo de perjuicio' : 'Loss calculation'}
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                      <div class="rounded-md bg-white/5 p-2.5">
+                        <div class="font-mono text-[9px] uppercase tracking-[0.18em] text-slate-500">{lang === 'es' ? 'Capital' : 'Principal'}</div>
+                        <div class="mt-1 font-display text-base font-bold text-slate-200">€ 180.000</div>
+                      </div>
+                      <div class="rounded-md bg-white/5 p-2.5">
+                        <div class="font-mono text-[9px] uppercase tracking-[0.18em] text-slate-500">{lang === 'es' ? 'Plazo' : 'Term'}</div>
+                        <div class="mt-1 font-display text-base font-bold text-slate-200">25 {lang === 'es' ? 'años' : 'yrs'}</div>
+                      </div>
+                    </div>
+                    <div class="my-auto rounded-lg border border-accent-sky/30 bg-accent-sky/10 p-4 text-center">
+                      <div class="font-mono text-[9px] uppercase tracking-[0.25em] text-accent-sky">{lang === 'es' ? 'Perjuicio estimado' : 'Estimated loss'}</div>
+                      <div class="mt-2 font-display text-3xl font-black text-accent-sky">€ 28.412</div>
+                    </div>
+                    <div class="font-mono text-[9px] text-slate-600">{lang === 'es' ? 'fuente: Google Sheets' : 'source: Google Sheets'}</div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <p class="mt-4 text-right font-mono text-[10px] uppercase tracking-[0.25em] text-slate-500">
+              {String(i + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
+            </p>
+          </div>
+        </div>
+      </article>
+    );
+  })}
+
+  <!-- Outro -->
+  <footer class="relative flex min-h-[45vh] items-center justify-center px-6 py-24 text-center">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-accent-violet/5 to-transparent"></div>
+    </div>
+    <div>
+      <p class="font-mono text-xs uppercase tracking-[0.4em] text-secondary dark:text-accent-blue">
+        {lang === 'es' ? '// fin del recorrido' : '// end of tour'}
+      </p>
+      <h2 class="mt-6 font-display text-4xl font-black tracking-tight text-ink-900 dark:text-slate-50 md:text-6xl">
+        {lang === 'es' ? 'Cuatro proyectos. De momento.' : 'Four projects. For now.'}
+      </h2>
+    </div>
+  </footer>
+</section>
+
+<style>
+  /* Conic gradient util (used in hero) */
+  .bg-gradient-conic {
+    background: conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops));
+  }
+
+  /* Section reveal */
+  .cinematic-section [data-cinematic-meta],
+  .cinematic-section [data-cinematic-visual] {
+    opacity: 0;
+    transition: opacity 700ms ease, transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translate3d(0, 32px, 0);
+  }
+  .cinematic-section [data-cinematic-visual] {
+    transform: translate3d(0, 48px, 0);
+    transition-delay: 100ms;
+  }
+  .cinematic-section.is-active [data-cinematic-meta],
+  .cinematic-section.is-active [data-cinematic-visual] {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  /* Mock scaffolding */
+  .cinematic-mock {
+    transform: perspective(1400px) rotateX(2deg) rotateY(-3deg);
+    transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cinematic-mock--flip {
+    transform: perspective(1400px) rotateX(2deg) rotateY(3deg);
+  }
+  .cinematic-mock:hover,
+  .cinematic-mock--flip:hover {
+    transform: perspective(1400px) rotateX(0deg) rotateY(0deg);
+  }
+
+  .cinematic-cursor {
+    display: inline-block;
+    width: 7px;
+    height: 12px;
+    background: currentColor;
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: cinematic-blink 1.05s steps(2, start) infinite;
+  }
+  @keyframes cinematic-blink { to { visibility: hidden; } }
+
+  /* Scroll hint line */
+  .cinematic-scroll-line {
+    position: relative;
+    width: 1px;
+    height: 56px;
+    background: linear-gradient(to bottom, transparent, rgba(148, 163, 184, 0.5), transparent);
+    overflow: hidden;
+  }
+  .cinematic-scroll-line::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent, currentColor, transparent);
+    color: rgb(139, 92, 246);
+    animation: cinematic-scroll-trail 2s ease-in-out infinite;
+  }
+  @keyframes cinematic-scroll-trail {
+    0% { transform: translateY(-100%); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateY(100%); opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cinematic-section [data-cinematic-meta],
+    .cinematic-section [data-cinematic-visual] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .cinematic-mock {
+      transform: none;
+      transition: none;
+    }
+    .cinematic-cursor,
+    .cinematic-scroll-line::after {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  function setupCinematicReveal() {
+    const sections = document.querySelectorAll<HTMLElement>('[data-cinematic-section]');
+    if (sections.length === 0) return;
+
+    if (typeof IntersectionObserver === 'undefined') {
+      sections.forEach((s) => s.classList.add('is-active'));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-active');
+          }
+        });
+      },
+      { threshold: 0.18, rootMargin: '0px 0px -10% 0px' },
+    );
+
+    sections.forEach((s) => observer.observe(s));
+  }
+
+  setupCinematicReveal();
+  document.addEventListener('astro:page-load', setupCinematicReveal);
+</script>

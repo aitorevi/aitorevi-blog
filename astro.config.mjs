@@ -37,6 +37,12 @@ export default defineConfig({
   redirects: {
     '/sitemap.xml': '/sitemap-index.xml',
     '/cv/en': '/en/cv',
+    '/portfolio': '/work',
+    '/portfolio/aitorevi-dev': '/work/aitorevi-dev',
+    '/portfolio/ims': '/work/ims',
+    '/en/portfolio': '/en/work',
+    '/en/portfolio/aitorevi-dev': '/en/work/aitorevi-dev',
+    '/en/portfolio/ims': '/en/work/ims',
   },
   i18n: {
     defaultLocale: 'es',

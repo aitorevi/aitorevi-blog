@@ -123,36 +123,39 @@ const stats = [
   }
 
   function initStats() {
-    const root = document.querySelector('[data-stats-root]');
-    if (!root) return;
-    const stats = Array.from(
-      root.querySelectorAll<StatEl>('[data-stat]')
-    );
-    if (stats.length === 0) return;
+    const roots = document.querySelectorAll('[data-stats-root]');
+    if (roots.length === 0) return;
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (reduced) {
-      stats.forEach((stat) => {
-        const valueEl = stat.querySelector<HTMLElement>('[data-stat-value]');
-        if (!valueEl) return;
-        valueEl.textContent = `${stat.dataset.statTarget || ''}${stat.dataset.statSuffix || ''}`;
-      });
-      return;
-    }
+    roots.forEach((root) => {
+      const stats = Array.from(
+        root.querySelectorAll<StatEl>('[data-stat]')
+      );
+      if (stats.length === 0) return;
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            runStat(entry.target as StatEl);
-            io.unobserve(entry.target);
-          }
+      if (reduced) {
+        stats.forEach((stat) => {
+          const valueEl = stat.querySelector<HTMLElement>('[data-stat-value]');
+          if (!valueEl) return;
+          valueEl.textContent = `${stat.dataset.statTarget || ''}${stat.dataset.statSuffix || ''}`;
         });
-      },
-      { threshold: 0.4 }
-    );
-    stats.forEach((stat) => io.observe(stat));
+        return;
+      }
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              runStat(entry.target as StatEl);
+              io.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.4 }
+      );
+      stats.forEach((stat) => io.observe(stat));
+    });
   }
 
   function initTilt() {
