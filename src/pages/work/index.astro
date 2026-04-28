@@ -1,6 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import Portfolio from '@/components/home/Portfolio.astro';
+import WorkCinematic from '@/components/work/WorkCinematic.astro';
 import { t } from '@/i18n/utils';
 
 const lang = 'es';
@@ -9,7 +9,7 @@ const description = 'Proyectos reales: SaaS, herramientas y casos de estudio con
 ---
 
 <Layout title={title} lang={lang} description={description} variant="dark-radial">
-  <main class="min-h-[calc(100vh-3.5rem)] md:min-h-[calc(100vh-5rem)] pt-16 md:pt-24">
-    <Portfolio lang={lang} />
+  <main class="min-h-[calc(100vh-3.5rem)] md:min-h-[calc(100vh-5rem)]">
+    <WorkCinematic lang={lang} />
   </main>
 </Layout>
