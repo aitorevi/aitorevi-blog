@@ -93,7 +93,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
 ---
 
 <article
-  class={`group relative flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-ink-800 shadow-sm transition-all duration-300 hover:shadow-lg ${className}`}
+  class={`group relative flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-ink-800 shadow-sm transition-shadow duration-300 hover:shadow-lg ${className}`}
   itemscope
   itemtype="https://schema.org/BlogPosting"
 >
@@ -120,7 +120,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
   <!-- Cover Image -->
   <a
     href={postUrl}
-    class="relative aspect-video w-full overflow-hidden bg-grayLight"
+    class="relative aspect-video w-full overflow-hidden bg-white dark:bg-ink-800"
     aria-label={`Read full post: ${data.title}`}
   >
     {data.coverImage ? (
@@ -129,14 +129,14 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
         alt={data.coverImageAlt || data.title}
         width="800"
         height="450"
-        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 transform-gpu [backface-visibility:hidden]"
         loading={priority ? 'eager' : 'lazy'}
         decoding={priority ? 'sync' : 'async'}
         itemprop="image"
       />
     ) : (
       <div
-        class="flex h-full w-full items-center justify-center bg-home-radial transition-transform duration-500 group-hover:scale-105"
+        class="flex h-full w-full items-center justify-center bg-home-radial transition-transform duration-500 group-hover:scale-105 transform-gpu [backface-visibility:hidden]"
         role="img"
         aria-label={data.coverImageAlt || data.title}
         itemprop="image"
