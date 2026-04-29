@@ -14,6 +14,32 @@ interface Props {
 const { currentPage, totalPages, prevUrl, nextUrl, lang, basePath } = Astro.props;
 
 const pageUrl = (n: number) => (n === 1 ? basePath : `${basePath}/${n}`);
+
+// Windowed range with ellipsis — always shows first, last, and ±1 around current.
+// Single-page gaps are filled (avoids "1 … 3" when 2 fits cleanly).
+function getPaginationRange(current: number, total: number): (number | '...')[] {
+  const delta = 1;
+  const core = new Set<number>([1, total]);
+  for (let i = Math.max(2, current - delta); i <= Math.min(total - 1, current + delta); i++) {
+    core.add(i);
+  }
+
+  const sorted = Array.from(core).sort((a, b) => a - b);
+  const result: (number | '...')[] = [];
+  let prev = 0;
+
+  for (const page of sorted) {
+    const gap = page - prev;
+    if (gap > 2) result.push('...');
+    else if (gap === 2) result.push(prev + 1); // fill single gap instead of ellipsis
+    result.push(page);
+    prev = page;
+  }
+
+  return result;
+}
+
+const range = getPaginationRange(currentPage, totalPages);
 ---
 
 <nav
@@ -31,30 +57,32 @@ const pageUrl = (n: number) => (n === 1 ? basePath : `${basePath}/${n}`);
     </a>
   )}
 
-  <ol class="flex items-center gap-1 list-none p-0" aria-label="páginas">
-    {Array.from({ length: totalPages }, (_, i) => {
-      const n = i + 1;
-      const isCurrent = n === currentPage;
-      return (
+  <ol class="flex items-center gap-1 list-none p-0">
+    {range.map((item) =>
+      item === '...' ? (
         <li>
-          {isCurrent ? (
-            <span
-              class="flex h-7 w-7 items-center justify-center rounded text-secondary dark:text-accent-blue font-black"
-              aria-current="page"
-            >
-              {n}
-            </span>
-          ) : (
-            <a
-              href={pageUrl(n)}
-              class="flex h-7 w-7 items-center justify-center rounded text-slate-400 dark:text-slate-500 hover:text-secondary dark:hover:text-accent-blue transition-colors motion-reduce:transition-none"
-            >
-              {n}
-            </a>
-          )}
+          <span class="flex h-7 w-7 items-center justify-center text-slate-400 dark:text-slate-600" aria-hidden="true">…</span>
         </li>
-      );
-    })}
+      ) : item === currentPage ? (
+        <li>
+          <span
+            class="flex h-7 w-7 items-center justify-center rounded font-black text-secondary dark:text-accent-blue"
+            aria-current="page"
+          >
+            {item}
+          </span>
+        </li>
+      ) : (
+        <li>
+          <a
+            href={pageUrl(item)}
+            class="flex h-7 w-7 items-center justify-center rounded text-slate-400 dark:text-slate-500 hover:text-secondary dark:hover:text-accent-blue transition-colors motion-reduce:transition-none"
+          >
+            {item}
+          </a>
+        </li>
+      )
+    )}
   </ol>
 
   {nextUrl && (
