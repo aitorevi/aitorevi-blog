@@ -8,16 +8,19 @@ interface Props {
   prevUrl?: string;
   nextUrl?: string;
   lang: Lang;
+  basePath: string;
 }
 
-const { currentPage, totalPages, prevUrl, nextUrl, lang } = Astro.props;
+const { currentPage, totalPages, prevUrl, nextUrl, lang, basePath } = Astro.props;
+
+const pageUrl = (n: number) => (n === 1 ? basePath : `${basePath}/${n}`);
 ---
 
 <nav
-  class="blog-pagination flex items-center justify-center gap-8 py-16 font-mono text-xs uppercase tracking-[0.2em]"
+  class="blog-pagination flex items-center justify-center gap-6 py-16 font-mono text-xs uppercase tracking-[0.2em]"
   aria-label={t(lang, 'blog.pagination.nav')}
 >
-  {prevUrl ? (
+  {prevUrl && (
     <a
       href={prevUrl}
       class="flex items-center gap-2 text-secondary dark:text-accent-blue transition-opacity hover:opacity-70 motion-reduce:transition-none"
@@ -26,17 +29,35 @@ const { currentPage, totalPages, prevUrl, nextUrl, lang } = Astro.props;
       <span aria-hidden="true">←</span>
       <span>{t(lang, 'blog.pagination.prev')}</span>
     </a>
-  ) : (
-    <span class="flex items-center gap-2 opacity-25" aria-hidden="true">
-      ← {t(lang, 'blog.pagination.prev')}
-    </span>
   )}
 
-  <span class="text-slate-400 dark:text-slate-500" aria-current="page">
-    {currentPage} / {totalPages}
-  </span>
+  <ol class="flex items-center gap-1 list-none p-0" aria-label="páginas">
+    {Array.from({ length: totalPages }, (_, i) => {
+      const n = i + 1;
+      const isCurrent = n === currentPage;
+      return (
+        <li>
+          {isCurrent ? (
+            <span
+              class="flex h-7 w-7 items-center justify-center rounded text-secondary dark:text-accent-blue font-black"
+              aria-current="page"
+            >
+              {n}
+            </span>
+          ) : (
+            <a
+              href={pageUrl(n)}
+              class="flex h-7 w-7 items-center justify-center rounded text-slate-400 dark:text-slate-500 hover:text-secondary dark:hover:text-accent-blue transition-colors motion-reduce:transition-none"
+            >
+              {n}
+            </a>
+          )}
+        </li>
+      );
+    })}
+  </ol>
 
-  {nextUrl ? (
+  {nextUrl && (
     <a
       href={nextUrl}
       class="flex items-center gap-2 text-secondary dark:text-accent-blue transition-opacity hover:opacity-70 motion-reduce:transition-none"
@@ -45,9 +66,5 @@ const { currentPage, totalPages, prevUrl, nextUrl, lang } = Astro.props;
       <span>{t(lang, 'blog.pagination.next')}</span>
       <span aria-hidden="true">→</span>
     </a>
-  ) : (
-    <span class="flex items-center gap-2 opacity-25" aria-hidden="true">
-      {t(lang, 'blog.pagination.next')} →
-    </span>
   )}
 </nav>
