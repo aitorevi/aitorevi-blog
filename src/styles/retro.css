@@ -475,16 +475,7 @@ html[data-retro] .hero-scroll-line::after {
   animation: none !important;
 }
 
-/* Blog cinematic — same treatment as /work mocks: no tilt, panel-deep look. */
-html[data-retro] .blog-mock,
-html[data-retro] .blog-mock:hover {
-  transform: none !important;
-  perspective: none !important;
-  transition: none !important;
-}
-html[data-retro] .blog-cinematic [data-reveal-item] {
-  opacity: 1 !important;
-  transform: none !important;
-  transition: none !important;
-}
+/* Blog cinematic — sections share the same primitives as /work, so the
+   .cinematic-mock and [data-cinematic-meta/visual] rules above already
+   cover them. Nothing extra needed. */
 

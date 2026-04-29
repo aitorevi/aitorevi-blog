@@ -93,14 +93,14 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
 ---
 
 <article
-  class={`blog-mock group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-1 shadow-2xl ring-1 ring-accent-blue/40 ${className}`}
+  class={`group relative flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-ink-800 shadow-sm transition-shadow duration-300 hover:shadow-lg ${className}`}
   itemscope
   itemtype="https://schema.org/BlogPosting"
 >
   <!-- Featured Badge (conditionally rendered) -->
   {data.featured && showFeaturedBadge && (
     <div
-      class="absolute left-4 top-4 z-[1] rounded-full border border-accent-violet/40 bg-accent-violet/20 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-accent-violet shadow-md"
+      class="absolute left-4 top-4 z-[1] rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-white shadow-md"
       aria-label={t(lang, 'blog.featured')}
     >
       {t(lang, 'blog.featured')}
@@ -120,7 +120,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
   <!-- Cover Image -->
   <a
     href={postUrl}
-    class="relative aspect-video w-full overflow-hidden rounded-t-xl bg-ink-900"
+    class="relative aspect-video w-full overflow-hidden bg-white dark:bg-ink-800"
     aria-label={`Read full post: ${data.title}`}
   >
     {data.coverImage ? (
@@ -149,7 +149,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
   </a>
 
   <!-- Card Content -->
-  <div class="flex flex-1 flex-col rounded-b-xl bg-ink-900 p-6 text-slate-100">
+  <div class="flex flex-1 flex-col p-6">
     <!-- Header: Tags + optional Crosspost badge -->
     <header class="mb-3 flex flex-wrap items-center gap-2">
       <ul class="flex flex-wrap gap-2 list-none p-0" aria-label={t(lang, 'blog.tags')}>
@@ -168,19 +168,19 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
     <!-- Main Content -->
     <div class="flex-1 overflow-hidden">
       <h2
-        class="mb-3 text-xl font-display font-bold leading-tight text-slate-50 sm:text-2xl"
+        class="mb-3 text-xl font-display font-bold leading-tight text-ink-900 dark:text-slate-100 sm:text-2xl"
         itemprop="headline"
       >
         <a
           href={postUrl}
-          class="block hover:text-accent-blue focus:text-accent-blue focus:outline-none focus-visible:underline transition-colors duration-200"
+          class="block hover:text-secondary focus:text-secondary focus:outline-none focus-visible:underline transition-colors duration-200"
         >
           {data.title}
         </a>
       </h2>
 
       <p
-        class="mb-4 line-clamp-5 text-sm leading-relaxed text-slate-400 sm:text-base"
+        class="mb-4 line-clamp-5 text-sm text-quaternary sm:text-base"
         itemprop="description"
       >
         {data.description}
@@ -189,7 +189,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
 
     <!-- Footer: Metadata -->
     <footer
-      class="flex items-center justify-between border-t border-white/5 pt-4 font-mono text-[10px] uppercase tracking-[0.18em] text-slate-400"
+      class="flex items-center justify-between border-t border-slate-200 dark:border-slate-700 pt-4 text-sm"
     >
       <DateDisplay
         date={data.publishDate}
@@ -202,8 +202,8 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
 
       {data.updatedDate && (
         <>
-          <span class="text-slate-600" aria-hidden="true">•</span>
-          <span class="normal-case tracking-normal text-xs text-slate-400">
+          <span class="text-gray-300" aria-hidden="true">•</span>
+          <span class="text-xs text-quaternary">
             {t(lang, 'blog.updated')} {formatDate(data.updatedDate, lang === 'es' ? 'es-ES' : 'en-US')}
           </span>
         </>
@@ -220,6 +220,10 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
 </article>
 
 <style>
+  /**
+   * line-clamp utility for description truncation
+   * Provides graceful degradation for browsers without -webkit-line-clamp
+   */
   .line-clamp-5 {
     display: -webkit-box;
     -webkit-line-clamp: 5;
@@ -227,24 +231,12 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
     overflow: hidden;
   }
 
+  /**
+   * Ensure focus states are visible for keyboard navigation
+   * Following WCAG 2.1 Focus Visible guidelines
+   */
   a:focus-visible {
     outline: 2px solid currentColor;
     outline-offset: 2px;
-  }
-
-  .blog-mock {
-    transform: perspective(1400px) rotateX(1deg) rotateY(-2deg);
-    transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .blog-mock:hover {
-    transform: perspective(1400px) rotateX(0deg) rotateY(0deg);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .blog-mock,
-    .blog-mock:hover {
-      transform: none;
-      transition: none;
-    }
   }
 </style>

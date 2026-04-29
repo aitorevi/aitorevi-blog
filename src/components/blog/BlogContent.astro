@@ -1,9 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
-import PostCard from './PostCard.astro';
 import DotField from '@/components/shared/DotField.astro';
-import { sortPostsByDate, filterDrafts } from '@/lib/blog';
+import Tag from '@/components/shared/Tag.astro';
+import { sortPostsByDate, filterDrafts, calculateReadingTime } from '@/lib/blog';
+import { formatDate } from '@/lib/date';
 import { t, getBlogSlugFromId } from '@/i18n/utils';
 import type { Lang } from '@/i18n/types';
 import { safeJsonLd } from '@/lib/schema-org';
@@ -20,23 +21,17 @@ const publishedPosts = sortPostsByDate(filterDrafts(allPosts)).filter((post) =>
   post.id.startsWith(`${lang}/`)
 );
 
-const featuredPosts = publishedPosts.filter((post) => post.data.featured);
-const regularPosts = publishedPosts.filter((post) => !post.data.featured);
+const accentCycle = ['violet', 'blue', 'emerald', 'sky'] as const;
+type Accent = (typeof accentCycle)[number];
+const accentMap: Record<Accent, { text: string; bg: string; ring: string; glow: string }> = {
+  violet:  { text: 'text-accent-violet',  bg: 'bg-accent-violet',  ring: 'ring-accent-violet/40',  glow: 'from-accent-violet/30' },
+  blue:    { text: 'text-accent-blue',    bg: 'bg-accent-blue',    ring: 'ring-accent-blue/40',    glow: 'from-accent-blue/30' },
+  emerald: { text: 'text-emerald-400',    bg: 'bg-emerald-400',    ring: 'ring-emerald-400/40',    glow: 'from-emerald-400/25' },
+  sky:     { text: 'text-accent-sky',     bg: 'bg-accent-sky',     ring: 'ring-accent-sky/40',     glow: 'from-accent-sky/25' },
+};
 
-const gridItemClass = 'basis-full sm:basis-[calc((100%-2rem)/2)] lg:basis-[calc((100%-4rem)/3)]';
-const featuredList = featuredPosts.slice(0, 3);
-const featuredListClass = featuredList.length === 1
-  ? 'flex justify-center'
-  : 'flex flex-wrap justify-center gap-8';
-const featuredItemClass = featuredList.length === 1
-  ? 'w-full max-w-md'
-  : gridItemClass;
-const regularListClass = regularPosts.length === 1
-  ? 'flex justify-center'
-  : 'flex flex-wrap justify-center gap-8';
-const regularItemClass = regularPosts.length === 1
-  ? 'w-full max-w-md'
-  : gridItemClass;
+const ctaLabel = lang === 'es' ? 'Leer artículo' : 'Read article';
+const featuredLabel = lang === 'es' ? 'destacado' : 'featured';
 
 const outroTitle = lang === 'es'
   ? `${publishedPosts.length} notas. De momento.`
@@ -71,7 +66,6 @@ const outroTitle = lang === 'es'
   </Fragment>
 
   <div class="blog-cinematic relative min-h-screen">
-    <!-- Dark-mode-only dot field -->
     <DotField />
 
     <!-- Hero -->
@@ -102,51 +96,158 @@ const outroTitle = lang === 'es'
       </div>
     </header>
 
-    <!-- Posts -->
-    <div class="mx-auto max-w-6xl px-6 pb-24 md:pb-32 space-y-24">
-      {featuredPosts.length > 0 && (
-        <section aria-labelledby="featured-heading">
-          <h2 id="featured-heading" class="sr-only">{t(lang, 'blog.featured')}</h2>
-          <div class={featuredListClass}>
-            {featuredList.map((post, index) => (
-              <div class={featuredItemClass} data-reveal-item style={`--reveal-delay:${index * 75}ms`}>
-                <PostCard post={post} priority={index < 2} showFeaturedBadge={true} lang={lang} />
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
+    <!-- Posts as cinematic sections -->
+    {publishedPosts.length > 0 && publishedPosts.map((post, i) => {
+      const accent = accentMap[accentCycle[i % accentCycle.length]];
+      const flip = i % 2 === 1;
+      const slug = getBlogSlugFromId(post.id);
+      const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
+      const reading = calculateReadingTime(post.body || '', lang);
+      const tags = post.data.tags.slice(0, 3);
+      const number = String(i + 1).padStart(2, '0');
+      return (
+        <article
+          class="cinematic-section relative flex min-h-screen items-center px-6 py-24 md:py-28"
+          data-cinematic-section
+          aria-labelledby={`post-${slug}`}
+        >
+          <!-- Per-section ambient glow -->
+          <div aria-hidden="true" class={`pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br ${accent.glow} via-transparent to-transparent opacity-70`}></div>
+          <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
 
-      {regularPosts.length > 0 && (
-        <section aria-labelledby="all-posts-heading">
-          <h2
-            id="all-posts-heading"
-            class="mb-8 font-mono text-xs uppercase tracking-[0.3em] text-secondary dark:text-accent-blue"
-            data-reveal-item
-            style={`--reveal-delay:0ms`}
-          >
-            // {featuredPosts.length > 0 ? t(lang, 'blog.allPosts') : t(lang, 'blog.latestPosts')}
-          </h2>
-          <div class={regularListClass}>
-            {regularPosts.map((post, index) => (
-              <div class={regularItemClass} data-reveal-item style={`--reveal-delay:${Math.min(index * 75, 300)}ms`}>
-                <PostCard post={post} priority={featuredPosts.length === 0 && index < 3} showFeaturedBadge={false} lang={lang} />
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
+          <div class="mx-auto grid w-full max-w-6xl grid-cols-1 gap-12 md:grid-cols-12 md:gap-12 lg:gap-16">
+            <!-- Meta -->
+            <div
+              class={`md:col-span-5 lg:col-span-5 ${flip ? 'md:order-2' : ''}`}
+              data-cinematic-meta
+            >
+              <div class="md:sticky md:top-32 space-y-7">
+                <div class="flex items-baseline gap-4">
+                  <span class={`font-display text-5xl font-black tracking-tighter ${accent.text} md:text-6xl`}>
+                    {number}
+                  </span>
+                  {post.data.featured && (
+                    <span class={`inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] ${accent.text}`}>
+                      <span class={`h-1.5 w-1.5 rounded-full ${accent.bg} animate-pulse`}></span>
+                      {featuredLabel}
+                    </span>
+                  )}
+                </div>
 
-      {publishedPosts.length === 0 && (
+                <h2
+                  id={`post-${slug}`}
+                  class="font-display text-3xl font-black leading-tight tracking-tight text-ink-900 dark:text-slate-50 md:text-4xl lg:text-5xl"
+                >
+                  <a href={postUrl} class="transition-colors hover:text-secondary focus:outline-none focus-visible:underline dark:hover:text-accent-blue">
+                    {post.data.title}
+                  </a>
+                </h2>
+
+                <p class="max-w-md text-sm leading-relaxed text-slate-700 dark:text-slate-300 md:text-base">
+                  {post.data.description}
+                </p>
+
+                <dl class="grid grid-cols-2 gap-x-6 gap-y-3 border-l border-white/10 pl-5 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+                  <div>
+                    <dt class="text-[9px]">{lang === 'es' ? 'Fecha' : 'Date'}</dt>
+                    <dd class="mt-1 text-slate-700 dark:text-slate-200 normal-case tracking-normal text-xs">
+                      {formatDate(post.data.publishDate, lang === 'es' ? 'es-ES' : 'en-US')}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt class="text-[9px]">{lang === 'es' ? 'Lectura' : 'Reading'}</dt>
+                    <dd class={`mt-1 font-display text-2xl font-black ${accent.text} normal-case tracking-tight`}>
+                      {reading.minutes}<span class="ml-1 font-mono text-[10px] tracking-[0.18em] uppercase text-slate-500 dark:text-slate-400">{lang === 'es' ? 'min' : 'min'}</span>
+                    </dd>
+                  </div>
+                </dl>
+
+                {tags.length > 0 && (
+                  <ul class="flex flex-wrap gap-2 list-none p-0" aria-label={t(lang, 'blog.tags')}>
+                    {tags.map((tag) => (
+                      <li><Tag label={tag} variant="accent" /></li>
+                    ))}
+                  </ul>
+                )}
+
+                <a
+                  href={postUrl}
+                  class={`group inline-flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] ${accent.text} transition-colors hover:text-ink-900 dark:hover:text-white focus:outline-none focus-visible:underline`}
+                >
+                  <span>{ctaLabel}</span>
+                  <span class={`relative h-px w-12 ${accent.bg} transition-all duration-500 group-hover:w-20`}></span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h14M13 5l7 7-7 7" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Visual -->
+            <div
+              class={`md:col-span-7 lg:col-span-7 ${flip ? 'md:order-1' : ''}`}
+              data-cinematic-visual
+            >
+              <a
+                href={postUrl}
+                class={`cinematic-mock ${flip ? 'cinematic-mock--flip' : ''} block relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-1 shadow-2xl ring-1 ${accent.ring} focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue`}
+                aria-label={`${ctaLabel}: ${post.data.title}`}
+              >
+                <div class="flex items-center gap-1.5 border-b border-white/5 bg-ink-800/95 px-4 py-2.5 backdrop-blur">
+                  <span class="h-2.5 w-2.5 rounded-full bg-red-400/70"></span>
+                  <span class="h-2.5 w-2.5 rounded-full bg-yellow-400/70"></span>
+                  <span class="h-2.5 w-2.5 rounded-full bg-green-400/70"></span>
+                  <span class="ml-4 font-mono text-[10px] text-slate-400 truncate">
+                    aitorevi.dev{postUrl}
+                  </span>
+                </div>
+                <div class="relative aspect-video w-full overflow-hidden bg-ink-900">
+                  {post.data.coverImage ? (
+                    <img
+                      src={post.data.coverImage}
+                      alt={post.data.coverImageAlt || post.data.title}
+                      width="1200"
+                      height="675"
+                      class="h-full w-full object-cover"
+                      loading={i < 2 ? 'eager' : 'lazy'}
+                      decoding={i < 2 ? 'sync' : 'async'}
+                    />
+                  ) : (
+                    <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-ink-800 to-ink-900">
+                      <span class="select-none font-display text-5xl font-black tracking-tight text-slate-50 md:text-6xl">
+                        aitorevi<span class={accent.text}>.</span>
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </a>
+              <p class="mt-4 text-right font-mono text-[10px] uppercase tracking-[0.25em] text-slate-500">
+                {number} / {String(publishedPosts.length).padStart(2, '0')}
+              </p>
+            </div>
+          </div>
+        </article>
+      );
+    })}
+
+    {publishedPosts.length === 0 && (
+      <div class="mx-auto max-w-3xl px-6 py-24">
         <div class="rounded-2xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-12 text-center">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mx-auto mb-4 h-12 w-12 text-slate-400" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-          </svg>
           <h3 class="mb-2 text-lg font-semibold text-slate-100">{t(lang, 'blog.noPosts')}</h3>
           <p class="text-slate-400">{t(lang, 'blog.noPostsDescription')}</p>
         </div>
-      )}
-    </div>
+      </div>
+    )}
 
     <!-- Outro -->
     {publishedPosts.length > 0 && (
@@ -168,17 +269,34 @@ const outroTitle = lang === 'es'
 </Layout>
 
 <style>
-  [data-reveal-item] {
+  .cinematic-section [data-cinematic-meta],
+  .cinematic-section [data-cinematic-visual] {
     opacity: 0;
-    transform: translateY(20px);
-    transition:
-      opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    transition-delay: var(--reveal-delay, 0ms);
+    transition: opacity 700ms ease, transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translate3d(0, 32px, 0);
   }
-  [data-reveal-item].is-visible {
+  .cinematic-section [data-cinematic-visual] {
+    transform: translate3d(0, 48px, 0);
+    transition-delay: 100ms;
+  }
+  .cinematic-section.is-active [data-cinematic-meta],
+  .cinematic-section.is-active [data-cinematic-visual] {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  .cinematic-mock {
+    transform: perspective(1400px) rotateX(2deg) rotateY(-3deg);
+    transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cinematic-mock--flip {
+    transform: perspective(1400px) rotateX(2deg) rotateY(3deg);
+  }
+  .cinematic-mock:hover,
+  .cinematic-mock:focus-visible,
+  .cinematic-mock--flip:hover,
+  .cinematic-mock--flip:focus-visible {
+    transform: perspective(1400px) rotateX(0deg) rotateY(0deg);
   }
 
   .cinematic-scroll-line {
@@ -203,32 +321,42 @@ const outroTitle = lang === 'es'
   }
 
   @media (prefers-reduced-motion: reduce) {
-    [data-reveal-item] { opacity: 1; transform: none; transition: none; }
+    .cinematic-section [data-cinematic-meta],
+    .cinematic-section [data-cinematic-visual] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .cinematic-mock,
+    .cinematic-mock--flip,
+    .cinematic-mock:hover,
+    .cinematic-mock--flip:hover {
+      transform: none;
+      transition: none;
+    }
     .cinematic-scroll-line::after { animation: none; }
   }
 </style>
 
 <script>
-  function initReveal() {
-    const items = document.querySelectorAll<HTMLElement>('[data-reveal-item]');
-    if (!items.length) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      items.forEach((el) => el.classList.add('is-visible'));
+  function setupCinematicReveal() {
+    const sections = document.querySelectorAll<HTMLElement>('.blog-cinematic [data-cinematic-section]');
+    if (!sections.length) return;
+    if (typeof IntersectionObserver === 'undefined') {
+      sections.forEach((s) => s.classList.add('is-active'));
       return;
     }
-    const io = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            (entry.target as HTMLElement).classList.add('is-visible');
-            io.unobserve(entry.target);
-          }
+          if (entry.isIntersecting) entry.target.classList.add('is-active');
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.18, rootMargin: '0px 0px -10% 0px' }
     );
-    items.forEach((el) => { el.classList.remove('is-visible'); io.observe(el); });
+    sections.forEach((s) => observer.observe(s));
   }
-  document.addEventListener('astro:page-load', initReveal);
-  document.addEventListener('astro:after-swap', initReveal);
+  setupCinematicReveal();
+  document.addEventListener('astro:page-load', setupCinematicReveal);
+  document.addEventListener('astro:after-swap', setupCinematicReveal);
 </script>
