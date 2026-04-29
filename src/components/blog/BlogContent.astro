@@ -15,12 +15,14 @@ interface Props {
   posts: CollectionEntry<'blog'>[];
   currentPage: number;
   totalPages: number;
+  totalPosts: number;
+  pageOffset: number;
   prevUrl?: string;
   nextUrl?: string;
   alternateUrl: string;
 }
 
-const { lang, posts, currentPage, totalPages, prevUrl, nextUrl, alternateUrl } = Astro.props;
+const { lang, posts, currentPage, totalPages, totalPosts, pageOffset, prevUrl, nextUrl, alternateUrl } = Astro.props;
 const blogPath = lang === 'en' ? '/en/blog' : '/blog';
 
 const accentCycle = ['violet', 'blue', 'emerald', 'sky'] as const;
@@ -109,7 +111,7 @@ const outroTitle = lang === 'es'
       const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
       const reading = calculateReadingTime(post.body || '', lang);
       const tags = post.data.tags.slice(0, 3);
-      const number = String(i + 1).padStart(2, '0');
+      const number = String(totalPosts - (pageOffset + i)).padStart(2, '0');
       return (
         <article
           class="cinematic-section relative px-6 py-12 md:py-16"
