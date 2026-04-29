@@ -30,31 +30,31 @@ const workPath = getLocalePath('/work', lang);
         <nav aria-label={isEs ? 'Navegación principal' : 'Main navigation'} class="hidden md:flex items-center gap-8 mx-10 xl:mx-0 text-base font-mono">
             <a href={workPath}
                aria-current={isInWork ? 'page' : undefined}
-               class={`flex items-center cursor-pointer uppercase tracking-[0.15em] text-sm transition ease-linear delay-50 duration-200 ${isInWork ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
+               class={`flex items-center cursor-pointer uppercase tracking-[0.15em] text-sm transition ease-linear delay-50 duration-200 ${isInWork ? 'text-secondary dark:text-accent-violet font-semibold' : 'text-inherit hover:text-secondary'}`}>
                 {t(lang, 'nav.work')}
             </a>
             <a href={blogPath}
                aria-current={isInBlog ? 'page' : undefined}
-               class={`flex items-center cursor-pointer uppercase tracking-[0.15em] text-sm transition ease-linear delay-50 duration-200 ${isInBlog ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
+               class={`flex items-center cursor-pointer uppercase tracking-[0.15em] text-sm transition ease-linear delay-50 duration-200 ${isInBlog ? 'text-secondary dark:text-accent-violet font-semibold' : 'text-inherit hover:text-secondary'}`}>
                 {t(lang, 'nav.blog')}
             </a>
             <a href={cvPath}
                aria-current={isInCv ? 'page' : undefined}
-               class={`flex items-center cursor-pointer uppercase tracking-[0.15em] text-sm transition ease-linear delay-50 duration-200 ${isInCv ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
+               class={`flex items-center cursor-pointer uppercase tracking-[0.15em] text-sm transition ease-linear delay-50 duration-200 ${isInCv ? 'text-secondary dark:text-accent-violet font-semibold' : 'text-inherit hover:text-secondary'}`}>
                 {t(lang, 'nav.about')}
             </a>
             <div class="flex items-center gap-1 text-sm font-semibold" aria-label={isEs ? 'Seleccionar idioma' : 'Select language'}>
                 <a href={isEs ? currentPath : alternateUrl}
                    aria-current={isEs ? 'true' : undefined}
                    title={t(lang, 'nav.langEs')}
-                   class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isEs ? 'text-secondary underline' : 'text-quaternary hover:text-secondary'}`}>
+                   class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isEs ? 'text-secondary dark:text-accent-violet underline' : 'text-quaternary hover:text-secondary'}`}>
                     ES
                 </a>
                 <span class="text-quaternary" aria-hidden="true">|</span>
                 <a href={!isEs ? currentPath : alternateUrl}
                    aria-current={!isEs ? 'true' : undefined}
                    title={t(lang, 'nav.langEn')}
-                   class={`cursor-pointer transition ease-linear delay-50 duration-200 ${!isEs ? 'text-secondary underline' : 'text-quaternary hover:text-secondary'}`}>
+                   class={`cursor-pointer transition ease-linear delay-50 duration-200 ${!isEs ? 'text-secondary dark:text-accent-violet underline' : 'text-quaternary hover:text-secondary'}`}>
                     EN
                 </a>
             </div>
@@ -112,31 +112,31 @@ const workPath = getLocalePath('/work', lang);
         <nav aria-label={isEs ? 'Menú móvil' : 'Mobile menu'} class="flex flex-col p-8 gap-6 text-lg text-center font-mono uppercase tracking-[0.15em]">
             <a href={workPath}
                aria-current={isInWork ? 'page' : undefined}
-               class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isInWork ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
+               class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isInWork ? 'text-secondary dark:text-accent-violet font-semibold' : 'text-inherit hover:text-secondary'}`}>
                 {t(lang, 'nav.work')}
             </a>
             <a href={blogPath}
                aria-current={isInBlog ? 'page' : undefined}
-               class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isInBlog ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
+               class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isInBlog ? 'text-secondary dark:text-accent-violet font-semibold' : 'text-inherit hover:text-secondary'}`}>
                 {t(lang, 'nav.blog')}
             </a>
             <a href={cvPath}
                aria-current={isInCv ? 'page' : undefined}
-               class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isInCv ? 'text-secondary font-semibold' : 'text-inherit hover:text-secondary'}`}>
+               class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isInCv ? 'text-secondary dark:text-accent-violet font-semibold' : 'text-inherit hover:text-secondary'}`}>
                 {t(lang, 'nav.about')}
             </a>
             <div class="flex items-center justify-center gap-1 text-sm font-semibold">
                 <a href={isEs ? currentPath : alternateUrl}
                    aria-current={isEs ? 'true' : undefined}
                    title={t(lang, 'nav.langEs')}
-                   class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isEs ? 'text-secondary underline' : 'text-quaternary hover:text-secondary'}`}>
+                   class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isEs ? 'text-secondary dark:text-accent-violet underline' : 'text-quaternary hover:text-secondary'}`}>
                     ES
                 </a>
                 <span class="text-quaternary" aria-hidden="true">|</span>
                 <a href={!isEs ? currentPath : alternateUrl}
                    aria-current={!isEs ? 'true' : undefined}
                    title={t(lang, 'nav.langEn')}
-                   class={`cursor-pointer transition ease-linear delay-50 duration-200 ${!isEs ? 'text-secondary underline' : 'text-quaternary hover:text-secondary'}`}>
+                   class={`cursor-pointer transition ease-linear delay-50 duration-200 ${!isEs ? 'text-secondary dark:text-accent-violet underline' : 'text-quaternary hover:text-secondary'}`}>
                     EN
                 </a>
             </div>

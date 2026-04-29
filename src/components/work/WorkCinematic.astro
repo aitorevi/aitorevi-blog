@@ -142,7 +142,7 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
 
           <!-- Left: sticky meta (flip moves it visually to the right on even-indexed sections) -->
           <div class={`md:col-span-5 lg:col-span-5 ${flip ? 'md:order-2' : ''}`} data-cinematic-meta>
-            <div class="md:sticky md:top-32 space-y-8">
+            <div class="space-y-8">
               <div class="flex items-baseline gap-4">
                 <span class={`font-display text-5xl font-black tracking-tighter ${accent.text} md:text-6xl`}>
                   {p.number}
@@ -350,20 +350,22 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
   }
 
   /* Section reveal */
-  .cinematic-section [data-cinematic-meta],
-  .cinematic-section [data-cinematic-visual] {
+  .cinematic-section [data-cinematic-meta] {
     opacity: 0;
     transition: opacity 700ms ease, transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
     transform: translate3d(0, 32px, 0);
   }
   .cinematic-section [data-cinematic-visual] {
-    transform: translate3d(0, 48px, 0);
+    opacity: 0;
+    transition: opacity 700ms ease;
     transition-delay: 100ms;
   }
-  .cinematic-section.is-active [data-cinematic-meta],
-  .cinematic-section.is-active [data-cinematic-visual] {
+  .cinematic-section.is-active [data-cinematic-meta] {
     opacity: 1;
     transform: translate3d(0, 0, 0);
+  }
+  .cinematic-section.is-active [data-cinematic-visual] {
+    opacity: 1;
   }
 
   /* Mock scaffolding */
@@ -416,8 +418,10 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
     .cinematic-section [data-cinematic-meta],
     .cinematic-section [data-cinematic-visual] {
       opacity: 1;
-      transform: none;
       transition: none;
+    }
+    .cinematic-section [data-cinematic-meta] {
+      transform: none;
     }
     .cinematic-mock {
       transform: none;

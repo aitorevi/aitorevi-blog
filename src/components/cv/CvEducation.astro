@@ -27,7 +27,7 @@ const { label, entries } = Astro.props;
           </div>
           <div class:list={["flex-1", isLast ? "pb-0" : "pb-5"]}>
             <h3 class="text-lg font-bold">{entry.degree}</h3>
-            <p class="text-secondary font-semibold text-sm">{entry.institution}</p>
+            <p class="text-secondary dark:text-accent-violet font-semibold text-sm">{entry.institution}</p>
             <span class="text-xs text-slate-500 dark:text-slate-400 font-mono tracking-tight">{entry.period}</span>
           </div>
         </div>
@@ -57,7 +57,7 @@ const { label, entries } = Astro.props;
           {/* Content column */}
           <div class:list={["reveal-right flex-1 pl-6", isLast ? "pb-0" : "pb-6"]}>
             <h3 class="text-lg font-bold">{entry.degree}</h3>
-            <p class="text-secondary font-semibold text-sm">{entry.institution}</p>
+            <p class="text-secondary dark:text-accent-violet font-semibold text-sm">{entry.institution}</p>
           </div>
         </div>
       );
