@@ -8,6 +8,7 @@ export async function getStaticPaths() {
   const all = await getCollection('blog');
   const allPosts = sortPostsByDate(filterDrafts(all)).filter((p) => p.id.startsWith('en/'));
   const totalPages = Math.ceil(allPosts.length / PAGE_SIZE) || 1;
+  const totalPosts = allPosts.length;
 
   return Array.from({ length: Math.max(0, totalPages - 1) }, (_, idx) => {
     const currentPage = idx + 2;
@@ -18,8 +19,7 @@ export async function getStaticPaths() {
         posts: allPosts.slice(start, start + PAGE_SIZE),
         currentPage,
         totalPages,
-        totalPosts: allPosts.length,
-        pageOffset: start,
+        firstPostNumber: totalPosts - start,
         prevUrl: currentPage === 2 ? '/en/blog' : `/en/blog/${currentPage - 1}`,
         nextUrl: currentPage < totalPages ? `/en/blog/${currentPage + 1}` : undefined,
       },
@@ -27,7 +27,16 @@ export async function getStaticPaths() {
   });
 }
 
-const { posts, currentPage, totalPages, totalPosts, pageOffset, prevUrl, nextUrl } = Astro.props;
+interface Props {
+  posts: any[];
+  currentPage: number;
+  totalPages: number;
+  firstPostNumber: number;
+  prevUrl?: string;
+  nextUrl?: string;
+}
+
+const { posts, currentPage, totalPages, firstPostNumber, prevUrl, nextUrl } = Astro.props;
 
 const alternateUrl = `https://www.aitorevi.dev/blog/${currentPage}`;
 ---
@@ -37,8 +46,7 @@ const alternateUrl = `https://www.aitorevi.dev/blog/${currentPage}`;
   posts={posts}
   currentPage={currentPage}
   totalPages={totalPages}
-  totalPosts={totalPosts}
-  pageOffset={pageOffset}
+  firstPostNumber={firstPostNumber}
   prevUrl={prevUrl}
   nextUrl={nextUrl}
   alternateUrl={alternateUrl}

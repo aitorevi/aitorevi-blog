@@ -16,8 +16,7 @@ const posts = allPosts.slice(0, PAGE_SIZE);
   posts={posts}
   currentPage={1}
   totalPages={totalPages}
-  totalPosts={allPosts.length}
-  pageOffset={0}
+  firstPostNumber={allPosts.length}
   nextUrl={totalPages > 1 ? '/en/blog/2' : undefined}
   alternateUrl="https://www.aitorevi.dev/blog"
 />
