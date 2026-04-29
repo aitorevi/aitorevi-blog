@@ -95,49 +95,19 @@ const outroTitle = lang === 'es'
   <div class="blog-cinematic relative min-h-screen">
     <DotField />
 
-    <!-- Hero — full cinematic on page 1, compact on subsequent pages -->
-    {currentPage === 1 ? (
-      <header class="relative flex min-h-screen items-center justify-center px-6 pb-24 pt-32 text-center">
-        <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <div class="absolute left-1/2 top-1/2 hidden h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-conic from-accent-violet/30 via-accent-blue/20 to-accent-sky/30 blur-[120px] dark:block"></div>
-        </div>
-
-        <div class="w-full max-w-xl">
+    <header class="flex items-end px-6 pb-8 pt-32">
+      <div class="mx-auto flex w-full max-w-5xl items-end justify-between gap-6">
+        <div>
           <p class="font-mono text-xs uppercase tracking-[0.4em] text-secondary dark:text-accent-blue">
             {t(lang, 'blog.eyebrow')}
           </p>
-          <h1 class="mt-6 font-display text-6xl font-black leading-none tracking-tight text-ink-900 dark:text-slate-50 sm:text-7xl md:text-8xl">
+          <h1 class="mt-2 font-display text-3xl font-black tracking-tight text-ink-900 dark:text-slate-50 sm:text-4xl">
             Blog
           </h1>
-          <p class="mx-auto mt-6 text-base leading-relaxed text-slate-600 dark:text-slate-400 sm:text-lg">
-            {t(lang, 'blog.subtitle')}
-          </p>
-
-          <BlogSearch lang={lang} ctaLabel={ctaLabel} class="mt-8 w-full" />
-
-          <div class="mt-10 flex flex-col items-center gap-3" aria-hidden="true">
-            <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
-              Scroll
-            </span>
-            <div class="cinematic-scroll-line"></div>
-          </div>
         </div>
-      </header>
-    ) : (
-      <header class="flex items-end px-6 pb-8 pt-32">
-        <div class="mx-auto w-full max-w-5xl space-y-4">
-          <div>
-            <p class="font-mono text-xs uppercase tracking-[0.4em] text-secondary dark:text-accent-blue">
-              {t(lang, 'blog.eyebrow')}
-            </p>
-            <h1 class="mt-2 font-display text-3xl font-black tracking-tight text-ink-900 dark:text-slate-50 sm:text-4xl">
-              Blog
-            </h1>
-          </div>
-          <BlogSearch lang={lang} ctaLabel={ctaLabel} class="max-w-sm" />
-        </div>
-      </header>
-    )}
+        <BlogSearch lang={lang} ctaLabel={ctaLabel} class="w-full max-w-xs" />
+      </div>
+    </header>
 
     <!-- Posts list (hidden when search is active) -->
     <div id="blog-posts">
