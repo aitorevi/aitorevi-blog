@@ -16,6 +16,7 @@ import { t, getLocalePath } from '@/i18n/utils';
 import { sortedKatas } from '@/data/katas';
 import SectionHeader from '@/components/shared/SectionHeader.astro';
 import StatCard from '@/components/shared/StatCard.astro';
+import Button from '@/components/shared/Button.astro';
 
 interface Props {
   lang: Lang;
@@ -86,24 +87,8 @@ const katasPath = getLocalePath('/katas', lang);
   </div>
 
   <div class="mx-auto mt-12 flex max-w-5xl justify-center px-6">
-    <a
-      href={katasPath}
-      class="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-secondary transition-colors hover:text-accent-violet focus:outline-none focus-visible:underline dark:text-accent-blue dark:hover:text-accent-violet"
-    >
-      <span>{t(lang, 'home.practice.cta')}</span>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="h-3.5 w-3.5 transition-transform group-hover:translate-x-1"
-        aria-hidden="true"
-      >
-        <path d="M5 12h14M13 5l7 7-7 7" />
-      </svg>
-    </a>
+    <Button href={katasPath} tone="violet" variant="ghost">
+      {t(lang, 'home.practice.cta')}
+    </Button>
   </div>
 </section>
