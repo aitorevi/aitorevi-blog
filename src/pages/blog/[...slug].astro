@@ -1,29 +1,4 @@
 ---
-/**
- * Dynamic Blog Post Page
- *
- * Handles individual blog post rendering using Astro 5's Content Layer API.
- *
- * Static Generation Strategy:
- * - All routes generated at build time via getStaticPaths()
- * - Zero runtime overhead (SSG)
- * - Optimal Core Web Vitals (LCP, FID, CLS)
- *
- * SEO Optimizations:
- * - Semantic HTML5 structure
- * - Complete Open Graph metadata
- * - Schema.org Article markup
- * - Canonical URLs
- * - Minimal CSS (Tailwind utilities)
- * - View Transitions for SPA-like navigation
- *
- * Accessibility:
- * - Proper heading hierarchy (h1 → h2 → h3)
- * - ARIA landmarks
- * - High contrast ratios
- * - Keyboard navigation
- */
-
 import { getCollection, type CollectionEntry, render } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import Tag from '@/components/shared/Tag.astro';
@@ -40,7 +15,6 @@ import { safeJsonLd } from '@/lib/schema-org';
 
 const lang = 'es';
 
-// Astro 5: Generate static paths for Spanish blog posts
 export async function getStaticPaths() {
   const blogPosts = await getCollection('blog');
 
@@ -71,14 +45,9 @@ interface Props {
 const { post, alternateUrl } = Astro.props;
 const { data, body = '' } = post;
 
-
-// Astro 5: render() function for MDX/Markdown content
 const { Content } = await render(post);
 
-// Calculate reading time
 const readingTime = calculateReadingTime(body, lang);
-
-// Construct canonical URL
 const canonicalUrl = data.canonicalUrl || new URL(Astro.url.pathname, Astro.site).href;
 
 const DEFAULT_COVER_IMAGE = '/logo.webp';
@@ -97,9 +66,7 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
   canonicalUrl={canonicalUrl}
   variant="dark-radial"
 >
-  <!-- SEO: Open Graph & Twitter Card -->
   <Fragment slot="head">
-    <!-- Open Graph -->
     <meta property="og:type" content="article" />
     <meta property="og:title" content={data.title} />
     <meta property="og:description" content={data.description} />
@@ -113,13 +80,11 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
       <meta property="article:tag" content={tag} />
     ))}
 
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={data.title} />
     <meta name="twitter:description" content={data.description} />
     <meta name="twitter:image" content={ogImageAbsolute} />
 
-    <!-- Schema.org JSON-LD -->
     <script is:inline type="application/ld+json" set:html={safeJsonLd({
       "@context": "https://schema.org",
       "@type": "BlogPosting",
@@ -146,149 +111,119 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
     })} />
   </Fragment>
 
-  <div class="relative min-h-screen">
+  <div class="blog-cinematic relative min-h-screen">
     <!-- Dark-mode-only dot field -->
     <DotField position="fixed" />
 
-  <!-- Main Article Content -->
-  <article
-    class="blog-page mx-auto max-w-screen-xl mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:p-20"
-    itemscope
-    itemtype="https://schema.org/BlogPosting"
-  >
-    <!-- Article Header -->
-    <header class="mb-8 space-y-4">
-      <!-- Tags -->
-      <ul class="flex flex-wrap gap-2 list-none p-0" aria-label={t(lang, 'blog.tags')}>
-        {data.tags.map((tag) => (
-          <li><Tag label={tag} variant="accent" /></li>
-        ))}
-      </ul>
-
-      <!-- Title -->
-      <h1
-        class="text-4xl font-display font-bold leading-tight text-ink-900 dark:text-slate-100 sm:text-5xl lg:text-6xl"
-        itemprop="headline"
-      >
-        {data.title}
-      </h1>
-
-      <!-- Subtitle/Description -->
-      <p
-        class="text-lg text-slate-600 dark:text-slate-300 sm:text-xl"
-        itemprop="description"
-      >
-        {data.description}
-      </p>
-
-      <!-- Metadata -->
-      <div class="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-b border-slate-200 dark:border-slate-700 py-4">
-        <DateDisplay date={data.publishDate} showIcon={true} lang={lang} />
-
-        <span class="text-slate-400" aria-hidden="true">•</span>
-
-        <ReadingTime text={readingTime.text} label={t(lang, 'blog.readingTime.label')} />
-
-        {data.updatedDate && (
-          <>
-            <span class="text-slate-400" aria-hidden="true">•</span>
-            <time
-              datetime={formatDateISO(data.updatedDate)}
-              class="text-sm text-slate-500"
-            >
-              {t(lang, 'blog.updated')} {formatDate(data.updatedDate, 'es-ES')}
-            </time>
-          </>
-        )}
-      </div>
-
-      {data.canonicalUrl && data.canonicalSource && (
-        <RepublishedNotice
-          lang={lang}
-          sourceUrl={data.canonicalUrl}
-          sourceName={data.canonicalSource}
-        />
-      )}
-    </header>
-
-    <!-- Article Content -->
-    <div
-      class="prose prose-slate dark:prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:text-blue-700 dark:hover:prose-a:text-blue-300 prose-img:rounded-lg prose-img:max-h-[600px] prose-img:w-auto prose-img:mx-auto prose-img:object-contain"
-      itemprop="articleBody"
-      id="article-content"
-      data-code-block-label={t(lang, 'blog.codeBlock')}
+    <article
+      class="blog-page relative"
+      itemscope
+      itemtype="https://schema.org/BlogPosting"
     >
-      <Content />
-    </div>
-
-    <CodeBlockEnhancer lang={lang} />
-
-    <!-- Article Footer -->
-    <footer class="mt-12 border-t border-slate-200 dark:border-slate-700 pt-8">
-      <div class="flex items-center justify-between">
-        <!-- Author Info -->
-        <div class="flex items-center gap-3">
-          {data.author.avatar ? (
-            <img
-              src={data.author.avatar}
-              alt={`${data.author.name} avatar`}
-              class="h-12 w-12 rounded-full object-cover"
-            />
-          ) : (
-            <div class="h-12 w-12 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
-              {data.author.name.split(' ').map(n => n[0]).join('')}
-            </div>
-          )}
-          <div>
-            <p class="font-medium text-ink-900 dark:text-slate-100">
-              {data.author.url ? (
-                <a href={data.author.url} class="hover:text-blue-600">
-                  {data.author.name}
-                </a>
-              ) : (
-                data.author.name
-              )}
-            </p>
-            <p class="text-sm text-slate-600">
-              {t(lang, 'blog.publishedOn')} <DateDisplay date={data.publishDate} lang={lang} />
-            </p>
-          </div>
+      <!-- Cinematic header -->
+      <header class="relative flex min-h-[80vh] items-center justify-center px-6 pb-16 pt-32 text-center">
+        <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <div class="absolute left-1/2 top-1/2 hidden h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-conic from-accent-violet/30 via-accent-blue/20 to-accent-sky/30 blur-[120px] dark:block"></div>
         </div>
 
-        <!-- Back to Blog Link -->
-        <Button href="/blog" tone="blue">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-            stroke="currentColor"
-            class="h-4 w-4 transition-transform group-hover:-translate-x-0.5"
-            aria-hidden="true"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-          </svg>
-          <span>{t(lang, 'blog.backToBlog')}</span>
-        </Button>
-      </div>
-    </footer>
+        <div class="mx-auto max-w-3xl">
+          <ul class="flex flex-wrap justify-center gap-2 list-none p-0" aria-label={t(lang, 'blog.tags')}>
+            {data.tags.map((tag) => (
+              <li><Tag label={tag} variant="accent" /></li>
+            ))}
+          </ul>
 
-    <!-- Hidden Schema.org metadata -->
-    <meta itemprop="datePublished" content={data.publishDate.toISOString()} />
-    {data.updatedDate && (
-      <meta itemprop="dateModified" content={data.updatedDate.toISOString()} />
-    )}
-    <meta itemprop="author" content={data.author.name} />
-  </article>
+          <h1
+            class="mt-8 font-display text-5xl font-black leading-tight tracking-tight text-ink-900 dark:text-slate-50 sm:text-6xl lg:text-7xl"
+            itemprop="headline"
+          >
+            {data.title}
+          </h1>
+
+          <p
+            class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-600 dark:text-slate-400 sm:text-lg"
+            itemprop="description"
+          >
+            {data.description}
+          </p>
+
+          <div class="mt-10 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+            <DateDisplay date={data.publishDate} showIcon={true} lang={lang} />
+            <span aria-hidden="true">·</span>
+            <ReadingTime text={readingTime.text} label={t(lang, 'blog.readingTime.label')} />
+            {data.updatedDate && (
+              <>
+                <span aria-hidden="true">·</span>
+                <time
+                  datetime={formatDateISO(data.updatedDate)}
+                  class="normal-case tracking-normal text-xs text-slate-500"
+                >
+                  {t(lang, 'blog.updated')} {formatDate(data.updatedDate, 'es-ES')}
+                </time>
+              </>
+            )}
+          </div>
+        </div>
+      </header>
+
+      {data.canonicalUrl && data.canonicalSource && (
+        <div class="mx-auto max-w-3xl px-6 pb-8">
+          <RepublishedNotice
+            lang={lang}
+            sourceUrl={data.canonicalUrl}
+            sourceName={data.canonicalSource}
+          />
+        </div>
+      )}
+
+      <!-- Article body -->
+      <div class="mx-auto max-w-screen-xl px-6 pb-2 sm:px-7 md:px-8 md:pb-4 lg:px-20">
+        <div
+          class="prose prose-slate dark:prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:text-blue-700 dark:hover:prose-a:text-blue-300 prose-img:rounded-lg prose-img:max-h-[600px] prose-img:w-auto prose-img:mx-auto prose-img:object-contain"
+          itemprop="articleBody"
+          id="article-content"
+          data-code-block-label={t(lang, 'blog.codeBlock')}
+        >
+          <Content />
+        </div>
+
+        <CodeBlockEnhancer lang={lang} />
+
+        <!-- Mini outro -->
+        <footer class="mt-24 border-t border-white/10 pt-12">
+          <div class="flex flex-col items-center gap-6">
+            <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
+              // {t(lang, 'blog.backToBlog').toLowerCase()}
+            </p>
+            <Button href="/blog" tone="violet" variant="ghost">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+                class="h-4 w-4 transition-transform group-hover:-translate-x-0.5"
+                aria-hidden="true"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+              </svg>
+              <span>{t(lang, 'blog.backToBlog')}</span>
+            </Button>
+          </div>
+        </footer>
+      </div>
+
+      <!-- Hidden Schema.org metadata -->
+      <meta itemprop="datePublished" content={data.publishDate.toISOString()} />
+      {data.updatedDate && (
+        <meta itemprop="dateModified" content={data.updatedDate.toISOString()} />
+      )}
+      <meta itemprop="author" content={data.author.name} />
+    </article>
   </div>
 </Layout>
 
 <style is:global>
-  /**
-   * Page-specific prose tweaks on top of @tailwindcss/typography.
-   * Code block styling lives in CodeBlockEnhancer.
-   */
-
   .prose h2 {
     @apply mt-12 mb-4;
   }

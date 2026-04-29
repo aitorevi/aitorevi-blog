@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import { sortPostsByDate, filterDrafts } from '@/lib/blog';
+import BlogContent from '@/components/blog/BlogContent.astro';
+
+const PAGE_SIZE = 6;
+
+export async function getStaticPaths() {
+  const PAGE_SIZE = 6;
+  const all = await getCollection('blog');
+  const allPosts = sortPostsByDate(filterDrafts(all)).filter((p) => p.id.startsWith('es/'));
+  const totalPages = Math.ceil(allPosts.length / PAGE_SIZE) || 1;
+
+  return Array.from({ length: Math.max(0, totalPages - 1) }, (_, idx) => {
+    const currentPage = idx + 2;
+    const start = (currentPage - 1) * PAGE_SIZE;
+    return {
+      params: { page: String(currentPage) },
+      props: {
+        posts: allPosts.slice(start, start + PAGE_SIZE),
+        currentPage,
+        totalPages,
+        prevUrl: currentPage === 2 ? '/blog' : `/blog/${currentPage - 1}`,
+        nextUrl: currentPage < totalPages ? `/blog/${currentPage + 1}` : undefined,
+      },
+    };
+  });
+}
+
+const { posts, currentPage, totalPages, prevUrl, nextUrl } = Astro.props;
+
+// Computed outside getStaticPaths to avoid serialization issues
+const allForCount = await getCollection('blog');
+const totalPosts = sortPostsByDate(filterDrafts(allForCount))
+  .filter((p) => p.id.startsWith('es/')).length;
+const firstPostNumber = totalPosts - (currentPage - 1) * PAGE_SIZE;
+
+const alternateUrl = `https://www.aitorevi.dev/en/blog/${currentPage}`;
+---
+
+<BlogContent
+  lang="es"
+  posts={posts}
+  currentPage={currentPage}
+  totalPages={totalPages}
+  firstPostNumber={firstPostNumber}
+  prevUrl={prevUrl}
+  nextUrl={nextUrl}
+  alternateUrl={alternateUrl}
+/>

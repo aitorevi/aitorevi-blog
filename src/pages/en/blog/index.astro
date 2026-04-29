@@ -1,4 +1,22 @@
 ---
+import { getCollection } from 'astro:content';
+import { sortPostsByDate, filterDrafts } from '@/lib/blog';
 import BlogContent from '@/components/blog/BlogContent.astro';
+
+const PAGE_SIZE = 6;
+
+const all = await getCollection('blog');
+const allPosts = sortPostsByDate(filterDrafts(all)).filter((p) => p.id.startsWith('en/'));
+const totalPages = Math.ceil(allPosts.length / PAGE_SIZE) || 1;
+const posts = allPosts.slice(0, PAGE_SIZE);
 ---
-<BlogContent lang="en" />
+
+<BlogContent
+  lang="en"
+  posts={posts}
+  currentPage={1}
+  totalPages={totalPages}
+  firstPostNumber={allPosts.length}
+  nextUrl={totalPages > 1 ? '/en/blog/2' : undefined}
+  alternateUrl="https://www.aitorevi.dev/blog/"
+/>

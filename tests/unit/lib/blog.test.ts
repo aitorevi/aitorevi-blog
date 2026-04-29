@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculateReadingTime, sortPostsByDate, filterDrafts } from '@/lib/blog';
+import { calculateReadingTime, sortPostsByDate, filterDrafts, filterPostsByQuery } from '@/lib/blog';
 
 describe('calculateReadingTime', () => {
   it('returns minimum 1 minute for empty content', () => {
@@ -88,5 +88,49 @@ describe('filterDrafts', () => {
       { data: {}, title: 'No flag' },
     ];
     expect(filterDrafts(posts, true)).toHaveLength(2);
+  });
+});
+
+describe('filterPostsByQuery', () => {
+  const posts = [
+    { title: 'TDD en TypeScript', description: 'Cómo aplicar TDD con vitest', tags: ['testing', 'typescript'] },
+    { title: 'Astro 6 Content Layer', description: 'Nuevo sistema de contenido', tags: ['astro', 'web'] },
+    { title: 'Clean Architecture', description: 'Separación de capas en backend', tags: ['arquitectura'] },
+  ];
+
+  it('returns all posts for empty query', () => {
+    expect(filterPostsByQuery(posts, '')).toHaveLength(3);
+  });
+
+  it('returns all posts for whitespace-only query', () => {
+    expect(filterPostsByQuery(posts, '   ')).toHaveLength(3);
+  });
+
+  it('matches by title (case-insensitive)', () => {
+    const result = filterPostsByQuery(posts, 'tdd');
+    expect(result).toHaveLength(1);
+    expect(result[0].title).toBe('TDD en TypeScript');
+  });
+
+  it('matches by description', () => {
+    const result = filterPostsByQuery(posts, 'vitest');
+    expect(result).toHaveLength(1);
+    expect(result[0].title).toBe('TDD en TypeScript');
+  });
+
+  it('matches by tag', () => {
+    const result = filterPostsByQuery(posts, 'astro');
+    expect(result).toHaveLength(1);
+    expect(result[0].title).toBe('Astro 6 Content Layer');
+  });
+
+  it('returns empty array when no matches', () => {
+    expect(filterPostsByQuery(posts, 'nada')).toHaveLength(0);
+  });
+
+  it('does not mutate the original array', () => {
+    const original = [...posts];
+    filterPostsByQuery(posts, 'tdd');
+    expect(posts).toEqual(original);
   });
 });

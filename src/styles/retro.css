@@ -475,3 +475,71 @@ html[data-retro] .hero-scroll-line::after {
   animation: none !important;
 }
 
+/* Blog cinematic — sections share the same primitives as /work, so the
+   .cinematic-mock and [data-cinematic-meta/visual] rules above already
+   cover them. Nothing extra needed. */
+
+/* Blog pagination */
+html[data-retro] .blog-pagination {
+  font-family: var(--retro-font) !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+html[data-retro] .blog-pagination a {
+  border: 1px solid var(--retro-cyan) !important;
+  border-radius: 0 !important;
+  padding: 0.25rem 0.75rem !important;
+  transition: none !important;
+  color: var(--retro-cyan) !important;
+}
+html[data-retro] .blog-pagination a:hover {
+  background: var(--retro-cyan) !important;
+  color: var(--retro-bg) !important;
+}
+html[data-retro] .blog-pagination span {
+  color: var(--retro-text) !important;
+}
+
+/* Blog search */
+html[data-retro] .blog-search input {
+  font-family: var(--retro-font) !important;
+  border: 1px solid var(--retro-cyan) !important;
+  border-radius: 0 !important;
+  background: var(--retro-panel-deep) !important;
+  color: var(--retro-cyan-bright) !important;
+  transition: none !important;
+}
+html[data-retro] .blog-search input::placeholder {
+  color: var(--retro-panel-light) !important;
+}
+html[data-retro] .blog-search input:focus {
+  border-color: var(--retro-yellow) !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+html[data-retro] .blog-search-result {
+  font-family: var(--retro-font) !important;
+  border: 1px solid var(--retro-cyan) !important;
+  border-radius: 0 !important;
+  background: var(--retro-panel) !important;
+}
+html[data-retro] .blog-result-title {
+  color: var(--retro-yellow) !important;
+}
+html[data-retro] .blog-result-meta {
+  color: var(--retro-cyan-bright) !important;
+}
+html[data-retro] .blog-result-desc {
+  color: var(--retro-cream) !important;
+}
+html[data-retro] .blog-result-tag {
+  border: 1px solid var(--retro-cyan) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--retro-cyan) !important;
+}
+html[data-retro] .blog-search-empty {
+  font-family: var(--retro-font) !important;
+  color: var(--retro-cyan-bright) !important;
+}
+

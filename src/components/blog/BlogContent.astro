@@ -1,54 +1,76 @@
 ---
 import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
-import PostCard from './PostCard.astro';
 import DotField from '@/components/shared/DotField.astro';
-import Button from '@/components/shared/Button.astro';
-import { sortPostsByDate, filterDrafts } from '@/lib/blog';
-import { t, getBlogSlugFromId, getLocalePath } from '@/i18n/utils';
+import Tag from '@/components/shared/Tag.astro';
+import BlogPagination from '@/components/blog/BlogPagination.astro';
+import BlogSearch from '@/components/blog/BlogSearch.astro';
+import { calculateReadingTime, sortPostsByDate, filterDrafts } from '@/lib/blog';
+import { formatDate } from '@/lib/date';
+import { t, getBlogSlugFromId } from '@/i18n/utils';
 import type { Lang } from '@/i18n/types';
 import { safeJsonLd } from '@/lib/schema-org';
 
 interface Props {
   lang: Lang;
+  posts: CollectionEntry<'blog'>[];
+  currentPage: number;
+  totalPages: number;
+  firstPostNumber: number;
+  prevUrl?: string;
+  nextUrl?: string;
+  alternateUrl: string;
 }
 
-const { lang } = Astro.props;
+const { lang, posts, currentPage, totalPages, firstPostNumber, prevUrl, nextUrl, alternateUrl } = Astro.props;
 const blogPath = lang === 'en' ? '/en/blog' : '/blog';
 
-const allPosts = await getCollection('blog');
-const publishedPosts = sortPostsByDate(filterDrafts(allPosts)).filter((post) =>
-  post.id.startsWith(`${lang}/`)
-);
+// Build search index from all posts (not just current page)
+const allBlogPosts = await getCollection('blog');
+const searchIndex = sortPostsByDate(filterDrafts(allBlogPosts))
+  .filter((p) => p.id.startsWith(`${lang}/`))
+  .map((post) => {
+    const slug = getBlogSlugFromId(post.id);
+    return {
+      title: post.data.title,
+      description: post.data.description,
+      tags: post.data.tags,
+      url: lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`,
+      date: formatDate(post.data.publishDate, lang === 'es' ? 'es-ES' : 'en-US'),
+    };
+  });
+const searchIndexJson = JSON.stringify(searchIndex).replace(/<\/script>/gi, '<\\/script>');
 
-const featuredPosts = publishedPosts.filter((post) => post.data.featured);
-const regularPosts = publishedPosts.filter((post) => !post.data.featured);
+const accentCycle = ['violet', 'blue', 'emerald', 'sky'] as const;
+type Accent = (typeof accentCycle)[number];
+const accentMap: Record<Accent, { text: string; bg: string; ring: string; glow: string; line: string; softBg: string }> = {
+  violet:  { text: 'text-accent-violet',  bg: 'bg-accent-violet',  ring: 'ring-accent-violet/40',  glow: 'from-accent-violet/30', line: 'via-accent-violet/25', softBg: 'via-accent-violet/[0.07]' },
+  blue:    { text: 'text-accent-blue',    bg: 'bg-accent-blue',    ring: 'ring-accent-blue/40',    glow: 'from-accent-blue/30',   line: 'via-accent-blue/25',   softBg: 'via-accent-blue/[0.07]' },
+  emerald: { text: 'text-emerald-400',    bg: 'bg-emerald-400',    ring: 'ring-emerald-400/40',    glow: 'from-emerald-400/25',   line: 'via-emerald-400/20',   softBg: 'via-emerald-400/[0.06]' },
+  sky:     { text: 'text-accent-sky',     bg: 'bg-accent-sky',     ring: 'ring-accent-sky/40',     glow: 'from-accent-sky/25',    line: 'via-accent-sky/20',    softBg: 'via-accent-sky/[0.06]' },
+};
 
-const gridItemClass = 'basis-full sm:basis-[calc((100%-2rem)/2)] lg:basis-[calc((100%-4rem)/3)]';
-const featuredList = featuredPosts.slice(0, 3);
-const featuredListClass = featuredList.length === 1
-  ? 'flex justify-center'
-  : 'flex flex-wrap justify-center gap-8';
-const featuredItemClass = featuredList.length === 1
-  ? 'w-full max-w-md'
-  : gridItemClass;
-const regularListClass = regularPosts.length === 1
-  ? 'flex justify-center'
-  : 'flex flex-wrap justify-center gap-8';
-const regularItemClass = regularPosts.length === 1
-  ? 'w-full max-w-md'
-  : gridItemClass;
+const ctaLabel = lang === 'es' ? 'Leer artículo' : 'Read article';
+const featuredLabel = lang === 'es' ? 'destacado' : 'featured';
+
+const outroTitle = lang === 'es'
+  ? 'Cada artículo, un aprendizaje.'
+  : 'Every article, a lesson.';
 ---
 
 <Layout
   title="Blog | aitorevi"
   description={t(lang, 'blog.description')}
   variant="dark-radial"
+  alternateUrl={alternateUrl}
 >
   <Fragment slot="head">
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Blog | aitorevi" />
     <meta property="og:description" content={t(lang, 'blog.description')} />
+    {prevUrl && <link rel="prev" href={new URL(prevUrl, Astro.site).href} />}
+    {nextUrl && <link rel="next" href={new URL(nextUrl, Astro.site).href} />}
 
     <script is:inline type="application/ld+json" set:html={safeJsonLd({
       "@context": "https://schema.org",
@@ -57,7 +79,7 @@ const regularItemClass = regularPosts.length === 1
       "description": t(lang, 'blog.description'),
       "url": new URL(blogPath, Astro.site).href,
       "author": { "@type": "Person", "name": "aitorevi" },
-      "blogPost": publishedPosts.slice(0, 10).map(post => ({
+      "blogPost": posts.slice(0, 10).map(post => ({
         "@type": "BlogPosting",
         "headline": post.data.title,
         "description": post.data.description,
@@ -67,138 +89,453 @@ const regularItemClass = regularPosts.length === 1
     })} />
   </Fragment>
 
-  <div class="relative min-h-screen">
-    <!-- Dark-mode-only dot field -->
+  <!-- Search index: all posts, read by the client-side search script -->
+  <script is:inline id="blog-search-index" type="application/json" set:html={searchIndexJson} />
+
+  <div class="blog-cinematic relative min-h-screen">
     <DotField />
 
-  <div class="blog-page mx-auto max-w-7xl mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:px-20 lg:pt-10 lg:pb-20">
-    <header class="mb-12 text-center" data-reveal-item style="--reveal-delay:0ms">
-      <h1 class="mb-4 pb-2 font-display text-5xl font-black tracking-tight text-ink-900 dark:bg-home-gradient-text dark:bg-clip-text dark:text-transparent sm:text-6xl lg:text-7xl">
-        Blog
-      </h1>
-      <p class="mx-auto mt-3 max-w-xl font-mono text-xs uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
-        {t(lang, 'blog.subtitle')}
-      </p>
+    <header class="flex items-end px-6 pb-8 pt-32">
+      <div class="mx-auto flex w-full max-w-5xl items-end justify-between gap-6">
+        <div>
+          <p class="font-mono text-xs uppercase tracking-[0.4em] text-secondary dark:text-accent-blue">
+            {t(lang, 'blog.eyebrow')}
+          </p>
+          <h1 class="mt-2 font-display text-3xl font-black tracking-tight text-ink-900 dark:text-slate-50 sm:text-4xl">
+            Blog
+          </h1>
+        </div>
+        <BlogSearch lang={lang} ctaLabel={ctaLabel} class="w-full max-w-xs" />
+      </div>
     </header>
 
-    {featuredPosts.length > 0 && (
-      <section class="mb-16" aria-labelledby="featured-heading">
-        <h2 id="featured-heading" class="sr-only">{t(lang, 'blog.featured')}</h2>
-        <div class={featuredListClass}>
-          {featuredList.map((post, index) => (
-            <div class={featuredItemClass} data-reveal-item style={`--reveal-delay:${index * 75}ms`}>
-              <PostCard post={post} priority={index < 2} showFeaturedBadge={true} lang={lang} />
+    <!-- Posts list (hidden when search is active) -->
+    <div id="blog-posts">
+      {posts.length > 0 && posts.map((post, i) => {
+        const accent = accentMap[accentCycle[i % accentCycle.length]];
+        const flip = i % 2 === 1;
+        const slug = getBlogSlugFromId(post.id);
+        const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
+        const reading = calculateReadingTime(post.body || '', lang);
+        const tags = post.data.tags.slice(0, 3);
+        const number = String(firstPostNumber - i).padStart(2, '0');
+        return (
+          <article
+            class="cinematic-section relative px-6 py-12 md:py-16"
+            data-cinematic-section
+            aria-labelledby={`post-${slug}`}
+          >
+            <div aria-hidden="true" class={`pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent ${accent.softBg} to-transparent`}></div>
+            <div aria-hidden="true" class={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent ${accent.line} to-transparent`}></div>
+
+            <div class="mx-auto grid w-full max-w-5xl grid-cols-1 items-center gap-8 md:grid-cols-12 md:gap-10 lg:gap-12">
+              <div class={`md:col-span-6 lg:col-span-6 ${flip ? 'md:order-2' : ''}`} data-cinematic-meta>
+                <div class="space-y-4">
+                  <div class="flex items-baseline gap-3">
+                    <span class={`font-display text-3xl font-black tracking-tighter ${accent.text} md:text-4xl`}>
+                      {number}
+                    </span>
+                    <span class="normal-case text-xs tracking-normal font-mono text-slate-500 dark:text-slate-400">
+                      {formatDate(post.data.publishDate, lang === 'es' ? 'es-ES' : 'en-US')}
+                    </span>
+                    <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+                      · {reading.minutes} min
+                    </span>
+                    {post.data.featured && (
+                      <span class={`inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.25em] ${accent.text}`}>
+                        <span class={`h-1.5 w-1.5 rounded-full ${accent.bg} animate-pulse`}></span>
+                        {featuredLabel}
+                      </span>
+                    )}
+                  </div>
+
+                  <h2
+                    id={`post-${slug}`}
+                    class="font-display text-2xl font-black leading-tight tracking-tight text-ink-900 dark:text-slate-50 md:text-3xl"
+                  >
+                    <a
+                      href={postUrl}
+                      class="transition-colors duration-200 hover:text-secondary focus:text-secondary focus:outline-none focus-visible:underline dark:hover:text-accent-violet dark:focus:text-accent-violet"
+                    >
+                      {post.data.title}
+                    </a>
+                  </h2>
+
+                  <p class="text-sm leading-relaxed text-slate-700 dark:text-slate-300 line-clamp-3">
+                    {post.data.description}
+                  </p>
+
+                  {tags.length > 0 && (
+                    <ul class="flex flex-wrap gap-2 list-none p-0" aria-label={t(lang, 'blog.tags')}>
+                      {tags.map((tag) => (
+                        <li><Tag label={tag} variant="accent" /></li>
+                      ))}
+                    </ul>
+                  )}
+
+                  <a
+                    href={postUrl}
+                    class={`group inline-flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] ${accent.text} focus:outline-none focus-visible:underline`}
+                  >
+                    <span>{ctaLabel}</span>
+                    <span class={`relative h-px w-10 ${accent.bg} transition-all duration-500 group-hover:w-16`}></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" aria-hidden="true">
+                      <path d="M5 12h14M13 5l7 7-7 7" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              <div class={`md:col-span-6 lg:col-span-6 ${flip ? 'md:order-1' : ''}`} data-cinematic-visual>
+                <a
+                  href={postUrl}
+                  class={`cinematic-mock ${flip ? 'cinematic-mock--flip' : ''} block relative overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-1 shadow-xl ring-1 ${accent.ring} focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue`}
+                  aria-label={`${ctaLabel}: ${post.data.title}`}
+                >
+                  <div class="flex items-center gap-1.5 border-b border-white/5 bg-ink-800/95 px-3 py-2 backdrop-blur">
+                    <span class="h-2 w-2 rounded-full bg-red-400/70"></span>
+                    <span class="h-2 w-2 rounded-full bg-yellow-400/70"></span>
+                    <span class="h-2 w-2 rounded-full bg-green-400/70"></span>
+                    <span class="ml-3 font-mono text-[9px] text-slate-400 truncate">aitorevi.dev{postUrl}</span>
+                  </div>
+                  <div class="relative aspect-video w-full overflow-hidden bg-ink-900">
+                    {post.data.coverImage ? (
+                      <img
+                        src={post.data.coverImage}
+                        alt={post.data.coverImageAlt || post.data.title}
+                        width="1200"
+                        height="675"
+                        class="h-full w-full object-cover"
+                        loading={i < 2 ? 'eager' : 'lazy'}
+                        decoding={i < 2 ? 'sync' : 'async'}
+                      />
+                    ) : (
+                      <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-ink-800 to-ink-900">
+                        <span class="select-none font-display text-4xl font-black tracking-tight text-slate-50">
+                          aitorevi<span class={accent.text}>.</span>
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </a>
+              </div>
             </div>
-          ))}
-        </div>
-      </section>
-    )}
+          </article>
+        );
+      })}
 
-    {regularPosts.length > 0 && (
-      <section aria-labelledby="all-posts-heading">
-        <h2
-          id="all-posts-heading"
-          class="mb-6 text-2xl font-display font-bold tracking-tight text-ink-900 dark:text-slate-100"
-          data-reveal-item
-          style={`--reveal-delay:0ms`}
-        >
-          {featuredPosts.length > 0 ? t(lang, 'blog.allPosts') : t(lang, 'blog.latestPosts')}
-        </h2>
-        <div class={regularListClass}>
-          {regularPosts.map((post, index) => (
-            <div class={regularItemClass} data-reveal-item style={`--reveal-delay:${Math.min(index * 75, 300)}ms`}>
-              <PostCard post={post} priority={featuredPosts.length === 0 && index < 3} showFeaturedBadge={false} lang={lang} />
-            </div>
-          ))}
+      {posts.length === 0 && (
+        <div class="mx-auto max-w-3xl px-6 py-24">
+          <div class="rounded-2xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-12 text-center">
+            <h3 class="mb-2 text-lg font-semibold text-slate-100">{t(lang, 'blog.noPosts')}</h3>
+            <p class="text-slate-400">{t(lang, 'blog.noPostsDescription')}</p>
+          </div>
         </div>
-      </section>
-    )}
+      )}
 
-    {publishedPosts.length > 0 && (
-      <section
-        class="mt-24 md:mt-32 lg:mt-40"
-        aria-labelledby="blog-cta-heading"
-        data-reveal-item
-        style="--reveal-delay:0ms"
-      >
-        <h2
-          id="blog-cta-heading"
-          class="text-center font-display text-2xl font-bold tracking-tight text-ink-900 dark:text-slate-100 sm:text-3xl"
-        >
-          {t(lang, 'blog.cta.heading')}
-        </h2>
-        <p class="mx-auto mt-3 max-w-xl text-center text-sm leading-relaxed text-slate-600 dark:text-slate-300 sm:text-base">
-          {t(lang, 'blog.cta.description')}
-        </p>
-        <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
-          <Button href={getLocalePath('/katas', lang)} tone="blue">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-4 w-4 transition-transform group-hover:-translate-y-0.5" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
-            </svg>
-            <span>{t(lang, 'blog.cta.katas')}</span>
-          </Button>
-          <Button href={`${getLocalePath('/', lang)}#contact`} tone="violet">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-4 w-4 transition-transform group-hover:-translate-y-0.5" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
-            </svg>
-            <span>{t(lang, 'blog.cta.topic')}</span>
-          </Button>
-        </div>
-      </section>
-    )}
+      {totalPages > 1 && posts.length > 0 && (
+        <BlogPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          prevUrl={prevUrl}
+          nextUrl={nextUrl}
+          lang={lang}
+          basePath={blogPath}
+        />
+      )}
 
-    {publishedPosts.length === 0 && (
-      <div class="rounded-xl border border-slate-200 bg-slate-50 p-12 text-center">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mx-auto mb-4 h-12 w-12 text-slate-400" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-        </svg>
-        <h3 class="mb-2 text-lg font-semibold text-slate-900">{t(lang, 'blog.noPosts')}</h3>
-        <p class="text-slate-600">{t(lang, 'blog.noPostsDescription')}</p>
-      </div>
-    )}
-  </div>
+      {currentPage === totalPages && posts.length > 0 && (
+        <footer class="relative flex min-h-[45vh] items-center justify-center px-6 py-24 text-center">
+          <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-accent-violet/5 to-transparent"></div>
+          </div>
+          <div>
+            <p class="font-mono text-xs uppercase tracking-[0.4em] text-secondary dark:text-accent-blue">
+              {t(lang, 'blog.outro.eyebrow')}
+            </p>
+            <h2 class="mt-6 font-display text-4xl font-black tracking-tight text-ink-900 dark:text-slate-50 md:text-6xl">
+              {outroTitle}
+            </h2>
+          </div>
+        </footer>
+      )}
+    </div>
+
+    <!-- Search results (shown when search is active, replaces #blog-posts) -->
+    <div id="blog-search-results" hidden aria-label={t(lang, 'blog.search.label')}></div>
   </div>
 </Layout>
 
 <style>
-  [data-reveal-item] {
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .cinematic-section [data-cinematic-meta],
+  .cinematic-section [data-cinematic-visual] {
     opacity: 0;
-    transform: translateY(20px);
-    transition:
-      opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    transition-delay: var(--reveal-delay, 0ms);
+    transition: opacity 700ms ease, transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translate3d(0, 32px, 0);
   }
-  [data-reveal-item].is-visible {
+  .cinematic-section [data-cinematic-visual] {
+    transform: translate3d(0, 48px, 0);
+    transition-delay: 100ms;
+  }
+  .cinematic-section.is-active [data-cinematic-meta],
+  .cinematic-section.is-active [data-cinematic-visual] {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
+
+  .cinematic-mock {
+    transform: perspective(1400px) rotateX(2deg) rotateY(-3deg);
+    transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cinematic-mock--flip {
+    transform: perspective(1400px) rotateX(2deg) rotateY(3deg);
+  }
+  .cinematic-mock:hover,
+  .cinematic-mock:focus-visible,
+  .cinematic-mock--flip:hover,
+  .cinematic-mock--flip:focus-visible {
+    transform: perspective(1400px) rotateX(0deg) rotateY(0deg);
+  }
+
+  .cinematic-scroll-line {
+    position: relative;
+    width: 1px;
+    height: 56px;
+    background: linear-gradient(to bottom, transparent, rgba(148, 163, 184, 0.5), transparent);
+    overflow: hidden;
+  }
+  .cinematic-scroll-line::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent, currentColor, transparent);
+    color: rgb(139, 92, 246);
+    animation: cinematic-scroll-trail 2s ease-in-out infinite;
+  }
+  @keyframes cinematic-scroll-trail {
+    0% { transform: translateY(-100%); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateY(100%); opacity: 0; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    [data-reveal-item] { opacity: 1; transform: none; transition: none; }
+    .cinematic-section [data-cinematic-meta],
+    .cinematic-section [data-cinematic-visual] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .cinematic-mock,
+    .cinematic-mock--flip,
+    .cinematic-mock:hover,
+    .cinematic-mock--flip:hover {
+      transform: none;
+      transition: none;
+    }
+    .cinematic-scroll-line::after { animation: none; }
+  }
+</style>
+
+<style is:global>
+  /* Search result items — rendered via innerHTML so scoped styles don't apply */
+  .blog-search-result {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 2rem 1.5rem;
+  }
+  .blog-search-result:first-child {
+    border-top: none;
+  }
+  .blog-search-result__inner {
+    max-width: 64rem;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .blog-result-date {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.625rem;
+    color: rgb(100 116 139);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+  }
+  .blog-result-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+  .blog-result-tag {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    background: rgba(139, 92, 246, 0.1);
+    padding: 0.125rem 0.625rem;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgb(167 139 250);
+  }
+  .blog-result-title {
+    font-size: 1.25rem;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    color: rgb(15 23 42);
+  }
+  .dark .blog-result-title {
+    color: rgb(248 250 252);
+  }
+  .blog-result-link {
+    transition: color 200ms;
+    text-decoration: none;
+    color: inherit;
+  }
+  .blog-result-link:hover {
+    color: rgb(99 102 241);
+  }
+  .dark .blog-result-link:hover {
+    color: rgb(167 139 250);
+  }
+  .blog-result-desc {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: rgb(71 85 105);
+  }
+  .dark .blog-result-desc {
+    color: rgb(203 213 225);
+  }
+  .blog-result-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: rgb(139 92 246);
+    text-decoration: none;
+    transition: opacity 200ms;
+  }
+  .blog-result-cta:hover { opacity: 0.7; }
+
+  .blog-search-empty {
+    padding: 6rem 1.5rem;
+    text-align: center;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: rgb(100 116 139);
+  }
+  .dark .blog-search-empty {
+    color: rgb(71 85 105);
   }
 </style>
 
 <script>
-  function initReveal() {
-    const items = document.querySelectorAll<HTMLElement>('[data-reveal-item]');
-    if (!items.length) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      items.forEach((el) => el.classList.add('is-visible'));
+  // ── Cinematic reveal ────────────────────────────────────────────────────────
+  function setupCinematicReveal() {
+    const sections = document.querySelectorAll<HTMLElement>('.blog-cinematic [data-cinematic-section]');
+    if (!sections.length) return;
+    if (typeof IntersectionObserver === 'undefined') {
+      sections.forEach((s) => s.classList.add('is-active'));
       return;
     }
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            (entry.target as HTMLElement).classList.add('is-visible');
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
+    const observer = new IntersectionObserver(
+      (entries) => { entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('is-active'); }); },
+      { threshold: 0.18, rootMargin: '0px 0px -10% 0px' }
     );
-    items.forEach((el) => { el.classList.remove('is-visible'); io.observe(el); });
+    sections.forEach((s) => observer.observe(s));
   }
-  document.addEventListener('astro:page-load', initReveal);
-  document.addEventListener('astro:after-swap', initReveal);
+
+  // ── Blog search ─────────────────────────────────────────────────────────────
+  function setupBlogSearch() {
+    const input = document.querySelector<HTMLInputElement>('[data-blog-search-input]');
+    if (!input) return;
+
+    const indexEl = document.getElementById('blog-search-index');
+    if (!indexEl) return;
+
+    type Post = { title: string; description: string; tags: string[]; url: string; date: string };
+    let index: Post[] = [];
+    try { index = JSON.parse(indexEl.textContent || '[]'); } catch { return; }
+
+    const postsEl  = document.getElementById('blog-posts');
+    const resultsEl = document.getElementById('blog-search-results');
+    const liveEl   = document.getElementById('blog-search-live');
+
+    const emptyText   = input.dataset.empty       ?? '// sin resultados';
+    const resultsText = input.dataset.resultsText  ?? 'resultados';
+    const ctaLabel    = input.dataset.ctaLabel     ?? 'Leer';
+
+    const esc = (s: string) =>
+      s.replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c as '&'] ?? c));
+
+    function renderItem(post: Post): string {
+      const tagsHtml = post.tags.slice(0, 3)
+        .map((t) => `<span class="blog-result-tag">${esc(t)}</span>`).join('');
+      return `
+        <article class="blog-search-result">
+          <div class="blog-search-result__inner">
+            <p class="blog-result-date">${esc(post.date)}</p>
+            ${tagsHtml ? `<div class="blog-result-tags">${tagsHtml}</div>` : ''}
+            <h2 class="blog-result-title">
+              <a href="${esc(post.url)}" class="blog-result-link">${esc(post.title)}</a>
+            </h2>
+            <p class="blog-result-desc">${esc(post.description)}</p>
+            <a href="${esc(post.url)}" class="blog-result-cta" aria-hidden="true">${esc(ctaLabel)} →</a>
+          </div>
+        </article>`;
+    }
+
+    function showPosts() {
+      postsEl?.removeAttribute('hidden');
+      if (resultsEl) resultsEl.hidden = true;
+      if (liveEl)    liveEl.textContent = '';
+    }
+
+    function showResults(q: string) {
+      const matches = index.filter((p) =>
+        p.title.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q) ||
+        p.tags.some((t) => t.toLowerCase().includes(q))
+      );
+
+      postsEl?.setAttribute('hidden', '');
+      if (!resultsEl) return;
+      resultsEl.hidden = false;
+      resultsEl.innerHTML = matches.length
+        ? matches.map(renderItem).join('')
+        : `<p class="blog-search-empty">${esc(emptyText)}</p>`;
+
+      if (liveEl) liveEl.textContent = `${matches.length} ${resultsText}`;
+    }
+
+    let timer: ReturnType<typeof setTimeout>;
+    input.addEventListener('input', () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        const q = input.value.trim().toLowerCase();
+        q ? showResults(q) : showPosts();
+      }, 200);
+    });
+
+    // Reset on page navigation
+    input.value = '';
+    showPosts();
+  }
+
+  setupCinematicReveal();
+  setupBlogSearch();
+  document.addEventListener('astro:page-load', () => { setupCinematicReveal(); setupBlogSearch(); });
+  document.addEventListener('astro:after-swap', () => { setupCinematicReveal(); setupBlogSearch(); });
 </script>
