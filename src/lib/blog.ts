@@ -58,3 +58,21 @@ export function filterDrafts<T extends { data: { draft?: boolean } }>(
 ): T[] {
   return isProd ? posts.filter((post) => !post.data.draft) : posts;
 }
+
+/**
+ * Filter posts by a search query against title, description and tags.
+ * Returns all posts when the query is empty or whitespace-only.
+ */
+export function filterPostsByQuery<T extends { title: string; description: string; tags: string[] }>(
+  posts: T[],
+  query: string
+): T[] {
+  const q = query.trim().toLowerCase();
+  if (!q) return posts;
+  return posts.filter(
+    (p) =>
+      p.title.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q) ||
+      p.tags.some((tag) => tag.toLowerCase().includes(q))
+  );
+}

@@ -1,0 +1,36 @@
+---
+import { t } from '@/i18n/utils';
+import type { Lang } from '@/i18n/types';
+
+interface Props {
+  lang: Lang;
+  ctaLabel: string;
+  class?: string;
+}
+
+const { lang, ctaLabel, class: className = '' } = Astro.props;
+---
+
+<form
+  role="search"
+  class={`blog-search ${className}`}
+  aria-label={t(lang, 'blog.search.label')}
+  onsubmit="return false"
+>
+  <input
+    id="blog-search-input"
+    type="search"
+    data-blog-search-input
+    data-lang={lang}
+    data-empty={t(lang, 'blog.search.empty')}
+    data-results-text={t(lang, 'blog.search.results')}
+    data-cta-label={ctaLabel}
+    placeholder={t(lang, 'blog.search.placeholder')}
+    autocomplete="off"
+    spellcheck="false"
+    class="w-full rounded-lg border border-white/20 bg-transparent px-4 py-2.5 font-mono text-sm text-slate-700 outline-none transition-colors duration-200 placeholder:text-slate-500 focus:border-accent-blue/60 dark:text-slate-200 dark:placeholder:text-slate-600 dark:focus:border-accent-blue/50 motion-reduce:transition-none"
+    aria-label={t(lang, 'blog.search.label')}
+  />
+</form>
+
+<div id="blog-search-live" role="status" aria-live="polite" class="sr-only"></div>
