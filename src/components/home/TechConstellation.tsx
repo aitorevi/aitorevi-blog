@@ -66,31 +66,21 @@ const TECH_NODES: TechNode[] = [
   { id: 'do', label: 'DigitalOcean', group: 'infra', angle: 315, ring: 3, color: '#0080ff', size: 24 },
 ];
 
-const CONNECTIONS: Array<[string, string]> = [
-  ['ts', 'react'],
-  ['ts', 'next'],
-  ['ts', 'node'],
-  ['ts', 'astro'],
-  ['react', 'next'],
-  ['react', 'tailwind'],
-  ['next', 'tailwind'],
-  ['next', 'docker'],
-  ['java', 'tdd'],
-  ['java', 'hexarch'],
-
-  ['csharp', 'dotnet'],
-  ['csharp', 'solid'],
-  ['node', 'docker'],
-  ['docker', 'ghactions'],
-  ['tdd', 'hexarch'],
-  ['tdd', 'solid'],
-  ['claude', 'copilot'],
-  ['claude', 'gemini'],
-  ['copilot', 'gemini'],
-  ['ghactions', 'gcloud'],
-  ['ghactions', 'do'],
-  ['astro', 'tailwind'],
-];
+const CONNECTIONS: Array<[string, string]> = (() => {
+  const result: Array<[string, string]> = [];
+  const groups = new Map<string, TechNode[]>();
+  TECH_NODES.forEach((n) => {
+    if (!groups.has(n.group)) groups.set(n.group, []);
+    groups.get(n.group)!.push(n);
+  });
+  groups.forEach((nodes) => {
+    const sorted = [...nodes].sort((a, b) => a.angle - b.angle);
+    for (let i = 0; i < sorted.length - 1; i++) {
+      result.push([sorted[i].id, sorted[i + 1].id]);
+    }
+  });
+  return result;
+})();
 
 const GROUP_LABELS: Record<Group, { es: string; en: string }> = {
   backend: { es: 'Backend', en: 'Backend' },
@@ -181,14 +171,17 @@ export default function TechConstellation({ lang = 'es' }: Props) {
     return map;
   }, [getPos]);
 
+  const hoveredGroup = useMemo(
+    () => (hovered ? TECH_NODES.find((n) => n.id === hovered)?.group ?? null : null),
+    [hovered]
+  );
+
   const isConnected = useCallback(
     (id: string) => {
-      if (!hovered) return false;
-      return CONNECTIONS.some(
-        ([a, b]) => (a === hovered && b === id) || (b === hovered && a === id)
-      );
+      if (!hoveredGroup) return false;
+      return TECH_NODES.find((n) => n.id === id)?.group === hoveredGroup;
     },
-    [hovered]
+    [hoveredGroup]
   );
 
   return (
@@ -223,7 +216,7 @@ export default function TechConstellation({ lang = 'es' }: Props) {
             const na = nodeMap[a];
             const nb = nodeMap[b];
             if (!na || !nb) return null;
-            const active = hovered === a || hovered === b;
+            const active = hoveredGroup !== null && na.group === hoveredGroup;
             return (
               <line
                 key={`${a}-${b}`}
