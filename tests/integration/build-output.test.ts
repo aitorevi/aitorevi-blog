@@ -9,6 +9,8 @@ const exists = (path: string) => existsSync(join(dist, path, 'index.html'));
 describe('ES pages exist', () => {
   it('home', () => { expect(exists('')).toBe(true); });
   it('blog', () => { expect(exists('blog')).toBe(true); });
+  it('blog/2', () => { expect(exists('blog/2')).toBe(true); });
+  it('blog/3', () => { expect(exists('blog/3')).toBe(true); });
   it('cv', () => { expect(exists('cv')).toBe(true); });
   it('katas', () => { expect(exists('katas')).toBe(true); });
   it('work/aitorevi-dev', () => { expect(exists('work/aitorevi-dev')).toBe(true); });
@@ -20,6 +22,7 @@ describe('ES pages exist', () => {
 describe('EN pages exist', () => {
   it('en home', () => { expect(exists('en')).toBe(true); });
   it('en/blog', () => { expect(exists('en/blog')).toBe(true); });
+  it('en/blog/2', () => { expect(exists('en/blog/2')).toBe(true); });
   it('en/cv', () => { expect(exists('en/cv')).toBe(true); });
   it('en/katas', () => { expect(exists('en/katas')).toBe(true); });
   it('en/work/aitorevi-dev', () => { expect(exists('en/work/aitorevi-dev')).toBe(true); });

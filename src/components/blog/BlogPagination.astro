@@ -1,0 +1,53 @@
+---
+import { t } from '@/i18n/utils';
+import type { Lang } from '@/i18n/types';
+
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  prevUrl?: string;
+  nextUrl?: string;
+  lang: Lang;
+}
+
+const { currentPage, totalPages, prevUrl, nextUrl, lang } = Astro.props;
+---
+
+<nav
+  class="blog-pagination flex items-center justify-center gap-8 py-16 font-mono text-xs uppercase tracking-[0.2em]"
+  aria-label={t(lang, 'blog.pagination.nav')}
+>
+  {prevUrl ? (
+    <a
+      href={prevUrl}
+      class="flex items-center gap-2 text-secondary dark:text-accent-blue transition-opacity hover:opacity-70 motion-reduce:transition-none"
+      rel="prev"
+    >
+      <span aria-hidden="true">←</span>
+      <span>{t(lang, 'blog.pagination.prev')}</span>
+    </a>
+  ) : (
+    <span class="flex items-center gap-2 opacity-25" aria-hidden="true">
+      ← {t(lang, 'blog.pagination.prev')}
+    </span>
+  )}
+
+  <span class="text-slate-400 dark:text-slate-500" aria-current="page">
+    {currentPage} / {totalPages}
+  </span>
+
+  {nextUrl ? (
+    <a
+      href={nextUrl}
+      class="flex items-center gap-2 text-secondary dark:text-accent-blue transition-opacity hover:opacity-70 motion-reduce:transition-none"
+      rel="next"
+    >
+      <span>{t(lang, 'blog.pagination.next')}</span>
+      <span aria-hidden="true">→</span>
+    </a>
+  ) : (
+    <span class="flex items-center gap-2 opacity-25" aria-hidden="true">
+      {t(lang, 'blog.pagination.next')} →
+    </span>
+  )}
+</nav>

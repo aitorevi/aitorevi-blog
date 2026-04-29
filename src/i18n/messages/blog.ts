@@ -23,6 +23,9 @@ export const blog = {
     'blog.republished.linkLabel': 'Leer en el sitio original',
     'blog.crosspost.label': 'Crosspost',
     'blog.crosspost.aria': 'Publicado originalmente fuera de este blog',
+    'blog.pagination.prev': 'Anterior',
+    'blog.pagination.next': 'Siguiente',
+    'blog.pagination.nav': 'Paginación del blog',
   },
   en: {
     'blog.copyCode': 'Copy',
@@ -48,5 +51,8 @@ export const blog = {
     'blog.republished.linkLabel': 'Read on the original site',
     'blog.crosspost.label': 'Crosspost',
     'blog.crosspost.aria': 'Originally published off-site',
+    'blog.pagination.prev': 'Previous',
+    'blog.pagination.next': 'Next',
+    'blog.pagination.nav': 'Blog pagination',
   },
 };
