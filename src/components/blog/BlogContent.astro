@@ -109,7 +109,6 @@ const outroTitle = lang === 'es'
       const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
       const reading = calculateReadingTime(post.body || '', lang);
       const tags = post.data.tags.slice(0, 3);
-      const number = String(i + 1).padStart(2, '0');
       return (
         <article
           class="cinematic-section relative px-6 py-12 md:py-16"
@@ -127,14 +126,11 @@ const outroTitle = lang === 'es'
             >
               <div class="space-y-4">
                 <div class="flex items-baseline gap-3">
-                  <span class={`font-display text-3xl font-black tracking-tighter ${accent.text} md:text-4xl`}>
-                    {number}
-                  </span>
                   <span class="font-mono text-[10px] uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400 normal-case tracking-normal text-xs">
                     {formatDate(post.data.publishDate, lang === 'es' ? 'es-ES' : 'en-US')}
                   </span>
                   <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
-                    · {reading.minutes} {lang === 'es' ? 'min' : 'min'}
+                    · {reading.minutes} min
                   </span>
                   {post.data.featured && (
                     <span class={`inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.25em] ${accent.text}`}>
