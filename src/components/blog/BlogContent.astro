@@ -44,11 +44,11 @@ const searchIndexJson = JSON.stringify(searchIndex).replace(/<\/script>/gi, '<\\
 
 const accentCycle = ['violet', 'blue', 'emerald', 'sky'] as const;
 type Accent = (typeof accentCycle)[number];
-const accentMap: Record<Accent, { text: string; bg: string; ring: string; glow: string }> = {
-  violet:  { text: 'text-accent-violet',  bg: 'bg-accent-violet',  ring: 'ring-accent-violet/40',  glow: 'from-accent-violet/30' },
-  blue:    { text: 'text-accent-blue',    bg: 'bg-accent-blue',    ring: 'ring-accent-blue/40',    glow: 'from-accent-blue/30' },
-  emerald: { text: 'text-emerald-400',    bg: 'bg-emerald-400',    ring: 'ring-emerald-400/40',    glow: 'from-emerald-400/25' },
-  sky:     { text: 'text-accent-sky',     bg: 'bg-accent-sky',     ring: 'ring-accent-sky/40',     glow: 'from-accent-sky/25' },
+const accentMap: Record<Accent, { text: string; bg: string; ring: string; glow: string; line: string }> = {
+  violet:  { text: 'text-accent-violet',  bg: 'bg-accent-violet',  ring: 'ring-accent-violet/40',  glow: 'from-accent-violet/30', line: 'via-accent-violet/25' },
+  blue:    { text: 'text-accent-blue',    bg: 'bg-accent-blue',    ring: 'ring-accent-blue/40',    glow: 'from-accent-blue/30',   line: 'via-accent-blue/25' },
+  emerald: { text: 'text-emerald-400',    bg: 'bg-emerald-400',    ring: 'ring-emerald-400/40',    glow: 'from-emerald-400/25',   line: 'via-emerald-400/20' },
+  sky:     { text: 'text-accent-sky',     bg: 'bg-accent-sky',     ring: 'ring-accent-sky/40',     glow: 'from-accent-sky/25',    line: 'via-accent-sky/20' },
 };
 
 const ctaLabel = lang === 'es' ? 'Leer artículo' : 'Read article';
@@ -125,8 +125,7 @@ const outroTitle = lang === 'es'
             data-cinematic-section
             aria-labelledby={`post-${slug}`}
           >
-            <div aria-hidden="true" class={`pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br ${accent.glow} via-transparent to-transparent opacity-30`}></div>
-            <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+            <div aria-hidden="true" class={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent ${accent.line} to-transparent`}></div>
 
             <div class="mx-auto grid w-full max-w-5xl grid-cols-1 items-center gap-8 md:grid-cols-12 md:gap-10 lg:gap-12">
               <div class={`md:col-span-6 lg:col-span-6 ${flip ? 'md:order-2' : ''}`} data-cinematic-meta>
