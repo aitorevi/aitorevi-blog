@@ -34,8 +34,8 @@ const ctaLabel = lang === 'es' ? 'Leer artículo' : 'Read article';
 const featuredLabel = lang === 'es' ? 'destacado' : 'featured';
 
 const outroTitle = lang === 'es'
-  ? `${publishedPosts.length} notas. De momento.`
-  : `${publishedPosts.length} notes. For now.`;
+  ? 'Cada artículo, un aprendizaje.'
+  : 'Every article, a lesson.';
 ---
 
 <Layout
@@ -107,27 +107,33 @@ const outroTitle = lang === 'es'
       const number = String(i + 1).padStart(2, '0');
       return (
         <article
-          class="cinematic-section relative flex min-h-screen items-center px-6 py-24 md:py-28"
+          class="cinematic-section relative px-6 py-12 md:py-16"
           data-cinematic-section
           aria-labelledby={`post-${slug}`}
         >
-          <!-- Per-section ambient glow -->
-          <div aria-hidden="true" class={`pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br ${accent.glow} via-transparent to-transparent opacity-70`}></div>
-          <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+          <!-- Per-section ambient glow (subtle so the list doesn't feel saturated) -->
+          <div aria-hidden="true" class={`pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br ${accent.glow} via-transparent to-transparent opacity-30`}></div>
+          <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
 
-          <div class="mx-auto grid w-full max-w-6xl grid-cols-1 gap-12 md:grid-cols-12 md:gap-12 lg:gap-16">
+          <div class="mx-auto grid w-full max-w-5xl grid-cols-1 items-center gap-8 md:grid-cols-12 md:gap-10 lg:gap-12">
             <!-- Meta -->
             <div
-              class={`md:col-span-5 lg:col-span-5 ${flip ? 'md:order-2' : ''}`}
+              class={`md:col-span-6 lg:col-span-6 ${flip ? 'md:order-2' : ''}`}
               data-cinematic-meta
             >
-              <div class="md:sticky md:top-32 space-y-7">
-                <div class="flex items-baseline gap-4">
-                  <span class={`font-display text-5xl font-black tracking-tighter ${accent.text} md:text-6xl`}>
+              <div class="space-y-4">
+                <div class="flex items-baseline gap-3">
+                  <span class={`font-display text-3xl font-black tracking-tighter ${accent.text} md:text-4xl`}>
                     {number}
                   </span>
+                  <span class="font-mono text-[10px] uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400 normal-case tracking-normal text-xs">
+                    {formatDate(post.data.publishDate, lang === 'es' ? 'es-ES' : 'en-US')}
+                  </span>
+                  <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+                    · {reading.minutes} {lang === 'es' ? 'min' : 'min'}
+                  </span>
                   {post.data.featured && (
-                    <span class={`inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] ${accent.text}`}>
+                    <span class={`inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.25em] ${accent.text}`}>
                       <span class={`h-1.5 w-1.5 rounded-full ${accent.bg} animate-pulse`}></span>
                       {featuredLabel}
                     </span>
@@ -136,31 +142,19 @@ const outroTitle = lang === 'es'
 
                 <h2
                   id={`post-${slug}`}
-                  class="font-display text-3xl font-black leading-tight tracking-tight text-ink-900 dark:text-slate-50 md:text-4xl lg:text-5xl"
+                  class="font-display text-2xl font-black leading-tight tracking-tight text-ink-900 dark:text-slate-50 md:text-3xl"
                 >
-                  <a href={postUrl} class="transition-colors hover:text-secondary focus:outline-none focus-visible:underline dark:hover:text-accent-blue">
+                  <a
+                    href={postUrl}
+                    class="transition-colors duration-200 hover:text-secondary focus:text-secondary focus:outline-none focus-visible:underline dark:hover:text-accent-violet dark:focus:text-accent-violet"
+                  >
                     {post.data.title}
                   </a>
                 </h2>
 
-                <p class="max-w-md text-sm leading-relaxed text-slate-700 dark:text-slate-300 md:text-base">
+                <p class="text-sm leading-relaxed text-slate-700 dark:text-slate-300 line-clamp-3">
                   {post.data.description}
                 </p>
-
-                <dl class="grid grid-cols-2 gap-x-6 gap-y-3 border-l border-white/10 pl-5 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
-                  <div>
-                    <dt class="text-[9px]">{lang === 'es' ? 'Fecha' : 'Date'}</dt>
-                    <dd class="mt-1 text-slate-700 dark:text-slate-200 normal-case tracking-normal text-xs">
-                      {formatDate(post.data.publishDate, lang === 'es' ? 'es-ES' : 'en-US')}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt class="text-[9px]">{lang === 'es' ? 'Lectura' : 'Reading'}</dt>
-                    <dd class={`mt-1 font-display text-2xl font-black ${accent.text} normal-case tracking-tight`}>
-                      {reading.minutes}<span class="ml-1 font-mono text-[10px] tracking-[0.18em] uppercase text-slate-500 dark:text-slate-400">{lang === 'es' ? 'min' : 'min'}</span>
-                    </dd>
-                  </div>
-                </dl>
 
                 {tags.length > 0 && (
                   <ul class="flex flex-wrap gap-2 list-none p-0" aria-label={t(lang, 'blog.tags')}>
@@ -172,10 +166,10 @@ const outroTitle = lang === 'es'
 
                 <a
                   href={postUrl}
-                  class={`group inline-flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] ${accent.text} transition-colors hover:text-ink-900 dark:hover:text-white focus:outline-none focus-visible:underline`}
+                  class={`group inline-flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] ${accent.text} focus:outline-none focus-visible:underline`}
                 >
                   <span>{ctaLabel}</span>
-                  <span class={`relative h-px w-12 ${accent.bg} transition-all duration-500 group-hover:w-20`}></span>
+                  <span class={`relative h-px w-10 ${accent.bg} transition-all duration-500 group-hover:w-16`}></span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -195,19 +189,19 @@ const outroTitle = lang === 'es'
 
             <!-- Visual -->
             <div
-              class={`md:col-span-7 lg:col-span-7 ${flip ? 'md:order-1' : ''}`}
+              class={`md:col-span-6 lg:col-span-6 ${flip ? 'md:order-1' : ''}`}
               data-cinematic-visual
             >
               <a
                 href={postUrl}
-                class={`cinematic-mock ${flip ? 'cinematic-mock--flip' : ''} block relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-1 shadow-2xl ring-1 ${accent.ring} focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue`}
+                class={`cinematic-mock ${flip ? 'cinematic-mock--flip' : ''} block relative overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-1 shadow-xl ring-1 ${accent.ring} focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue`}
                 aria-label={`${ctaLabel}: ${post.data.title}`}
               >
-                <div class="flex items-center gap-1.5 border-b border-white/5 bg-ink-800/95 px-4 py-2.5 backdrop-blur">
-                  <span class="h-2.5 w-2.5 rounded-full bg-red-400/70"></span>
-                  <span class="h-2.5 w-2.5 rounded-full bg-yellow-400/70"></span>
-                  <span class="h-2.5 w-2.5 rounded-full bg-green-400/70"></span>
-                  <span class="ml-4 font-mono text-[10px] text-slate-400 truncate">
+                <div class="flex items-center gap-1.5 border-b border-white/5 bg-ink-800/95 px-3 py-2 backdrop-blur">
+                  <span class="h-2 w-2 rounded-full bg-red-400/70"></span>
+                  <span class="h-2 w-2 rounded-full bg-yellow-400/70"></span>
+                  <span class="h-2 w-2 rounded-full bg-green-400/70"></span>
+                  <span class="ml-3 font-mono text-[9px] text-slate-400 truncate">
                     aitorevi.dev{postUrl}
                   </span>
                 </div>
@@ -224,16 +218,13 @@ const outroTitle = lang === 'es'
                     />
                   ) : (
                     <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-ink-800 to-ink-900">
-                      <span class="select-none font-display text-5xl font-black tracking-tight text-slate-50 md:text-6xl">
+                      <span class="select-none font-display text-4xl font-black tracking-tight text-slate-50">
                         aitorevi<span class={accent.text}>.</span>
                       </span>
                     </div>
                   )}
                 </div>
               </a>
-              <p class="mt-4 text-right font-mono text-[10px] uppercase tracking-[0.25em] text-slate-500">
-                {number} / {String(publishedPosts.length).padStart(2, '0')}
-              </p>
             </div>
           </div>
         </article>
@@ -269,6 +260,13 @@ const outroTitle = lang === 'es'
 </Layout>
 
 <style>
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
   .cinematic-section [data-cinematic-meta],
   .cinematic-section [data-cinematic-visual] {
     opacity: 0;
