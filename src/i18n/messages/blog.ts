@@ -26,6 +26,10 @@ export const blog = {
     'blog.pagination.prev': 'Anterior',
     'blog.pagination.next': 'Siguiente',
     'blog.pagination.nav': 'Paginación del blog',
+    'blog.search.placeholder': '// buscar artículos…',
+    'blog.search.label': 'Buscar artículos',
+    'blog.search.empty': '// sin resultados',
+    'blog.search.results': 'resultados',
   },
   en: {
     'blog.copyCode': 'Copy',
@@ -54,5 +58,9 @@ export const blog = {
     'blog.pagination.prev': 'Previous',
     'blog.pagination.next': 'Next',
     'blog.pagination.nav': 'Blog pagination',
+    'blog.search.placeholder': '// search articles…',
+    'blog.search.label': 'Search articles',
+    'blog.search.empty': '// no results',
+    'blog.search.results': 'results',
   },
 };
