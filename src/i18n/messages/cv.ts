@@ -81,7 +81,7 @@ export const cv = {
     'portfolio.self.scores.source': 'Medido con PageSpeed Insights en aitorevi.dev',
 
     'portfolio.self.cta.title': 'El código es abierto',
-    'portfolio.self.cta.text': 'Si has llegado hasta aquí, quizá te apetezca leer un post o escribirme.',
+    'portfolio.self.cta.text': 'Si has llegado hasta aquí, no dudes en escribirme.',
     'portfolio.self.cta.github': 'Ver repo en GitHub',
     'portfolio.self.cta.blog': 'Ir al blog',
     'portfolio.self.cta.contact': 'Escribirme',
@@ -168,7 +168,7 @@ export const cv = {
     'portfolio.self.scores.source': 'Measured with PageSpeed Insights on aitorevi.dev',
 
     'portfolio.self.cta.title': 'The code is open',
-    'portfolio.self.cta.text': 'If you made it this far, maybe you want to read a post or reach out.',
+    'portfolio.self.cta.text': 'If you made it this far, feel free to reach out.',
     'portfolio.self.cta.github': 'View repo on GitHub',
     'portfolio.self.cta.blog': 'Go to the blog',
     'portfolio.self.cta.contact': 'Write me',
