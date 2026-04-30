@@ -17,6 +17,8 @@ export default {
 				},
 				// Page background token (bg-page switches light/dark automatically)
 				page: 'rgb(var(--color-bg) / <alpha-value>)',
+				// Content page background — case study / design system pages
+				'content-page': 'rgb(var(--color-bg-content) / <alpha-value>)',
 				// Foreground text token (text-fg switches light/dark automatically)
 				fg:   'rgb(var(--color-fg) / <alpha-value>)',
 
