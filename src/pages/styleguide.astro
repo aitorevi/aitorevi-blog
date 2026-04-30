@@ -78,7 +78,7 @@ const simpleIcons = [
 ---
 
 <Layout title="Style Guide — aitorevi.dev" lang="es" description="Design tokens, componentes y estilos del blog">
-  <div class="min-h-dvh bg-slate-50 text-ink-900 dark:bg-ink-900 dark:text-slate-100">
+  <div class="styleguide-root min-h-dvh bg-slate-50 text-ink-900 dark:bg-ink-900 dark:text-slate-100">
   <main class="mx-auto max-w-5xl px-6 pt-28 pb-16 space-y-20">
 
     <!-- ── HEADER ────────────────────────────────────────────────── -->
@@ -652,6 +652,15 @@ console.log(greeting('aitorevi'));</code></pre>
   </main>
   </div>
 </Layout>
+
+<style is:global>
+  body:has(.styleguide-root) {
+    background-color: #f8fafc; /* slate-50 */
+  }
+  html.dark body:has(.styleguide-root) {
+    background-color: #020617; /* ink-900 */
+  }
+</style>
 
 <script>
   // ScoreBadge animation — reuses the same pattern from SelfContent.astro
