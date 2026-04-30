@@ -73,7 +73,7 @@ const items = entries.flatMap((entry) =>
 
           {/* Content column */}
           <div class:list={["reveal-right flex-1 pl-6", isLast ? "pb-0" : "pb-8"]}>
-            <span class="text-xs text-secondary dark:text-accent-violet/75 font-semibold uppercase tracking-wider">{item.company} · {item.role}</span>
+            <span class="text-xs text-secondary dark:text-accent-violet font-semibold uppercase tracking-wider">{item.company} · {item.role}</span>
             <strong class="block text-[0.95rem] leading-snug mt-0.5">{item.heading}</strong>
             {item.text && (
               <p class="text-sm text-slate-600 dark:text-slate-300 mt-1.5 leading-relaxed">{item.text}</p>
