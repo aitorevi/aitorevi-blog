@@ -1,0 +1,692 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Button from '@/components/shared/Button.astro';
+import Tag from '@/components/shared/Tag.astro';
+import EyebrowTag from '@/components/shared/EyebrowTag.astro';
+import SectionHeader from '@/components/shared/SectionHeader.astro';
+import StatCard from '@/components/shared/StatCard.astro';
+import DecisionCard from '@/components/case-study/DecisionCard.astro';
+import ScoreBadge from '@/components/case-study/ScoreBadge.astro';
+import { Icon } from 'astro-icon/components';
+
+const semanticTokens = [
+  { label: 'bg / page',    var: '--color-bg',         hex_light: '#ffffff', hex_dark: '#0f1419' },
+  { label: 'surface',      var: '--color-surface',    hex_light: '#ffffff', hex_dark: '#0b1120' },
+  { label: 'fg (text)',    var: '--color-fg',          hex_light: '#151b27', hex_dark: '#f1f5f9' },
+  { label: 'fg-muted',     var: '--color-fg-muted',   hex_light: '#64748b', hex_dark: '#94a3b8' },
+  { label: 'fg-subtle',    var: '--color-fg-subtle',  hex_light: '#94a3b8', hex_dark: '#64748b' },
+  { label: 'accent',       var: '--color-accent',     hex_light: '#5e3aee', hex_dark: '#a78bfa' },
+  { label: 'accent-soft',  var: '--color-accent-soft',hex_light: '#a78bfa', hex_dark: '#60a5fa' },
+];
+
+const sectionAccents = [
+  { label: 'section-violet',  hex: '#a78bfa' },
+  { label: 'section-blue',    hex: '#60a5fa' },
+  { label: 'section-emerald', hex: '#34d399' },
+  { label: 'section-sky',     hex: '#38bdf8' },
+];
+
+const rawTokens = [
+  { label: 'primary',     hex: '#151b27' },
+  { label: 'secondary',   hex: '#5e3aee' },
+  { label: 'tertiary',    hex: '#d0edf5' },
+  { label: 'quaternary',  hex: '#aeb2bb' },
+  { label: 'grayLight',   hex: '#f9f9fc' },
+  { label: 'baseLight',   hex: '#f1faff' },
+  { label: 'ink-900',     hex: '#020617' },
+  { label: 'ink-800',     hex: '#0b1120' },
+  { label: 'ink-700',     hex: '#0f172a' },
+  { label: 'code-bg',     hex: '#1a1f2e' },
+  { label: 'code-header', hex: '#1e2533' },
+];
+
+const retroTokens = [
+  { label: 'retro-bg',          hex: '#0a1228', dead: false },
+  { label: 'retro-bg-mid',      hex: '#0d1a3a', dead: false },
+  { label: 'retro-panel',       hex: '#1f3260', dead: false },
+  { label: 'retro-panel-light', hex: '#3a5fa8', dead: false },
+  { label: 'retro-panel-deep',  hex: '#060a18', dead: false },
+  { label: 'retro-cream',       hex: '#f5e6c8', dead: false },
+  { label: 'retro-cyan',        hex: '#5fc3ff', dead: false },
+  { label: 'retro-cyan-bright', hex: '#9fdfff', dead: false },
+  { label: 'retro-yellow',      hex: '#fcd44e', dead: false },
+  { label: 'retro-red',         hex: '#a83232', dead: false },
+  { label: 'retro-magenta',     hex: '#c54fa6', dead: false },
+  { label: 'retro-green',       hex: '#4ca84a', dead: true  },
+  { label: 'retro-link',        hex: '#9fdfff', dead: true  },
+];
+
+const glowShadows = [
+  { label: 'glow-dot',     cls: 'shadow-glow-accent-dot',     desc: '0 0 10px accent/50' },
+  { label: 'glow-bullet',  cls: 'shadow-glow-accent-bullet',  desc: '0 0 6px accent/40'  },
+  { label: 'glow-line',    cls: 'shadow-glow-accent-line',    desc: '0 0 4px accent/15'  },
+  { label: 'glow-card-sm', cls: 'shadow-glow-accent-card-sm', desc: '0 0 12px accent/8'  },
+  { label: 'glow-card-md', cls: 'shadow-glow-accent-card-md', desc: '0 0 30px accent/15' },
+];
+
+const customIcons = [
+  'cassette', 'download', 'github', 'globe',
+  'keystatic', 'linkedin', 'location', 'mail',
+  'resend', 'satori', 'upstash',
+];
+
+const simpleIcons = [
+  'simple-icons:astro', 'simple-icons:typescript', 'simple-icons:tailwindcss',
+  'simple-icons:react', 'simple-icons:playwright', 'simple-icons:vitest',
+  'simple-icons:vercel', 'simple-icons:githubactions',
+];
+---
+
+<Layout title="Style Guide — aitorevi.dev" lang="es" description="Design tokens, componentes y estilos del blog">
+  <main class="mx-auto max-w-5xl px-6 pt-28 pb-16 space-y-20">
+
+    <!-- ── HEADER ────────────────────────────────────────────────── -->
+    <section class="space-y-3">
+      <div class="flex items-center gap-4">
+        <EyebrowTag label="Design System" />
+        <a
+          href="/work/aitorevi-dev"
+          class="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-fg-muted transition-colors hover:text-accent"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-3 w-3" aria-hidden="true">
+            <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+          </svg>
+          aitorevi.dev case study
+        </a>
+      </div>
+      <h1 class="font-display text-4xl font-black text-fg sm:text-5xl">Style Guide</h1>
+      <p class="font-mono text-sm text-fg-muted max-w-xl">
+        Design tokens, tipografía, sombras, gradientes, animaciones y componentes del blog.
+        Cambia entre modo claro/oscuro para ver cómo se adaptan los tokens.
+      </p>
+    </section>
+
+    <!-- ── COLOUR PALETTE ──────────────────────────────────────────── -->
+    <section class="space-y-8">
+      <div>
+        <h2 class="font-display text-2xl font-bold text-fg">Color Palette</h2>
+        <p class="mt-1 font-mono text-xs text-fg-muted uppercase tracking-widest">Design tokens</p>
+      </div>
+
+      <div class="space-y-3">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-fg-muted">Semantic (adaptive light/dark)</h3>
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
+          {semanticTokens.map(t => (
+            <div class="space-y-2">
+              <div class="h-14 rounded-lg border border-black/10 dark:border-white/10" style={`background: rgb(var(${t.var}))`} />
+              <div class="space-y-0.5">
+                <p class="font-mono text-[10px] font-semibold text-fg">{t.label}</p>
+                <p class="font-mono text-[9px] text-fg-muted">{t.hex_light}</p>
+                <p class="font-mono text-[9px] text-fg-subtle">{t.hex_dark}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-fg-muted">Section Accents (static)</h3>
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {sectionAccents.map(c => (
+            <div class="space-y-2">
+              <div class="h-14 rounded-lg border border-black/10 dark:border-white/10" style={`background:${c.hex}`} />
+              <div class="space-y-0.5">
+                <p class="font-mono text-[10px] font-semibold text-fg">{c.label}</p>
+                <p class="font-mono text-[9px] text-fg-muted">{c.hex}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-fg-muted">Raw tokens (backward compat)</h3>
+        <div class="grid grid-cols-3 gap-3 sm:grid-cols-6 lg:grid-cols-11">
+          {rawTokens.map(c => (
+            <div class="space-y-2">
+              <div class="h-10 rounded-lg border border-black/10 dark:border-white/10" style={`background:${c.hex}`} />
+              <p class="font-mono text-[9px] text-fg-muted">{c.label}</p>
+              <p class="font-mono text-[8px] text-fg-subtle">{c.hex}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <div class="flex flex-wrap items-baseline gap-3">
+          <h3 class="font-mono text-xs uppercase tracking-widest text-fg-muted">Retro palette (Day of the Tentacle)</h3>
+          <span class="rounded-full bg-amber-100 px-2 py-0.5 font-mono text-[9px] text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+            solo activos con html[data-retro]
+          </span>
+        </div>
+        <div class="grid grid-cols-3 gap-3 sm:grid-cols-6 lg:grid-cols-12">
+          {retroTokens.map(c => (
+            <div class:list={['space-y-2', c.dead && 'opacity-40']}>
+              <div class="relative h-10 rounded-lg border border-white/20" style={`background:${c.hex}`}>
+                {c.dead && (
+                  <div class="absolute inset-0 flex items-center justify-center rounded-lg bg-black/40">
+                    <span class="font-mono text-[8px] text-white">unused</span>
+                  </div>
+                )}
+              </div>
+              <p class:list={['font-mono text-[9px]', c.dead ? 'text-fg-subtle line-through' : 'text-fg-muted']}>{c.label.replace('retro-','')}</p>
+              <p class="font-mono text-[8px] text-fg-subtle">{c.hex}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TYPOGRAPHY ─────────────────────────────────────────────── -->
+    <section class="space-y-8">
+      <div>
+        <h2 class="font-display text-2xl font-bold text-fg">Typography</h2>
+        <p class="mt-1 font-mono text-xs text-fg-muted uppercase tracking-widest">Outfit · JetBrains Mono</p>
+      </div>
+
+      <div class="space-y-4 rounded-2xl border border-slate-200 dark:border-white/10 p-6">
+        <p class="font-mono text-[10px] uppercase tracking-widest text-fg-muted">font-display — Outfit</p>
+        <div class="space-y-2">
+          <p class="font-display text-5xl font-black text-fg leading-none">Aa — Display Black 900</p>
+          <p class="font-display text-4xl font-bold text-fg leading-none">Aa — Display Bold 700</p>
+          <p class="font-display text-3xl font-semibold text-fg leading-none">Aa — Display Semibold 600</p>
+        </div>
+        <p class="font-display text-base text-fg-muted">
+          ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789
+        </p>
+      </div>
+
+      <div class="space-y-4 rounded-2xl border border-slate-200 dark:border-white/10 p-6">
+        <p class="font-mono text-[10px] uppercase tracking-widest text-fg-muted">font-mono — JetBrains Mono</p>
+        <div class="space-y-2">
+          <p class="font-mono text-2xl font-bold text-fg">const blog = "aitorevi.dev";</p>
+          <p class="font-mono text-base font-semibold text-fg">type Lang = 'es' | 'en';</p>
+          <p class="font-mono text-sm text-fg-muted">import &#123; t &#125; from '@/i18n/utils';</p>
+          <p class="font-mono text-xs text-fg-subtle uppercase tracking-[0.3em]">MONO XS · uppercase · tracking-wide</p>
+        </div>
+      </div>
+
+      <div class="space-y-4 rounded-2xl border border-slate-200 dark:border-white/10 p-6">
+        <p class="font-mono text-[10px] uppercase tracking-widest text-fg-muted">Heading scale</p>
+        <div class="space-y-3 divide-y divide-slate-100 dark:divide-white/5">
+          {[
+            { tag: 'h1', cls: 'text-5xl font-black font-display',                        label: 'text-5xl / black / display' },
+            { tag: 'h2', cls: 'text-4xl font-bold font-display',                         label: 'text-4xl / bold / display' },
+            { tag: 'h3', cls: 'text-3xl font-bold font-display',                         label: 'text-3xl / bold / display' },
+            { tag: 'h4', cls: 'text-2xl font-semibold font-display',                     label: 'text-2xl / semibold / display' },
+            { tag: 'h5', cls: 'text-xl font-semibold',                                   label: 'text-xl / semibold' },
+            { tag: 'h6', cls: 'text-base font-semibold uppercase tracking-widest font-mono', label: 'text-base / mono / uppercase' },
+          ].map(h => (
+            <div class="flex items-baseline gap-4 pt-3 first:pt-0">
+              <span class="w-8 font-mono text-[10px] text-fg-subtle shrink-0">{h.tag}</span>
+              <span class={`${h.cls} text-fg leading-tight`}>The quick brown fox</span>
+              <span class="ml-auto font-mono text-[9px] text-fg-subtle hidden sm:block">{h.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="space-y-4 rounded-2xl border border-slate-200 dark:border-white/10 p-6">
+        <p class="font-mono text-[10px] uppercase tracking-widest text-fg-muted">Body text</p>
+        <div class="space-y-3">
+          <p class="text-lg text-fg">text-lg — Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin commodo.</p>
+          <p class="text-base text-fg">text-base — Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin commodo.</p>
+          <p class="text-sm text-fg-muted">text-sm / fg-muted — Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <p class="text-xs text-fg-subtle">text-xs / fg-subtle — Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PROSE (blog typography) ───────────────────────────────── -->
+    <section class="space-y-8">
+      <div>
+        <h2 class="font-display text-2xl font-bold text-fg">Prose — Blog Typography</h2>
+        <p class="mt-1 font-mono text-xs text-fg-muted uppercase tracking-widest">@tailwindcss/typography · clase prose</p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 dark:border-white/10 p-6 sm:p-10">
+        <div class="prose prose-slate dark:prose-invert max-w-none">
+          <h1>Título H1 del post</h1>
+          <p>
+            Este es un párrafo de cuerpo con <strong>texto en negrita</strong>, <em>texto en cursiva</em>
+            y un <a href="#">enlace de ejemplo</a> que sigue el estilo del blog.
+            El espaciado entre líneas y párrafos está controlado por <code>@tailwindcss/typography</code>.
+          </p>
+          <h2>Heading H2 de sección</h2>
+          <p>
+            Párrafo normal bajo un H2. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+          <h3>Heading H3</h3>
+          <ul>
+            <li>Primer elemento de lista sin orden</li>
+            <li>Segundo elemento con <code>código inline</code></li>
+            <li>Tercer elemento con <strong>énfasis</strong></li>
+          </ul>
+          <ol>
+            <li>Lista ordenada — primer paso</li>
+            <li>Segundo paso del proceso</li>
+            <li>Resultado final</li>
+          </ol>
+          <blockquote>
+            <p>Una cita de ejemplo que aparece con el estilo visual de bloque de cita del blog, con borde lateral y tipografía en cursiva.</p>
+          </blockquote>
+          <pre><code>// Bloque de código
+const greeting = (name: string) =&gt; `Hola, $&#123;name&#125;!`;
+console.log(greeting('aitorevi'));</code></pre>
+          <p>
+            Párrafo después del bloque de código. La separación y el contraste con el fondo de código
+            deben ser claros tanto en modo claro como oscuro.
+          </p>
+          <hr />
+          <p>Párrafo tras un separador <code>hr</code>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SHADOWS & GLOWS ────────────────────────────────────────── -->
+    <section class="space-y-8">
+      <div>
+        <h2 class="font-display text-2xl font-bold text-fg">Shadows & Glow Effects</h2>
+        <p class="mt-1 font-mono text-xs text-fg-muted uppercase tracking-widest">Driven by --color-accent</p>
+      </div>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {glowShadows.map(s => (
+          <div class="space-y-3 rounded-2xl border border-slate-200 dark:border-white/10 p-5">
+            <div class:list={['h-16 rounded-xl bg-accent/10', s.cls]} />
+            <div class="space-y-1">
+              <p class="font-mono text-xs font-semibold text-fg">{s.label}</p>
+              <p class="font-mono text-[10px] text-fg-muted">{s.desc}</p>
+              <p class="font-mono text-[9px] text-fg-subtle">{s.cls}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── BACKGROUND GRADIENTS ───────────────────────────────────── -->
+    <section class="space-y-8">
+      <div>
+        <h2 class="font-display text-2xl font-bold text-fg">Background Gradients</h2>
+        <p class="mt-1 font-mono text-xs text-fg-muted uppercase tracking-widest">backgroundImage utilities</p>
+      </div>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {[
+          { label: 'bg-home-radial',             isText: false, cls: 'bg-home-radial',             desc: 'Dark ellipse — content pages (dark)' },
+          { label: 'bg-home-radial-light',        isText: false, cls: 'bg-home-radial-light',        desc: 'Light ellipse — content pages (light)' },
+          { label: 'bg-home-gradient-text',       isText: true,  cls: 'bg-home-gradient-text bg-clip-text text-transparent font-display text-3xl font-black',       desc: 'Blue→violet→blue — stat values (dark)' },
+          { label: 'bg-home-gradient-text-light', isText: true,  cls: 'bg-home-gradient-text-light bg-clip-text text-transparent font-display text-3xl font-black', desc: 'Blue→violet→blue — stat values (light)' },
+        ].map(g => (
+          <div class="space-y-3 rounded-2xl border border-slate-200 dark:border-white/10 p-5">
+            {g.isText ? (
+              <div class="flex h-20 items-center justify-center rounded-xl bg-slate-100 dark:bg-white/5">
+                <span class={g.cls}>1,234</span>
+              </div>
+            ) : (
+              <div class={`h-20 rounded-xl ${g.cls}`} />
+            )}
+            <div class="space-y-1">
+              <p class="font-mono text-xs font-semibold text-fg">{g.label}</p>
+              <p class="font-mono text-[10px] text-fg-muted">{g.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── ANIMATIONS ─────────────────────────────────────────────── -->
+    <section class="space-y-8">
+      <div>
+        <h2 class="font-display text-2xl font-bold text-fg">Animations</h2>
+        <p class="mt-1 font-mono text-xs text-fg-muted uppercase tracking-widest">Keyframes</p>
+      </div>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div class="space-y-3 rounded-2xl border border-slate-200 dark:border-white/10 p-6">
+          <div class="flex h-20 items-center justify-center">
+            <button
+              class="font-mono text-xs text-fg-muted hover:text-accent transition-colors"
+              onclick="const d=document.getElementById('demo-rise');d.classList.remove('animate-home-rise');void d.offsetWidth;d.classList.add('animate-home-rise')"
+            >
+              ↺ replay
+            </button>
+            <div id="demo-rise" class="animate-home-rise ml-4 rounded-xl bg-accent/20 px-6 py-3 font-mono text-sm text-accent">
+              home-rise
+            </div>
+          </div>
+          <div class="space-y-1">
+            <p class="font-mono text-xs font-semibold text-fg">animate-home-rise</p>
+            <p class="font-mono text-[10px] text-fg-muted">0.7s cubic-bezier(0.22,1,0.36,1) — fade+translateY entrada</p>
+          </div>
+        </div>
+        <div class="space-y-3 rounded-2xl border border-slate-200 dark:border-white/10 p-6">
+          <div class="flex h-20 items-center justify-center gap-3">
+            <div class="animate-home-pulse h-3 w-3 rounded-full bg-accent" />
+            <span class="font-mono text-sm text-fg-muted">pulsing…</span>
+          </div>
+          <div class="space-y-1">
+            <p class="font-mono text-xs font-semibold text-fg">animate-home-pulse</p>
+            <p class="font-mono text-[10px] text-fg-muted">2.4s ease-in-out infinite — opacity 0.4↔1</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SPACING EXTENSIONS ─────────────────────────────────────── -->
+    <section class="space-y-6">
+      <div>
+        <h2 class="font-display text-2xl font-bold text-fg">Spacing Extensions</h2>
+        <p class="mt-1 font-mono text-xs text-fg-muted uppercase tracking-widest">Custom Tailwind tokens</p>
+      </div>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div class="rounded-2xl border border-slate-200 dark:border-white/10 p-5 space-y-3">
+          <div class="h-4 w-116 max-w-full rounded bg-accent/20" />
+          <div class="space-y-1">
+            <p class="font-mono text-xs font-semibold text-fg">w-116</p>
+            <p class="font-mono text-[10px] text-fg-muted">29rem — width utility</p>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-slate-200 dark:border-white/10 p-5 space-y-3">
+          <div class="flex items-start gap-2">
+            <div class="h-4 w-4 rounded bg-accent/40 shrink-0" />
+            <div class="mt-30 h-4 w-4 rounded bg-accent/40 shrink-0" />
+            <span class="font-mono text-[9px] text-fg-subtle">← 7.5rem gap</span>
+          </div>
+          <div class="space-y-1">
+            <p class="font-mono text-xs font-semibold text-fg">spacing-30 / mt-30</p>
+            <p class="font-mono text-[10px] text-fg-muted">7.5rem — spacing utility</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── COMPONENTS ─────────────────────────────────────────────── -->
+    <section class="space-y-12">
+      <div>
+        <h2 class="font-display text-2xl font-bold text-fg">Components</h2>
+        <p class="mt-1 font-mono text-xs text-fg-muted uppercase tracking-widest">Atoms & shared</p>
+      </div>
+
+      <!-- Button -->
+      <div class="space-y-4">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-fg-muted border-b border-slate-200 dark:border-white/10 pb-2">Button — tones × variants</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-left">
+                <th class="font-mono text-[10px] text-fg-muted pb-3 pr-8">tone \ variant</th>
+                <th class="font-mono text-[10px] text-fg-muted pb-3 pr-8">ghost (default)</th>
+                <th class="font-mono text-[10px] text-fg-muted pb-3">gradient</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(['blue','violet','brand'] as const).map(tone => (
+                <tr>
+                  <td class="font-mono text-[10px] text-fg-muted pr-8 py-3 align-middle">{tone}</td>
+                  <td class="pr-8 py-3 align-middle"><Button tone={tone} variant="ghost">Button</Button></td>
+                  <td class="py-3 align-middle"><Button tone={tone} variant="gradient">Button</Button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tag -->
+      <div class="space-y-4">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-fg-muted border-b border-slate-200 dark:border-white/10 pb-2">Tag — variants</h3>
+        <div class="flex flex-wrap gap-3">
+          <Tag label="default" variant="default" />
+          <Tag label="accent" variant="accent" />
+          <Tag label="muted" variant="muted" />
+          <Tag label="crosspost" variant="crosspost" />
+        </div>
+        <div class="rounded-xl bg-slate-50 dark:bg-white/5 p-4 font-mono text-xs text-fg-muted space-y-1">
+          <p>{'<Tag label="accent" variant="accent" />'}</p>
+          <p>{'<Tag label="muted" variant="muted" />'}</p>
+          <p>{'<Tag label="crosspost" variant="crosspost" />'}</p>
+        </div>
+      </div>
+
+      <!-- EyebrowTag -->
+      <div class="space-y-4">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-fg-muted border-b border-slate-200 dark:border-white/10 pb-2">EyebrowTag</h3>
+        <div class="flex flex-wrap gap-3">
+          <EyebrowTag label="Design System" />
+          <EyebrowTag label="Blog Post" />
+          <EyebrowTag label="Case Study" />
+        </div>
+        <div class="rounded-xl bg-slate-50 dark:bg-white/5 p-4 font-mono text-xs text-fg-muted">
+          {'<EyebrowTag label="Design System" />'}
+        </div>
+      </div>
+
+      <!-- SectionHeader -->
+      <div class="space-y-4">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-fg-muted border-b border-slate-200 dark:border-white/10 pb-2">SectionHeader</h3>
+        <div class="rounded-2xl border border-slate-200 dark:border-white/10 p-8">
+          <SectionHeader title="Sección de ejemplo" subtitle="subtítulo en mono pequeño" />
+        </div>
+        <div class="rounded-xl bg-slate-50 dark:bg-white/5 p-4 font-mono text-xs text-fg-muted">
+          {'<SectionHeader title="Sección de ejemplo" subtitle="subtítulo en mono pequeño" />'}
+        </div>
+      </div>
+
+      <!-- StatCard -->
+      <div class="space-y-4">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-fg-muted border-b border-slate-200 dark:border-white/10 pb-2">StatCard</h3>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <StatCard value={42} label="proyectos" suffix="+" />
+          <StatCard value={100} label="tests" suffix="%" />
+          <StatCard value={3} label="años de experiencia" />
+        </div>
+        <div class="rounded-xl bg-slate-50 dark:bg-white/5 p-4 font-mono text-xs text-fg-muted">
+          {'<StatCard value={42} label="proyectos" suffix="+" />'}
+        </div>
+      </div>
+
+      <!-- DecisionCard -->
+      <div class="space-y-4">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-fg-muted border-b border-slate-200 dark:border-white/10 pb-2">DecisionCard</h3>
+        <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <DecisionCard
+            heading="SSG con Astro"
+            text="Genera HTML estático en build time. Sin JS por defecto — solo se hidrata lo que lo necesita explícitamente."
+          />
+          <DecisionCard
+            heading="Tests que usan blog posts reales"
+            postLink={{
+              href: '/blog/ejemplo',
+              label: 'ver el post',
+              textBefore: 'Los tests de integración leen el contenido real.',
+              textAfter: 'para el detalle completo.',
+            }}
+          />
+        </ul>
+        <div class="rounded-xl bg-slate-50 dark:bg-white/5 p-4 font-mono text-xs text-fg-muted">
+          {'<DecisionCard heading="SSG con Astro" text="..." />'}
+        </div>
+      </div>
+
+      <!-- ScoreBadge -->
+      <div class="space-y-4">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-fg-muted border-b border-slate-200 dark:border-white/10 pb-2">ScoreBadge — Lighthouse</h3>
+        <p class="font-mono text-[10px] text-fg-subtle">El anillo anima con IntersectionObserver cuando el componente entra en el viewport.</p>
+        <ul class="grid grid-cols-2 gap-8 sm:grid-cols-4" data-scores-root>
+          <svg class="pointer-events-none absolute h-0 w-0" aria-hidden="true" focusable="false">
+            <defs>
+              <linearGradient id="score-grad-high" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#60a5fa" /><stop offset="55%" stop-color="#818cf8" /><stop offset="100%" stop-color="#a78bfa" />
+              </linearGradient>
+              <linearGradient id="score-grad-mid" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#fcd34d" /><stop offset="55%" stop-color="#f59e0b" /><stop offset="100%" stop-color="#b45309" />
+              </linearGradient>
+              <linearGradient id="score-grad-low" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#fb7185" /><stop offset="55%" stop-color="#f43f5e" /><stop offset="100%" stop-color="#be123c" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <ScoreBadge value={97} label="Performance" />
+          <ScoreBadge value={97} label="Accessibility" />
+          <ScoreBadge value={100} label="Best Practices" />
+          <ScoreBadge value={72} label="Example mid" />
+        </ul>
+        <div class="rounded-xl bg-slate-50 dark:bg-white/5 p-4 font-mono text-xs text-fg-muted">
+          {'<ScoreBadge value={97} label="Performance" />'}
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ICONOGRAFÍA ────────────────────────────────────────────── -->
+    <section class="space-y-8">
+      <div>
+        <h2 class="font-display text-2xl font-bold text-fg">Iconografía</h2>
+        <p class="mt-1 font-mono text-xs text-fg-muted uppercase tracking-widest">src/icons/ · simple-icons via astro-icon</p>
+      </div>
+
+      <!-- Custom icons -->
+      <div class="space-y-3">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-fg-muted">Custom icons — src/icons/</h3>
+        <div class="grid grid-cols-3 gap-3 sm:grid-cols-6 lg:grid-cols-11">
+          {customIcons.map(name => (
+            <div class="flex flex-col items-center gap-2 rounded-xl border border-slate-200 dark:border-white/10 p-4">
+              <Icon name={name} class="h-6 w-6 text-fg" aria-hidden="true" />
+              <p class="font-mono text-[9px] text-fg-muted text-center">{name}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Simple Icons -->
+      <div class="space-y-3">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-fg-muted">Simple Icons — simple-icons:*</h3>
+        <div class="grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-8">
+          {simpleIcons.map(name => (
+            <div class="flex flex-col items-center gap-2 rounded-xl border border-slate-200 dark:border-white/10 p-4">
+              <Icon name={name} class="h-6 w-6 text-fg" aria-hidden="true" />
+              <p class="font-mono text-[9px] text-fg-muted text-center">{name.replace('simple-icons:','')}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Size scale -->
+      <div class="space-y-3">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-fg-muted">Tamaños habituales</h3>
+        <div class="flex items-end gap-6 rounded-2xl border border-slate-200 dark:border-white/10 p-6">
+          {[
+            { cls: 'h-4 w-4', label: 'h-4' },
+            { cls: 'h-5 w-5', label: 'h-5' },
+            { cls: 'h-6 w-6', label: 'h-6' },
+            { cls: 'h-8 w-8', label: 'h-8' },
+            { cls: 'h-10 w-10', label: 'h-10' },
+          ].map(s => (
+            <div class="flex flex-col items-center gap-2">
+              <Icon name="github" class={`${s.cls} text-fg`} aria-hidden="true" />
+              <p class="font-mono text-[9px] text-fg-muted">{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SCROLLBAR ──────────────────────────────────────────────── -->
+    <section class="space-y-4">
+      <div>
+        <h2 class="font-display text-2xl font-bold text-fg">Scrollbar</h2>
+        <p class="mt-1 font-mono text-xs text-fg-muted uppercase tracking-widest">Custom webkit scrollbar</p>
+      </div>
+      <div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-white/10 p-4">
+        <div class="flex gap-4" style="width: max-content; min-width: 150%;">
+          {Array.from({length: 20}).map((_, i) => (
+            <div class="h-16 w-24 shrink-0 rounded-xl bg-accent/10 flex items-center justify-center font-mono text-xs text-accent">
+              {i + 1}
+            </div>
+          ))}
+        </div>
+      </div>
+      <p class="font-mono text-[10px] text-fg-muted">
+        Track: --color-scrollbar-track · Thumb: --color-scrollbar-thumb · Hover: --color-scrollbar-thumb-hover
+      </p>
+    </section>
+
+    <!-- ── RETRO MODE ─────────────────────────────────────────────── -->
+    <section class="space-y-6">
+      <div>
+        <h2 class="font-display text-2xl font-bold text-fg">Retro Mode</h2>
+        <p class="mt-1 font-mono text-xs text-fg-muted uppercase tracking-widest">html[data-retro] — Day of the Tentacle</p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 dark:border-white/10 p-6 space-y-4">
+        <p class="text-sm text-fg-muted">
+          El modo retro se activa añadiendo el atributo <code class="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-xs dark:bg-white/10">data-retro</code> al elemento <code class="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-xs dark:bg-white/10">&lt;html&gt;</code>.
+          Transforma toda la UI con la paleta SCUMM: pixel font, fondo navy con wallpaper tile y efectos CRT.
+          En el blog se activa haciendo clic 3 veces en la casete del stack técnico.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <button
+            id="retro-toggle"
+            class="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/5 px-5 py-2.5 font-mono text-sm text-accent transition-all hover:border-accent/70 hover:bg-accent/10"
+            onclick="const h=document.documentElement;const on=h.hasAttribute('data-retro');h.toggleAttribute('data-retro');this.textContent=on?'▶ Activar retro mode':'■ Desactivar retro mode'"
+          >
+            ▶ Activar retro mode
+          </button>
+          <p class="self-center font-mono text-[10px] text-fg-subtle">Los estilos se aplican a toda la página al instante.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</Layout>
+
+<script>
+  // ScoreBadge animation — reuses the same pattern from SelfContent.astro
+  const EASE_OUT_EXPO = (t: number) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
+  const DURATION_MS = 2400;
+
+  interface ScoreEl extends HTMLElement { __animated?: boolean; }
+
+  function animateScore(item: ScoreEl) {
+    if (item.__animated) return;
+    item.__animated = true;
+    const valueEl = item.querySelector<HTMLElement>('[data-score-value]');
+    const ringEl = item.querySelector<SVGCircleElement>('[data-score-ring]');
+    if (!valueEl || !ringEl) return;
+    const target = Number(valueEl.dataset.scoreTarget || '0');
+    const circumference = Number(ringEl.dataset.scoreCircumference || '0');
+    const finalOffset = circumference * (1 - target / 100);
+    const start = performance.now();
+    const step = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(1, elapsed / DURATION_MS);
+      const eased = EASE_OUT_EXPO(progress);
+      valueEl.textContent = String(Math.round(target * eased));
+      ringEl.setAttribute('stroke-dashoffset', String(circumference - (circumference - finalOffset) * eased));
+      if (progress < 1) requestAnimationFrame(step);
+      else { valueEl.textContent = String(target); ringEl.setAttribute('stroke-dashoffset', String(finalOffset)); }
+    };
+    requestAnimationFrame(step);
+  }
+
+  function initScores() {
+    const root = document.querySelector('[data-scores-root]');
+    if (!root) return;
+    const items = Array.from(root.querySelectorAll<ScoreEl>('li'));
+    if (!items.length) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      items.forEach(item => {
+        const v = item.querySelector<HTMLElement>('[data-score-value]');
+        const r = item.querySelector<SVGCircleElement>('[data-score-ring]');
+        if (!v || !r) return;
+        const t = Number(v.dataset.scoreTarget || '0');
+        v.textContent = String(t);
+        r.setAttribute('stroke-dashoffset', String(Number(r.dataset.scoreCircumference || '0') * (1 - t / 100)));
+      });
+      return;
+    }
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { animateScore(e.target as ScoreEl); io.unobserve(e.target); } });
+    }, { threshold: 0.4 });
+    items.forEach(item => io.observe(item));
+  }
+
+  document.addEventListener('astro:page-load', initScores);
+  document.addEventListener('astro:after-swap', initScores);
+</script>
