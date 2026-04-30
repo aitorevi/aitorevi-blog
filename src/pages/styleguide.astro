@@ -334,6 +334,59 @@ console.log(greeting('aitorevi'));</code></pre>
       </div>
     </section>
 
+    <!-- ── LAYOUT VARIANTS ────────────────────────────────────────── -->
+    <section class="space-y-8">
+      <div>
+        <h2 class="font-display text-2xl font-bold text-fg">Layout Variants</h2>
+        <p class="mt-1 font-mono text-xs text-fg-muted uppercase tracking-widest">{`<Layout variant="..." />`}</p>
+      </div>
+      <p class="max-w-2xl text-sm text-fg-muted">
+        Cada página pasa un <code class="font-mono text-xs text-accent">variant</code> al
+        <code class="font-mono text-xs text-accent">{`<Layout>`}</code>. El layout lo proyecta como
+        <code class="font-mono text-xs text-accent">data-bg</code> en el <code class="font-mono text-xs text-accent">{'<body>'}</code>
+        y aplica el background correspondiente vía CSS global. Para cambiar el color de fondo solo se toca
+        un token (<code class="font-mono text-xs text-accent">--color-bg-content</code> en
+        <code class="font-mono text-xs text-accent">tokens.css</code>).
+      </p>
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+        {[
+          {
+            label: 'default',
+            previewClass: 'bg-white dark:bg-page',
+            desc: 'Background Tailwind del body sin reglas extra.',
+            usedBy: 'Home, contacto',
+          },
+          {
+            label: 'dark-radial',
+            previewClass: 'bg-slate-50 dark:bg-[radial-gradient(ellipse_at_30%_20%,theme(colors.ink.700)_0%,theme(colors.ink.900)_55%,#000_100%)]',
+            desc: 'Gradiente radial elíptico (solo dark mode). Para lectura larga.',
+            usedBy: 'CV, blog, katas, work',
+          },
+          {
+            label: 'flat',
+            previewClass: 'bg-[rgb(var(--color-bg-content))]',
+            desc: 'Color sólido del token --color-bg-content (más claro/oscuro).',
+            usedBy: 'Case studies, styleguide',
+          },
+        ].map((v) => (
+          <div class="space-y-3 rounded-2xl border border-slate-200 dark:border-white/10 p-5">
+            <div class={`h-24 rounded-xl border border-black/10 dark:border-white/10 ${v.previewClass}`} />
+            <div class="space-y-1">
+              <p class="font-mono text-xs font-semibold text-fg">variant="{v.label}"</p>
+              <p class="text-xs text-fg-muted">{v.desc}</p>
+              <p class="font-mono text-[10px] text-fg-subtle uppercase tracking-widest">Usado en: {v.usedBy}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <pre class="overflow-x-auto rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 p-4 font-mono text-xs text-fg"><code>{`<Layout
+  title="..."
+  lang="es"
+  description="..."
+  variant="flat"   // 'default' | 'dark-radial' | 'flat'
+>`}</code></pre>
+    </section>
+
     <!-- ── ANIMATIONS ─────────────────────────────────────────────── -->
     <section class="space-y-8">
       <div>
