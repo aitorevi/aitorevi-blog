@@ -306,25 +306,93 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
 
     <!-- Design system -->
     <section class="bg-slate-50 py-20 dark:bg-ink-900 sm:py-24" aria-labelledby="self-design-system">
-      <div class="mx-auto max-w-2xl px-6 text-center">
-        <SectionHeader
-          id="self-design-system"
-          title={isES ? 'Todos los estilos, documentados' : 'Every style, documented'}
-          subtitle={isES ? 'Design system' : 'Design system'}
-        />
-        <p class="mx-auto mt-6 text-base leading-relaxed text-slate-600 dark:text-slate-400">
-          {isES
-            ? 'Tokens de color, tipografía, sombras, animaciones y componentes. Con dark mode en vivo y modo retro.'
-            : 'Color tokens, typography, shadows, animations and components. With live dark mode and retro mode.'}
-        </p>
-        <div class="mt-8">
-          <Button href="/styleguide" tone="violet" variant="gradient">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
-              <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
-              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
-            </svg>
-            <span>{isES ? 'Ver design system' : 'View design system'}</span>
-          </Button>
+      <div class="mx-auto grid max-w-5xl grid-cols-1 items-center gap-10 px-6 md:grid-cols-2 md:gap-14">
+        <!-- Left column: heading, description, CTA. SectionHeader is centered
+             by design (shared atom) — we keep that on mobile and md+ to stay
+             consistent with every other section in this case study. The mock
+             on the right balances the column visually. -->
+        <div>
+          <SectionHeader
+            id="self-design-system"
+            title={isES ? 'Todos los estilos, documentados' : 'Every style, documented'}
+            subtitle={isES ? 'Design system' : 'Design system'}
+          />
+          <p class="mt-6 text-center text-base leading-relaxed text-slate-600 dark:text-slate-400">
+            {isES
+              ? 'Tokens de color, tipografía, sombras, animaciones y componentes. Con dark mode en vivo y modo retro.'
+              : 'Color tokens, typography, shadows, animations and components. With live dark mode and retro mode.'}
+          </p>
+          <div class="mt-8 flex justify-center">
+            <Button href="/styleguide" tone="violet" variant="gradient">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
+                <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+                <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+              </svg>
+              <span>{isES ? 'Ver design system' : 'View design system'}</span>
+            </Button>
+          </div>
+        </div>
+
+        <!-- Right column: browser-chrome mock previewing the styleguide.
+             Same construction as WorkCinematic mocks (chrome + aspect-[4/3] body). -->
+        <div
+          class="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-1 shadow-2xl ring-1 ring-accent-violet/40"
+          aria-hidden="true"
+        >
+          <!-- Browser chrome -->
+          <div class="flex items-center gap-1.5 border-b border-white/5 bg-ink-800/95 px-4 py-2.5 backdrop-blur">
+            <span class="h-2.5 w-2.5 rounded-full bg-red-400/70"></span>
+            <span class="h-2.5 w-2.5 rounded-full bg-yellow-400/70"></span>
+            <span class="h-2.5 w-2.5 rounded-full bg-green-400/70"></span>
+            <span class="ml-4 truncate font-mono text-[10px] text-slate-400">aitorevi.dev/styleguide</span>
+          </div>
+
+          <!-- Body — styleguide preview -->
+          <div class="relative aspect-[4/3] bg-ink-900 p-4 md:p-5">
+            <div class="flex h-full flex-col gap-3">
+              <!-- Section label -->
+              <div class="font-mono text-[9px] uppercase tracking-[0.25em] text-slate-500">
+                {isES ? 'Tokens · paleta' : 'Tokens · palette'}
+              </div>
+
+              <!-- Color palette: the four real accent tokens -->
+              <div class="grid grid-cols-4 gap-2">
+                <div class="aspect-square rounded-md bg-accent-violet/90 ring-1 ring-inset ring-white/10"></div>
+                <div class="aspect-square rounded-md bg-accent-blue/90 ring-1 ring-inset ring-white/10"></div>
+                <div class="aspect-square rounded-md bg-accent-sky/90 ring-1 ring-inset ring-white/10"></div>
+                <div class="aspect-square rounded-md bg-emerald-400/90 ring-1 ring-inset ring-white/10"></div>
+              </div>
+
+              <!-- Typography specimen + glow swatch -->
+              <div class="grid grid-cols-3 gap-2">
+                <div class="col-span-2 flex items-center gap-3 rounded-md border border-white/5 bg-white/[0.02] px-3 py-2">
+                  <span class="font-display text-2xl font-black leading-none text-slate-100">Aa</span>
+                  <div class="flex flex-col leading-tight">
+                    <span class="font-mono text-[9px] uppercase tracking-[0.18em] text-accent-violet/80">Outfit</span>
+                    <span class="font-mono text-[9px] text-slate-500">display · 700</span>
+                  </div>
+                </div>
+                <!-- Glow swatch echoing shadow-glow-accent-card-md -->
+                <div class="relative overflow-hidden rounded-md border border-white/5 bg-ink-800">
+                  <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(167,139,250,0.55),transparent_70%)]"></div>
+                  <span class="absolute bottom-1.5 left-2 font-mono text-[9px] uppercase tracking-[0.18em] text-slate-400">glow</span>
+                </div>
+              </div>
+
+              <!-- Button row -->
+              <div class="mt-auto flex flex-wrap items-center gap-2">
+                <span class="rounded-full bg-gradient-to-r from-accent-violet to-accent-blue px-3 py-1 font-mono text-[9px] uppercase tracking-[0.18em] text-white">
+                  Primary
+                </span>
+                <span class="rounded-full border border-accent-blue/40 bg-accent-blue/10 px-3 py-1 font-mono text-[9px] uppercase tracking-[0.18em] text-accent-blue">
+                  Secondary
+                </span>
+                <span class="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 font-mono text-[9px] uppercase tracking-[0.18em] text-slate-400">
+                  Ghost
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
