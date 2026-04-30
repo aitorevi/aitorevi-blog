@@ -475,6 +475,11 @@ html[data-retro] .hero-scroll-line::after {
   animation: none !important;
 }
 
+/* Disable scroll snap — retro mode uses normal page scroll. */
+html[data-retro] body:has(.work-cinematic) {
+  scroll-snap-type: none !important;
+}
+
 /* Blog cinematic — sections share the same primitives as /work, so the
    .cinematic-mock and [data-cinematic-meta/visual] rules above already
    cover them. Nothing extra needed. */
