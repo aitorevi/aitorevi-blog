@@ -1,0 +1,165 @@
+---
+import type { Lang } from '@/i18n/types';
+
+interface Props {
+  type: 'dashboard' | 'terminal' | 'landing' | 'calculator';
+  lang: Lang;
+  flip: boolean;
+  href: string;
+  external: boolean;
+  ring: string;
+  browserUrl: string;
+}
+
+const { type, lang, flip, href, external, ring, browserUrl } = Astro.props;
+---
+
+<a
+  href={href}
+  {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+  tabindex="-1"
+  aria-hidden="true"
+  class="block"
+>
+  <div class={`cinematic-mock ${flip ? 'cinematic-mock--flip' : ''} relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-1 shadow-2xl ring-1 ${ring}`}>
+    {/* Browser chrome */}
+    <div class="flex items-center gap-1.5 border-b border-white/5 bg-ink-800/95 px-4 py-2.5 backdrop-blur">
+      <span class="h-2.5 w-2.5 rounded-full bg-red-400/70"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-yellow-400/70"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-green-400/70"></span>
+      <span class="ml-4 truncate font-mono text-[10px] text-slate-400">{browserUrl}</span>
+    </div>
+
+    {/* Body */}
+    <div class="relative aspect-[4/3] bg-ink-900 p-4 md:p-6">
+      {type === 'dashboard' && (
+        <div class="grid h-full grid-cols-3 gap-3">
+          <div class="col-span-2 row-span-2 rounded-md bg-gradient-to-br from-accent-violet/40 via-accent-violet/10 to-transparent">
+            <div class="p-3 font-mono text-[9px] uppercase tracking-[0.2em] text-accent-violet/80">
+              {lang === 'es' ? 'Instalaciones · activas' : 'Installations · active'}
+            </div>
+            <div class="mx-3 mb-3 mt-1 grid grid-cols-4 gap-1">
+              {[8, 14, 11, 18, 16, 22, 19, 26].map((h) => (
+                <div class="rounded-sm bg-accent-violet/30" style={`height:${h * 4}px`}></div>
+              ))}
+            </div>
+          </div>
+          <div class="rounded-md bg-accent-blue/15 p-2">
+            <div class="font-mono text-[9px] text-accent-blue">€</div>
+            <div class="mt-2 font-display text-lg font-black text-accent-blue/90">142k</div>
+          </div>
+          <div class="rounded-md bg-accent-sky/15 p-2">
+            <div class="font-mono text-[9px] text-accent-sky">↑</div>
+            <div class="mt-2 font-display text-lg font-black text-accent-sky/90">37</div>
+          </div>
+          <div class="col-span-3 rounded-md bg-white/5 p-2">
+            <div class="space-y-1.5">
+              <div class="h-2 rounded-full bg-white/10" style="width:78%"></div>
+              <div class="h-2 rounded-full bg-white/10" style="width:54%"></div>
+              <div class="h-2 rounded-full bg-white/10" style="width:91%"></div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {type === 'terminal' && (
+        <div class="flex h-full flex-col gap-2 font-mono text-[11px] leading-relaxed text-accent-blue/90">
+          <div class="text-slate-500">$ npm run test:unit</div>
+          <div class="text-emerald-400">✓ 161 tests passed (12 files)</div>
+          <div class="mt-1 text-slate-500">$ npm run build</div>
+          <div>building <span class="text-accent-violet">aitorevi.dev</span> ...</div>
+          <div class="text-slate-500">  ✓ 73 routes</div>
+          <div class="text-slate-500">  ✓ OG images generated</div>
+          <div class="text-slate-500">  ✓ CV PDFs (es, en)</div>
+          <div class="text-emerald-400">build complete in 9.2s</div>
+          <div class="mt-1 text-accent-violet">$ <span class="cinematic-cursor"></span></div>
+        </div>
+      )}
+
+      {type === 'landing' && (
+        <div class="flex h-full flex-col">
+          <div class="flex items-center justify-between">
+            <div class="font-display text-sm font-black text-emerald-400">colorprof</div>
+            <div class="flex gap-3 font-mono text-[9px] uppercase tracking-[0.2em] text-slate-500">
+              <span>servicios</span><span>contacto</span>
+            </div>
+          </div>
+          <div class="my-auto text-center">
+            <div class="font-display text-2xl font-black text-slate-200 md:text-3xl">
+              {lang === 'es' ? 'Pintura profesional' : 'Professional painting'}
+            </div>
+            <div class="mt-2 font-mono text-[10px] uppercase tracking-[0.25em] text-emerald-400">
+              Valencia · 2024
+            </div>
+            <button class="mt-5 rounded-full border border-emerald-400/40 bg-emerald-400/10 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-emerald-300">
+              {lang === 'es' ? 'Pedir presupuesto' : 'Request quote'}
+            </button>
+          </div>
+          <div class="grid grid-cols-3 gap-2">
+            <div class="aspect-square rounded bg-gradient-to-br from-emerald-400/30 to-emerald-400/5"></div>
+            <div class="aspect-square rounded bg-gradient-to-br from-emerald-400/20 to-emerald-400/5"></div>
+            <div class="aspect-square rounded bg-gradient-to-br from-emerald-400/15 to-emerald-400/5"></div>
+          </div>
+        </div>
+      )}
+
+      {type === 'calculator' && (
+        <div class="flex h-full flex-col gap-3">
+          <div class="font-mono text-[10px] uppercase tracking-[0.2em] text-accent-sky">
+            {lang === 'es' ? 'Cálculo de perjuicio' : 'Loss calculation'}
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="rounded-md bg-white/5 p-2.5">
+              <div class="font-mono text-[9px] uppercase tracking-[0.18em] text-slate-500">{lang === 'es' ? 'Capital' : 'Principal'}</div>
+              <div class="mt-1 font-display text-base font-bold text-slate-200">€ 180.000</div>
+            </div>
+            <div class="rounded-md bg-white/5 p-2.5">
+              <div class="font-mono text-[9px] uppercase tracking-[0.18em] text-slate-500">{lang === 'es' ? 'Plazo' : 'Term'}</div>
+              <div class="mt-1 font-display text-base font-bold text-slate-200">25 {lang === 'es' ? 'años' : 'yrs'}</div>
+            </div>
+          </div>
+          <div class="my-auto rounded-lg border border-accent-sky/30 bg-accent-sky/10 p-4 text-center">
+            <div class="font-mono text-[9px] uppercase tracking-[0.25em] text-accent-sky">{lang === 'es' ? 'Perjuicio estimado' : 'Estimated loss'}</div>
+            <div class="mt-2 font-display text-3xl font-black text-accent-sky">€ 28.412</div>
+          </div>
+          <div class="font-mono text-[9px] text-slate-600">{lang === 'es' ? 'fuente: Google Sheets' : 'source: Google Sheets'}</div>
+        </div>
+      )}
+    </div>
+  </div>
+</a>
+
+<style>
+  .cinematic-mock {
+    transform: perspective(1400px) rotateX(2deg) rotateY(-3deg);
+    transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cinematic-mock--flip {
+    transform: perspective(1400px) rotateX(2deg) rotateY(3deg);
+  }
+  .cinematic-mock:hover,
+  .cinematic-mock--flip:hover {
+    transform: perspective(1400px) rotateX(0deg) rotateY(0deg);
+  }
+
+  .cinematic-cursor {
+    display: inline-block;
+    width: 7px;
+    height: 12px;
+    background: currentColor;
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: cinematic-blink 1.05s steps(2, start) infinite;
+  }
+  @keyframes cinematic-blink { to { visibility: hidden; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cinematic-mock {
+      transform: none;
+      transition: none;
+    }
+    .cinematic-cursor {
+      animation: none;
+    }
+  }
+</style>
