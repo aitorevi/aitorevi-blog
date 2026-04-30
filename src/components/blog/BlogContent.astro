@@ -454,7 +454,15 @@ const outroTitle = lang === 'es'
       (entries) => { entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('is-active'); }); },
       { threshold: 0.18, rootMargin: '0px 0px -10% 0px' }
     );
-    sections.forEach((s) => observer.observe(s));
+    sections.forEach((s) => {
+      if (s.classList.contains('is-active')) return;
+      const rect = s.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
+        s.classList.add('is-active');
+      } else {
+        observer.observe(s);
+      }
+    });
   }
 
   // ── Blog search ─────────────────────────────────────────────────────────────

@@ -19,21 +19,21 @@ const bullets = entry.bullets;
     <div class:list={[
       "relative mt-1 h-4 w-4 rounded-full border-2 shrink-0 z-10",
       isFirst
-        ? "border-secondary bg-secondary shadow-[0_0_10px_rgba(94,58,238,0.5)] dark:border-accent-violet dark:bg-accent-violet dark:shadow-[0_0_10px_rgba(167,139,250,0.5)]"
-        : "border-secondary/50 dark:border-accent-violet/40 bg-white dark:bg-ink-800"
+        ? "border-accent bg-accent shadow-glow-accent-dot"
+        : "border-accent/50 bg-white dark:bg-ink-800"
     ]}>
       {isFirst && (
-        <span class="absolute -inset-1 rounded-full bg-secondary/20 dark:bg-accent-violet/20 animate-pulse"></span>
+        <span class="absolute -inset-1 rounded-full bg-accent/20 animate-pulse"></span>
       )}
     </div>
-    <div class="w-0.5 flex-1 bg-secondary/25 dark:bg-accent-violet/30 shadow-[0_0_4px_rgba(94,58,238,0.15)] dark:shadow-[0_0_6px_rgba(167,139,250,0.25)]"></div>
+    <div class="w-0.5 flex-1 bg-accent/25 shadow-glow-accent-line"></div>
   </div>
   <!-- Company content -->
   <div class="flex-1 pb-4">
     <div class="flex flex-col md:flex-row md:items-baseline md:justify-between">
       <div>
-        <h3 class="text-xl font-bold leading-tight dark:text-accent-violet">{entry.company}</h3>
-        <p class="text-secondary dark:text-accent-violet font-semibold text-sm">{entry.role}</p>
+        <h3 class="text-xl font-bold leading-tight text-accent">{entry.company}</h3>
+        <p class="text-accent font-semibold text-sm">{entry.role}</p>
       </div>
       {entry.period && (
         <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 md:mt-0 font-mono tracking-tight">{entry.period}</p>
@@ -52,11 +52,11 @@ const bullets = entry.bullets;
         <div class:list={[
           "mt-1 h-2.5 w-2.5 rounded-full shrink-0 z-10 transition-colors",
           isFirst && i === 0
-            ? "bg-secondary shadow-[0_0_6px_rgba(94,58,238,0.4)] dark:bg-accent-violet dark:shadow-[0_0_6px_rgba(167,139,250,0.4)]"
-            : "bg-secondary/30 dark:bg-accent-violet/35 border border-secondary/40 dark:border-accent-violet/45"
+            ? "bg-accent shadow-glow-accent-bullet"
+            : "bg-accent/30 border border-accent/40"
         ]}></div>
         {!isLastBullet && (
-          <div class="w-0.5 flex-1 bg-secondary/20 dark:bg-accent-violet/25 shadow-[0_0_4px_rgba(94,58,238,0.12)] dark:shadow-[0_0_6px_rgba(167,139,250,0.2)]"></div>
+          <div class="w-0.5 flex-1 bg-accent/20 shadow-glow-accent-line"></div>
         )}
       </div>
       <!-- Bullet content -->

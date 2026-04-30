@@ -7,6 +7,7 @@ import Nav from "@/components/nav/Nav.astro";
 import Footer from "@/components/footer/Footer.astro";
 import { getLangFromUrl, getAlternateUrl, t } from '@/i18n/utils';
 import type { Lang } from '@/i18n/types';
+import '@/styles/tokens.css';
 import '@/styles/retro.css';
 
 interface Props {
@@ -129,7 +130,7 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 		<GoogleAnalytics />
 	</head>
 	<body
-		class="flex flex-col min-h-dvh bg-white dark:bg-[#0f1419] text-primary dark:text-[#f1f5f9] scrollbar scrollbar-thumb-primary scrollbar-w-2 scrollbar-corner-rounded-xl"
+		class="flex flex-col min-h-dvh bg-white dark:bg-page text-primary dark:text-fg scrollbar scrollbar-thumb-primary scrollbar-w-2 scrollbar-corner-rounded-xl"
 		data-bg={variant === 'default' ? undefined : variant}
 	>
 		<a
@@ -165,20 +166,20 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 	}
 
 	::-webkit-scrollbar-track {
-		background: rgba(33, 39, 55, .6);
+		background: rgb(var(--color-scrollbar-track) / 0.6);
 	}
 
 	::-webkit-scrollbar-track:hover {
-		background: rgba(33, 39, 55, .6);
+		background: rgb(var(--color-scrollbar-track) / 0.6);
 	}
 
 	::-webkit-scrollbar-thumb {
-		background: rgba(94, 58, 238);
+		background: rgb(var(--color-scrollbar-thumb));
 		border-radius: 0.25rem;
 	}
 
 	::-webkit-scrollbar-thumb:hover {
-		background: rgba(118, 85, 249);
+		background: rgb(var(--color-scrollbar-thumb-hover));
 		border-radius: 0.25rem;
 	}
 </style>

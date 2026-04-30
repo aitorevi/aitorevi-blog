@@ -27,7 +27,7 @@ const contactHref = `${getLocalePath('/', lang)}#contact`;
   <p class="reveal-fade text-lg md:text-2xl font-display font-semibold tracking-tight mb-5">
     {contact.title.split(' | ').map((part, i, arr) => (
       <>
-        <span class="whitespace-nowrap text-secondary dark:text-accent-violet">{part}</span>
+        <span class="whitespace-nowrap text-accent">{part}</span>
         {i < arr.length - 1 && (
           <>
             <span class="hidden lg:inline text-quaternary/60 dark:text-slate-600 mx-2">/</span>

@@ -151,16 +151,16 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
                     class:list={[
                       "relative shrink-0 rounded-full z-10",
                       isFirst
-                        ? "mt-[5px] h-4 w-4 border-2 border-secondary bg-secondary shadow-[0_0_10px_rgba(94,58,238,0.5)] dark:border-accent-violet dark:bg-accent-violet dark:shadow-[0_0_10px_rgba(167,139,250,0.5)]"
-                        : "mt-[5px] h-3 w-3 border-2 border-secondary/50 dark:border-accent-violet/40 bg-white dark:bg-ink-800",
+                        ? "mt-[5px] h-4 w-4 border-2 border-accent bg-accent shadow-glow-accent-dot"
+                        : "mt-[5px] h-3 w-3 border-2 border-accent/50 bg-white dark:bg-ink-800",
                     ]}
                   >
                     {isFirst && (
-                      <span class="absolute -inset-1 rounded-full bg-secondary/20 dark:bg-accent-violet/20 animate-pulse" aria-hidden="true" />
+                      <span class="absolute -inset-1 rounded-full bg-accent/20 animate-pulse" aria-hidden="true" />
                     )}
                   </div>
                   {!isLast && (
-                    <div class="w-0.5 flex-1 mb-[-5px] bg-secondary/25 dark:bg-accent-violet/30 shadow-[0_0_4px_rgba(94,58,238,0.15)] dark:shadow-[0_0_6px_rgba(167,139,250,0.25)]" aria-hidden="true" />
+                    <div class="w-0.5 flex-1 mb-[-5px] bg-accent/25 shadow-glow-accent-line" aria-hidden="true" />
                   )}
                 </div>
 
