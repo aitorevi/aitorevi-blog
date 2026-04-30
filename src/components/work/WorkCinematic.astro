@@ -57,8 +57,8 @@ const accentMap: Record<string, { text: string; bg: string; ring: string; glow: 
   sky:     { text: 'text-accent-sky',     bg: 'bg-accent-sky',     ring: 'ring-accent-sky/40',     glow: 'from-accent-sky/25',    buttonTone: 'blue',   sectionVar: '--color-section-sky' },
 };
 
-const ctaLabel = lang === 'es' ? 'Ver caso' : 'View case';
-const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
+const ctaLabel = t(lang, 'home.work.cta.case');
+const externalLabel = t(lang, 'home.work.cta.external');
 ---
 
 <section class="work-cinematic relative" aria-labelledby="work-heading">
@@ -71,23 +71,21 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
 
     <div>
       <p class="font-mono text-xs uppercase tracking-[0.4em] text-secondary dark:text-accent-blue">
-        {lang === 'es' ? '// proyectos seleccionados' : '// selected work'}
+        {t(lang, 'home.work.hero.eyebrow')}
       </p>
       <h1
         id="work-heading"
         class="mt-6 font-display text-6xl font-black leading-none tracking-tight text-ink-900 dark:text-slate-50 sm:text-7xl md:text-8xl"
       >
-        {lang === 'es' ? 'Proyectos' : 'Projects'}
+        {t(lang, 'home.work.hero.title')}
       </h1>
       <p class="mx-auto mt-6 max-w-xl text-base leading-relaxed text-slate-600 dark:text-slate-400 sm:text-lg">
-        {lang === 'es'
-          ? 'Una selección de proyectos donde la arquitectura, la accesibilidad y el rendimiento son disciplina, no destino.'
-          : 'A selection of projects where architecture, accessibility and performance are discipline, not destination.'}
+        {t(lang, 'home.work.hero.desc')}
       </p>
 
       <div class="mt-12 flex flex-col items-center gap-3" aria-hidden="true">
         <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
-          Scroll
+          {t(lang, 'home.work.label.scroll')}
         </span>
         <div class="cinematic-scroll-line"></div>
       </div>
@@ -148,7 +146,7 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
 
               <dl class="grid grid-cols-2 gap-x-6 gap-y-3 border-l border-white/10 pl-5 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
                 <div>
-                  <dt class="text-[9px]">{lang === 'es' ? 'Año' : 'Year'}</dt>
+                  <dt class="text-[9px]">{t(lang, 'home.work.label.year')}</dt>
                   <dd class="mt-1 text-slate-700 dark:text-slate-200 normal-case tracking-normal text-xs">
                     {p.year}
                   </dd>
@@ -208,10 +206,10 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
     </div>
     <div>
       <p class="font-mono text-xs uppercase tracking-[0.4em] text-secondary dark:text-accent-blue">
-        {lang === 'es' ? '// fin del recorrido' : '// end of tour'}
+        {t(lang, 'home.work.outro.eyebrow')}
       </p>
       <h2 class="mt-6 font-display text-4xl font-black tracking-tight text-ink-900 dark:text-slate-50 md:text-6xl">
-        {lang === 'es' ? 'Cuatro proyectos. De momento.' : 'Four projects. For now.'}
+        {t(lang, 'home.work.outro.title')}
       </h2>
     </div>
   </footer>
