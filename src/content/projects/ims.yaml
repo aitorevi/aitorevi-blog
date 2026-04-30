@@ -1,0 +1,22 @@
+number: "01"
+name: IMS
+taglineEs: SaaS para empresas de instalación
+taglineEn: SaaS for installation companies
+descKey: home.portfolio.ims.desc
+tagKey: home.portfolio.tag.saas
+year: "2024 — present"
+stack:
+  - Astro 5
+  - Supabase
+  - PWA
+  - Tailwind
+accent: violet
+hrefEs: /work/ims
+hrefEn: /en/work/ims
+external: false
+metric:
+  value: "6"
+  labelEs: módulos
+  labelEn: modules
+mockType: dashboard
+order: 1

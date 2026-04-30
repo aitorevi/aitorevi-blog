@@ -1,0 +1,21 @@
+number: "03"
+name: Colorprof
+taglineEs: Landing profesional para empresa de pintura
+taglineEn: Professional landing for a painting company
+descKey: home.portfolio.colorprof.desc
+tagKey: home.portfolio.tag.landing
+year: "2024"
+stack:
+  - Astro 5
+  - Tailwind
+  - Resend
+accent: emerald
+hrefEs: https://www.colorprof.es
+hrefEn: https://www.colorprof.es
+external: true
+metric:
+  value: "100"
+  labelEs: Lighthouse
+  labelEn: Lighthouse
+mockType: landing
+order: 3

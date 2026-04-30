@@ -1,0 +1,21 @@
+number: "04"
+name: IRPH Calculator
+taglineEs: Calculadora financiera conectada a Sheets
+taglineEn: Financial calculator wired to Sheets
+descKey: home.portfolio.irph.desc
+tagKey: home.portfolio.tag.tool
+year: "2024"
+stack:
+  - Astro 5
+  - Sheets API
+  - TypeScript
+accent: sky
+hrefEs: https://www.perjuicioirph.com
+hrefEn: https://www.perjuicioirph.com
+external: true
+metric:
+  value: "€"
+  labelEs: tiempo real
+  labelEn: real-time
+mockType: calculator
+order: 4

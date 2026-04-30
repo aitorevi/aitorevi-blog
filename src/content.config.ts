@@ -66,6 +66,35 @@ const blogCollection = defineCollection({
   }),
 });
 
+const projectsCollection = defineCollection({
+  loader: glob({
+    pattern: '**/*.yaml',
+    base: './src/content/projects',
+  }),
+  schema: z.object({
+    number: z.string(),
+    name: z.string(),
+    taglineEs: z.string(),
+    taglineEn: z.string(),
+    descKey: z.string(),
+    tagKey: z.string(),
+    year: z.string(),
+    stack: z.array(z.string()),
+    accent: z.enum(['violet', 'blue', 'emerald', 'sky']),
+    hrefEs: z.string(),
+    hrefEn: z.string(),
+    external: z.boolean().default(false),
+    metric: z.object({
+      value: z.string(),
+      labelEs: z.string(),
+      labelEn: z.string(),
+    }),
+    mockType: z.enum(['dashboard', 'terminal', 'landing', 'calculator']),
+    order: z.number(),
+  }),
+});
+
 export const collections = {
   blog: blogCollection,
+  projects: projectsCollection,
 };
