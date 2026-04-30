@@ -248,6 +248,12 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
     color: var(--cin-hover);
   }
 
+  /* Scroll snap — align each project section to the viewport top */
+  .cinematic-section {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
   /* Scroll hint line */
   .cinematic-scroll-line {
     position: relative;
@@ -281,6 +287,25 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
     }
     .cinematic-scroll-line::after {
       animation: none;
+    }
+  }
+</style>
+
+<style is:global>
+  /* scroll-snap-type must live on the scroll container (body).
+     scroll-padding-top offsets the sticky nav so sections snap below it. */
+  body:has(.work-cinematic) {
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: 3.5rem; /* mobile nav height */
+  }
+  @media (min-width: 768px) {
+    body:has(.work-cinematic) {
+      scroll-padding-top: 5rem; /* desktop nav height */
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    body:has(.work-cinematic) {
+      scroll-snap-type: none;
     }
   }
 </style>
