@@ -33,7 +33,8 @@ export default {
 					700: '#0f172a',
 				},
 				code: {
-					bg: '#1a1f2e',       // used in RepublishedNotice.astro
+					bg:     '#1a1f2e',   // used in RepublishedNotice.astro + CodeBlockEnhancer
+					header: '#1e2533',   // used in CodeBlockEnhancer.astro (title bar)
 				},
 			},
 			boxShadow: {
