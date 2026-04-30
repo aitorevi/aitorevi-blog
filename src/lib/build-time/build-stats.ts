@@ -58,6 +58,21 @@ function countLegalPages(root: string): number {
 }
 
 export async function fetchBuildStats(root: string) {
+  // In dev, skip the live GitHub API calls. Each render would otherwise
+  // block on api.github.com (slow or rate-limited). Build/prod still
+  // fetches live values once and bakes them into the static HTML.
+  if (import.meta.env.DEV) {
+    return {
+      commits: 427,
+      prs: 68,
+      unitTests: 161,
+      integrationTests: 24,
+      e2eTests: 10,
+      workflows: 2,
+      legalPages: 6,
+    };
+  }
+
   const [commits, prs] = await Promise.all([
     githubCount('aitorevi/aitorevi-blog', 'commits', 427),
     fetchPRCount('aitorevi/aitorevi-blog', 68),
