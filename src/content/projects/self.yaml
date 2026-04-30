@@ -1,0 +1,22 @@
+number: "02"
+name: aitorevi.dev
+taglineEs: Blog que también es laboratorio
+taglineEn: A blog that is also a lab
+descKey: home.portfolio.self.desc
+tagKey: home.portfolio.tag.blog
+year: "2024 — present"
+stack:
+  - Astro 6
+  - Keystatic
+  - Tailwind
+  - Vercel
+accent: blue
+hrefEs: /work/aitorevi-dev
+hrefEn: /en/work/aitorevi-dev
+external: false
+metric:
+  value: "161"
+  labelEs: tests
+  labelEn: tests
+mockType: terminal
+order: 2
