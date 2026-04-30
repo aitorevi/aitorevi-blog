@@ -335,6 +335,11 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
 
         <!-- Right column: browser-chrome mock previewing the styleguide.
              Same construction as WorkCinematic mocks (chrome + aspect-[4/3] body). -->
+        <a
+          href="/styleguide"
+          class="ds-mock block"
+          aria-label={isES ? 'Ver design system' : 'View design system'}
+        >
         <div
           class="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-1 shadow-2xl ring-1 ring-accent-violet/40"
           aria-hidden="true"
@@ -394,6 +399,7 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
             </div>
           </div>
         </div>
+        </a>
       </div>
     </section>
 
@@ -422,6 +428,24 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
 
   </div>
 </Layout>
+
+<style>
+  .ds-mock {
+    display: block;
+    transform: perspective(1400px) rotateX(2deg) rotateY(-3deg);
+    transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .ds-mock:hover {
+    transform: perspective(1400px) rotateX(0deg) rotateY(0deg);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ds-mock,
+    .ds-mock:hover {
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
 
 <script>
   // Lighthouse-score badges: same IntersectionObserver + ease-out pattern
