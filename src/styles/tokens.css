@@ -13,6 +13,7 @@
 :root {
   /* ── Page background ──────────────────────────────────────────────── */
   --color-bg: 255 255 255;        /* white */
+  --color-bg-content: 242 242 252;  /* #f2f2fc — case study / design system pages */
   --color-surface: 255 255 255;   /* card surface */
 
   /* ── Text ─────────────────────────────────────────────────────────── */
@@ -49,6 +50,7 @@
 .dark {
   /* ── Page background ──────────────────────────────────────────────── */
   --color-bg: 15 20 25;           /* #0f1419 — body dark (unificado) */
+  --color-bg-content: 5 11 31;      /* #050b1f — case study / design system pages */
   --color-surface: 11 17 32;      /* ink-800 #0b1120 */
 
   /* ── Text ─────────────────────────────────────────────────────────── */
