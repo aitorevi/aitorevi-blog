@@ -73,24 +73,24 @@ const itemSizingClass = isSingle
   /* Light-mode PostCard — crisp white card on slate-50 section background. */
   .home-post-wrapper article {
     background-color: #ffffff !important;
-    border-color: #e2e8f0 !important;
+    border-color: theme(colors.slate.200) !important;
   }
   .home-post-wrapper article h2 a {
     color: theme(colors.ink.700) !important;
   }
   .home-post-wrapper article h2 a:hover,
   .home-post-wrapper article h2 a:focus {
-    color: theme(colors.secondary) !important;
+    color: rgb(var(--color-accent)) !important;
   }
   .home-post-wrapper article p[itemprop='description'] {
-    color: rgba(71, 85, 105, 0.9) !important;
+    color: theme(colors.slate.600) !important;
   }
   .home-post-wrapper article footer {
-    border-top-color: #e2e8f0 !important;
+    border-top-color: theme(colors.slate.200) !important;
   }
   .home-post-wrapper article:hover {
-    border-color: rgba(94, 58, 238, 0.4) !important;
-    box-shadow: 0 20px 40px -20px rgba(94, 58, 238, 0.25) !important;
+    border-color: rgb(var(--color-accent) / 0.4) !important;
+    box-shadow: 0 20px 40px -20px rgb(var(--color-accent) / 0.25) !important;
   }
 
   /* Dark-mode PostCard — translucent glass card on ink-900. */
@@ -100,21 +100,21 @@ const itemSizingClass = isSingle
     backdrop-filter: blur(12px);
   }
   html.dark .home-post-wrapper article h2 a {
-    color: #e2e8f0 !important;
+    color: theme(colors.slate.200) !important;
   }
   html.dark .home-post-wrapper article h2 a:hover,
   html.dark .home-post-wrapper article h2 a:focus {
-    color: theme(colors.accent.violet) !important;
+    color: rgb(var(--color-accent)) !important;
   }
   html.dark .home-post-wrapper article p[itemprop='description'] {
-    color: rgba(148, 163, 184, 0.85) !important;
+    color: rgb(148 163 184 / 0.85) !important;
   }
   html.dark .home-post-wrapper article footer {
     border-top-color: rgba(255, 255, 255, 0.08) !important;
   }
   html.dark .home-post-wrapper article:hover {
-    border-color: rgba(96, 165, 250, 0.4) !important;
-    box-shadow: 0 0 60px rgba(96, 165, 250, 0.15) !important;
+    border-color: rgb(var(--color-accent-soft) / 0.4) !important;
+    box-shadow: 0 0 60px rgb(var(--color-accent-soft) / 0.15) !important;
   }
 </style>
 

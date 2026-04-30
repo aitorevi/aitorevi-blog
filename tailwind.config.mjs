@@ -5,29 +5,44 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				primary: '#151b27',
-				secondary: '#5e3aee',
-				tertiary: '#d0edf5',
+				// ── Semantic tokens (CSS var-driven, auto dark/light) ────────────
+				// accent.DEFAULT → text-accent, bg-accent, border-accent, etc.
+				// accent-violet / accent-blue / accent-sky kept as raw aliases.
+				accent: {
+					DEFAULT: 'rgb(var(--color-accent) / <alpha-value>)',
+					soft:    'rgb(var(--color-accent-soft) / <alpha-value>)',
+					violet: '#a78bfa',
+					blue:   '#60a5fa',
+					sky:    '#38bdf8',
+				},
+				// Page background token (bg-page switches light/dark automatically)
+				page: 'rgb(var(--color-bg) / <alpha-value>)',
+				// Foreground text token (text-fg switches light/dark automatically)
+				fg:   'rgb(var(--color-fg) / <alpha-value>)',
+
+				// ── Raw tokens (kept for backward-compat) ────────────────────────
+				primary:    '#151b27',
+				secondary:  '#5e3aee',
+				tertiary:   '#d0edf5',   // referenced in retro.css
 				quaternary: '#aeb2bb',
-				baseLight: '#f1faff',
-				blueLight: '#7ad5f3',
-				grayLight: '#f9f9fc',
-				// Home redesign palette — dark slate base + violet accents
+				grayLight:  '#f9f9fc',   // used in Tag.astro default variant
+				baseLight:  '#f1faff',   // referenced in retro.css
 				ink: {
 					900: '#020617',
 					800: '#0b1120',
 					700: '#0f172a',
-					600: '#111827',
-				},
-				accent: {
-					blue: '#60a5fa',
-					violet: '#a78bfa',
-					sky: '#38bdf8',
 				},
 				code: {
-					bg: '#1a1f2e',     // dark code block / blockquote background
-					header: '#1e2533', // dark code block title bar
+					bg: '#1a1f2e',       // used in RepublishedNotice.astro
 				},
+			},
+			boxShadow: {
+				// Glow utilities — reference CSS var so they switch with dark mode
+				'glow-accent-dot':    'var(--shadow-glow-dot)',
+				'glow-accent-bullet': 'var(--shadow-glow-bullet)',
+				'glow-accent-line':   'var(--shadow-glow-line)',
+				'glow-accent-card-sm':'var(--shadow-glow-card-sm)',
+				'glow-accent-card-md':'var(--shadow-glow-card-md)',
 			},
 			backgroundImage: {
 				'home-radial': 'radial-gradient(ellipse at 30% 20%, #0f172a 0%, #020617 55%, #000 100%)',

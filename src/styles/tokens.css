@@ -1,0 +1,64 @@
+/*
+ * Design system tokens — CSS custom properties.
+ *
+ * These vars are consumed by Tailwind via tailwind.config.mjs using the
+ * `rgb(var(--X) / <alpha-value>)` pattern. The `.dark` overrides let a
+ * single Tailwind class (e.g. `text-accent`) adapt to both modes without
+ * needing `dark:` prefixes at the call site.
+ *
+ * Import order in Layout.astro: this file → retro.css (retro overrides
+ * some of these vars for the retro mode).
+ */
+
+:root {
+  /* ── Page background ──────────────────────────────────────────────── */
+  --color-bg: 255 255 255;        /* white */
+  --color-surface: 255 255 255;   /* card surface */
+
+  /* ── Text ─────────────────────────────────────────────────────────── */
+  --color-fg: 21 27 39;           /* primary #151b27 */
+  --color-fg-muted: 100 116 139;  /* slate-500 */
+  --color-fg-subtle: 148 163 184; /* slate-400 */
+
+  /* ── Accent (primary brand color) ────────────────────────────────── */
+  /* Light: secondary (#5e3aee). Dark: accent-violet (#a78bfa).         */
+  --color-accent: 94 58 238;
+
+  /* Secondary accent. Light: accent-violet. Dark: accent-blue.        */
+  --color-accent-soft: 167 139 250;
+
+  /* ── Scrollbar ────────────────────────────────────────────────────── */
+  --color-scrollbar-track: 33 39 55;
+  --color-scrollbar-thumb: 94 58 238;       /* secondary */
+  --color-scrollbar-thumb-hover: 118 85 249;
+
+  /* ── Glow shadows (reference --color-accent, auto-switch in dark) ── */
+  --shadow-glow-dot:      0 0 10px rgb(var(--color-accent) / 0.5);
+  --shadow-glow-bullet:   0 0 6px  rgb(var(--color-accent) / 0.4);
+  --shadow-glow-line:     0 0 4px  rgb(var(--color-accent) / 0.15);
+  --shadow-glow-card-sm:  0 0 12px rgb(var(--color-accent) / 0.08);
+  --shadow-glow-card-md:  0 0 30px rgb(var(--color-accent) / 0.15);
+}
+
+.dark {
+  /* ── Page background ──────────────────────────────────────────────── */
+  --color-bg: 15 20 25;           /* #0f1419 — body dark (unificado) */
+  --color-surface: 11 17 32;      /* ink-800 #0b1120 */
+
+  /* ── Text ─────────────────────────────────────────────────────────── */
+  --color-fg: 241 245 249;        /* slate-100 / #f1f5f9 */
+  --color-fg-muted: 148 163 184;  /* slate-400 */
+  --color-fg-subtle: 100 116 139; /* slate-500 */
+
+  /* ── Accent ───────────────────────────────────────────────────────── */
+  --color-accent: 167 139 250;    /* accent-violet #a78bfa */
+  --color-accent-soft: 96 165 250; /* accent-blue #60a5fa */
+
+  /* ── Scrollbar ────────────────────────────────────────────────────── */
+  --color-scrollbar-thumb: 167 139 250;       /* accent-violet */
+  --color-scrollbar-thumb-hover: 196 181 253; /* violet-300 */
+
+  /* ── Glow shadows — slightly stronger in dark (lighter accent) ────── */
+  --shadow-glow-line:    0 0 6px  rgb(var(--color-accent) / 0.25);
+  --shadow-glow-card-md: 0 0 30px rgb(var(--color-accent) / 0.15);
+}

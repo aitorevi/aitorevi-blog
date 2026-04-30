@@ -22,7 +22,7 @@ const { label, items } = Astro.props;
   <h3 class="font-mono text-[10px] uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
     {label}
   </h3>
-  <div class="mt-4 h-px w-8 bg-secondary/40 dark:bg-accent-violet/40" aria-hidden="true" />
+  <div class="mt-4 h-px w-8 bg-accent/40" aria-hidden="true" />
   <ul class="mt-6 space-y-6">
     {items.map((item) => (
       <li
@@ -43,7 +43,7 @@ const { label, items } = Astro.props;
           />
         ) : (
           <span
-            class="flex h-8 w-8 items-center justify-center rounded-full border border-secondary/30 text-[11px] font-mono font-bold text-secondary dark:border-accent-violet/40 dark:text-accent-violet"
+            class="flex h-8 w-8 items-center justify-center rounded-full border border-accent/30 text-[11px] font-mono font-bold text-accent"
             aria-hidden="true"
           >
             {item.name.charAt(0)}

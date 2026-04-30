@@ -12,7 +12,7 @@ const { value, label, suffix = '', tilt = false, class: className } = Astro.prop
 
 <div
   class:list={[
-    'group relative overflow-hidden rounded-xl border border-secondary/15 bg-slate-50/30 px-6 py-10 text-center transition-[border-color,box-shadow] duration-300 hover:border-secondary/40 hover:shadow-[0_0_12px_rgba(94,58,238,0.08)] dark:border-accent-violet/20 dark:bg-ink-800 dark:hover:border-accent-violet/40 dark:hover:shadow-[0_0_30px_rgba(167,139,250,0.15)]',
+    'group relative overflow-hidden rounded-xl border border-accent/15 bg-slate-50/30 px-6 py-10 text-center transition-[border-color,box-shadow] duration-300 hover:border-accent/40 hover:shadow-glow-accent-card-sm dark:bg-ink-800 dark:hover:shadow-glow-accent-card-md',
     className,
   ]}
   data-stat
@@ -21,7 +21,7 @@ const { value, label, suffix = '', tilt = false, class: className } = Astro.prop
   data-tilt-stat={tilt ? '' : undefined}
 >
   <div
-    class="pointer-events-none absolute inset-x-0 -top-20 h-40 bg-gradient-to-b from-secondary/10 to-transparent opacity-60 dark:from-accent-violet/10"
+    class="pointer-events-none absolute inset-x-0 -top-20 h-40 bg-gradient-to-b from-accent/10 to-transparent opacity-60"
     aria-hidden="true"
   />
   <div
@@ -31,7 +31,7 @@ const { value, label, suffix = '', tilt = false, class: className } = Astro.prop
   >
     {0}
   </div>
-  <div class="relative mt-3 font-mono text-[11px] uppercase tracking-[0.25em] text-secondary transition-colors dark:text-accent-violet group-hover:dark:text-accent-violet">
+  <div class="relative mt-3 font-mono text-[11px] uppercase tracking-[0.25em] text-accent transition-colors">
     {label}
   </div>
 </div>
