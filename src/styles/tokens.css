@@ -27,6 +27,12 @@
   /* Secondary accent. Light: accent-violet. Dark: accent-blue.        */
   --color-accent-soft: 167 139 250;
 
+  /* ── Section accent palette (cinematic sections, static across modes) ── */
+  --color-section-violet:  167 139 250;  /* #a78bfa */
+  --color-section-blue:     96 165 250;  /* #60a5fa */
+  --color-section-emerald:  52 211 153;  /* #34d399 */
+  --color-section-sky:      56 189 248;  /* #38bdf8 */
+
   /* ── Scrollbar ────────────────────────────────────────────────────── */
   --color-scrollbar-track: 33 39 55;
   --color-scrollbar-thumb: 94 58 238;       /* secondary */

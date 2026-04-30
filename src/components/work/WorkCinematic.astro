@@ -81,11 +81,11 @@ const projects = [
   },
 ];
 
-const accentMap: Record<string, { text: string; bg: string; ring: string; glow: string; buttonTone: ButtonTone }> = {
-  violet:  { text: 'text-accent-violet',  bg: 'bg-accent-violet',  ring: 'ring-accent-violet/40',  glow: 'from-accent-violet/30', buttonTone: 'violet' },
-  blue:    { text: 'text-accent-blue',    bg: 'bg-accent-blue',    ring: 'ring-accent-blue/40',    glow: 'from-accent-blue/30',   buttonTone: 'blue' },
-  emerald: { text: 'text-emerald-400',    bg: 'bg-emerald-400',    ring: 'ring-emerald-400/40',    glow: 'from-emerald-400/25',   buttonTone: 'blue' },
-  sky:     { text: 'text-accent-sky',     bg: 'bg-accent-sky',     ring: 'ring-accent-sky/40',     glow: 'from-accent-sky/25',    buttonTone: 'blue' },
+const accentMap: Record<string, { text: string; bg: string; ring: string; glow: string; buttonTone: ButtonTone; sectionVar: string }> = {
+  violet:  { text: 'text-accent-violet',  bg: 'bg-accent-violet',  ring: 'ring-accent-violet/40',  glow: 'from-accent-violet/30', buttonTone: 'violet', sectionVar: '--color-section-violet' },
+  blue:    { text: 'text-accent-blue',    bg: 'bg-accent-blue',    ring: 'ring-accent-blue/40',    glow: 'from-accent-blue/30',   buttonTone: 'blue',   sectionVar: '--color-section-blue' },
+  emerald: { text: 'text-emerald-400',    bg: 'bg-emerald-400',    ring: 'ring-emerald-400/40',    glow: 'from-emerald-400/25',   buttonTone: 'blue',   sectionVar: '--color-section-emerald' },
+  sky:     { text: 'text-accent-sky',     bg: 'bg-accent-sky',     ring: 'ring-accent-sky/40',     glow: 'from-accent-sky/25',    buttonTone: 'blue',   sectionVar: '--color-section-sky' },
 };
 
 const ctaLabel = lang === 'es' ? 'Ver caso' : 'View case';
@@ -133,7 +133,7 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
       <article
         class="cinematic-section relative flex min-h-screen items-center px-6 py-24 md:py-32"
         data-cinematic-section
-        style={`--cin-i:${i}`}
+        style={`--cin-i:${i}; --cin-hover:rgb(var(${accent.sectionVar}))`}
         aria-labelledby={`proj-${p.id}`}
       >
         <!-- Per-section ambient glow -->
@@ -163,7 +163,7 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
                   <a
                     href={p.href}
                     {...(p.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    class="hover:text-secondary dark:hover:text-accent-violet transition-colors duration-200 focus:outline-none focus-visible:underline"
+                    class="proj-title-link transition-colors duration-200 focus:outline-none focus-visible:underline"
                   >
                     {p.name}
                   </a>
@@ -384,6 +384,12 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
     opacity: 1;
   }
 
+  /* Per-section title hover — color comes from --cin-hover set on the article */
+  .cinematic-section .proj-title-link:hover,
+  .cinematic-section .proj-title-link:focus-visible {
+    color: var(--cin-hover);
+  }
+
   /* Mock scaffolding */
   .cinematic-mock {
     transform: perspective(1400px) rotateX(2deg) rotateY(-3deg);
@@ -471,7 +477,15 @@ const externalLabel = lang === 'es' ? 'Visitar sitio' : 'Visit site';
       { threshold: 0.18, rootMargin: '0px 0px -10% 0px' },
     );
 
-    sections.forEach((s) => observer.observe(s));
+    sections.forEach((s) => {
+      if (s.classList.contains('is-active')) return;
+      const rect = s.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
+        s.classList.add('is-active');
+      } else {
+        observer.observe(s);
+      }
+    });
   }
 
   setupCinematicReveal();
