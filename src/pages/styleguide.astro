@@ -365,7 +365,7 @@ console.log(greeting('aitorevi'));</code></pre>
           {
             label: 'flat',
             previewClass: 'bg-[rgb(var(--color-bg-content))]',
-            desc: 'Color sólido del token --color-bg-content (más claro/oscuro).',
+            desc: 'Color solido del token --color-bg-content (claro/oscuro segun modo).',
             usedBy: 'Case studies',
           },
         ].map((v) => (
@@ -678,7 +678,6 @@ console.log(greeting('aitorevi'));</code></pre>
           <button
             id="retro-toggle"
             class="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/5 px-5 py-2.5 font-mono text-sm text-accent transition-all hover:border-accent/70 hover:bg-accent/10"
-            onclick="const h=document.documentElement;const on=h.hasAttribute('data-retro');h.toggleAttribute('data-retro');this.textContent=on?'▶ Activar retro mode':'■ Desactivar retro mode'"
           >
             ▶ Activar retro mode
           </button>
@@ -758,4 +757,12 @@ console.log(greeting('aitorevi'));</code></pre>
 
   document.addEventListener('astro:page-load', initScores);
   document.addEventListener('astro:after-swap', initScores);
+
+  const retroBtn = document.getElementById('retro-toggle');
+  retroBtn?.addEventListener('click', function () {
+    const h = document.documentElement;
+    const isOn = h.hasAttribute('data-retro');
+    h.toggleAttribute('data-retro');
+    this.textContent = isOn ? '▶ Activar retro mode' : '■ Desactivar retro mode';
+  });
 </script>

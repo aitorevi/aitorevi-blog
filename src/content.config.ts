@@ -51,7 +51,7 @@ const blogCollection = defineCollection({
 
     author: z.object({
       name: z.string().default('aitorevi'),
-      url: z.string().url().optional(),
+      url: z.url().optional(),
       avatar: z.string().optional(),
     }).default({ name: 'aitorevi' }),
 
@@ -60,7 +60,7 @@ const blogCollection = defineCollection({
     // SEO enhancements (optional)
     ogImage: z.string().optional(),
 
-    canonicalUrl: z.string().url().optional(),
+    canonicalUrl: z.url().optional(),
 
     canonicalSource: z.string().optional(),
   }),
