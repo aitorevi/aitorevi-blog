@@ -1,4 +1,4 @@
-claude---
+---
 name: claude-code-config
 description: "Reviews and optimizes Claude Code configuration for the project. Audits CLAUDE.md, settings, agents, hooks, MCP servers, skills, and memory files. Fetches latest docs to identify new features.\n\nExamples:\n- <example>\n  Context: User wants to improve their Claude Code setup\n  user: \"Review my Claude Code configuration and suggest improvements\"\n  assistant: \"I'll use the claude-code-config agent to audit the full configuration\"\n</example>\n- <example>\n  Context: User wants to check if they're using latest features\n  user: \"Am I missing any new Claude Code features?\"\n  assistant: \"Let me use the claude-code-config agent to check against the latest documentation\"\n</example>"
 tools: Read, Bash, WebSearch, WebFetch, Write

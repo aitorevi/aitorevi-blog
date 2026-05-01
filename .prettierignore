@@ -1,0 +1,22 @@
+node_modules
+dist
+.astro
+.vercel
+.output
+.cache
+.git
+
+# Build artifacts
+public/og/*.png
+public/cv/*.pdf
+
+# Lock files
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Tests are kept as-is for now (avoid churn on the existing 161 tests)
+tests
+
+# Generated content
+src/content/*/generated

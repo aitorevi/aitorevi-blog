@@ -21,7 +21,9 @@
     "og:katas": "node scripts/generate-og-katas.mjs",
     "check:katas": "node scripts/check-kata-links.mjs",
     "optimize:images": "node scripts/optimize-images.mjs",
-    "optimize:images:dry": "node scripts/optimize-images.mjs --dry-run"
+    "optimize:images:dry": "node scripts/optimize-images.mjs --dry-run",
+    "format": "prettier --write \"src/**/*.{astro,ts,tsx,js,jsx,css,json,md}\" \"scripts/**/*.{mjs,js,ts}\" \"*.{json,md,cjs,mjs}\"",
+    "format:check": "prettier --check \"src/**/*.{astro,ts,tsx,js,jsx,css,json,md}\" \"scripts/**/*.{mjs,js,ts}\" \"*.{json,md,cjs,mjs}\""
   },
   "dependencies": {
     "@astrojs/check": "^0.9.8",
@@ -54,6 +56,9 @@
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/typography": "^0.5.19",
     "playwright-core": "^1.59.1",
+    "prettier": "^3.8.3",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.8.0",
     "satori": "^0.26.0",
     "serve": "^14.2.6",
     "sharp": "^0.34.5",
