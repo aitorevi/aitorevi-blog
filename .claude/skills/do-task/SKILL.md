@@ -14,7 +14,7 @@ Coordinas un equipo de agentes especializados. Tu rol es **sólo coordinar** —
 ## Agentes disponibles
 
 - **astro-architect** (Opus) — crea planes técnicos y decisiones de arquitectura.
-- **astro-developer** (Sonnet) — implementa los planes paso a paso con commits atómicos.
+- **astro-developer** (Sonnet) — implementa los planes paso a paso, dejando los cambios preparados y avisando al usuario en cada punto natural de commit atómico.
 - **astro-reviewer** (Opus) — revisa el código contra los estándares del proyecto.
 - **astro-designer** — para componentes UI, design system, dark mode, animaciones.
 - **security** — antes de mergear a master, al tocar deps, GitHub Actions, Vercel.
@@ -52,6 +52,7 @@ $ARGUMENTS
 2. Lanza `astro-developer` con el plan.
 3. Para Features SDD: instruye al developer a seguir TDD estricto (RED → GREEN → REFACTOR), tests de aceptación primero.
 4. Tras cada paso completado del checklist, verifica que `npx astro check` y `npm run test:unit` pasan.
+5. El developer **NO** ejecuta `git commit` ni `git push`. En cada punto natural de corte (paso del checklist completado, ciclo RED, ciclo GREEN, refactor) debe **detenerse y avisar al usuario** con un resumen breve de qué cambió, para que el usuario haga su propio commit atómico. La idea es muchos commits pequeños, no uno grande al final.
 
 ### Fase 4: Delegar review
 
@@ -64,24 +65,23 @@ $ARGUMENTS
 
 1. `npm run build` para confirmar compilación, OG images y CV PDF.
 2. `git mv workspace/progress/<file>.md workspace/review/<file>.md`. `Status: REVIEW`.
-3. Notifica al usuario que la tarea está lista para su revisión final.
-4. Tras la aprobación final:
-   - Commit y push de la rama.
-   - Abrir PR contra `master`.
-   - Esperar CI verde.
-   - Merge.
-   - `git mv workspace/review/<file>.md workspace/completed/<file>.md`. `Status: COMPLETED`.
-   - Si la tarea era una issue de GitHub: cerrarla.
+3. Notifica al usuario que la tarea está lista para su revisión final con un resumen claro:
+   - Lista de cambios (archivos tocados, áreas afectadas).
+   - Estado de verificación (`astro check`, tests, build).
+   - Si quedaran cambios sin commitear, indícaselo para que él los commitee como prefiera (mensajes los redacta el usuario).
+4. **El usuario** se encarga de commit, push, abrir PR, esperar CI verde y mergear. NO lo hace el coordinador ni ningún subagente.
+5. Tras el merge: mover el task file con `git mv workspace/review/<file>.md workspace/completed/<file>.md` y actualizar `Status: COMPLETED`. Si la tarea era una issue de GitHub, recordar al usuario cerrarla (o cerrarla si el usuario lo pide explícitamente).
 
 ## Reglas inquebrantables
 
 - NUNCA planifiques ni implementes directamente — SIEMPRE delega en el agente correspondiente.
 - SIEMPRE clasifica la tarea ANTES de empezar.
 - SIEMPRE gestiona los task files (crear, mover con `git mv`, actualizar `Status:`).
-- SIEMPRE instruye al developer para que haga commits atómicos en español.
+- SIEMPRE instruye al developer a parar en puntos naturales y avisar al usuario para que haga commits atómicos pequeños y frecuentes. **El usuario redacta sus propios mensajes de commit.** El agente no propone wording de commits.
+- NUNCA ejecutes `git commit`, `git push`, `gh pr create`, `gh pr merge` ni equivalentes en nombre del usuario.
 - SIEMPRE corre `npx astro check` y `npm run test:unit` después de cada fase de implementación.
 - SIEMPRE pregunta al usuario antes de pasar de planning a progress.
 - NUNCA añadas atribución a Claude o co-authors de IA en commits, PRs ni en ningún output.
-- NUNCA te saltes Review (Fase 4) y Cierre (Fase 5) — incluso si el usuario pide commit/push/merge directo, completa el flujo: review → mover a review/ → aprobación final → mover a completed/.
+- NUNCA te saltes Review (Fase 4) y Cierre (Fase 5) — incluso si el usuario pide commit/push/merge directo, completa el flujo: review → mover a review/ → aprobación final → avisar al usuario → tras merge mover a completed/.
 - NUNCA dejes task files olvidados en `progress/` — toda tarea acaba en `completed/` o se abandona explícitamente moviéndola a `completed/` con `Status: COMPLETED` y una nota de cierre.
-- NUNCA pushees directo a `master` ni uses `--admin` para saltarte CI. Siempre rama → PR → CI verde → merge.
+- NUNCA pushees directo a `master` ni uses `--admin` para saltarte CI. El flujo siempre es: rama → PR (lo abre el usuario) → CI verde → merge (lo hace el usuario).

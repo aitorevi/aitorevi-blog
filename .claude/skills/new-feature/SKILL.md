@@ -46,7 +46,7 @@ Para cambios puramente visuales, contenido de blog o ajustes de copy, **usa el f
    - Lanza el agente `astro-developer` con el plan.
    - Convierte los Test Skeletons en tests reales de Vitest.
    - Todos deben FALLAR (aún no hay implementación).
-   - Commit: `test(<scope>): add acceptance tests for <feature>` (cuerpo en español).
+   - Cuando los tests RED estén listos, el developer **se detiene y avisa al usuario** con un resumen breve de qué archivos cambió, para que el usuario haga su commit atómico (el mensaje lo redacta el usuario).
 
 6. **Implementar (GREEN + REFACTOR)**:
    - `astro-developer` implementa hasta que los tests pasan.
@@ -54,7 +54,7 @@ Para cambios puramente visuales, contenido de blog o ajustes de copy, **usa el f
      - RED: el test ya falla.
      - GREEN: implementación mínima para pasar.
      - REFACTOR: mejora manteniendo tests verdes.
-   - Commits atómicos en español por cada paso completado.
+   - **Tras cada punto natural de corte** (paso del checklist completado, fin de un GREEN, fin de un refactor), el developer **se detiene y avisa al usuario** con un resumen de los cambios. El objetivo es muchos commits pequeños y atómicos. **El usuario redacta sus propios mensajes de commit y los ejecuta él.**
 
 7. **Revisión**:
    - Lanza el agente `astro-reviewer` con el diff.
@@ -64,8 +64,12 @@ Para cambios puramente visuales, contenido de blog o ajustes de copy, **usa el f
 8. **Cierre**:
    - `npm run build` para verificar compilación, OG images y CV PDF.
    - `git mv workspace/progress/<file>.md workspace/review/<file>.md`. `Status: REVIEW`.
-   - Notifica al usuario para revisión final.
-   - Tras aprobación final: commit pendiente, push, PR, CI verde, merge → `git mv` a `workspace/completed/`. `Status: COMPLETED`.
+   - Notifica al usuario para revisión final con un resumen claro:
+     - Lista de archivos tocados y áreas afectadas.
+     - Estado de verificación (`astro check`, tests, build).
+     - Si quedaran cambios sin commitear, indícalo para que el usuario los commitee como prefiera.
+   - **El usuario** ejecuta commit (con el mensaje que él decida), push, abre el PR (`gh pr create` o desde la UI), espera CI verde y mergea. La skill **no** ejecuta `git commit`, `git push`, `gh pr create` ni `gh pr merge`.
+   - Tras el merge: `git mv workspace/review/<file>.md workspace/completed/<file>.md` y `Status: COMPLETED`.
 
 ## Estructura del blog
 
@@ -89,5 +93,6 @@ src/
 - **Los criterios de aceptación son la definición de hecho**: una feature está completa cuando todos los ACs tienen al menos un test pasando.
 - **Astro estático/SSR-first**: minimizar JS en cliente, islands sólo cuando hace falta.
 - **Mobile-first con Tailwind v3**, dark mode con `dark:`.
-- **Commits atómicos**: un cambio lógico por commit. Conventional Commits con cuerpo en español. Sin atribuciones a Claude.
+- **Commits atómicos pequeños y frecuentes**: un cambio lógico por commit. Conventional Commits con cuerpo en español. Sin atribuciones a Claude.
+- **El usuario es quien commitea, pushea, abre PR y mergea**, y redacta él mismo los mensajes de commit. La skill se detiene en puntos naturales de corte para avisarle, pero no ejecuta `git commit`, `git push` ni `gh pr create` ni propone wording de commits.
 - **i18n siempre dual**: cualquier string nuevo se añade a los bloques `es` y `en` de `src/i18n/ui.ts`.

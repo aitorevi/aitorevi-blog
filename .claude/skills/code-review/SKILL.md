@@ -39,7 +39,7 @@ Revisa cambios de código contra los estándares del blog. Delega siempre en `as
 
 5. **Si hay issues**:
    - Preguntar al usuario si quiere arreglarlos ahora.
-   - Si sí, lanzar `astro-developer` con instrucciones puntuales.
+   - Si sí, lanzar `astro-developer` con instrucciones puntuales. El developer aplica los fixes pero **no hace commits ni push**: deja los cambios listos y avisa al usuario para que él commitee atómicamente con sus propios mensajes.
    - Re-ejecutar la review tras los fixes.
 
 ## Estándares del blog

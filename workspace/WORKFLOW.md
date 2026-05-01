@@ -38,6 +38,13 @@ planning/ → progress/ → review/ → completed/
 
 > **Nota**: en este blog la **Simplified Template** es el flujo por defecto incluso para Features. SDD (Spec → Tests → Impl con dos approval gates) sólo se usa cuando aporta valor — típicamente al tocar `src/lib/` o componentes con lógica que merecen tests unitarios. En cambios visuales, contenido de blog, o ajustes de i18n el flujo simplificado es suficiente.
 
+## Quién hace qué (commits y push)
+
+- **Los agentes y skills NO ejecutan `git commit`, `git push`, `gh pr create` ni hacen merge.**
+- Los agentes preparan el código, se detienen en puntos naturales de corte y avisan al usuario con un resumen de qué cambió.
+- **El usuario (Aitor) es quien hace los commits, los push, abre los PR y mergea**, y **redacta él mismo los mensajes de commit**. El objetivo son commits atómicos pequeños y frecuentes, no uno grande al final.
+- La excepción es la skill `/git-commit`, que sí ejecuta `git commit` porque la invoca explícitamente el usuario para ese propósito (y el usuario decide el mensaje en la interacción).
+
 ---
 
 ## Flujo Simplificado (default)
@@ -57,7 +64,8 @@ Esperas aprobación antes de seguir.
 
 1. Mueve el fichero a `workspace/progress/` con `git mv`, actualiza `Status: IN PROGRESS`.
 2. Sigue el checklist. Escribe tests cuando aplique.
-3. Verifica que `npx astro check` pasa y `npm run test:unit` está verde.
+3. Tras cada paso lógico completado, **detente y avisa al usuario** con un resumen breve para que él haga un commit atómico (el mensaje lo redacta el usuario).
+4. Verifica que `npx astro check` pasa y `npm run test:unit` está verde.
 
 ### Fase 3: Revisión
 
@@ -67,9 +75,9 @@ Revisar con `astro-reviewer` (o el agente que aplique). Corregir críticos antes
 
 1. Mueve el fichero a `workspace/review/`, `Status: REVIEW`.
 2. Ejecuta `npm run build` para verificar compilación, OG images y CV PDF.
-3. Notifica que la tarea está lista para tu revisión final.
-4. Tras tu aprobación: commit, push, PR, espera CI verde, merge → mover a `workspace/completed/`, `Status: COMPLETED`.
-5. Si la tarea es una issue de GitHub: cerrar la issue.
+3. Notifica que la tarea está lista para tu revisión final, e incluye un resumen de los cambios. Si queda algo sin commitear, indícaselo al usuario.
+4. Tras tu aprobación final, **el usuario** hace commit (con sus mensajes), push, abre PR, espera CI verde y mergea. Una vez mergeada la rama, el usuario (o el agente, si se le pide) mueve el fichero a `workspace/completed/` con `Status: COMPLETED`.
+5. Si la tarea es una issue de GitHub: el usuario cierra la issue.
 
 ---
 
@@ -99,12 +107,14 @@ Espera aprobación del Plan.
 ### Fase 3: Implementación (TDD estricto)
 
 1. Mueve a `workspace/progress/`, `Status: IN PROGRESS`.
-2. **RED**: convierte test skeletons en tests reales. Todos deben fallar. Commit: `test(scope): add acceptance tests`.
-3. **GREEN**: implementa siguiendo el plan. Commits atómicos: `feat(scope): implement <step>`.
-4. **Refactor** manteniendo verde.
+2. **RED**: convierte test skeletons en tests reales. Todos deben fallar. El agente se detiene y avisa al usuario con un resumen para que haga su commit atómico (el mensaje lo redacta el usuario).
+3. **GREEN**: implementa siguiendo el plan. Tras cada paso completado, el agente se detiene y avisa al usuario para que commitee. La idea son muchos commits pequeños.
+4. **Refactor** manteniendo verde. Avisa al usuario al terminar el refactor para otro commit.
 5. Verifica que cada AC tiene al menos un test pasando.
 
 ### Fase 4 y 5: Igual que el flujo simplificado.
+
+En particular, **el cierre (commit, push, PR, CI verde, merge) lo realiza siempre el usuario**.
 
 ---
 
@@ -142,7 +152,7 @@ Qué entra y qué no.
 - [ ] Implementación completa
 - [ ] Verificado
 - [ ] Code review pasado
-- [ ] Commit + PR + CI verde + merge
+- [ ] Commit + PR + CI verde + merge (lo hace el usuario)
 
 ## Status: PLANNING
 ```
@@ -197,7 +207,7 @@ Qué entra y qué no.
 - [ ] Tests pasando
 - [ ] Build pasando
 - [ ] Code review pasado
-- [ ] Commit + PR + CI verde + merge
+- [ ] Commit + PR + CI verde + merge (lo hace el usuario)
 
 ## Status: PLANNING
 ```
@@ -216,6 +226,7 @@ Qué entra y qué no.
 4. **No archivos sueltos en `workspace/`**. Auditorías y reportes van en `reports/`.
 5. **Movimientos sólo con `git mv`** para preservar historial.
 6. **Workflow opcional, no obligatorio**. Para hotfixes triviales o cambios de un par de líneas no merece la pena crear un fichero. Úsalo cuando aporta trazabilidad.
+7. **Commits y push los hace el usuario**, no los agentes ni las skills (excepto `/git-commit`, que el usuario invoca explícitamente). El usuario redacta sus propios mensajes; los agentes sólo se detienen en puntos naturales y avisan.
 
 ## Convenciones de idioma
 
@@ -237,7 +248,7 @@ npm run og:katas         # solo OG image de katas
 ## Agentes disponibles
 
 - `astro-architect` — decisiones de arquitectura, Content Layer, hidratación. Útil como planner.
-- `astro-developer` — implementador (Sonnet). Ejecuta planes aprobados paso a paso con commits atómicos.
+- `astro-developer` — implementador (Sonnet). Ejecuta planes aprobados paso a paso, deteniéndose en puntos naturales para que el usuario commitee atómicamente. No ejecuta `git commit` ni propone wording de mensajes.
 - `astro-reviewer` — review de código nuevo o refactorizado.
 - `astro-designer` — componentes UI, design system, dark mode, animaciones.
 - `security` — antes de merge a main, cambios en deps, Actions, Vercel.
