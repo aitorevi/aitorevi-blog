@@ -34,4 +34,4 @@ Portar la skill `/fix-tests` de IMS al blog. Sirve para diagnosticar y arreglar 
 - [x] Verificado
 - [ ] Commit
 
-## Status: IN PROGRESS
+## Status: REVIEW
