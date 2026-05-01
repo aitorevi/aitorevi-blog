@@ -14,14 +14,7 @@ const tone = scoreTone(value);
 
 <li class="group flex flex-col items-center text-center">
   <div class="relative h-36 w-36" aria-hidden="true">
-    <div
-      class:list={[
-        'pointer-events-none absolute inset-0 rounded-full bg-gradient-to-br to-transparent blur-2xl opacity-80 transition-opacity duration-500 group-hover:opacity-100',
-        tone.glow,
-      ]}
-      aria-hidden="true"
-    />
-    <svg class="relative h-full w-full -rotate-90" viewBox="0 0 100 100">
+    <svg class="relative h-full w-full -rotate-90 overflow-visible" viewBox="0 0 100 100">
       <circle cx="50" cy="50" r="42" class="stroke-slate-200/80 dark:stroke-white/10" stroke-width="6" fill="none" />
       <circle
         cx="50"
@@ -33,7 +26,7 @@ const tone = scoreTone(value);
         fill="none"
         stroke-dasharray={circumference}
         stroke-dashoffset={circumference}
-        style={`filter: drop-shadow(0 0 6px ${tone.shadow});`}
+        style={`filter: drop-shadow(0 0 12px ${tone.shadow}) drop-shadow(0 0 4px ${tone.shadow});`}
         data-score-ring
         data-score-target={value}
         data-score-circumference={circumference}
