@@ -27,7 +27,7 @@ Para cambios puramente visuales, contenido de blog o ajustes de copy, **usa el f
    - Revisa `src/components/`, `src/lib/` y `src/data/` para localizar patrones existentes que reutilizar.
 
 2. **Definir la Spec (Approval Gate 1)**:
-   - Lanza el agente `astro6-architect` para escribir la sección Spec del plan:
+   - Lanza el agente `astro-architect` para escribir la sección Spec del plan:
      - Acceptance Criteria con IDs `AC-1`, `AC-2`... en formato GIVEN/WHEN/THEN.
      - Contracts: interfaces TypeScript, signatures, esquemas Zod si aplica.
      - Test Skeletons: bloques `describe/it` de Vitest 1:1 con los ACs (esqueletos, no implementaciones).
@@ -57,7 +57,7 @@ Para cambios puramente visuales, contenido de blog o ajustes de copy, **usa el f
    - Commits atómicos en español por cada paso completado.
 
 7. **Revisión**:
-   - Lanza el agente `astro-code-reviewer` con el diff.
+   - Lanza el agente `astro-reviewer` con el diff.
    - **Validación de Spec**: cada AC tiene al menos un test pasando.
    - Corregir críticos antes de cerrar.
 

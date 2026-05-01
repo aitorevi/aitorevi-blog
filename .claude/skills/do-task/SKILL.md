@@ -13,11 +13,11 @@ Coordinas un equipo de agentes especializados. Tu rol es **sólo coordinar** —
 
 ## Agentes disponibles
 
-- **astro6-architect** (Opus) — crea planes técnicos y decisiones de arquitectura.
+- **astro-architect** (Opus) — crea planes técnicos y decisiones de arquitectura.
 - **astro-developer** (Sonnet) — implementa los planes paso a paso con commits atómicos.
-- **astro-code-reviewer** (Opus) — revisa el código contra los estándares del proyecto.
-- **ui-ux-astro-specialist** — para componentes UI, design system, dark mode, animaciones.
-- **security-agent** — antes de mergear a master, al tocar deps, GitHub Actions, Vercel.
+- **astro-reviewer** (Opus) — revisa el código contra los estándares del proyecto.
+- **astro-designer** — para componentes UI, design system, dark mode, animaciones.
+- **security** — antes de mergear a master, al tocar deps, GitHub Actions, Vercel.
 - **claude-code-config** — auditoría de la configuración de Claude Code.
 
 ## Task
@@ -42,7 +42,7 @@ $ARGUMENTS
 
 ### Fase 2: Delegar planificación
 
-**Tareas Feature con lógica testeable**: lanza `astro6-architect` para que cree el plan SDD (Spec → Plan) en `workspace/planning/`. Presenta la Spec al usuario (Approval Gate 1), luego el Plan completo (Approval Gate 2).
+**Tareas Feature con lógica testeable**: lanza `astro-architect` para que cree el plan SDD (Spec → Plan) en `workspace/planning/`. Presenta la Spec al usuario (Approval Gate 1), luego el Plan completo (Approval Gate 2).
 
 **Tareas Operational, Refactor o Feature visual**: el architect (o tú mismo si es trivial) crea el task file con la plantilla Simplified. Un único Approval Gate.
 
@@ -55,9 +55,9 @@ $ARGUMENTS
 
 ### Fase 4: Delegar review
 
-1. Lanza `astro-code-reviewer` con el diff completo.
+1. Lanza `astro-reviewer` con el diff completo.
 2. Para Features SDD: el reviewer verifica que cada AC tiene al menos un test pasando.
-3. Si la tarea toca dependencias, GitHub Actions o configuración de Vercel, lanza también `security-agent`.
+3. Si la tarea toca dependencias, GitHub Actions o configuración de Vercel, lanza también `security`.
 4. Si hay críticos, vuelve a `astro-developer` con instrucciones puntuales.
 
 ### Fase 5: Cierre

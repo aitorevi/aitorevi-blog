@@ -61,7 +61,7 @@ Esperas aprobación antes de seguir.
 
 ### Fase 3: Revisión
 
-Revisar con `astro-code-reviewer` (o el agente que aplique). Corregir críticos antes de cerrar.
+Revisar con `astro-reviewer` (o el agente que aplique). Corregir críticos antes de cerrar.
 
 ### Fase 4: Cierre
 
@@ -236,11 +236,11 @@ npm run og:katas         # solo OG image de katas
 
 ## Agentes disponibles
 
-- `astro6-architect` — decisiones de arquitectura, Content Layer, hidratación. Útil como planner.
+- `astro-architect` — decisiones de arquitectura, Content Layer, hidratación. Útil como planner.
 - `astro-developer` — implementador (Sonnet). Ejecuta planes aprobados paso a paso con commits atómicos.
-- `astro-code-reviewer` — review de código nuevo o refactorizado.
-- `ui-ux-astro-specialist` — componentes UI, design system, dark mode, animaciones.
-- `security-agent` — antes de merge a main, cambios en deps, Actions, Vercel.
+- `astro-reviewer` — review de código nuevo o refactorizado.
+- `astro-designer` — componentes UI, design system, dark mode, animaciones.
+- `security` — antes de merge a main, cambios en deps, Actions, Vercel.
 - `claude-code-config` — auditoría de la configuración de Claude Code.
 
 ## Directorios estáticos (no participan en el flujo)

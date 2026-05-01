@@ -7,7 +7,7 @@ userInvocable: true
 
 # Code Review
 
-Revisa cambios de código contra los estándares del blog. Delega siempre en `astro-code-reviewer` y, según el alcance, también en otros agentes.
+Revisa cambios de código contra los estándares del blog. Delega siempre en `astro-reviewer` y, según el alcance, también en otros agentes.
 
 ## Steps
 
@@ -18,17 +18,17 @@ Revisa cambios de código contra los estándares del blog. Delega siempre en `as
    - Si hay cambios sin commitear: `git diff` y/o `git diff --cached`.
 
 2. **Delegar al agente principal**:
-   - Lanzar `astro-code-reviewer` con el diff o las rutas afectadas.
+   - Lanzar `astro-reviewer` con el diff o las rutas afectadas.
    - El agente produce un reporte estructurado.
 
 3. **Delegar a agentes adicionales según el alcance**:
-   - **`security-agent`** si los cambios tocan:
+   - **`security`** si los cambios tocan:
      - Dependencias (`package.json`, `package-lock.json`).
      - GitHub Actions (`.github/workflows/`).
      - Configuración de Vercel (variables, headers, middleware).
      - Generación de OG images (Satori) o CV PDF (Playwright en scripts).
      - Formularios o islas React con input de usuario.
-   - **`ui-ux-astro-specialist`** si los cambios introducen o modifican componentes UI, animaciones, design system o dark mode.
+   - **`astro-designer`** si los cambios introducen o modifican componentes UI, animaciones, design system o dark mode.
    - Lanzar los agentes en paralelo cuando aplique.
 
 4. **Presentar el reporte consolidado**:

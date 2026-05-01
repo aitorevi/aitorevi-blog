@@ -35,11 +35,11 @@ npm run og:katas         # genera public/og/og-katas.png
 
 | Agente | Cuándo usarlo |
 |---|---|
-| `astro6-architect` | Decisiones de arquitectura, Content Layer, hidratación, planner |
+| `astro-architect` | Decisiones de arquitectura, Content Layer, hidratación, planner |
 | `astro-developer` | Implementación de planes aprobados con commits atómicos (Sonnet) |
-| `astro-code-reviewer` | Review de código nuevo o refactorizado |
-| `ui-ux-astro-specialist` | Componentes UI, design system, dark mode, animaciones |
-| `security-agent` | Antes de merge a main, cambios en deps, Actions, Vercel |
+| `astro-reviewer` | Review de código nuevo o refactorizado |
+| `astro-designer` | Componentes UI, design system, dark mode, animaciones |
+| `security` | Antes de merge a main, cambios en deps, Actions, Vercel |
 | `claude-code-config` | Auditoría de la configuración de Claude Code |
 
 ## Convenciones
