@@ -49,3 +49,15 @@ npm run og:katas         # genera public/og/og-katas.png
 - **OG images**: generadas con satori + resvg. Commitear el PNG resultante.
 - **Fuentes CDN en scripts**: siempre pinear versión exacta (e.g., `@5.2.8`), nunca `@latest`.
 - **GitHub Actions**: SHA pinning obligatorio, `permissions: contents: read` mínimo.
+
+## Task workflow
+
+Para tareas no triviales, usar el flujo definido en `workspace/WORKFLOW.md`:
+
+```
+workspace/planning/ → workspace/progress/ → workspace/review/ → workspace/completed/
+```
+
+Por defecto se usa la **Plantilla Simplified** (un único approval gate). El flujo SDD con TDD estricto es opcional y sólo se aplica cuando aporta valor (lógica en `src/lib/`, scripts no triviales, componentes con comportamiento testeable). Documentos en `workspace/` en español; código en inglés.
+
+Para hotfixes triviales no es necesario crear un fichero de tarea.
