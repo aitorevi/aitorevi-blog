@@ -237,6 +237,7 @@ npm run og:katas         # solo OG image de katas
 ## Agentes disponibles
 
 - `astro6-architect` — decisiones de arquitectura, Content Layer, hidratación. Útil como planner.
+- `astro-developer` — implementador (Sonnet). Ejecuta planes aprobados paso a paso con commits atómicos.
 - `astro-code-reviewer` — review de código nuevo o refactorizado.
 - `ui-ux-astro-specialist` — componentes UI, design system, dark mode, animaciones.
 - `security-agent` — antes de merge a main, cambios en deps, Actions, Vercel.
