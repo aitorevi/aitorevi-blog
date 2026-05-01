@@ -94,12 +94,13 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
   title={t(lang, 'portfolio.self.meta.title')}
   description={t(lang, 'portfolio.self.meta.description')}
   lang={lang}
+  variant="dark-radial"
 >
-  <div class="relative bg-slate-50 text-ink-900 dark:bg-ink-900 dark:text-slate-100">
+  <div class="relative text-ink-900 dark:bg-ink-900 dark:text-slate-100">
 
     <!-- Hero -->
     <section class="relative overflow-hidden py-24 sm:py-32" aria-labelledby="self-hero">
-      <div class="absolute inset-0 bg-gradient-to-b from-secondary/5 to-transparent dark:from-accent-blue/5" aria-hidden="true" />
+      <div class="absolute inset-0 to-transparent dark:from-accent-blue/5" aria-hidden="true" />
       <div class="relative mx-auto max-w-3xl px-6 text-center">
         <EyebrowTag label={t(lang, 'portfolio.self.hero.tag')} class="px-3 py-1" />
         <h1 id="self-hero" class="mt-6 font-display text-4xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-5xl">
@@ -404,7 +405,7 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
     </section>
 
     <!-- Final CTA -->
-    <section class="bg-white py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="self-cta">
+    <section class="py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="self-cta">
       <div class="mx-auto max-w-2xl px-6 text-center">
         <h2 id="self-cta" class="font-display text-2xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-3xl">
           {t(lang, 'portfolio.self.cta.title')}

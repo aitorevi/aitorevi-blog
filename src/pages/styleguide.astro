@@ -77,7 +77,7 @@ const simpleIcons = [
 ];
 ---
 
-<Layout title="Style Guide — aitorevi.dev" lang="es" description="Design tokens, componentes y estilos del blog" variant="flat">
+<Layout title="Style Guide — aitorevi.dev" lang="es" description="Design tokens, componentes y estilos del blog" variant="dark-radial">
   <main class="mx-auto max-w-5xl px-6 pt-28 pb-16 space-y-20 text-ink-900 dark:text-slate-100">
 
     <!-- ── HEADER ────────────────────────────────────────────────── -->
@@ -360,13 +360,13 @@ console.log(greeting('aitorevi'));</code></pre>
             label: 'dark-radial',
             previewClass: 'bg-slate-50 dark:bg-[radial-gradient(ellipse_at_30%_20%,theme(colors.ink.700)_0%,theme(colors.ink.900)_55%,#000_100%)]',
             desc: 'Gradiente radial elíptico (solo dark mode). Para lectura larga.',
-            usedBy: 'CV, blog, katas, work',
+            usedBy: 'CV, blog, katas, work, styleguide',
           },
           {
             label: 'flat',
             previewClass: 'bg-[rgb(var(--color-bg-content))]',
-            desc: 'Color sólido del token --color-bg-content (más claro/oscuro).',
-            usedBy: 'Case studies, styleguide',
+            desc: 'Color solido del token --color-bg-content (claro/oscuro segun modo).',
+            usedBy: 'Case studies',
           },
         ].map((v) => (
           <div class="space-y-3 rounded-2xl border border-slate-200 dark:border-white/10 p-5">
@@ -678,7 +678,6 @@ console.log(greeting('aitorevi'));</code></pre>
           <button
             id="retro-toggle"
             class="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/5 px-5 py-2.5 font-mono text-sm text-accent transition-all hover:border-accent/70 hover:bg-accent/10"
-            onclick="const h=document.documentElement;const on=h.hasAttribute('data-retro');h.toggleAttribute('data-retro');this.textContent=on?'▶ Activar retro mode':'■ Desactivar retro mode'"
           >
             ▶ Activar retro mode
           </button>
@@ -758,4 +757,12 @@ console.log(greeting('aitorevi'));</code></pre>
 
   document.addEventListener('astro:page-load', initScores);
   document.addEventListener('astro:after-swap', initScores);
+
+  const retroBtn = document.getElementById('retro-toggle');
+  retroBtn?.addEventListener('click', function () {
+    const h = document.documentElement;
+    const isOn = h.hasAttribute('data-retro');
+    h.toggleAttribute('data-retro');
+    this.textContent = isOn ? '▶ Activar retro mode' : '■ Desactivar retro mode';
+  });
 </script>
