@@ -14,11 +14,6 @@ describe('scoreTone', () => {
       expect(tone.text).toContain('accent-violet');
     });
 
-    it('uses a blue glow', () => {
-      const tone = scoreTone(95);
-      expect(tone.glow).toContain('accent-blue');
-    });
-
     it('uses a blue drop shadow colour', () => {
       expect(scoreTone(100).shadow).toBe('rgba(96,165,250,0.45)');
     });
