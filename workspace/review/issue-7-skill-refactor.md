@@ -35,4 +35,4 @@ Portar la skill `/refactor` de IMS al blog. Ayuda a aplicar refactors siguiendo 
 - [x] Verificado
 - [ ] Commit
 
-## Status: IN PROGRESS
+## Status: REVIEW
