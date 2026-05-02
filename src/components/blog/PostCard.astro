@@ -35,7 +35,7 @@ import DateDisplay from '@/components/shared/DateDisplay.astro';
 import ReadingTime from '@/components/shared/ReadingTime.astro';
 import { calculateReadingTime } from '@/lib/blog';
 import { formatDate } from '@/lib/date';
-import { t, getBlogSlugFromId } from '@/i18n/utils';
+import { t, getBlogSlugFromId, getLangLocale } from '@/i18n/utils';
 
 interface Props {
   /**
@@ -204,7 +204,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
         <>
           <span class="text-gray-300" aria-hidden="true">•</span>
           <span class="text-xs text-quaternary">
-            {t(lang, 'blog.updated')} {formatDate(data.updatedDate, lang === 'es' ? 'es-ES' : 'en-US')}
+            {t(lang, 'blog.updated')} {formatDate(data.updatedDate, getLangLocale(lang))}
           </span>
         </>
       )}

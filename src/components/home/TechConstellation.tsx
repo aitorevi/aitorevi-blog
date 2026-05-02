@@ -25,6 +25,7 @@
  * and ring rotation (nodes remain at their base angle).
  */
 import { useState, useEffect, useMemo, useCallback } from 'react';
+import { t } from '@/i18n/utils';
 
 type Group = 'backend' | 'frontend' | 'infra' | 'practice' | 'ai';
 
@@ -188,7 +189,7 @@ export default function TechConstellation({ lang = 'es' }: Props) {
     <div
       className="relative mx-auto w-full max-w-2xl py-9"
       role="group"
-      aria-label={lang === 'es' ? 'Constelación de tecnologías' : 'Tech constellation'}
+      aria-label={t(lang, 'home.stack.ariaLabel')}
     >
       <div className="relative aspect-square w-full">
         <svg

@@ -2,7 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import { calculateReadingTime } from '@/lib/blog';
 import { formatDate } from '@/lib/date';
-import { t, getBlogSlugFromId } from '@/i18n/utils';
+import { t, getBlogSlugFromId, getLangLocale } from '@/i18n/utils';
 import type { Lang } from '@/i18n/types';
 
 interface Props {
@@ -29,7 +29,7 @@ const slug = getBlogSlugFromId(post.id);
 const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
 const reading = calculateReadingTime(post.body || '', lang);
 const tags = post.data.tags.slice(0, 3);
-const featuredLabel = lang === 'es' ? 'destacado' : 'featured';
+const featuredLabel = t(lang, 'blog.featured');
 ---
 
 <article
@@ -49,7 +49,7 @@ const featuredLabel = lang === 'es' ? 'destacado' : 'featured';
             {number}
           </span>
           <span class="normal-case text-xs tracking-normal font-mono text-slate-500 dark:text-slate-400">
-            {formatDate(post.data.publishDate, lang === 'es' ? 'es-ES' : 'en-US')}
+            {formatDate(post.data.publishDate, getLangLocale(lang))}
           </span>
           <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
             · {reading.minutes} min

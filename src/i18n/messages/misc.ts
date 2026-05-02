@@ -10,6 +10,9 @@ export const misc = {
     '404.restart': 'Reintentar',
     '404.game.label': 'Hexagonal Rush — juego de arcade interactivo',
     '404.audio.toggle': 'Activar/desactivar audio',
+    'misc.skipToContent': 'Saltar al contenido principal',
+    'legal.updated': 'Última actualización',
+    'legal.title': 'Información legal',
   },
   en: {
     '404.routeNoAdapters': 'has no adapters. Protect the core.',
@@ -22,5 +25,8 @@ export const misc = {
     '404.restart': 'Retry',
     '404.game.label': 'Hexagonal Rush — interactive arcade game',
     '404.audio.toggle': 'Toggle audio',
+    'misc.skipToContent': 'Skip to main content',
+    'legal.updated': 'Last updated',
+    'legal.title': 'Legal',
   },
 };

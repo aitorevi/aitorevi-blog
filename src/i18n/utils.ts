@@ -48,3 +48,7 @@ export function getLocalePath(path: string, lang: Lang): string {
   if (lang === 'es') return path;
   return `/en${path}`;
 }
+
+export function getLangLocale(lang: Lang): string {
+  return lang === 'es' ? 'es-ES' : 'en-US';
+}

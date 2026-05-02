@@ -8,7 +8,7 @@ import BlogSearch from '@/components/blog/BlogSearch.astro';
 import PostCinematic from '@/components/blog/PostCinematic.astro';
 import { sortPostsByDate, filterDrafts } from '@/lib/blog';
 import { formatDate } from '@/lib/date';
-import { t, getBlogSlugFromId } from '@/i18n/utils';
+import { t, getBlogSlugFromId, getLangLocale } from '@/i18n/utils';
 import type { Lang } from '@/i18n/types';
 import { safeJsonLd } from '@/lib/schema-org';
 
@@ -37,7 +37,7 @@ const searchIndex = sortPostsByDate(filterDrafts(allBlogPosts))
       description: post.data.description,
       tags: post.data.tags,
       url: lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`,
-      date: formatDate(post.data.publishDate, lang === 'es' ? 'es-ES' : 'en-US'),
+      date: formatDate(post.data.publishDate, getLangLocale(lang)),
     };
   });
 const searchIndexJson = JSON.stringify(searchIndex).replace(/<\/script>/gi, '<\\/script>');
@@ -51,11 +51,8 @@ const accentMap: Record<Accent, { text: string; bg: string; ring: string; glow: 
   sky:     { text: 'text-accent-sky',     bg: 'bg-accent-sky',     ring: 'ring-accent-sky/40',     glow: 'from-accent-sky/25',    line: 'via-accent-sky/20',    softBg: 'via-accent-sky/[0.06]',    sectionVar: '--color-section-sky' },
 };
 
-const ctaLabel = lang === 'es' ? 'Leer artículo' : 'Read article';
-
-const outroTitle = lang === 'es'
-  ? 'Cada artículo, un aprendizaje.'
-  : 'Every article, a lesson.';
+const ctaLabel = t(lang, 'blog.cta.read');
+const outroTitle = t(lang, 'blog.outro.title');
 ---
 
 <Layout

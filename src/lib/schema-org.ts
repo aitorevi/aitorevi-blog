@@ -1,4 +1,5 @@
 import type { Lang } from '@/i18n/types';
+import { getLangLocale } from '@/i18n/utils';
 import { sortedKatas } from '@/data/katas';
 
 export function safeJsonLd(obj: unknown): string {
@@ -18,7 +19,7 @@ export function buildKatasCollectionSchema(
     name: metaTitle,
     description: metaDescription,
     url: canonicalUrl,
-    inLanguage: lang === 'es' ? 'es-ES' : 'en-US',
+    inLanguage: getLangLocale(lang),
     mainEntity: {
       '@type': 'ItemList',
       numberOfItems: items.length,

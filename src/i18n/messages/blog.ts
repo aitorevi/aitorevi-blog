@@ -29,6 +29,8 @@ export const blog = {
     'blog.search.placeholder': '// buscar artículos…',
     'blog.search.label': 'Buscar artículos',
     'blog.search.empty': '// sin resultados',
+    'blog.cta.read': 'Leer artículo',
+    'blog.outro.title': 'Cada artículo, un aprendizaje.',
     'blog.search.results': 'resultados',
   },
   en: {
@@ -62,5 +64,7 @@ export const blog = {
     'blog.search.label': 'Search articles',
     'blog.search.empty': '// no results',
     'blog.search.results': 'results',
+    'blog.cta.read': 'Read article',
+    'blog.outro.title': 'Every article, a lesson.',
   },
 };
