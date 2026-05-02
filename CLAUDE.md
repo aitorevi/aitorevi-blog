@@ -44,7 +44,7 @@ npm run og:katas         # genera public/og/og-katas.png
 
 ## Convenciones
 
-- **i18n**: todas las páginas tienen versión ES (`/`) y EN (`/en/`). La clave de idioma se pasa como prop `lang`.
+- **i18n**: todas las páginas tienen versión ES (`/`) y EN (`/en/`). La clave de idioma se pasa como prop `lang`. Detalle de claves, helpers y qué va o no a `src/i18n/` en `.claude/rules/i18n.md`.
 - **Componentes**: los compartidos entre secciones van en `src/components/shared/`.
 - **Tests**: `tests/unit/` con vitest. Ejecutar antes de cada PR.
 - **OG images**: generadas con satori + resvg. Commitear el PNG resultante.
