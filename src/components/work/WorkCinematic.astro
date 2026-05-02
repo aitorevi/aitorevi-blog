@@ -50,11 +50,11 @@ const projects = rawProjects
     browserUrl: browserUrls[p.id] ?? p.id,
   }));
 
-const accentMap: Record<string, { text: string; bg: string; ring: string; glow: string; buttonTone: ButtonTone; sectionVar: string }> = {
-  violet:  { text: 'text-accent-violet',  bg: 'bg-accent-violet',  ring: 'ring-accent-violet/40',  glow: 'from-accent-violet/30', buttonTone: 'violet', sectionVar: '--color-section-violet' },
-  blue:    { text: 'text-accent-blue',    bg: 'bg-accent-blue',    ring: 'ring-accent-blue/40',    glow: 'from-accent-blue/30',   buttonTone: 'blue',   sectionVar: '--color-section-blue' },
-  emerald: { text: 'text-accent-emerald',  bg: 'bg-accent-emerald',  ring: 'ring-accent-emerald/40',  glow: 'from-accent-emerald/25',  buttonTone: 'emerald', sectionVar: '--color-section-emerald' },
-  sky:     { text: 'text-accent-sky',     bg: 'bg-accent-sky',     ring: 'ring-accent-sky/40',     glow: 'from-accent-sky/25',    buttonTone: 'blue',   sectionVar: '--color-section-sky' },
+const accentMap: Record<string, { text: string; bg: string; ring: string; glow: string; border: string; buttonTone: ButtonTone; sectionVar: string }> = {
+  violet:  { text: 'text-accent-violet',  bg: 'bg-accent-violet',  ring: 'ring-accent-violet/40',  glow: 'from-accent-violet/30', border: 'border-accent-violet/40',  buttonTone: 'violet', sectionVar: '--color-section-violet' },
+  blue:    { text: 'text-accent-blue',    bg: 'bg-accent-blue',    ring: 'ring-accent-blue/40',    glow: 'from-accent-blue/30',   border: 'border-accent-blue/40',    buttonTone: 'blue',   sectionVar: '--color-section-blue' },
+  emerald: { text: 'text-accent-emerald', bg: 'bg-accent-emerald', ring: 'ring-accent-emerald/40', glow: 'from-accent-emerald/25', border: 'border-accent-emerald/40', buttonTone: 'emerald', sectionVar: '--color-section-emerald' },
+  sky:     { text: 'text-accent-sky',     bg: 'bg-accent-sky',     ring: 'ring-accent-sky/40',     glow: 'from-accent-sky/25',    border: 'border-accent-sky/40',     buttonTone: 'blue',   sectionVar: '--color-section-sky' },
 };
 
 const ctaLabel = t(lang, 'home.work.cta.case');
@@ -159,9 +159,9 @@ const externalLabel = t(lang, 'home.work.cta.external');
                 </div>
               </dl>
 
-              <ul class="flex flex-wrap gap-2 font-mono text-[10px] uppercase tracking-[0.15em] text-slate-600 dark:text-slate-400">
+              <ul class="flex flex-wrap gap-2 font-mono text-[10px] uppercase tracking-[0.15em]">
                 {p.stack.map((s) => (
-                  <li class="rounded-full border border-white/10 bg-white/5 px-2.5 py-1">{s}</li>
+                  <li class={`rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-slate-600 dark:${accent.border} dark:bg-white/5 dark:${accent.text}`}>{s}</li>
                 ))}
               </ul>
 

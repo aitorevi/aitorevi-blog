@@ -80,6 +80,13 @@ export default {
 			},
 		},
 	},
+	safelist: [
+		// Dynamic dark-mode accent classes used via interpolation in PostCinematic + WorkCinematic.
+		// Tailwind's scanner can't detect these from template expressions like `dark:${accent.text}`.
+		'dark:text-accent-violet',  'dark:text-accent-blue',  'dark:text-accent-emerald',  'dark:text-accent-sky',
+		'dark:ring-accent-violet/40', 'dark:ring-accent-blue/40', 'dark:ring-accent-emerald/40', 'dark:ring-accent-sky/40',
+		'dark:border-accent-violet/40', 'dark:border-accent-blue/40', 'dark:border-accent-emerald/40', 'dark:border-accent-sky/40',
+	],
 	plugins: [
 		require('@tailwindcss/typography'),
 	],

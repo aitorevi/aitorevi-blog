@@ -3,10 +3,10 @@ import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import DotField from '@/components/shared/DotField.astro';
-import Tag from '@/components/shared/Tag.astro';
 import BlogPagination from '@/components/blog/BlogPagination.astro';
 import BlogSearch from '@/components/blog/BlogSearch.astro';
-import { calculateReadingTime, sortPostsByDate, filterDrafts } from '@/lib/blog';
+import PostCinematic from '@/components/blog/PostCinematic.astro';
+import { sortPostsByDate, filterDrafts } from '@/lib/blog';
 import { formatDate } from '@/lib/date';
 import { t, getBlogSlugFromId } from '@/i18n/utils';
 import type { Lang } from '@/i18n/types';
@@ -47,12 +47,11 @@ type Accent = (typeof accentCycle)[number];
 const accentMap: Record<Accent, { text: string; bg: string; ring: string; glow: string; line: string; softBg: string; sectionVar: string }> = {
   violet:  { text: 'text-accent-violet',  bg: 'bg-accent-violet',  ring: 'ring-accent-violet/40',  glow: 'from-accent-violet/30', line: 'via-accent-violet/25', softBg: 'via-accent-violet/[0.07]', sectionVar: '--color-section-violet' },
   blue:    { text: 'text-accent-blue',    bg: 'bg-accent-blue',    ring: 'ring-accent-blue/40',    glow: 'from-accent-blue/30',   line: 'via-accent-blue/25',   softBg: 'via-accent-blue/[0.07]',   sectionVar: '--color-section-blue' },
-  emerald: { text: 'text-emerald-400',    bg: 'bg-emerald-400',    ring: 'ring-emerald-400/40',    glow: 'from-emerald-400/25',   line: 'via-emerald-400/20',   softBg: 'via-emerald-400/[0.06]',   sectionVar: '--color-section-emerald' },
+  emerald: { text: 'text-accent-emerald', bg: 'bg-accent-emerald', ring: 'ring-accent-emerald/40', glow: 'from-accent-emerald/25', line: 'via-accent-emerald/20', softBg: 'via-accent-emerald/[0.06]', sectionVar: '--color-section-emerald' },
   sky:     { text: 'text-accent-sky',     bg: 'bg-accent-sky',     ring: 'ring-accent-sky/40',     glow: 'from-accent-sky/25',    line: 'via-accent-sky/20',    softBg: 'via-accent-sky/[0.06]',    sectionVar: '--color-section-sky' },
 };
 
 const ctaLabel = lang === 'es' ? 'Leer artículo' : 'Read article';
-const featuredLabel = lang === 'es' ? 'destacado' : 'featured';
 
 const outroTitle = lang === 'es'
   ? 'Cada artículo, un aprendizaje.'
@@ -114,114 +113,17 @@ const outroTitle = lang === 'es'
       {posts.length > 0 && posts.map((post, i) => {
         const accent = accentMap[accentCycle[i % accentCycle.length]];
         const flip = i % 2 === 1;
-        const slug = getBlogSlugFromId(post.id);
-        const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
-        const reading = calculateReadingTime(post.body || '', lang);
-        const tags = post.data.tags.slice(0, 3);
         const number = String(firstPostNumber - i).padStart(2, '0');
         return (
-          <article
-            class="cinematic-section relative px-6 py-12 md:py-16"
-            data-cinematic-section
-            style={`--cin-hover:rgb(var(${accent.sectionVar}))`}
-            aria-labelledby={`post-${slug}`}
-          >
-            <div aria-hidden="true" class={`pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent ${accent.softBg} to-transparent`}></div>
-            <div aria-hidden="true" class={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent ${accent.line} to-transparent`}></div>
-
-            <div class="mx-auto grid w-full max-w-5xl grid-cols-1 items-center gap-8 md:grid-cols-12 md:gap-10 lg:gap-12">
-              <div class={`md:col-span-6 lg:col-span-6 ${flip ? 'md:order-2' : ''}`} data-cinematic-meta>
-                <div class="space-y-4">
-                  <div class="flex items-baseline gap-3">
-                    <span class={`font-display text-3xl font-black tracking-tighter ${accent.text} md:text-4xl`}>
-                      {number}
-                    </span>
-                    <span class="normal-case text-xs tracking-normal font-mono text-slate-500 dark:text-slate-400">
-                      {formatDate(post.data.publishDate, lang === 'es' ? 'es-ES' : 'en-US')}
-                    </span>
-                    <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
-                      · {reading.minutes} min
-                    </span>
-                    {post.data.featured && (
-                      <span class={`inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.25em] ${accent.text}`}>
-                        <span class={`h-1.5 w-1.5 rounded-full ${accent.bg} animate-pulse`}></span>
-                        {featuredLabel}
-                      </span>
-                    )}
-                  </div>
-
-                  <h2
-                    id={`post-${slug}`}
-                    class="font-display text-2xl font-black leading-tight tracking-tight text-ink-900 dark:text-slate-50 md:text-3xl"
-                  >
-                    <a
-                      href={postUrl}
-                      class="blog-title-link transition-colors duration-200 focus:outline-none focus-visible:underline"
-                    >
-                      {post.data.title}
-                    </a>
-                  </h2>
-
-                  <p class="text-sm leading-relaxed text-slate-700 dark:text-slate-300 line-clamp-3">
-                    {post.data.description}
-                  </p>
-
-                  {tags.length > 0 && (
-                    <ul class="flex flex-wrap gap-2 list-none p-0" aria-label={t(lang, 'blog.tags')}>
-                      {tags.map((tag) => (
-                        <li><Tag label={tag} variant="accent" /></li>
-                      ))}
-                    </ul>
-                  )}
-
-                  <a
-                    href={postUrl}
-                    class={`group inline-flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] ${accent.text} focus:outline-none focus-visible:underline`}
-                  >
-                    <span>{ctaLabel}</span>
-                    <span class={`relative h-px w-10 ${accent.bg} transition-all duration-500 group-hover:w-16`}></span>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" aria-hidden="true">
-                      <path d="M5 12h14M13 5l7 7-7 7" />
-                    </svg>
-                  </a>
-                </div>
-              </div>
-
-              <div class={`md:col-span-6 lg:col-span-6 ${flip ? 'md:order-1' : ''}`} data-cinematic-visual>
-                <a
-                  href={postUrl}
-                  class={`cinematic-mock ${flip ? 'cinematic-mock--flip' : ''} block relative overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-1 shadow-xl ring-1 ${accent.ring} focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue`}
-                  aria-label={`${ctaLabel}: ${post.data.title}`}
-                >
-                  <div class="flex items-center gap-1.5 border-b border-white/5 bg-ink-800/95 px-3 py-2 backdrop-blur">
-                    <span class="h-2 w-2 rounded-full bg-red-400/70"></span>
-                    <span class="h-2 w-2 rounded-full bg-yellow-400/70"></span>
-                    <span class="h-2 w-2 rounded-full bg-green-400/70"></span>
-                    <span class="ml-3 font-mono text-[9px] text-slate-400 truncate">aitorevi.dev{postUrl}</span>
-                  </div>
-                  <div class="relative aspect-video w-full overflow-hidden bg-ink-900">
-                    {post.data.coverImage ? (
-                      <img
-                        src={post.data.coverImage}
-                        alt={post.data.coverImageAlt || post.data.title}
-                        width="1200"
-                        height="675"
-                        class="h-full w-full object-cover"
-                        loading={i < 2 ? 'eager' : 'lazy'}
-                        decoding={i < 2 ? 'sync' : 'async'}
-                      />
-                    ) : (
-                      <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-ink-800 to-ink-900">
-                        <span class="select-none font-display text-4xl font-black tracking-tight text-slate-50">
-                          aitorevi<span class={accent.text}>.</span>
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </a>
-              </div>
-            </div>
-          </article>
+          <PostCinematic
+            post={post}
+            accent={accent}
+            flip={flip}
+            number={number}
+            ctaLabel={ctaLabel}
+            lang={lang}
+            eager={i < 2}
+          />
         );
       })}
 
