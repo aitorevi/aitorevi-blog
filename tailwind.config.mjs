@@ -14,6 +14,7 @@ export default {
 					violet: '#a78bfa',
 					blue:   '#60a5fa',
 					sky:    '#38bdf8',
+					emerald:'#10b981',
 				},
 				// Page background token (bg-page switches light/dark automatically)
 				page: 'rgb(var(--color-bg) / <alpha-value>)',
