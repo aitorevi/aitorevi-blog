@@ -1,5 +1,6 @@
 ---
 import type { Lang } from '@/i18n/types';
+import { t } from '@/i18n/utils';
 
 interface Props {
   type: 'dashboard' | 'terminal' | 'landing' | 'calculator';
@@ -36,7 +37,7 @@ const { type, lang, flip, href, external, ring, browserUrl } = Astro.props;
         <div class="grid h-full grid-cols-3 gap-3">
           <div class="col-span-2 row-span-2 rounded-md bg-gradient-to-br from-accent-violet/40 via-accent-violet/10 to-transparent">
             <div class="p-3 font-mono text-[9px] uppercase tracking-[0.2em] text-accent-violet/80">
-              {lang === 'es' ? 'Instalaciones · activas' : 'Installations · active'}
+              {t(lang, 'home.work.mock.ims.status')}
             </div>
             <div class="mx-3 mb-3 mt-1 grid grid-cols-4 gap-1">
               {[8, 14, 11, 18, 16, 22, 19, 26].map((h) => (
@@ -86,13 +87,13 @@ const { type, lang, flip, href, external, ring, browserUrl } = Astro.props;
           </div>
           <div class="my-auto text-center">
             <div class="font-display text-2xl font-black text-slate-200 md:text-3xl">
-              {lang === 'es' ? 'Pintura profesional' : 'Professional painting'}
+              {t(lang, 'home.work.mock.colorprof.service')}
             </div>
             <div class="mt-2 font-mono text-[10px] uppercase tracking-[0.25em] text-emerald-400">
               Valencia · 2024
             </div>
             <button class="mt-5 rounded-full border border-emerald-400/40 bg-emerald-400/10 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-emerald-300">
-              {lang === 'es' ? 'Pedir presupuesto' : 'Request quote'}
+              {t(lang, 'home.work.mock.colorprof.cta')}
             </button>
           </div>
           <div class="grid grid-cols-3 gap-2">
@@ -106,23 +107,23 @@ const { type, lang, flip, href, external, ring, browserUrl } = Astro.props;
       {type === 'calculator' && (
         <div class="flex h-full flex-col gap-3">
           <div class="font-mono text-[10px] uppercase tracking-[0.2em] text-accent-sky">
-            {lang === 'es' ? 'Cálculo de perjuicio' : 'Loss calculation'}
+            {t(lang, 'home.work.mock.irph.calc')}
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div class="rounded-md bg-white/5 p-2.5">
-              <div class="font-mono text-[9px] uppercase tracking-[0.18em] text-slate-500">{lang === 'es' ? 'Capital' : 'Principal'}</div>
+              <div class="font-mono text-[9px] uppercase tracking-[0.18em] text-slate-500">{t(lang, 'home.work.mock.irph.capital')}</div>
               <div class="mt-1 font-display text-base font-bold text-slate-200">€ 180.000</div>
             </div>
             <div class="rounded-md bg-white/5 p-2.5">
-              <div class="font-mono text-[9px] uppercase tracking-[0.18em] text-slate-500">{lang === 'es' ? 'Plazo' : 'Term'}</div>
-              <div class="mt-1 font-display text-base font-bold text-slate-200">25 {lang === 'es' ? 'años' : 'yrs'}</div>
+              <div class="font-mono text-[9px] uppercase tracking-[0.18em] text-slate-500">{t(lang, 'home.work.mock.irph.term')}</div>
+              <div class="mt-1 font-display text-base font-bold text-slate-200">25 {t(lang, 'home.work.mock.irph.years')}</div>
             </div>
           </div>
           <div class="my-auto rounded-lg border border-accent-sky/30 bg-accent-sky/10 p-4 text-center">
-            <div class="font-mono text-[9px] uppercase tracking-[0.25em] text-accent-sky">{lang === 'es' ? 'Perjuicio estimado' : 'Estimated loss'}</div>
+            <div class="font-mono text-[9px] uppercase tracking-[0.25em] text-accent-sky">{t(lang, 'home.work.mock.irph.estimated')}</div>
             <div class="mt-2 font-display text-3xl font-black text-accent-sky">€ 28.412</div>
           </div>
-          <div class="font-mono text-[9px] text-slate-600">{lang === 'es' ? 'fuente: Google Sheets' : 'source: Google Sheets'}</div>
+          <div class="font-mono text-[9px] text-slate-600">{t(lang, 'home.work.mock.irph.source')}</div>
         </div>
       )}
     </div>

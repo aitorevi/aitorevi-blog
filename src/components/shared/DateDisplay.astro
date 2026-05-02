@@ -16,6 +16,7 @@
  */
 
 import { formatDate, formatDateISO } from '@/lib/date';
+import { getLangLocale, t } from '@/i18n/utils';
 
 interface Props {
   /**
@@ -68,10 +69,10 @@ const {
   ariaLabel,
 } = Astro.props;
 
-const resolvedLocale = locale ?? (lang === 'es' ? 'es-ES' : 'en-US');
+const resolvedLocale = locale ?? getLangLocale(lang);
 const formattedDate = formatDate(date, resolvedLocale, short);
 const isoDate = formatDateISO(date);
-const label = ariaLabel || (lang === 'es' ? `Publicado el ${formattedDate}` : `Published on ${formattedDate}`);
+const label = ariaLabel || `${t(lang, 'blog.publishedOn')} ${formattedDate}`;
 ---
 
 <time

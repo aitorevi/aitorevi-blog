@@ -137,7 +137,7 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 			href="#main-content"
 			class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:rounded focus:bg-white dark:focus:bg-ink-900 focus:px-4 focus:py-2 focus:text-secondary focus:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
 		>
-			{lang === 'es' ? 'Saltar al contenido principal' : 'Skip to main content'}
+			{t(lang, 'misc.skipToContent')}
 		</a>
 		<Nav alternateUrl={alternatePath} />
 		<main id="main-content" class="flex-1 relative z-0">

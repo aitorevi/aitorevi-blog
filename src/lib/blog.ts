@@ -3,6 +3,8 @@
  * Sorting, filtering and reading time calculation
  */
 
+import { t } from '@/i18n/utils';
+
 const WORDS_PER_MINUTE = 225;
 
 /**
@@ -29,7 +31,7 @@ export function calculateReadingTime(
 
   const words = plainText.split(/\s+/).filter(Boolean).length;
   const minutes = Math.max(1, Math.ceil(words / WORDS_PER_MINUTE));
-  const label = lang === 'es' ? 'min de lectura' : 'min read';
+  const label = t(lang, 'blog.readTime');
 
   return { minutes, words, text: `${minutes} ${label}` };
 }
