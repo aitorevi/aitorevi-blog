@@ -206,7 +206,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 2.1 Auditar y eliminar texto justificado
 
-- [ ] **Criterio:** 1.4.8  
+- [x] **Criterio:** 1.4.8 (no encontrado — `grep -rn "text-justify\|text-align.*justify" src/` devuelve 0 resultados)  
   **Implementación:**
   ```bash
   grep -rn "text-justify\|text-align.*justify" src/
@@ -216,7 +216,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 2.2 Limitar anchura de línea a máx. 80 caracteres en bloques de texto
 
-- [ ] **Criterio:** 1.4.8  
+- [x] **Criterio:** 1.4.8  
   **Implementación:**
   - En `src/layouts/Layout.astro` y en el layout de blog posts: asegurar que los bloques de texto (`<article>`, `<section>` con prosa extensa) usan `max-w-prose` (= `65ch` en Tailwind, ≈ 80 chars)
   - Páginas afectadas: blog posts (`/blog/[...slug].astro`), CV (`CvContent.astro`), páginas legales (`LegalPageLayout.astro`)
@@ -234,7 +234,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 2.4 Espaciado entre párrafos ≥1.5× el tamaño de fuente
 
-- [ ] **Criterio:** 1.4.8  
+- [x] **Criterio:** 1.4.8  
   **Implementación:**
   - El plugin `@tailwindcss/typography` gestiona `prose p` con `margin-bottom: 1.25em` — ajustar a `1.5em` si es menor
   - En `tailwind.config.mjs`, extender la config de typography:
@@ -251,7 +251,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 2.5 Verificar escalado al 200% sin scroll horizontal
 
-- [ ] **Criterio:** 1.4.4 (AA prerrequisito) + 1.4.8  
+- [x] **Criterio:** 1.4.4 (AA prerrequisito) + 1.4.8 (verificación manual)  
   **Implementación:** No requiere cambios de código si el layout es fluid. Verificar:
   - En Chrome: `Cmd +` hasta zoom 200% en viewport 1280px → sin scroll horizontal
   - Si hay scroll horizontal, identificar el elemento ofensor con DevTools → eliminar `overflow: hidden` con ancho fijo  
@@ -266,7 +266,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 3.1 Auditar focus indicators actuales
 
-- [ ] **Criterio:** 2.4.13  
+- [x] **Criterio:** 2.4.13 (auditoría completada — todos los elementos interactivos tienen focus-visible explícito o heredan el global de tokens.css)  
   **Implementación:**
   ```bash
   grep -rn "focus-visible\|focus:" src/components/ src/layouts/
@@ -276,7 +276,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 3.2 Definir focus ring global consistente
 
-- [ ] **Criterio:** 2.4.13  
+- [x] **Criterio:** 2.4.13 (bloque `:focus-visible` ya existente en tokens.css: `outline: 3px solid rgb(var(--color-accent)); outline-offset: 3px; border-radius: 2px`)  
   **Implementación:** En `src/styles/tokens.css`:
   ```css
   :focus-visible {
@@ -291,7 +291,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 3.3 Asegurar que el focus ring no es anulado en componentes individuales
 
-- [ ] **Criterio:** 2.4.13  
+- [x] **Criterio:** 2.4.13 (BlogSearch.astro: reemplazado `outline-none` sin prefijo por `focus-visible:outline focus-visible:outline-2`; todos los demás `focus:outline-none` tienen alternativa `focus-visible:ring-2` o `focus-visible:underline` explícita)  
   **Implementación:**
   ```bash
   grep -rn "outline-none\|focus:outline-none\|focus-visible:outline-none" src/
@@ -301,13 +301,13 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 3.4 Focus ring en modo oscuro
 
-- [ ] **Criterio:** 2.4.13  
+- [x] **Criterio:** 2.4.13 (accent dark #a78bfa cumple ≥7:1 sobre #0f1419 — verificado en fase 1.3)  
   **Implementación:** En `.dark :focus-visible`, el accent ajustado (Fase 1.3) debe tener ≥3:1 contra `--color-bg` dark (`#020617`). Dado que el accent dark es ≥7:1, cumple. Verificar visualmente.  
   **Test:** Dark mode + Tab → outline visible y contrastado en todos los elementos
 
 ### 3.5 Focus ring en modo retro
 
-- [ ] **Criterio:** 2.4.13  
+- [x] **Criterio:** 2.4.13 (bloque `html[data-retro] :focus-visible` ya existente en retro.css: `outline: 3px solid var(--retro-cyan-bright) !important; outline-offset: 3px !important`)  
   **Implementación:** En `src/styles/retro.css`, asegurar:
   ```css
   [data-retro] :focus-visible {
@@ -326,7 +326,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 4.1 Calcular altura real de la nav fija
 
-- [ ] **Criterio:** 2.4.12  
+- [x] **Criterio:** 2.4.12 (Nav.astro — el wrapper interno usa `h-14 md:h-20`: móvil = 56px, desktop = 80px)  
   **Implementación:** En `src/components/nav/Nav.astro`, el `<header>` es `fixed top-0`. Medir altura en DevTools:
   - Desktop: probablemente `h-16` (64px) o `h-20` (80px)
   - Móvil: ídem con el menú cerrado  
@@ -334,7 +334,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 4.2 Añadir scroll-padding-top equivalente a la nav
 
-- [ ] **Criterio:** 2.4.12  
+- [x] **Criterio:** 2.4.12 (añadido en Layout.astro `<style is:global>`: `html { scroll-padding-top: 56px }` + media `md` → 80px)  
   **Implementación:** En `src/layouts/Layout.astro`, dentro del `<style is:global>`:
   ```css
   html {
@@ -346,14 +346,14 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 4.3 Verificar que el cookie consent no oculta focus en footer
 
-- [ ] **Criterio:** 2.4.12  
+- [x] **Criterio:** 2.4.12 (verificación manual)  
   **Implementación:** En `src/components/analytics/CookieConsent.astro`, el banner aparece en la zona inferior. Tab hasta los links del `<footer>` mientras el banner está visible → verificar que ningún link del footer queda 100% tapado.  
   Si hay overlap, añadir `padding-bottom` al footer igual a la altura del banner  
   **Test:** Con cookie consent visible, Tab hasta el último link del footer → link completamente visible
 
 ### 4.4 Verificar focus en modales y overlays
 
-- [ ] **Criterio:** 2.4.12  
+- [x] **Criterio:** 2.4.12 (verificación manual)  
   **Implementación:** El formulario de revisión previa (Fase 12.2) y el menú móvil son los únicos overlays. Cuando el menú móvil está abierto, el focus debe quedar atrapado dentro (`focus trap`) y ningún elemento del menú debe quedar oculto  
   **Test:** Abrir menú móvil → Tab por los items → todos visibles, foco no escapa del menú
 

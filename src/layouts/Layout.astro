@@ -163,6 +163,17 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 	</body>
 </html>
 <style is:global>
+	/* WCAG 2.4.12 Focus Not Obscured (Enhanced, AAA): keep focused elements
+	   clear of the fixed navigation bar. Mobile nav: h-14 (56px); desktop: h-20 (80px). */
+	html {
+		scroll-padding-top: 56px;
+	}
+	@media (min-width: 768px) {
+		html {
+			scroll-padding-top: 80px;
+		}
+	}
+
 	body[data-bg="dark-radial"] {
 		background-color: #f8fafc;
 		background-image: none;

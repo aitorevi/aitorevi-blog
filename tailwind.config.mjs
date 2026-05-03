@@ -78,6 +78,15 @@ export default {
 				'home-rise': 'home-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both',
 				'home-pulse': 'home-pulse 2.4s ease-in-out infinite',
 			},
+			typography: {
+				DEFAULT: {
+					css: {
+						// WCAG 1.4.8 Visual Presentation (AAA): paragraph spacing ≥1.5× font size.
+						// @tailwindcss/typography defaults to 1.25em; 1.5em meets the AAA criterion.
+						p: { marginBottom: '1.5em' },
+					},
+				},
+			},
 		},
 	},
 	safelist: [
