@@ -2,7 +2,7 @@
 title: "BEM, ¿te apuntas?"
 description: "Introducción a la metodología BEM para nombrar clases en CSS: qué son bloques, elementos y modificadores, y cómo aplicarlos con ejemplos prácticos."
 publishDate: 2024-10-16
-coverImage: /images/blog/bem-intro/cover.webp
+coverImage: ../bem-intro/cover.webp
 coverImageAlt: "Aula de colegio con pizarra al fondo que pone BEM, imagen de portada del artículo de introducción a BEM"
 tags:
   - CSS

@@ -17,8 +17,8 @@ const sharedBlogFields = {
   }),
   coverImage: fields.image({
     label: 'Cover image',
-    directory: 'public/images/blog',
-    publicPath: '/images/blog/',
+    directory: 'src/content/blog/{slug}',
+    publicPath: '../{slug}/',
   }),
   coverImageAlt: fields.text({
     label: 'Cover image alt text',
@@ -107,8 +107,8 @@ export default config({
           extension: 'md',
           options: {
             image: {
-              directory: 'public/images/blog',
-              publicPath: '/images/blog/',
+              directory: 'src/content/blog/{slug}',
+              publicPath: '../{slug}/',
             },
           },
         }),
@@ -137,8 +137,8 @@ export default config({
           extension: 'md',
           options: {
             image: {
-              directory: 'public/images/blog',
-              publicPath: '/images/blog/',
+              directory: 'src/content/blog/{slug}',
+              publicPath: '../{slug}/',
             },
           },
         }),

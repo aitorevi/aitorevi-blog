@@ -2,7 +2,7 @@
 title: "Mock 101: The Art of Testing, a Unique Experience at Nerdearla"
 description: "Recap of our Mock 101 workshop at Nerdearla 2025: we taught dummies, stubs, spies, mocks, and fakes with practical katas in 6 programming languages."
 publishDate: 2025-11-18
-coverImage: /images/blog/mock-101-nerdearla/cover.webp
+coverImage: ../mock-101-nerdearla/cover.webp
 coverImageAlt: "Lean Mind team delivering the Mock 101: The Art of Testing workshop at Nerdearla 2025"
 tags:
   - Testing
@@ -66,19 +66,19 @@ Here we were straightforward: use libraries like Mockito or Jest. They are optim
 
 Besides the success of our workshop, the event gave us the opportunity to connect with community leaders. We had the pleasure of sharing a few minutes with Brais Moure (MoureDev), a key and highly respected figure on social media in the field of development and programming. An inspiring moment that reinforces the quality of networking at Nerdearla.
 
-![Aitor Reviriego and Aitor Santana with Brais Moure (MoureDev)](/images/blog/mock-101-nerdearla/mock-101-nerdearla-2.webp)
+![Aitor Reviriego and Aitor Santana with Brais Moure (MoureDev)](../mock-101-nerdearla/mock-101-nerdearla-2.webp)
 
 ## The Fun of Nerdearla: Beyond the Code
 
 The event was a very fun experience overall. As a showcase of Nerdearla's unique atmosphere, they even had a car that simulated a rollover for all attendees. A playful activity that added excitement and a memorable touch to the day.
 
-![Fun memories at Nerdearla](/images/blog/mock-101-nerdearla/mock-101-nerdearla-3.webp)
+![Fun memories at Nerdearla](../mock-101-nerdearla/mock-101-nerdearla-3.webp)
 
 ## Celebrating Synergy: Lean Mind and Next Digital
 
 Beyond the workshop, the event was also special because it allowed us to meet many colleagues from Next Digital in person, with whom we now share a path. It was great to be able to chat, exchange ideas, and feel like part of the same team.
 
-![Networking moment with Next Digital](/images/blog/mock-101-nerdearla/mock-101-nerdearla-4.webp)
+![Networking moment with Next Digital](../mock-101-nerdearla/mock-101-nerdearla-4.webp)
 
 ## Acknowledgments
 

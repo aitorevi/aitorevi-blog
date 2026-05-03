@@ -2,7 +2,7 @@
 title: "Profundizando en BEM sobre una estructura más compleja"
 description: "Segunda entrega sobre BEM: cómo simplificar nomenclatura de clases CSS en estructuras complejas iterando hacia nombres más concisos y semánticos."
 publishDate: 2024-10-17
-coverImage: /images/blog/bem-deep-dive/cover.webp
+coverImage: ../bem-deep-dive/cover.webp
 coverImageAlt: "Ilustración digital vibrante y colorista, portada del artículo de profundización en BEM"
 tags:
   - CSS

@@ -4,7 +4,7 @@ description: >-
   Cuando una función puede fallar, que el tipo lo diga. Result Pattern en
   TypeScript: errores explícitos, type-safe y fáciles de testear.
 publishDate: 2026-02-03
-coverImage: /images/blog/result-pattern-typescript/cover.webp
+coverImage: ../result-pattern-typescript/cover.webp
 coverImageAlt: >-
   Tubería en Y violeta dividiéndose en dos sobres: uno verde con check y otro
   rojo con X

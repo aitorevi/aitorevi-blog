@@ -29,6 +29,7 @@
  */
 
 import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 
 import Tag from '@/components/shared/Tag.astro';
 import DateDisplay from '@/components/shared/DateDisplay.astro';
@@ -124,11 +125,11 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
     aria-label={`Read full post: ${data.title}`}
   >
     {data.coverImage ? (
-      <img
+      <Image
         src={data.coverImage}
         alt={data.coverImageAlt || data.title}
-        width="800"
-        height="450"
+        widths={[400, 600, 800]}
+        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 600px"
         class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 transform-gpu [backface-visibility:hidden]"
         loading={priority ? 'eager' : 'lazy'}
         decoding={priority ? 'sync' : 'async'}
