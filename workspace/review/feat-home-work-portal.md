@@ -1,6 +1,6 @@
 # feat: Portal hacia /work en la home
 
-**Status:** PLANNING
+**Status:** REVIEW
 **Branch:** feat/home-work-portal
 **Type:** Feature visual
 
@@ -33,9 +33,16 @@ Ya existe un `src/components/home/Portfolio.astro` (4 GlassCards en grid) que NO
 - NO: lista o tabla
 - NO: cualquier patrón que se parezca a "featured projects"
 
-## Concepto visual (pendiente de validación)
+## Concepto visual elegido: "Terminal Portal"
 
-La fase de concepto se delega a `astro-designer`. Se esperan 2-3 propuestas antes de implementar. Ver bocetos en la conversación de planificación.
+Estructura: SectionHeader (título + subtítulo) + ventana de terminal interactiva + CTA.
+
+- **Título ES**: `Casos en producción` / **EN**: `Case studies in production`
+- **Subtítulo ES**: `// código que ya está sirviendo a alguien` / **EN**: `// code already serving someone`
+- **El algo**: ventana mac-style (semáforo, barra `~/work`) que teclea automáticamente con IO: `$ cd ~/work → $ ls --projects → 4 case studies · 2024–2026 → $ open ./`. Debajo: grid 2×2 de chips mono `01 · nombre` — decorativos. Todo el conjunto es clicable.
+- **CTA**: botón fantasma mono `→ Ver casos completos` / `→ View full case studies`
+
+**Datos YAML usados:** `number`, `name` (para los chips decorativos), `year` (rango de años)
 
 ## Lenguaje visual existente (referencia para el designer)
 
@@ -54,12 +61,11 @@ hrefEs/hrefEn, external, metric.value/labelEs/labelEn, mockType, order
 
 ## Implementation Steps (tras validar concepto)
 
-- [ ] Elegir concepto (Approval Gate — esperar feedback del usuario)
-- [ ] Crear `src/components/home/WorkPortal.astro` con el concepto elegido
-- [ ] Añadir traducciones en `src/i18n/messages/home.ts` (título, subtítulo, CTA, aria-labels)
-- [ ] Incluir el componente en `HomeContent.astro` (posición: entre TechStack/StatsCounter y LatestPosts)
+- [x] Elegir concepto — **"Terminal Portal"** elegido por el usuario (reemplaza "The Pull" descartado)
+- [ ] Reemplazar `src/components/home/WorkPortal.astro` con el concepto "Terminal Portal"
+- [ ] Actualizar traducciones en `src/i18n/messages/home.ts` (título, subtítulo, chips, CTA, aria-label)
+- [ ] Verificar que `HomeContent.astro` sigue incluyendo WorkPortal correctamente
 - [ ] Verificar accesibilidad: teclado, ARIA, `prefers-reduced-motion`
-- [ ] Verificar dark mode y mobile
 - [ ] `npx astro check` sin errores
 - [ ] `npm run test:unit` verde
 - [ ] Verificar visualmente en dev server (desktop + mobile)
