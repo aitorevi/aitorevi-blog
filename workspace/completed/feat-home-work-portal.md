@@ -1,6 +1,6 @@
 # feat: Portal hacia /work en la home
 
-**Status:** REVIEW
+**Status:** COMPLETED
 **Branch:** feat/home-work-portal
 **Type:** Feature visual
 
