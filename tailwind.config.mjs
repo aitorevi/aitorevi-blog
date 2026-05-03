@@ -25,9 +25,9 @@ export default {
 
 				// ── Raw tokens (kept for backward-compat) ────────────────────────
 				primary:    '#151b27',
-				secondary:  '#5e3aee',
+				secondary:  '#4727cc', /* Updated from #5e3aee to meet WCAG AAA 1.4.6 (~7.5:1 contrast) */
 				tertiary:   '#d0edf5',   // referenced in retro.css
-				quaternary: '#aeb2bb',
+				quaternary: '#334155', /* Updated from #aeb2bb (~3.5:1) to slate-700 (~9.6:1) for WCAG AAA 1.4.6 */
 				grayLight:  '#f9f9fc',   // used in Tag.astro default variant
 				baseLight:  '#f1faff',   // referenced in retro.css
 				ink: {
