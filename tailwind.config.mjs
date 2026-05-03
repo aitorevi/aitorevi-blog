@@ -86,6 +86,13 @@ export default {
 		'dark:text-accent-violet',  'dark:text-accent-blue',  'dark:text-accent-emerald',  'dark:text-accent-sky',
 		'dark:ring-accent-violet/40', 'dark:ring-accent-blue/40', 'dark:ring-accent-emerald/40', 'dark:ring-accent-sky/40',
 		'dark:border-accent-violet/40', 'dark:border-accent-blue/40', 'dark:border-accent-emerald/40', 'dark:border-accent-sky/40',
+		// WorkCinematic accent dots — bg class computed from project.data.accent at runtime.
+		'bg-accent-violet', 'bg-accent-blue', 'bg-accent-sky', 'bg-accent-emerald',
+		// WorkCinematic metric text — light-mode accent text classes computed at runtime.
+		'text-violet-700', 'text-blue-700', 'text-sky-700', 'text-emerald-700',
+		// WorkPortal chip accents — /10 bg and /20 border opacity variants used via chipAccentMap lookup.
+		'bg-accent-violet/10', 'bg-accent-blue/10', 'bg-accent-emerald/10', 'bg-accent-sky/10',
+		'border-accent-violet/20', 'border-accent-blue/20', 'border-accent-emerald/20', 'border-accent-sky/20',
 	],
 	plugins: [
 		require('@tailwindcss/typography'),

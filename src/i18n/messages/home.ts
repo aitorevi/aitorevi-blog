@@ -125,6 +125,10 @@ export const home = {
     'home.talks.tag.workshop': 'Taller',
     'home.talks.with': 'Con',
     'home.talks.repo': 'Código del taller',
+    'home.workPortal.title': 'Código en producción',
+    'home.workPortal.subtitle': '// del problema a la solución',
+    'home.workPortal.typing.ls': '→ {count} case studies · {minYear}–{maxYear}',
+    'home.workPortal.ariaLabel': 'Ver los casos de estudio completos',
   },
   en: {
     'home.greeting': 'Hi! I am',
@@ -252,5 +256,9 @@ export const home = {
     'home.talks.tag.workshop': 'Workshop',
     'home.talks.with': 'With',
     'home.talks.repo': 'Workshop code',
+    'home.workPortal.title': 'Code in production',
+    'home.workPortal.subtitle': '// from problem to solution',
+    'home.workPortal.typing.ls': '→ {count} case studies · {minYear}–{maxYear}',
+    'home.workPortal.ariaLabel': 'View the full case studies',
   },
 };

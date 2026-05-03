@@ -26,7 +26,7 @@
     "format:check": "prettier --check \"src/**/*.{astro,ts,tsx,js,jsx,css,json,md}\" \"scripts/**/*.{mjs,js,ts}\" \"*.{json,md,cjs,mjs}\""
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.8",
+    "@astrojs/check": "^0.9.9",
     "@astrojs/react": "^5.0.4",
     "@astrojs/sitemap": "^3.7.2",
     "@astrojs/tailwind": "^6.0.2",
@@ -45,7 +45,7 @@
     "react-dom": "^18.2.0",
     "resend": "^6.12.2",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.9.3"
   },
   "overrides": {
     "svix": "^1.92.2"

@@ -1,0 +1,286 @@
+---
+/**
+ * WorkPortal — "Terminal Portal".
+ *
+ * A section with clear hierarchy: SectionHeader + mac-style terminal window + CTA.
+ * The terminal window shows a typing animation that triggers when the section
+ * enters the viewport (IntersectionObserver). After typing completes a 2×2
+ * grid of decorative project chips fades in.
+ *
+ * Accessibility:
+ * - The terminal window is purely presentational (aria-hidden). The section
+ *   is labelled by the SectionHeader. The only interactive element is the CTA.
+ * - Chips are aria-hidden — they are decorative, not links.
+ * - prefers-reduced-motion: full text appears instantly with fade-in; no typing.
+ *
+ * Data:
+ * - Projects loaded from the 'projects' collection, sorted by `order`.
+ * - Year range computed from the numeric portions of each project's `year` field
+ *   (e.g. "2024 — present" → 2024, "2024" → 2024).
+ */
+import { getCollection, type CollectionEntry } from 'astro:content';
+import type { Lang } from '@/i18n/types';
+import { t } from '@/i18n/utils';
+import SectionHeader from '@/components/shared/SectionHeader.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+type ProjectEntry = CollectionEntry<'projects'>;
+
+const rawProjects = await getCollection('projects');
+const projects = rawProjects.sort(
+  (a: ProjectEntry, b: ProjectEntry) => a.data.order - b.data.order
+);
+
+// Extract the first 4-digit year from strings like "2024 — present" or "2024".
+function extractYear(yearStr: string): number {
+  const match = yearStr.match(/\d{4}/);
+  return match ? parseInt(match[0], 10) : new Date().getFullYear();
+}
+
+const years = projects.map((p: ProjectEntry) => extractYear(p.data.year));
+const minYear = years.length ? Math.min(...years) : new Date().getFullYear();
+const maxYear = years.length ? Math.max(...years) : minYear;
+const projectCount = projects.length;
+
+interface ChipAccent {
+  bg: string;
+  border: string;
+  text: string;
+}
+
+// Chip accent → Tailwind classes. These must remain literal strings (no interpolation)
+// so Tailwind's scanner detects them. The /10 and /20 opacity variants are also
+// safelisted in tailwind.config.mjs under "WorkPortal chip accents".
+const chipAccentMap: Record<string, ChipAccent> = {
+  violet:  { bg: 'bg-accent-violet/10', border: 'border-accent-violet/20', text: 'text-violet-700 dark:text-accent-violet' },
+  blue:    { bg: 'bg-accent-blue/10',   border: 'border-accent-blue/20',   text: 'text-blue-700 dark:text-accent-blue' },
+  emerald: { bg: 'bg-accent-emerald/10',border: 'border-accent-emerald/20',text: 'text-emerald-700 dark:text-accent-emerald' },
+  sky:     { bg: 'bg-accent-sky/10',    border: 'border-accent-sky/20',    text: 'text-sky-700 dark:text-accent-sky' },
+};
+
+interface Chip {
+  number: string;
+  name: string;
+  accent: ChipAccent;
+}
+
+const chips: Chip[] = projects.map((p: ProjectEntry) => ({
+  number: p.data.number,
+  name: p.data.name,
+  accent: chipAccentMap[p.data.accent] ?? chipAccentMap['violet']!,
+}));
+
+// Build the ls-output line by substituting the template from i18n.
+const lsTemplate = t(lang, 'home.workPortal.typing.ls');
+const lsLine = lsTemplate
+  .replace('{count}', String(projectCount))
+  .replace('{minYear}', String(minYear))
+  .replace('{maxYear}', String(maxYear));
+
+// Typing lines — order matches what the terminal "types" out.
+const typingLines = [
+  '$ cd ~/work',
+  '$ ls --projects',
+  lsLine,
+  '$ open ./',
+];
+
+const workHref = lang === 'en' ? '/en/work' : '/work';
+
+// Reserve the final height of the <pre> so the terminal doesn't push content
+// down as the typing animation reveals lines. text-sm (0.875rem) × leading-relaxed
+// (1.625) ≈ 1.422rem per line; small buffer added.
+const preMinHeight = `${(typingLines.length * 1.422 + 0.5).toFixed(2)}rem`;
+---
+
+<section
+  class="bg-white py-24 dark:bg-ink-900 md:py-32"
+  aria-labelledby="work-portal-heading"
+>
+  <div class="mx-auto max-w-5xl px-6">
+
+    <!-- Section header -->
+    <SectionHeader
+      id="work-portal-heading"
+      title={t(lang, 'home.workPortal.title')}
+      subtitle={t(lang, 'home.workPortal.subtitle')}
+    />
+
+    <!-- Terminal window — the entire window is the link to /work -->
+    <a
+      href={workHref}
+      aria-label={t(lang, 'home.workPortal.ariaLabel')}
+      class="work-portal-terminal group mt-12 block cursor-pointer overflow-hidden rounded-xl border border-slate-200 bg-slate-50 shadow-sm transition-all duration-200 hover:border-accent-blue/40 hover:shadow-lg hover:shadow-accent-blue/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-slate-700/50 dark:bg-ink-900/80 dark:backdrop-blur-sm dark:focus-visible:ring-offset-ink-900 dark:hover:border-accent-blue/40 dark:hover:shadow-accent-blue/10"
+    >
+      <!-- Title bar with traffic lights -->
+      <div class="flex items-center gap-2 border-b border-slate-200 bg-slate-100 px-4 py-3 dark:border-slate-700/50 dark:bg-slate-800/60" aria-hidden="true">
+        <span class="h-3 w-3 rounded-full bg-red-400"></span>
+        <span class="h-3 w-3 rounded-full bg-yellow-400"></span>
+        <span class="h-3 w-3 rounded-full bg-green-400"></span>
+        <span class="ml-2 font-mono text-xs text-slate-500 dark:text-slate-400">~/work</span>
+        <!-- Chevron affordance — signals this is a link -->
+        <span class="ml-auto font-mono text-xs text-slate-400 transition-transform duration-200 group-hover:translate-x-0.5 dark:text-slate-500" aria-hidden="true">→</span>
+      </div>
+
+      <!-- Terminal body -->
+      <div class="p-5 sm:p-6" aria-hidden="true">
+        <!-- Typing output — populated by JS; noscript shows full text immediately -->
+        <pre
+          class="work-portal-output font-mono text-sm leading-relaxed text-ink-900 dark:text-slate-200"
+          style={`min-height: ${preMinHeight}`}
+          data-lines={JSON.stringify(typingLines)}
+        ></pre>
+        <noscript>
+          <pre class="font-mono text-sm leading-relaxed text-ink-900 dark:text-slate-200">{typingLines.join('\n')}</pre>
+        </noscript>
+
+        <!-- Chips — hidden until typing finishes -->
+        <div class="work-portal-chips mt-5 grid grid-cols-2 gap-2 opacity-0 transition-opacity duration-500">
+          {chips.map((chip) => (
+            <div
+              class={`flex items-center gap-2 rounded-lg border px-3 py-2 ${chip.accent.bg} ${chip.accent.border}`}
+            >
+              <span class={`font-mono text-xs font-semibold ${chip.accent.text}`}>{chip.number}</span>
+              <span class={`font-mono text-xs ${chip.accent.text}`}>{chip.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<script>
+  /**
+   * WorkPortal "Terminal Portal" interactions:
+   *
+   * Typing animation:
+   * - IntersectionObserver fires when the terminal enters the viewport.
+   * - Each line is typed out character by character at ~40ms per char.
+   * - A blinking cursor `|` appears at the end while typing is in progress.
+   * - After all lines are typed the chips fade in.
+   *
+   * prefers-reduced-motion guard:
+   * - All text appears at once with a fade-in. No typing animation.
+   * - Chips also appear immediately.
+   */
+
+  const CHAR_DELAY_MS = 40;
+  const LINE_PAUSE_MS = 300;
+
+  // Module-level cleanup registry — populated by initWorkPortal, flushed on astro:before-swap.
+  const cleanupFns: Array<() => void> = [];
+
+  function runCleanup(): void {
+    cleanupFns.forEach((fn) => fn());
+    cleanupFns.length = 0;
+  }
+
+  function initWorkPortal(): void {
+    const terminals = document.querySelectorAll<HTMLElement>('.work-portal-terminal');
+    if (terminals.length === 0) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    terminals.forEach((terminal) => {
+      const output = terminal.querySelector<HTMLElement>('.work-portal-output');
+      const chips = terminal.querySelector<HTMLElement>('.work-portal-chips');
+      if (!output) return;
+
+      const rawLines = output.dataset.lines;
+      if (!rawLines) return;
+
+      let lines: string[];
+      try {
+        lines = JSON.parse(rawLines) as string[];
+      } catch {
+        return;
+      }
+
+      function showAllInstantly(): void {
+        if (!output) return;
+        output.textContent = lines.join('\n');
+        output.style.opacity = '0';
+        // Trigger reflow so the transition runs.
+        output.getBoundingClientRect();
+        output.style.transition = 'opacity 400ms ease';
+        output.style.opacity = '1';
+        revealChips();
+      }
+
+      function revealChips(): void {
+        if (chips) {
+          chips.classList.remove('opacity-0');
+        }
+      }
+
+      function typeLines(): void {
+        if (!output) return;
+        let lineIndex = 0;
+        let charIndex = 0;
+        let currentText = '';
+        let pendingTimeout: ReturnType<typeof setTimeout> | null = null;
+
+        cleanupFns.push(() => {
+          if (pendingTimeout !== null) clearTimeout(pendingTimeout);
+        });
+
+        function renderFrame(): void {
+          if (lineIndex >= lines.length) {
+            if (output) output.textContent = currentText;
+            revealChips();
+            return;
+          }
+
+          const currentLine = lines[lineIndex];
+
+          if (charIndex <= currentLine.length) {
+            const partial = currentLine.slice(0, charIndex);
+            const completedLines = currentText ? currentText + '\n' : '';
+            if (output) output.textContent = completedLines + partial + '|';
+            charIndex++;
+
+            if (charIndex > currentLine.length) {
+              currentText = currentText ? currentText + '\n' + currentLine : currentLine;
+              lineIndex++;
+              charIndex = 0;
+              pendingTimeout = setTimeout(() => requestAnimationFrame(renderFrame), LINE_PAUSE_MS);
+            } else {
+              pendingTimeout = setTimeout(() => requestAnimationFrame(renderFrame), CHAR_DELAY_MS);
+            }
+          }
+        }
+
+        requestAnimationFrame(renderFrame);
+      }
+
+      if (reduced) {
+        showAllInstantly();
+        return;
+      }
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            io.disconnect();
+            typeLines();
+          });
+        },
+        { threshold: 0.3 }
+      );
+      io.observe(terminal);
+      cleanupFns.push(() => io.disconnect());
+    });
+  }
+
+  document.addEventListener('astro:page-load', initWorkPortal);
+  document.addEventListener('astro:after-swap', initWorkPortal);
+  document.addEventListener('astro:before-swap', runCleanup);
+</script>
