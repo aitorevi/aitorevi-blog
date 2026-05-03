@@ -32,6 +32,7 @@ export const blog = {
     'blog.cta.read': 'Leer artículo',
     'blog.outro.title': 'Cada artículo, un aprendizaje.',
     'blog.search.results': 'resultados',
+    'blog.readPost': 'Leer artículo',
   },
   en: {
     'blog.copyCode': 'Copy',
@@ -66,5 +67,6 @@ export const blog = {
     'blog.search.results': 'results',
     'blog.cta.read': 'Read article',
     'blog.outro.title': 'Every article, a lesson.',
+    'blog.readPost': 'Read post',
   },
 };

@@ -9,7 +9,9 @@ import CvCertifications from './CvCertifications.astro';
 import CvPdfDownload from './CvPdfDownload.astro';
 import CvScrollReveal from './CvScrollReveal.astro';
 import DotField from '@/components/shared/DotField.astro';
+import Breadcrumb from '@/components/shared/Breadcrumb.astro';
 import { getCvData, getPdfPath, getJsonPath } from '@/data/cv';
+import { t, getLocalePath } from '@/i18n/utils';
 import type { Lang } from '@/i18n/types';
 
 interface Props {
@@ -32,7 +34,16 @@ const jsonPath = getJsonPath(lang);
     <!-- Dark-mode-only dot field — same logic as home hero -->
     <DotField />
 
-    <section class="cv-page mx-auto max-w-screen-xl mb-2 md:mb-4 p-6 pt-16 sm:p-7 sm:pt-16 md:p-8 md:pt-24 lg:p-16 lg:pt-24 pb-8 sm:pb-10 md:pb-12 lg:pb-12 rounded-2xl">
+    <div class="mx-auto max-w-screen-xl px-6 pt-20 sm:pt-24 md:pt-28 lg:pt-28">
+      <Breadcrumb
+        lang={lang}
+        items={[
+          { label: t(lang, 'nav.home'), href: getLocalePath('/', lang) },
+          { label: 'CV' },
+        ]}
+      />
+    </div>
+    <section class="cv-page mx-auto max-w-screen-xl mb-2 md:mb-4 p-6 pt-4 sm:p-7 sm:pt-4 md:p-8 md:pt-4 lg:p-16 lg:pt-4 pb-8 sm:pb-10 md:pb-12 lg:pb-12 rounded-2xl">
       <CvScrollReveal />
       <CvHeader contact={data.contact} />
       <CvProfile label={data.labels.profile} summary={data.summary} />

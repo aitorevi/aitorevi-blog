@@ -366,7 +366,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 5.1 Crear componente `Breadcrumb.astro`
 
-- [ ] **Criterio:** 2.4.8  
+- [x] **Criterio:** 2.4.8  
   **Implementación:** Crear `src/components/shared/Breadcrumb.astro`:
   ```astro
   ---
@@ -405,7 +405,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 5.2 Añadir breadcrumb en páginas de posts de blog
 
-- [ ] **Criterio:** 2.4.8  
+- [x] **Criterio:** 2.4.8  
   **Implementación:** En `src/pages/blog/[...slug].astro`:
   ```astro
   <Breadcrumb
@@ -421,7 +421,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 5.3 Añadir breadcrumb en páginas de Work
 
-- [ ] **Criterio:** 2.4.8  
+- [x] **Criterio:** 2.4.8  
   **Implementación:** En `src/pages/work/ims.astro` y `src/pages/work/aitorevi-dev.astro`:
   ```astro
   <Breadcrumb
@@ -437,7 +437,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 5.4 Añadir breadcrumb en página de CV
 
-- [ ] **Criterio:** 2.4.8  
+- [x] **Criterio:** 2.4.8  
   **Implementación:** En `src/pages/cv.astro`:
   ```astro
   <Breadcrumb
@@ -452,7 +452,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 5.5 Añadir breadcrumb en páginas legales
 
-- [ ] **Criterio:** 2.4.8  
+- [x] **Criterio:** 2.4.8  
   **Implementación:** En `src/components/legal/LegalPageLayout.astro` (o en las páginas individuales de privacidad, aviso legal, cookies), añadir breadcrumb con `Inicio › {título de la página}`  
   **Test:** Visitar `/privacidad` → breadcrumb "Inicio › Política de privacidad"
 
