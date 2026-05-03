@@ -1,0 +1,17 @@
+{
+  "defaults": {
+    "standard": "WCAG2AAA",
+    "timeout": 60000,
+    "wait": 1000,
+    "runners": ["axe", "htmlcs"]
+  },
+  "urls": [
+    "http://localhost:4321",
+    "http://localhost:4321/blog",
+    "http://localhost:4321/cv",
+    "http://localhost:4321/work",
+    "http://localhost:4321/en",
+    "http://localhost:4321/en/blog",
+    "http://localhost:4321/privacidad"
+  ]
+}

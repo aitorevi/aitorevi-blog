@@ -3,7 +3,8 @@
 **Objetivo:** Alcanzar el 100% de cumplimiento WCAG 2.2 Nivel AAA en todas las páginas del blog  
 **Rama de trabajo:** `feature/wcag-aaa-compliance`  
 **Restricción:** No merge a `master` hasta que todos los criterios estén implementados y testeados  
-**Fecha de creación:** 2026-05-03
+**Fecha de creación:** 2026-05-03  
+**Status:** IN PROGRESS
 
 ---
 
@@ -45,7 +46,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 0.1 Crear rama de trabajo
 
-- [ ] **Criterio:** N/A (infraestructura)  
+- [x] **Criterio:** N/A (infraestructura)  
   **Implementación:**
   ```bash
   git checkout master && git pull
@@ -55,7 +56,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 0.2 Instalar herramientas de testing automatizado
 
-- [ ] **Criterio:** N/A  
+- [x] **Criterio:** N/A  
   **Implementación:**
   ```bash
   npm install --save-dev axe-core @axe-core/playwright pa11y pa11y-ci
@@ -71,7 +72,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 0.3 Crear configuración de pa11y-ci
 
-- [ ] **Criterio:** N/A  
+- [x] **Criterio:** N/A  
   **Implementación:** Crear `.pa11yci.json` en raíz del proyecto:
   ```json
   {
@@ -96,7 +97,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 0.4 Crear test base Playwright con axe-core
 
-- [ ] **Criterio:** N/A  
+- [x] **Criterio:** N/A  
   **Implementación:** Crear `tests/a11y/pages.spec.ts`:
   ```typescript
   import { test, expect } from '@playwright/test';
@@ -118,7 +119,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 0.5 Instalar extensiones para auditoría manual
 
-- [ ] **Criterio:** N/A  
+- [x] **Criterio:** N/A (verificación manual pendiente — instalar axe DevTools, WAVE Extension, Colour Contrast Analyser manualmente)  
   **Implementación:**
   - Instalar [axe DevTools](https://www.deque.com/axe/browser-extensions/) en Chrome
   - Instalar [WAVE Extension](https://wave.webaim.org/extension/) en Firefox
