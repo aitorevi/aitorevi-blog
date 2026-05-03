@@ -2,7 +2,7 @@
 title: "From Blank Screens to Skeletons: Our Adventure with React Suspense in Next.js"
 description: "How we transformed blank screens into progressive loading experiences using React Suspense with Server Components in Next.js, without touching the backend."
 publishDate: 2026-03-25
-coverImage: /images/blog/react-suspense-skeletons/cover.webp
+coverImage: ../react-suspense-skeletons/cover.webp
 coverImageAlt: "Cover image for the article about React Suspense and skeletons in Next.js"
 tags:
   - React

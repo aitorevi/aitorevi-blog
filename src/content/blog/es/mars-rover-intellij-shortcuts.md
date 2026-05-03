@@ -2,7 +2,7 @@
 title: "La Saga Mars Rover: Shortcuts de IntelliJ"
 description: "Serie de shortcuts de IntelliJ que aumentaron nuestra eficiencia al hacer la kata Mars Rover: Alt+Enter, Shift+F6, F6, multicursor y más."
 publishDate: 2024-06-19
-coverImage: /images/blog/mars-rover-intellij-shortcuts/cover.webp
+coverImage: ../mars-rover-intellij-shortcuts/cover.webp
 coverImageAlt: "Aitor Reviriego y Aitor Santana Cabrera en el artículo sobre shortcuts de IntelliJ de la Saga Mars Rover"
 tags:
   - Java
@@ -29,27 +29,27 @@ Para aprovechar esta ventaja proporcionada por el IDE, empleamos la técnica de 
 
 > Robert C. Martin: *"Escribe en los tests el código que sabes que quieres escribir".*
 
-![Alt+Enter para crear un record desde el test](/images/blog/mars-rover-intellij-shortcuts/cover.webp)
+![Alt+Enter para crear un record desde el test](../mars-rover-intellij-shortcuts/cover.webp)
 
 En este punto, seleccionamos la ubicación donde deseamos crear el `record`, ya sea en el directorio específico o en el paquete designado.
 
-![Selección de ubicación del record](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-2.webp)
+![Selección de ubicación del record](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-2.webp)
 
-![Record creado en el paquete](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-3.webp)
+![Record creado en el paquete](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-3.webp)
 
 ## Refactor de sentencias de control
 
 Otro uso bastante útil de este shortcut es a la hora de refactorizar sentencias de control, como if-else, switch o bucles for. En este ejemplo tenemos un foreach de Java:
 
-![Foreach antes del refactor](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-4.webp)
+![Foreach antes del refactor](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-4.webp)
 
 Si ejecutamos el shortcut del menú contextual `Alt + Enter` veremos todas las opciones que nos ofrece el IDE.
 
-![Opciones de refactor con Alt+Enter](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-5.webp)
+![Opciones de refactor con Alt+Enter](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-5.webp)
 
 Nosotros seleccionamos el stream, para que quede un código más funcional.
 
-![Resultado del refactor a stream](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-6.webp)
+![Resultado del refactor a stream](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-6.webp)
 
 ### Shortcut: `Ctrl + Enter | Cmd + N`
 
@@ -57,11 +57,11 @@ Nosotros seleccionamos el stream, para que quede un código más funcional.
 
 En nuestro caso hemos empleado este shortcut para generar los métodos `equals`, `hashCode` y `toString`.
 
-![Menú de generación de métodos con Ctrl+Enter](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-7.webp)
+![Menú de generación de métodos con Ctrl+Enter](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-7.webp)
 
 Rápido y sin errores, el resultado es maravilloso. El ahorro de tiempo y la ausencia de errores lo convierte en una herramienta muy potente.
 
-![Métodos equals, hashCode y toString generados](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-8.webp)
+![Métodos equals, hashCode y toString generados](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-8.webp)
 
 ### Shortcut: `Shift + F6`
 
@@ -69,11 +69,11 @@ Rápido y sin errores, el resultado es maravilloso. El ahorro de tiempo y la aus
 
 Aunque pueda parecer algo sencillo, (como cambiar el nombre de algo en tu código), puede resultar extremadamente arriesgado, ya que podemos tener usos en otras partes del proyecto de las que no somos conscientes. Sin embargo, con la ayuda del IDE, esta tarea se vuelve sencilla y segura. Al colocar el cursor sobre el elemento que deseamos renombrar y pulsar **`Shift + F6`**, podemos cambiar el nombre de manera segura, y el IDE se encargará de actualizar ese nombre en todos los lugares pertinentes. Confía en el IDE.
 
-![Renombrar con Shift+F6](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-9.webp)
+![Renombrar con Shift+F6](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-9.webp)
 
 La refactorización es rápida y efectiva, como se puede apreciar en la siguiente imagen:
 
-![Resultado del renombrado en todo el proyecto](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-10.webp)
+![Resultado del renombrado en todo el proyecto](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-10.webp)
 
 ### Shortcut: `F6`
 
@@ -81,19 +81,19 @@ La refactorización es rápida y efectiva, como se puede apreciar en la siguient
 
 Con este sencillo shortcut, vamos a ahorrar un tiempo muy valioso.
 
-![Selección de clases a mover con F6](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-11.webp)
+![Selección de clases a mover con F6](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-11.webp)
 
 Simplemente, seleccionamos las `clases` o `records` que deseamos incluir en un nuevo paquete, luego pulsamos `F6` y se abrirá una ventana en la cual seleccionamos el nombre del paquete al cual queremos mover las clases o `records`. Finalmente pulsamos en `Refactor`.
 
-![Diálogo de selección de destino](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-12.webp)
+![Diálogo de selección de destino](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-12.webp)
 
 El paquete `direction` no existe, pero lo vamos a crear sobre la marcha. Pulsamos `Yes` y el IDE hace la magia.
 
-![Confirmación de creación del nuevo paquete](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-13.webp)
+![Confirmación de creación del nuevo paquete](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-13.webp)
 
 El resultado es perfecto, exactamente lo que queríamos y solo con un par de clics.
 
-![Clases movidas al nuevo paquete](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-14.webp)
+![Clases movidas al nuevo paquete](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-14.webp)
 
 ### Shortcut: `Ctrl + Alt + L | Cmd + Alt + L`
 
@@ -101,11 +101,11 @@ El resultado es perfecto, exactamente lo que queríamos y solo con un par de cli
 
 Para mantener nuestro código siempre ordenado de manera homogénea, utilizamos este shortcut. Es una forma rápida y segura de asegurar que todo el código en nuestro archivo se encuentre en el formato deseado.
 
-![Código antes del formateo](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-15.webp)
+![Código antes del formateo](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-15.webp)
 
 El resultado es evidente: legibilidad, orden, limpieza y, en definitiva, calidad de software.
 
-![Código después del formateo](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-16.webp)
+![Código después del formateo](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-16.webp)
 
 ### Shortcut: `Ctrl + Alt + O | Cmd + Opti + O`
 
@@ -113,11 +113,11 @@ El resultado es evidente: legibilidad, orden, limpieza y, en definitiva, calidad
 
 Este shortcut nos ayuda a eliminar los imports que ya no se utilizan cuando vamos realizando los refactors en nuestro código.
 
-![Imports no utilizados antes de limpiar](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-17.webp)
+![Imports no utilizados antes de limpiar](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-17.webp)
 
 Se puede observar el resultado claramente, el `import` de `Territory` ya no está.
 
-![Imports limpios después del shortcut](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-18.webp)
+![Imports limpios después del shortcut](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-18.webp)
 
 ### Shortcut: `Shift + Shift`
 
@@ -125,7 +125,7 @@ Se puede observar el resultado claramente, el `import` de `Territory` ya no est�
 
 Esta ventaja marca la diferencia. ¿Cuántas veces estás buscando algo en tu aplicación y no lo encuentras? De esta sencilla manera, se abrirá una nueva ventana en la que puedes escribir lo que estás buscando, y al instante, te mostrará un listado con todas las coincidencias. Realiza la búsqueda en toda la aplicación y te indica todas las instancias existentes. Con esto, ganarás mucha velocidad. Nosotros lo hemos usado mucho cuando no nos acordábamos de algún shortcut de refactoring por ejemplo.
 
-![Búsqueda global con Shift+Shift](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-19.webp)
+![Búsqueda global con Shift+Shift](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-19.webp)
 
 ### Shortcut: `Ctrl + D | Cmd + D`
 
@@ -133,19 +133,19 @@ Esta ventaja marca la diferencia. ¿Cuántas veces estás buscando algo en tu ap
 
 Si no tenemos ninguna parte de código seleccionado, este shortcut nos va a duplicar la línea completa donde se encuentre situado el cursor en el momento de ejecutarlo.
 
-![Duplicar línea con Ctrl+D](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-20.webp)
+![Duplicar línea con Ctrl+D](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-20.webp)
 
 Sencillo pero efectivo. Ahora, vamos a explorar otra utilidad para este maravilloso shortcut.
 
-![Selección de bloque de código antes de duplicar](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-21.webp)
+![Selección de bloque de código antes de duplicar](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-21.webp)
 
 Si tenemos parte de nuestro código seleccionado, este shortcut duplicará todo el contenido de la selección.
 
-![Resultado de duplicar un bloque seleccionado](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-22.webp)
+![Resultado de duplicar un bloque seleccionado](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-22.webp)
 
 Duplicamos nuestro test, para posteriormente realizar las modificaciones necesarias, con el fin de crear uno y probar el siguiente caso.
 
-![Test duplicado listo para modificar](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-23.webp)
+![Test duplicado listo para modificar](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-23.webp)
 
 ### Shortcut: `Shift + Cursor`
 
@@ -165,11 +165,11 @@ Manteniendo pulsadas las teclas `Alt + Shift + Cursor | Opt + Shift + Cursor` co
 
 Este shortcut es especialmente útil. Permite crear múltiples cursores justo en la siguiente ocurrencia del texto donde se encuentra el cursor principal. Se van creando cursores de manera sucesiva cada vez que pulsamos `Alt + J | Ctrl + G`.
 
-![Multicursor seleccionando la primera ocurrencia](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-24.webp)
+![Multicursor seleccionando la primera ocurrencia](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-24.webp)
 
 Ayuda muchísimo a modificar varias concurrencias con facilidad y fiabilidad.
 
-![Multicursor con varias ocurrencias seleccionadas](/images/blog/mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-25.webp)
+![Multicursor con varias ocurrencias seleccionadas](../mars-rover-intellij-shortcuts/mars-rover-intellij-shortcuts-25.webp)
 
 ## Conclusión
 

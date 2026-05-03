@@ -16,7 +16,7 @@ const blogCollection = defineCollection({
     base: './src/content/blog'
   }),
 
-  schema: () => z.object({
+  schema: ({ image }) => z.object({
     // Required fields
     title: z.string()
       .min(1, 'Title is required')
@@ -33,7 +33,7 @@ const blogCollection = defineCollection({
     // Optional at the schema level so drafts can be saved from Keystatic
     // before an image is ready. Published (non-draft) posts without an
     // image will still render without it.
-    coverImage: z.string().optional(),
+    coverImage: image().optional(),
 
     coverImageAlt: z.string()
       .min(10, 'Alt text must be descriptive (minimum 10 characters)')

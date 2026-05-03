@@ -51,7 +51,7 @@ const readingTime = calculateReadingTime(body, lang);
 const canonicalUrl = data.canonicalUrl || new URL(Astro.url.pathname, Astro.site).href;
 
 const DEFAULT_COVER_IMAGE = '/logo.webp';
-const coverImageUrl = data.coverImage || DEFAULT_COVER_IMAGE;
+const coverImageUrl = data.coverImage?.src || DEFAULT_COVER_IMAGE;
 const ogImageUrl = data.ogImage || coverImageUrl;
 const toAbsoluteUrl = (url: string) =>
   url.startsWith('http') ? url : new URL(url, Astro.site).href;

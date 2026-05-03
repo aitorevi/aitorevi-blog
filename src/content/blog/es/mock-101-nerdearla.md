@@ -2,7 +2,7 @@
 title: "Mock 101: El Arte del Testing, una experiencia única en Nerdearla"
 description: "Recapitulación del taller Mock 101 en Nerdearla 2025: enseñamos dummies, stubs, spies, mocks y fakes con katas prácticas en 6 lenguajes de programación."
 publishDate: 2025-11-18
-coverImage: /images/blog/mock-101-nerdearla/cover.webp
+coverImage: ../mock-101-nerdearla/cover.webp
 coverImageAlt: "Equipo de Lean Mind impartiendo el taller Mock 101: El Arte del Testing en Nerdearla 2025"
 tags:
   - Testing
@@ -66,19 +66,19 @@ Aquí fuimos directos: usa librerías como Mockito o Jest. Están optimizadas y 
 
 Además del éxito de nuestro taller, el evento nos brindó la oportunidad de conectar con referentes de la comunidad. Tuvimos el placer de compartir unos minutos con Brais Moure (MoureDev), una figura clave y muy respetada en redes sociales en el ámbito del desarrollo y la programación. Un momento inspirador que refuerza la calidad del *networking* en Nerdearla.
 
-![Aitor Reviriego y Aitor Santana con Brais Moure (MoureDev)](/images/blog/mock-101-nerdearla/mock-101-nerdearla-2.webp)
+![Aitor Reviriego y Aitor Santana con Brais Moure (MoureDev)](../mock-101-nerdearla/mock-101-nerdearla-2.webp)
 
 ## La diversión de Nerdearla: más allá del código
 
 El evento fue una experiencia muy divertida en su conjunto. Como muestra de la atmósfera única de Nerdearla, incluso contaban con un coche que simulaba una vuelta de campana para todas las personas asistentes. Una actividad lúdica que añadió emoción y un toque memorable a la jornada.
 
-![Recuerdos divertidos en Nerdearla](/images/blog/mock-101-nerdearla/mock-101-nerdearla-3.webp)
+![Recuerdos divertidos en Nerdearla](../mock-101-nerdearla/mock-101-nerdearla-3.webp)
 
 ## Celebrando la sinergia: Lean Mind y Next Digital
 
 Más allá del taller, el evento también fue especial porque nos permitió conocer en persona a muchas compañeras y compañeros de Next Digital, con quienes ahora compartimos camino. Fue estupendo poder conversar, intercambiar ideas y sentirnos parte de un mismo equipo.
 
-![Momento de networking con Next Digital](/images/blog/mock-101-nerdearla/mock-101-nerdearla-4.webp)
+![Momento de networking con Next Digital](../mock-101-nerdearla/mock-101-nerdearla-4.webp)
 
 ## Agradecimientos
 
