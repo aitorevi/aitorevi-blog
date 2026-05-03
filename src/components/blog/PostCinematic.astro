@@ -9,6 +9,7 @@ interface Props {
   post: CollectionEntry<'blog'>;
   accent: {
     text: string;
+    textDark: string;
     bg: string;
     ring: string;
     glow: string;
@@ -82,7 +83,7 @@ const featuredLabel = t(lang, 'blog.featured');
           <ul class="flex flex-wrap gap-2 list-none p-0" aria-label={t(lang, 'blog.tags')}>
             {tags.map((tag) => (
               <li>
-                <span class={`inline-flex items-center px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 border border-slate-200 bg-slate-50 text-slate-600 dark:border-transparent dark:ring-1 dark:${accent.ring} dark:bg-white/5 dark:${accent.text}`}>
+                <span class={`inline-flex items-center px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 border border-slate-200 bg-slate-50 text-slate-600 dark:border-transparent dark:ring-1 dark:${accent.ring} dark:bg-white/5 dark:${accent.textDark}`}>
                   {tag}
                 </span>
               </li>
@@ -129,7 +130,7 @@ const featuredLabel = t(lang, 'blog.featured');
           ) : (
             <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-ink-800 to-ink-900">
               <span class="select-none font-display text-4xl font-black tracking-tight text-slate-50">
-                aitorevi<span class={accent.text}>.</span>
+                aitorevi<span class={accent.textDark} aria-hidden="true">.</span>
               </span>
             </div>
           )}

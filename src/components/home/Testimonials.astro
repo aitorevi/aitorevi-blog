@@ -127,7 +127,9 @@ const testimonials = lang === 'es'
           aria-label={item.author}
           data-index={i}
         >
-          <span class="dot-fill" />
+          <span class="dot-visual">
+            <span class="dot-fill" />
+          </span>
         </button>
       ))}
     </div>
@@ -140,8 +142,21 @@ const testimonials = lang === 'es'
     display: grid;
   }
 
-  /* Dot base */
+  /* Dot hit target — transparent, min 24×24px for WCAG 2.5.8 */
   .dot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 24px;
+    min-width: 24px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  /* Visual dot */
+  .dot-visual {
     position: relative;
     height: 8px;
     width: 8px;
@@ -149,14 +164,11 @@ const testimonials = lang === 'es'
     background-color: currentColor;
     opacity: 0.2;
     overflow: hidden;
-    cursor: pointer;
-    border: none;
-    padding: 0;
     transition: width 0.3s ease, height 0.3s ease, border-radius 0.3s ease, opacity 0.3s ease;
   }
 
   /* Active dot — becomes a pill with progress bar */
-  .dot.active {
+  .dot.active .dot-visual {
     opacity: 1;
     width: 3rem;
     height: 4px;
@@ -185,6 +197,7 @@ const testimonials = lang === 'es'
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .dot-visual { transition: none; }
     .dot.active .dot-fill { animation: none; transform: scaleX(1); }
   }
 </style>

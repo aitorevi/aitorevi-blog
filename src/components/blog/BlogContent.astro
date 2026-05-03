@@ -44,11 +44,11 @@ const searchIndexJson = JSON.stringify(searchIndex).replace(/<\/script>/gi, '<\\
 
 const accentCycle = ['violet', 'blue', 'emerald', 'sky'] as const;
 type Accent = (typeof accentCycle)[number];
-const accentMap: Record<Accent, { text: string; bg: string; ring: string; glow: string; line: string; softBg: string; sectionVar: string }> = {
-  violet:  { text: 'text-accent-violet',  bg: 'bg-accent-violet',  ring: 'ring-accent-violet/40',  glow: 'from-accent-violet/30', line: 'via-accent-violet/25', softBg: 'via-accent-violet/[0.07]', sectionVar: '--color-section-violet' },
-  blue:    { text: 'text-accent-blue',    bg: 'bg-accent-blue',    ring: 'ring-accent-blue/40',    glow: 'from-accent-blue/30',   line: 'via-accent-blue/25',   softBg: 'via-accent-blue/[0.07]',   sectionVar: '--color-section-blue' },
-  emerald: { text: 'text-accent-emerald', bg: 'bg-accent-emerald', ring: 'ring-accent-emerald/40', glow: 'from-accent-emerald/25', line: 'via-accent-emerald/20', softBg: 'via-accent-emerald/[0.06]', sectionVar: '--color-section-emerald' },
-  sky:     { text: 'text-accent-sky',     bg: 'bg-accent-sky',     ring: 'ring-accent-sky/40',     glow: 'from-accent-sky/25',    line: 'via-accent-sky/20',    softBg: 'via-accent-sky/[0.06]',    sectionVar: '--color-section-sky' },
+const accentMap: Record<Accent, { text: string; textDark: string; bg: string; ring: string; glow: string; line: string; softBg: string; sectionVar: string }> = {
+  violet:  { text: 'text-violet-700 dark:text-accent-violet',   textDark: 'text-accent-violet',  bg: 'bg-accent-violet',  ring: 'ring-accent-violet/40',  glow: 'from-accent-violet/30', line: 'via-accent-violet/25', softBg: 'via-accent-violet/[0.07]', sectionVar: '--color-section-violet' },
+  blue:    { text: 'text-blue-700 dark:text-accent-blue',       textDark: 'text-accent-blue',    bg: 'bg-accent-blue',    ring: 'ring-accent-blue/40',    glow: 'from-accent-blue/30',   line: 'via-accent-blue/25',   softBg: 'via-accent-blue/[0.07]',   sectionVar: '--color-section-blue' },
+  emerald: { text: 'text-emerald-700 dark:text-accent-emerald', textDark: 'text-accent-emerald', bg: 'bg-accent-emerald', ring: 'ring-accent-emerald/40', glow: 'from-accent-emerald/25', line: 'via-accent-emerald/20', softBg: 'via-accent-emerald/[0.06]', sectionVar: '--color-section-emerald' },
+  sky:     { text: 'text-sky-700 dark:text-accent-sky',         textDark: 'text-accent-sky',     bg: 'bg-accent-sky',     ring: 'ring-accent-sky/40',     glow: 'from-accent-sky/25',    line: 'via-accent-sky/20',    softBg: 'via-accent-sky/[0.06]',    sectionVar: '--color-section-sky' },
 };
 
 const ctaLabel = t(lang, 'blog.cta.read');
