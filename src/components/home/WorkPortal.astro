@@ -15,8 +15,8 @@
  *
  * Data:
  * - Projects loaded from the 'projects' collection, sorted by `order`.
- * - Year range computed from the numeric portions of each project's `year` field
- *   (e.g. "2024 — present" → 2024, "2024" → 2024).
+ * - Start year computed from the numeric portions of each project's `year` field
+ *   (e.g. "2024 — present" → 2024, "2024" → 2024), and end year set to current year.
  */
 import { getCollection, type CollectionEntry } from 'astro:content';
 import type { Lang } from '@/i18n/types';
@@ -44,7 +44,7 @@ function extractYear(yearStr: string): number {
 
 const years = projects.map((p: ProjectEntry) => extractYear(p.data.year));
 const minYear = years.length ? Math.min(...years) : new Date().getFullYear();
-const maxYear = years.length ? Math.max(...years) : minYear;
+const currentYear = new Date().getFullYear();
 const projectCount = projects.length;
 
 interface ChipAccent {
@@ -80,7 +80,7 @@ const lsTemplate = t(lang, 'home.workPortal.typing.ls');
 const lsLine = lsTemplate
   .replace('{count}', String(projectCount))
   .replace('{minYear}', String(minYear))
-  .replace('{maxYear}', String(maxYear));
+  .replace('{maxYear}', String(currentYear));
 
 // Typing lines — order matches what the terminal "types" out.
 const typingLines = [
