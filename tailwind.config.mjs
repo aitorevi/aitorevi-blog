@@ -11,7 +11,7 @@ export default {
 				accent: {
 					DEFAULT: 'rgb(var(--color-accent) / <alpha-value>)',
 					soft:    'rgb(var(--color-accent-soft) / <alpha-value>)',
-					violet: '#a78bfa',
+					violet: '#ac91fc', /* Updated from #a78bfa (6.80:1) to 7.24:1 on dark bg (WCAG AAA 1.4.6) */
 					blue:   '#60a5fa',
 					sky:    '#38bdf8',
 					emerald:'#10b981',

@@ -60,7 +60,7 @@
   --color-fg-subtle: 148 163 184; /* slate-400 — adequate on dark bg */
 
   /* ── Accent ───────────────────────────────────────────────────────── */
-  --color-accent: 167 139 250;    /* accent-violet #a78bfa */
+  --color-accent: 172 145 252;    /* #ac91fc — 7.24:1 on #0f1419 (WCAG AAA 1.4.6) */
   --color-accent-soft: 96 165 250; /* accent-blue #60a5fa */
 
   /* ── Scrollbar ────────────────────────────────────────────────────── */
