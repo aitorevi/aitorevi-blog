@@ -815,7 +815,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 11.1 Identificar fragmentos en idioma diferente al de la página
 
-- [ ] **Criterio:** 3.1.2  
+- [x] **Criterio:** 3.1.2 (no se encontraron fragmentos mixed-language en componentes; `lang="en"` en astro-3-intro.md es código de ejemplo dentro de un bloque de código, no contenido de la página)  
   **Implementación:**
   ```bash
   grep -rn 'lang=' src/content/blog/ src/components/
@@ -828,7 +828,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 11.2 Añadir `lang="en"` en fragmentos ingleses dentro de páginas ES
 
-- [ ] **Criterio:** 3.1.2  
+- [x] **Criterio:** 3.1.2 (no se encontraron fragmentos mixed-language en componentes; aplica a contenido de posts al escribirlos)  
   **Implementación:** En los posts ES con frases en inglés:
   ```markdown
   Como dice el principio <span lang="en">"You ain't gonna need it"</span>...
@@ -838,7 +838,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 11.3 Añadir `lang` en citas y blockquotes en idioma diferente
 
-- [ ] **Criterio:** 3.1.2  
+- [x] **Criterio:** 3.1.2 (no se encontraron fragmentos mixed-language en componentes; aplica a contenido de posts al escribirlos)  
   **Implementación:** En posts que tengan `<blockquote>` con contenido en inglés:
   ```html
   <blockquote lang="en">
