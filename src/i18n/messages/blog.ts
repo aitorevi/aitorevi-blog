@@ -33,6 +33,7 @@ export const blog = {
     'blog.outro.title': 'Cada artículo, un aprendizaje.',
     'blog.search.results': 'resultados',
     'blog.readPost': 'Leer artículo',
+    'blog.summary.label': 'Resumen accesible',
   },
   en: {
     'blog.copyCode': 'Copy',
@@ -68,5 +69,6 @@ export const blog = {
     'blog.cta.read': 'Read article',
     'blog.outro.title': 'Every article, a lesson.',
     'blog.readPost': 'Read post',
+    'blog.summary.label': 'Accessible summary',
   },
 };

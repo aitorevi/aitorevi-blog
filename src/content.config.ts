@@ -57,6 +57,9 @@ const blogCollection = defineCollection({
 
     featured: z.boolean().default(false),
 
+    // Accessible summary for 3.1.5 Reading Level (WCAG AAA)
+    summary: z.string().optional(),
+
     // SEO enhancements (optional)
     ogImage: z.string().optional(),
 

@@ -189,6 +189,15 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
             ]}
           />
         </div>
+        {data.summary && (
+          <div
+            role="note"
+            aria-label={t(lang, 'blog.summary.label')}
+            class="mb-8 p-4 rounded-lg border-l-4 border-accent bg-accent/5 text-muted italic mx-auto max-w-prose"
+          >
+            <p>{data.summary}</p>
+          </div>
+        )}
         <div
           class="prose prose-slate dark:prose-invert mx-auto max-w-prose prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:text-blue-700 dark:hover:prose-a:text-blue-300 prose-img:rounded-lg prose-img:max-h-[600px] prose-img:w-auto prose-img:mx-auto prose-img:object-contain"
           itemprop="articleBody"
