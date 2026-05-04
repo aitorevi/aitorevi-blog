@@ -17,6 +17,8 @@ const TRANSLATED_SLUG_MAP: Record<string, string> = {
   '/en/privacy': '/privacidad',
   '/aviso-legal': '/en/legal-notice',
   '/en/legal-notice': '/aviso-legal',
+  '/accesibilidad': '/en/accessibility',
+  '/en/accessibility': '/accesibilidad',
 };
 
 export function getAlternateUrl(currentPath: string, currentLang: Lang): string {

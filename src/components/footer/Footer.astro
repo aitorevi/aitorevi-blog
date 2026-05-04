@@ -1,6 +1,6 @@
 ---
 import {Icon} from "astro-icon/components";
-import { getLangFromUrl, getLocalePath } from '@/i18n/utils';
+import { t, getLangFromUrl, getLocalePath } from '@/i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const isES = lang === 'es';
@@ -11,11 +11,13 @@ const legalLinks = isES
         { label: 'Privacidad', href: '/privacidad' },
         { label: 'Cookies', href: '/cookies' },
         { label: 'Aviso Legal', href: '/aviso-legal' },
+        { label: t(lang, 'legal.accessibility'), href: '/accesibilidad' },
       ]
     : [
         { label: 'Privacy', href: '/en/privacy' },
         { label: 'Cookies', href: '/en/cookies' },
         { label: 'Legal Notice', href: '/en/legal-notice' },
+        { label: t(lang, 'legal.accessibility'), href: '/en/accessibility' },
       ];
 
 const manageCookiesLabel = isES ? 'Gestionar cookies' : 'Manage cookies';
@@ -49,15 +51,21 @@ const manageCookiesLabel = isES ? 'Gestionar cookies' : 'Manage cookies';
             {manageCookiesLabel}
         </button>
     </nav>
-    <a
-        href={isES ? '/accesibilidad' : '/en/accessibility'}
-        aria-label={isES
-            ? 'Página de accesibilidad — cumple WCAG 2.1 nivel AA'
-            : 'Accessibility page — meets WCAG 2.1 level AA'}
-        class="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500 hover:text-secondary dark:hover:text-accent-blue transition-colors duration-200 border border-slate-300 dark:border-slate-700 rounded px-2 py-0.5 mt-1"
-    >
-        WCAG 2.1 AA ✓
-    </a>
+    <div class="flex justify-center mt-1">
+      <a
+        href="https://www.w3.org/WAI/WCAG2AA-Conformance"
+        title={isES ? 'Explicación del nivel de conformidad WCAG 2.2 AA' : 'Explanation of WCAG 2.2 Level AA Conformance'}
+        class="mt-2 inline-flex items-center opacity-70 hover:opacity-100 transition-opacity duration-200"
+      >
+        <img
+          src="https://www.w3.org/WAI/WCAG22/wcag2.2AA-blue-v.svg"
+          alt={isES ? 'Nivel AA de las Pautas de Accesibilidad para el Contenido Web 2.2, W3C-WAI' : 'Level AA of the Web Content Accessibility Guidelines 2.2, W3C-WAI'}
+          width="88"
+          height="31"
+          loading="lazy"
+        />
+      </a>
+    </div>
 </footer>
 
 <script is:inline>
