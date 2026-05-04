@@ -20,8 +20,8 @@ const { text, label = 'Estimated reading time', showIcon = true, class: classNam
 
 <span
   class={`inline-flex items-center gap-1.5 text-sm text-quaternary ${className}`}
-  aria-label={`${label}: ${text}`}
 >
+  <span class="sr-only">{label}: {text}</span>
   {showIcon && (
     <svg
       xmlns="http://www.w3.org/2000/svg"
