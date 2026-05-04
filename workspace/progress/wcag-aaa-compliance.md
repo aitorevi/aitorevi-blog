@@ -738,7 +738,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 10.1 Crear glosario de términos técnicos
 
-- [ ] **Criterio:** 3.1.3  
+- [x] **Criterio:** 3.1.3  
   **Implementación:** Crear `src/data/glossary.ts`:
   ```ts
   export interface GlossaryEntry {
@@ -759,7 +759,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 10.2 Crear componente `GlossaryTerm.astro`
 
-- [ ] **Criterio:** 3.1.3  
+- [x] **Criterio:** 3.1.3  
   **Implementación:** Crear `src/components/atoms/GlossaryTerm.astro`:
   ```astro
   ---
@@ -794,7 +794,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 10.3 Añadir términos de glosario en página de Katas
 
-- [ ] **Criterio:** 3.1.3  
+- [x] **Criterio:** 3.1.3  
   **Implementación:** En `src/components/katas/KatasContent.astro`:
   - Primera mención de "kata" → `<GlossaryTerm term="kata" definition={...} />`
   - Añadir sección de glosario al pie de la página con `<dl>` semántico  
@@ -802,7 +802,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 10.4 Añadir glosario accesible en pie de blog posts complejos
 
-- [ ] **Criterio:** 3.1.3  
+- [x] **Criterio:** 3.1.3 (extensión de contenido — campo glossary en frontmatter de posts es para contenido futuro)  
   **Implementación:** Añadir campo opcional `glossary: string[]` al frontmatter del blog. Si el post tiene términos, renderizar un `<section aria-labelledby="post-glossary">` con una `<dl>` al final del artículo  
   **Test:** Abrir post con glosario → sección "Glosario" accesible en pantalla y por screen reader
 

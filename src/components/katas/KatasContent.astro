@@ -3,7 +3,9 @@ import KataCard from './KataCard.astro';
 import KatasScrollReveal from './KatasScrollReveal.astro';
 import DotField from '@/components/shared/DotField.astro';
 import Button from '@/components/shared/Button.astro';
+import GlossaryTerm from '@/components/atoms/GlossaryTerm.astro';
 import { sortedKatas } from '@/data/katas';
+import { getDefinition } from '@/data/glossary';
 import type { Lang } from '@/i18n/types';
 import { getLocalePath, t } from '@/i18n/utils';
 
@@ -14,6 +16,7 @@ interface Props {
 const { lang } = Astro.props;
 
 const sorted = sortedKatas();
+const kataDefinition = getDefinition('kata', lang) ?? '';
 
 const techFrequency = new Map<string, number>();
 for (const kata of sorted) {
@@ -34,7 +37,7 @@ const techs = [...techFrequency.entries()]
   <section class="katas-page mx-auto max-w-7xl mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:px-20 lg:pt-10 lg:pb-20">
     <header class="reveal-fade mb-12 text-center">
       <h1 class="mb-4 pb-2 font-display text-5xl font-black tracking-tight text-ink-900 dark:bg-home-gradient-text dark:bg-clip-text dark:text-transparent sm:text-6xl lg:text-7xl">
-        {t(lang, 'katas.title')}
+        <GlossaryTerm term={t(lang, 'katas.title')} definition={kataDefinition} />
       </h1>
       <p class="mx-auto mt-3 max-w-xl font-mono text-xs uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
         {t(lang, 'katas.subtitle')}
