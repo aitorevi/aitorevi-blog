@@ -55,21 +55,21 @@ const workPath = getLocalePath('/work', lang);
                        aria-current={isEs ? 'true' : undefined}
                        aria-label={t(lang, 'nav.langEs')}
                        title={t(lang, 'nav.langEs')}
-                       class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isEs ? 'text-accent underline' : 'text-quaternary hover:text-accent'}`}>
+                       class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isEs ? 'text-accent underline' : 'text-slate-500 dark:text-slate-400 hover:text-accent dark:hover:text-accent-blue'}`}>
                         ES
                     </a>
-                    <span class="text-quaternary" aria-hidden="true">|</span>
+                    <span class="text-slate-500 dark:text-slate-400" aria-hidden="true">|</span>
                     <a href={!isEs ? currentPath : alternateUrl}
                        aria-current={!isEs ? 'true' : undefined}
                        aria-label={t(lang, 'nav.langEn')}
                        title={t(lang, 'nav.langEn')}
-                       class={`cursor-pointer transition ease-linear delay-50 duration-200 ${!isEs ? 'text-accent underline' : 'text-quaternary hover:text-accent'}`}>
+                       class={`cursor-pointer transition ease-linear delay-50 duration-200 ${!isEs ? 'text-accent underline' : 'text-slate-500 dark:text-slate-400 hover:text-accent dark:hover:text-accent-blue'}`}>
                         EN
                     </a>
                 </div>
                 <button
                     id="theme-toggle"
-                    class="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-inherit hover:text-accent transition-colors duration-200 cursor-pointer"
+                    class="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-slate-500 dark:text-slate-400 hover:text-accent dark:hover:text-accent-blue transition-colors duration-200 cursor-pointer"
                     aria-label={t(lang, 'nav.themeToggle')}
                     title={t(lang, 'nav.themeToggle')}
                 >
