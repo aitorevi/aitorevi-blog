@@ -1,0 +1,46 @@
+---
+import type { Lang } from '@/i18n/types';
+
+interface Props {
+  items: { label: string; href?: string }[];
+  lang: Lang;
+}
+
+const { items, lang } = Astro.props;
+const ariaLabel = lang === 'es' ? 'Ruta de navegación' : 'Breadcrumb';
+---
+
+<nav aria-label={ariaLabel} class="text-sm mb-6">
+  <ol
+    class="flex items-center gap-1 flex-wrap"
+    itemscope
+    itemtype="https://schema.org/BreadcrumbList"
+  >
+    {items.map((item, i) => (
+      <li
+        itemprop="itemListElement"
+        itemscope
+        itemtype="https://schema.org/ListItem"
+        class="flex items-center gap-1"
+      >
+        {item.href ? (
+          <a
+            href={item.href}
+            itemprop="item"
+            class="text-slate-500 dark:text-slate-400 hover:text-ink-900 dark:hover:text-slate-100 transition-colors hover:underline"
+          >
+            <span itemprop="name">{item.label}</span>
+          </a>
+        ) : (
+          <span itemprop="name" aria-current="page" class="text-ink-900 dark:text-slate-100 font-medium">
+            {item.label}
+          </span>
+        )}
+        <meta itemprop="position" content={String(i + 1)} />
+        {i < items.length - 1 && (
+          <span aria-hidden="true" class="text-slate-400 dark:text-slate-500 select-none">›</span>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>

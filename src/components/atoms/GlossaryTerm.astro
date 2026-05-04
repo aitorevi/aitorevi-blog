@@ -1,0 +1,22 @@
+---
+interface Props {
+  term: string;
+  definition: string;
+}
+
+const { term, definition } = Astro.props;
+const id = `def-${term.toLowerCase().replace(/\s+/g, '-')}`;
+---
+
+<span class="relative group inline-block">
+  <dfn
+    aria-describedby={id}
+    class="cursor-help underline decoration-dotted decoration-accent not-italic"
+  >{term}</dfn>
+  <span
+    id={id}
+    role="tooltip"
+    class="absolute bottom-full left-0 mb-2 z-10 w-64 p-2 text-sm rounded bg-surface text-fg border border-accent/30 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity pointer-events-none"
+  >{definition}</span>
+  <span class="sr-only">: {definition}</span>
+</span>

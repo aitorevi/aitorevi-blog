@@ -103,6 +103,10 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={ogImageUrl} />
 		<title>{title}</title>
+		<!-- WCAG 2.3.3: apply motion preference before first paint to avoid flicker -->
+		<script is:inline>
+			(function(){var m=localStorage.getItem('motion-preference');if(m==='reduce')document.documentElement.setAttribute('data-motion-reduce','');})();
+		</script>
 		<script is:inline>
 			(function() {
 				const theme = localStorage.getItem('theme');
@@ -163,6 +167,17 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 	</body>
 </html>
 <style is:global>
+	/* WCAG 2.4.12 Focus Not Obscured (Enhanced, AAA): keep focused elements
+	   clear of the fixed navigation bar. Mobile nav: h-14 (56px); desktop: h-20 (80px). */
+	html {
+		scroll-padding-top: 56px;
+	}
+	@media (min-width: 768px) {
+		html {
+			scroll-padding-top: 80px;
+		}
+	}
+
 	body[data-bg="dark-radial"] {
 		background-color: #f8fafc;
 		background-image: none;

@@ -38,7 +38,7 @@ html[data-retro] {
   --retro-yellow: #fcd44e;        /* heading highlight */
   --retro-red: #a83232;           /* primary button (OK red) */
   --retro-red-deep: #6a1818;      /* button border / pressed */
-  --retro-magenta: #c54fa6;       /* visited links / cover-art accent */
+  --retro-magenta: #f080e0;       /* visited links / cover-art accent — 7.85:1 on #0a1228 (AAA) */
   --retro-green: #4ca84a;         /* code / tentacle */
   --retro-link: #9fdfff;
   --retro-text: #f5e6c8;
@@ -449,10 +449,10 @@ html[data-retro] ::-webkit-scrollbar-thumb:hover {
   background: var(--retro-cyan-bright) !important;
 }
 
-/* Focus-visible: thick cyan pixel outline. */
+/* Focus-visible: thick cyan pixel outline — WCAG 2.4.13 Focus Appearance (AAA). */
 html[data-retro] :focus-visible {
   outline: 3px solid var(--retro-cyan-bright) !important;
-  outline-offset: 2px !important;
+  outline-offset: 3px !important;
 }
 
 /* /work cinematic — kill 3D tilt and reveal opacity so the page is fully

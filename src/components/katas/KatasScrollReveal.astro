@@ -45,6 +45,17 @@
     const page = document.querySelector('.katas-page');
     if (!page) return;
 
+    // Respect both OS setting and user-toggled data-motion-reduce (WCAG 2.3.3)
+    if (
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      document.documentElement.hasAttribute('data-motion-reduce')
+    ) {
+      page.querySelectorAll<HTMLElement>('.reveal-fade').forEach((el) =>
+        el.classList.add('is-visible')
+      );
+      return;
+    }
+
     const groups = page.querySelectorAll<HTMLElement>('.reveal-group');
 
     const observer = new IntersectionObserver(

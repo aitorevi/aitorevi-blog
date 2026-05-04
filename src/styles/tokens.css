@@ -18,12 +18,13 @@
 
   /* ── Text ─────────────────────────────────────────────────────────── */
   --color-fg: 21 27 39;           /* primary #151b27 */
-  --color-fg-muted: 100 116 139;  /* slate-500 */
-  --color-fg-subtle: 148 163 184; /* slate-400 */
+  --color-fg-muted: 71 85 105;    /* slate-600 — ≥7:1 on white (WCAG 1.4.6 AAA) */
+  --color-fg-subtle: 71 85 105;   /* slate-600 — 7.58:1 on white (WCAG 1.4.6 AAA) */
 
   /* ── Accent (primary brand color) ────────────────────────────────── */
-  /* Light: secondary (#5e3aee). Dark: accent-violet (#a78bfa).         */
-  --color-accent: 94 58 238;
+  /* Light: #4727cc (ratio ~7.5:1 over #f8fafc — WCAG AAA 1.4.6).     */
+  /* Was #5e3aee (~6.3:1, failed AAA). Dark: accent-violet (#a78bfa).  */
+  --color-accent: 71 39 204;
 
   /* Secondary accent. Light: accent-violet. Dark: accent-blue.        */
   --color-accent-soft: 167 139 250;
@@ -36,8 +37,8 @@
 
   /* ── Scrollbar ────────────────────────────────────────────────────── */
   --color-scrollbar-track: 33 39 55;
-  --color-scrollbar-thumb: 94 58 238;       /* secondary */
-  --color-scrollbar-thumb-hover: 118 85 249;
+  --color-scrollbar-thumb: 71 39 204;        /* accent #4727cc */
+  --color-scrollbar-thumb-hover: 94 58 238;  /* former accent */
 
   /* ── Glow shadows (reference --color-accent, auto-switch in dark) ── */
   --shadow-glow-dot:      0 0 10px rgb(var(--color-accent) / 0.5);
@@ -55,8 +56,8 @@
 
   /* ── Text ─────────────────────────────────────────────────────────── */
   --color-fg: 241 245 249;        /* slate-100 / #f1f5f9 */
-  --color-fg-muted: 148 163 184;  /* slate-400 */
-  --color-fg-subtle: 100 116 139; /* slate-500 */
+  --color-fg-muted: 203 213 225;  /* slate-300 — ≥7:1 on #0f1419 dark bg (WCAG 1.4.6 AAA) */
+  --color-fg-subtle: 148 163 184; /* slate-400 — adequate on dark bg */
 
   /* ── Accent ───────────────────────────────────────────────────────── */
   --color-accent: 167 139 250;    /* accent-violet #a78bfa */
@@ -69,4 +70,41 @@
   /* ── Glow shadows — slightly stronger in dark (lighter accent) ────── */
   --shadow-glow-line:    0 0 6px  rgb(var(--color-accent) / 0.25);
   --shadow-glow-card-md: 0 0 30px rgb(var(--color-accent) / 0.15);
+}
+
+/* ── Focus ring global ────────────────────────────────────────────────
+ * WCAG 2.4.13 Focus Appearance (AAA): 3px solid accent, offset 3px.
+ * The accent ≥7:1 on its background ensures ≥3:1 against adjacent colors.
+ */
+:focus-visible {
+  outline: 3px solid rgb(var(--color-accent));
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────
+ * WCAG 2.3.3 Animation from Interactions (AAA).
+ * Matches both the OS preference and the manual UI toggle (data-motion-reduce).
+ */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html[data-motion-reduce] * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* ── Body defaults ───────────────────────────────────────────────────
+ * WCAG 1.4.8 Visual Presentation (AAA): line-height ≥1.5.
+ */
+body {
+  line-height: 1.5;
 }

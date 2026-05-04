@@ -299,8 +299,10 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
     rotate: number;
   };
 
+  // WCAG 2.3.3: honour both OS preference and user-toggled data-motion-reduce
   const REDUCED_MOTION = () =>
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+    document.documentElement.hasAttribute('data-motion-reduce');
 
   let rafId: number | null = null;
   let isVisible = false;

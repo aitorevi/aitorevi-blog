@@ -25,9 +25,9 @@ export default {
 
 				// ── Raw tokens (kept for backward-compat) ────────────────────────
 				primary:    '#151b27',
-				secondary:  '#5e3aee',
+				secondary:  '#4727cc', /* Updated from #5e3aee to meet WCAG AAA 1.4.6 (~7.5:1 contrast) */
 				tertiary:   '#d0edf5',   // referenced in retro.css
-				quaternary: '#aeb2bb',
+				quaternary: '#334155', /* Updated from #aeb2bb (~3.5:1) to slate-700 (~9.6:1) for WCAG AAA 1.4.6 */
 				grayLight:  '#f9f9fc',   // used in Tag.astro default variant
 				baseLight:  '#f1faff',   // referenced in retro.css
 				ink: {
@@ -77,6 +77,15 @@ export default {
 			animation: {
 				'home-rise': 'home-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both',
 				'home-pulse': 'home-pulse 2.4s ease-in-out infinite',
+			},
+			typography: {
+				DEFAULT: {
+					css: {
+						// WCAG 1.4.8 Visual Presentation (AAA): paragraph spacing ≥1.5× font size.
+						// @tailwindcss/typography defaults to 1.25em; 1.5em meets the AAA criterion.
+						p: { marginBottom: '1.5em' },
+					},
+				},
 			},
 		},
 	},
