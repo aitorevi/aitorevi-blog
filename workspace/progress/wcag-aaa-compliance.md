@@ -465,42 +465,19 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 6.1 Auditoría de enlaces ambiguos
 
-- [ ] **Criterio:** 2.4.9  
-  **Implementación:**
-  ```bash
-  grep -rn "Leer más\|Ver más\|Aquí\|here\|Read more\|Click here\|más info\|more info\|Ver proyecto\|See project" src/
-  ```
-  Documentar cada enlace cuyo texto no describe el destino de forma autónoma  
-  **Test:** Lista completa de enlaces ambiguos
+- [x] **Criterio:** 2.4.9 — Auditoría completada. grep de "Leer más|Ver más|here|Read more|Click here|más info|more info|Ver proyecto|See project" en src/components/, src/layouts/ y src/pages/ devuelve 0 coincidencias en texto de enlace. No hay enlaces con texto ambiguo.
 
 ### 6.2 Añadir `aria-label` descriptivo en PostCard y LatestPosts
 
-- [ ] **Criterio:** 2.4.9  
-  **Implementación:** En `src/components/blog/PostCard.astro`:
-  - Si hay un enlace "Leer más" o similar: `<a href={url} aria-label={t(lang, 'blog.readMore.label', { title: post.title })}`
-  - Mejor solución: hacer que el título completo del post sea el enlace principal, envolviendo el `<article>` entero o usando `<a>` en el título
-  - En `src/components/home/LatestPosts.astro`: ídem  
-
-  Clave i18n sugerida en `src/i18n/messages/blog.ts`:
-  ```ts
-  es: { 'blog.readPost': 'Leer artículo: {title}' },
-  en: { 'blog.readPost': 'Read post: {title}' },
-  ```
-  **Test:** Con screen reader en modo "sólo enlaces" (en NVDA: Insert+F7) → cada enlace de blog describe el post al que apunta
+- [x] **Criterio:** 2.4.9 — PostCard.astro ya tiene `aria-label="Read full post: ${data.title}"` en el enlace de imagen, y el enlace del título usa el título completo del post como texto visible. LatestPosts.astro delega en PostCard. No se requieren cambios.
 
 ### 6.3 Audit de enlaces en Portfolio y navegación
 
-- [ ] **Criterio:** 2.4.9  
-  **Implementación:** En `src/components/home/Portfolio.astro` y `src/components/nav/Nav.astro`:
-  - Los links del nav ("work", "blog", "about") son descriptivos → OK
-  - Links de proyectos en Portfolio: verificar que el texto visible o el `aria-label` describe el proyecto  
-  **Test:** Inspección manual de DevTools + axe DevTools → sin violaciones 2.4.9
+- [x] **Criterio:** 2.4.9 — Portfolio.astro: cada enlace de proyecto usa el nombre del proyecto como texto visible (Colorprof, IRPH Calculator, IMS, aitorevi.dev). Nav.astro: los links usan las claves i18n nav.work/nav.blog/nav.about. Todos descriptivos sin contexto adicional.
 
 ### 6.4 Audit de enlaces en Footer
 
-- [ ] **Criterio:** 2.4.9  
-  **Implementación:** En `src/components/footer/Footer.astro`: verificar que todos los links (redes sociales, legales) tienen texto o `aria-label` descriptivos. Los iconos de RRSS deben tener `<span class="sr-only">Twitter de Aitor Reviriego</span>` si sólo muestran icono  
-  **Test:** Tab por el footer con VoiceOver → cada enlace anunciado de forma descriptiva
+- [x] **Criterio:** 2.4.9 — Footer.astro ya tiene `aria-label` descriptivos en todos los iconos: LinkedIn, GitHub, mail. No se requieren cambios.
 
 ---
 
@@ -511,7 +488,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 7.1 Auditar tamaños actuales de targets
 
-- [ ] **Criterio:** 2.5.5  
+- [x] **Criterio:** 2.5.5  
   **Implementación:** En DevTools, inspeccionar cada elemento interactivo:
   - Theme toggle en Nav
   - Language toggle en Nav
@@ -535,7 +512,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 7.2 Corregir theme toggle y language selector
 
-- [ ] **Criterio:** 2.5.5  
+- [x] **Criterio:** 2.5.5  
   **Implementación:** En `src/components/nav/Nav.astro`, los botones de toggle:
   ```html
   <button class="min-w-[44px] min-h-[44px] flex items-center justify-center ...">
@@ -544,7 +521,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 7.3 Corregir hamburger button en móvil
 
-- [ ] **Criterio:** 2.5.5  
+- [x] **Criterio:** 2.5.5  
   **Implementación:** En Nav móvil:
   ```html
   <button id="hamburger" class="min-w-[44px] min-h-[44px] flex items-center justify-center ...">
@@ -553,7 +530,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 7.4 Corregir links de navegación desktop
 
-- [ ] **Criterio:** 2.5.5  
+- [x] **Criterio:** 2.5.5  
   **Implementación:** En Nav desktop, cada link debe tener padding vertical suficiente:
   ```html
   <a class="py-[11px] px-3 ..."> <!-- 11px*2 + línea de texto ~22px ≈ 44px total -->
@@ -562,7 +539,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 7.5 Corregir checkbox de consent en formulario
 
-- [ ] **Criterio:** 2.5.5  
+- [x] **Criterio:** 2.5.5  
   **Implementación:** En `src/components/home/ContactSection.astro`:
   - El `<label>` del checkbox debe tener `min-h-[44px] flex items-center gap-3`
   - El checkbox visualmente puede ser pequeño, pero el área clicable del label debe ser ≥ 44px alto  
@@ -570,7 +547,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 7.6 Corregir botones de paginación del blog
 
-- [ ] **Criterio:** 2.5.5  
+- [x] **Criterio:** 2.5.5  
   **Implementación:** En `src/components/blog/BlogPagination.astro`:
   ```html
   <a class="min-w-[44px] min-h-[44px] flex items-center justify-center ...">
@@ -579,7 +556,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 7.7 Corregir tags de blog (si son clicables)
 
-- [ ] **Criterio:** 2.5.5  
+- [x] **Criterio:** 2.5.5  
   **Implementación:** En `src/components/shared/Tag.astro`, si el tag es un enlace o botón filtrable: añadir `min-h-[44px] px-3 inline-flex items-center`  
   **Test:** DevTools → altura de tags ≥ 44px
 

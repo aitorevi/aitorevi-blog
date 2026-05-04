@@ -49,7 +49,7 @@ const range = getPaginationRange(currentPage, totalPages);
   {prevUrl && (
     <a
       href={prevUrl}
-      class="flex items-center gap-2 text-secondary dark:text-accent-blue transition-opacity hover:opacity-70 motion-reduce:transition-none"
+      class="min-h-[44px] flex items-center gap-2 text-secondary dark:text-accent-blue transition-opacity hover:opacity-70 motion-reduce:transition-none"
       rel="prev"
     >
       <span aria-hidden="true">←</span>
@@ -66,7 +66,7 @@ const range = getPaginationRange(currentPage, totalPages);
       ) : item === currentPage ? (
         <li>
           <span
-            class="flex h-7 w-7 items-center justify-center rounded font-black text-secondary dark:text-accent-blue"
+            class="flex min-w-[44px] min-h-[44px] items-center justify-center rounded font-black text-secondary dark:text-accent-blue"
             aria-current="page"
           >
             {item}
@@ -76,7 +76,7 @@ const range = getPaginationRange(currentPage, totalPages);
         <li>
           <a
             href={pageUrl(item)}
-            class="flex h-7 w-7 items-center justify-center rounded text-slate-400 dark:text-slate-500 hover:text-secondary dark:hover:text-accent-blue transition-colors motion-reduce:transition-none"
+            class="flex min-w-[44px] min-h-[44px] items-center justify-center rounded text-slate-400 dark:text-slate-500 hover:text-secondary dark:hover:text-accent-blue transition-colors motion-reduce:transition-none"
           >
             {item}
           </a>
@@ -88,7 +88,7 @@ const range = getPaginationRange(currentPage, totalPages);
   {nextUrl && (
     <a
       href={nextUrl}
-      class="flex items-center gap-2 text-secondary dark:text-accent-blue transition-opacity hover:opacity-70 motion-reduce:transition-none"
+      class="min-h-[44px] flex items-center gap-2 text-secondary dark:text-accent-blue transition-opacity hover:opacity-70 motion-reduce:transition-none"
       rel="next"
     >
       <span>{t(lang, 'blog.pagination.next')}</span>
