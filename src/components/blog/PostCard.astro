@@ -117,11 +117,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
   )}
 
   <!-- Cover Image -->
-  <a
-    href={postUrl}
-    class="relative aspect-video w-full overflow-hidden bg-white dark:bg-ink-800"
-    aria-label={`${t(lang, 'blog.readPost')}: ${data.title}`}
-  >
+  <div class="relative aspect-video w-full overflow-hidden bg-white dark:bg-ink-800">
     {data.coverImage ? (
       <Image
         src={data.coverImage}
@@ -145,7 +141,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
         </span>
       </div>
     )}
-  </a>
+  </div>
 
   <!-- Card Content -->
   <div class="flex flex-1 flex-col p-6">
@@ -172,7 +168,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
       >
         <a
           href={postUrl}
-          class="block hover:text-secondary focus:text-secondary focus:outline-none focus-visible:underline transition-colors duration-200"
+          class="block hover:text-secondary focus:text-secondary focus:outline-none focus-visible:underline transition-colors duration-200 after:absolute after:inset-0 after:rounded-xl"
         >
           {data.title}
         </a>
