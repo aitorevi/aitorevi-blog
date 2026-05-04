@@ -49,6 +49,15 @@ const manageCookiesLabel = isES ? 'Gestionar cookies' : 'Manage cookies';
             {manageCookiesLabel}
         </button>
     </nav>
+    <a
+        href={isES ? '/accesibilidad' : '/en/accessibility'}
+        aria-label={isES
+            ? 'Página de accesibilidad — cumple WCAG 2.1 nivel AA'
+            : 'Accessibility page — meets WCAG 2.1 level AA'}
+        class="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500 hover:text-secondary dark:hover:text-accent-blue transition-colors duration-200 border border-slate-300 dark:border-slate-700 rounded px-2 py-0.5 mt-1"
+    >
+        WCAG 2.1 AA ✓
+    </a>
 </footer>
 
 <script is:inline>
