@@ -855,7 +855,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 12.1 Añadir ayuda contextual en todos los campos
 
-- [ ] **Criterio:** 3.3.5 Help — **Nivel AAA**  
+- [x] **Criterio:** 3.3.5 Help — **Nivel AAA**  
   **Implementación:** En `src/components/home/ContactSection.astro`, bajo cada `<label>` y antes del `<input>`, añadir hint text:
   ```html
   <p id="name-help" class="text-sm text-muted">
@@ -869,7 +869,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 12.2 Añadir aviso de rate limiting antes del formulario
 
-- [ ] **Criterio:** 2.2.6 Timeouts — **Nivel AAA (nuevo en 2.2)**  
+- [x] **Criterio:** 2.2.6 Timeouts — **Nivel AAA (nuevo en 2.2)**  
   **Implementación:** En `ContactSection.astro`, encima del `<form>`, añadir aviso permanente visible:
   ```html
   <p class="text-sm text-muted" role="note">
@@ -882,7 +882,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 12.3 Implementar paso de revisión previa al envío
 
-- [ ] **Criterio:** 3.3.6 Error Prevention (All) — **Nivel AAA**  
+- [x] **Criterio:** 3.3.6 Error Prevention (All) — **Nivel AAA**  
   **Implementación:** En `ContactSection.astro`, añadir lógica JS de dos pasos:
   - **Paso 1:** Formulario rellena → botón "Revisar mensaje" (no Submit)
   - **Paso 2:** Se muestra un resumen de los datos introducidos con:
@@ -904,7 +904,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 12.4 Preservar datos del formulario tras error de servidor
 
-- [ ] **Criterio:** 3.3.6  
+- [x] **Criterio:** 3.3.6 (verificado: en sendForm, los campos no se resetean en errores 4xx/5xx ni de red; solo form.reset() se llama en res.ok)  
   **Implementación:** Verificar en `ContactSection.astro` que, al recibir un error 5xx o rate-limit 429, el formulario **no se resetea** y los datos del usuario siguen en los inputs  
   **Test:** Simular error en DevTools (Network → throttle off → interceptar request) → formulario mantiene datos tras error
 
