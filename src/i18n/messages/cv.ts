@@ -52,7 +52,9 @@ export const cv = {
     'portfolio.self.decisions.ci.postLabel': 'Vercel preview deployments',
     'portfolio.self.decisions.ci.textAfter': '.',
     'portfolio.self.decisions.a11y.heading': 'Accesibilidad como disciplina',
-    'portfolio.self.decisions.a11y.text': 'Doce commits numerados (paso 1, paso 2…) recorriendo WCAG 2.1 AA: skip link, gestión de foco tras transiciones, aria en navegación y formulario, prefers-reduced-motion respetado, 404 operable por teclado. No se hizo al final, se hizo como parte del trabajo.',
+    'portfolio.self.decisions.a11y.textBefore': 'Doce commits numerados (paso 1, paso 2…) recorriendo WCAG 2.1 AA: skip link, gestión de foco tras transiciones, aria en navegación y formulario, prefers-reduced-motion respetado, 404 operable por teclado. No se hizo al final, se hizo como parte del trabajo.',
+    'portfolio.self.decisions.a11y.postLabel': 'Ver resumen de cumplimiento',
+    'portfolio.self.decisions.a11y.textAfter': '',
 
     'portfolio.self.stack.title': 'Stack',
     'portfolio.self.stack.subtitle': '// con qué está hecho',
@@ -139,7 +141,9 @@ export const cv = {
     'portfolio.self.decisions.ci.postLabel': 'Vercel preview deployments',
     'portfolio.self.decisions.ci.textAfter': '.',
     'portfolio.self.decisions.a11y.heading': 'Accessibility as a discipline',
-    'portfolio.self.decisions.a11y.text': 'Twelve numbered commits (step 1, step 2…) walking through WCAG 2.1 AA: skip link, focus management after transitions, aria on nav and contact form, prefers-reduced-motion respected, fully keyboard-operable 404 page. Not bolted on at the end — shipped as part of the work.',
+    'portfolio.self.decisions.a11y.textBefore': 'Twelve numbered commits (step 1, step 2…) walking through WCAG 2.1 AA: skip link, focus management after transitions, aria on nav and contact form, prefers-reduced-motion respected, fully keyboard-operable 404 page. Not bolted on at the end — shipped as part of the work.',
+    'portfolio.self.decisions.a11y.postLabel': 'See compliance summary',
+    'portfolio.self.decisions.a11y.textAfter': '',
 
     'portfolio.self.stack.title': 'Stack',
     'portfolio.self.stack.subtitle': '// what it is built with',

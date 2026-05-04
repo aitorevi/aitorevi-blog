@@ -210,13 +210,18 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
         <ul class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {decisions.map((key) => {
             const hasInlinePost = key === 'tests' || key === 'ci';
+            const isA11y = key === 'a11y';
+            const hasLink = hasInlinePost || isA11y;
             const postSlug = hasInlinePost ? t(lang, `portfolio.self.decisions.${key}.postSlug`) : '';
+            const linkHref = isA11y
+              ? t(lang, 'a11y.url')
+              : buildBlogPostPath(postSlug);
             return (
               <DecisionCard
                 heading={t(lang, `portfolio.self.decisions.${key}.heading`)}
-                text={!hasInlinePost ? t(lang, `portfolio.self.decisions.${key}.text`) : undefined}
-                postLink={hasInlinePost ? {
-                  href: buildBlogPostPath(postSlug),
+                text={!hasLink ? t(lang, `portfolio.self.decisions.${key}.text`) : undefined}
+                postLink={hasLink ? {
+                  href: linkHref,
                   label: t(lang, `portfolio.self.decisions.${key}.postLabel`),
                   textBefore: t(lang, `portfolio.self.decisions.${key}.textBefore`),
                   textAfter: t(lang, `portfolio.self.decisions.${key}.textAfter`),
