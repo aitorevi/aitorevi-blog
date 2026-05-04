@@ -63,15 +63,17 @@ const { lang } = Astro.props;
       data-lang={lang}
     >
       <!-- Honeypot: oculto para humanos, los bots lo rellenan -->
-      <input
-        type="text"
-        name="_trap"
-        tabindex="-1"
-        autocomplete="off"
-        aria-hidden="true"
-        aria-label={t(lang, 'home.contact.honeypot')}
-        style="position:absolute;left:-9999px;opacity:0;height:0;width:0;"
-      />
+      <label aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0;overflow:hidden;">
+        {t(lang, 'home.contact.honeypot')}
+        <input
+          type="text"
+          name="_trap"
+          tabindex="-1"
+          autocomplete="off"
+          aria-hidden="true"
+          title={t(lang, 'home.contact.honeypot')}
+        />
+      </label>
       <p class="mb-4 font-mono text-[10px] text-secondary dark:text-accent-blue">
         <span aria-hidden="true">* </span>{t(lang, 'home.contact.required')}
       </p>
