@@ -49,6 +49,7 @@ export const a11y = {
       'Verificación automatizada con axe-core v4 ejecutado vía Playwright sobre build de producción local.',
     'a11y.tools.command': 'npm run test:a11y:axe',
     'a11y.tools.scope': 'WCAG 2.1 AA + WCAG 2.2 AA — 8 páginas',
+    'a11y.backLink': 'Caso de estudio',
     'a11y.footer.badge.label': 'Página de accesibilidad — cumple WCAG 2.1 nivel AA',
     // Quién se beneficia
     'a11y.users.heading': 'Quién se beneficia',
@@ -128,6 +129,7 @@ export const a11y = {
       'Automated verification with axe-core v4 via Playwright against a local production build.',
     'a11y.tools.command': 'npm run test:a11y:axe',
     'a11y.tools.scope': 'WCAG 2.1 AA + WCAG 2.2 AA — 8 pages',
+    'a11y.backLink': 'Case study',
     'a11y.footer.badge.label': 'Accessibility page — meets WCAG 2.1 level AA',
     // Who benefits
     'a11y.users.heading': 'Who benefits',
