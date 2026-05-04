@@ -29,9 +29,15 @@ $ARGUMENTS
 ### Fase 0: Setup
 
 1. Si la tarea es una issue de GitHub, asignársela al usuario.
-2. `git checkout master && git pull origin master`.
-3. Crear rama: `feat/<descripcion-corta>` para features, `fix/<descripcion>` para bugs, `chore/<descripcion>` para tooling/CI.
-4. Crear el task file en `workspace/planning/` con la plantilla adecuada (Simplified por defecto, SDD si la feature lo justifica).
+2. En el repo principal: `git checkout master && git pull origin master`.
+3. Determinar nombre de rama: `feat/<nombre>` / `fix/<nombre>` / `chore/<nombre>` en kebab-case.
+4. Crear rama y worktree desde master:
+   ```bash
+   git worktree add -b <tipo>/<nombre> ../aitorevi-blog-<tipo>-<nombre> master
+   ```
+   Ejemplo: `git worktree add -b feat/wcag-aaa ../aitorevi-blog-feat-wcag-aaa master`
+5. Crear el task file en `workspace/planning/` **del worktree** con la plantilla adecuada (Simplified por defecto, SDD si la feature lo justifica).
+6. Informar al usuario de la ruta del worktree creado.
 
 ### Fase 1: Clasificar y confirmar
 
@@ -49,10 +55,10 @@ $ARGUMENTS
 ### Fase 3: Delegar implementación
 
 1. `git mv workspace/planning/<file>.md workspace/progress/<file>.md`. `Status: IN PROGRESS`.
-2. Lanza `astro-developer` con el plan.
+2. Lanza `astro-developer` con el plan, indicándole la ruta del worktree y el nombre del fichero de tarea.
 3. Para Features SDD: instruye al developer a seguir TDD estricto (RED → GREEN → REFACTOR), tests de aceptación primero.
-4. Tras cada paso completado del checklist, verifica que `npx astro check` y `npm run test:unit` pasan.
-5. El developer **NO** ejecuta `git commit` ni `git push`. En cada punto natural de corte (paso del checklist completado, ciclo RED, ciclo GREEN, refactor) debe **detenerse y avisar al usuario** con un resumen breve de qué cambió, para que el usuario haga su propio commit atómico. La idea es muchos commits pequeños, no uno grande al final.
+4. Tras cada paso completado del checklist, el developer **hace un commit** con el nombre del fichero de tarea (ej. `wcag-aaa-compliance`) y **avisa brevemente** al usuario de qué cambió.
+5. El developer **NO** ejecuta `git push`, `gh pr create` ni hace merge.
 
 ### Fase 4: Delegar review
 
@@ -63,22 +69,28 @@ $ARGUMENTS
 
 ### Fase 5: Cierre
 
-1. `npm run build` para confirmar compilación, OG images y CV PDF.
-2. `git mv workspace/progress/<file>.md workspace/review/<file>.md`. `Status: REVIEW`.
-3. Notifica al usuario que la tarea está lista para su revisión final con un resumen claro:
+1. `npm run build` para confirmar compilación, OG images y CV PDF. Commitea si genera artefactos nuevos.
+2. `git mv workspace/progress/<file>.md workspace/review/<file>.md`. `Status: REVIEW`. Commitea el movimiento.
+3. Notifica al usuario que la tarea está lista para su revisión final:
    - Lista de cambios (archivos tocados, áreas afectadas).
    - Estado de verificación (`astro check`, tests, build).
-   - Si quedaran cambios sin commitear, indícaselo para que él los commitee como prefiera (mensajes los redacta el usuario).
-4. **El usuario** se encarga de commit, push, abrir PR, esperar CI verde y mergear. NO lo hace el coordinador ni ningún subagente.
-5. Tras el merge: mover el task file con `git mv workspace/review/<file>.md workspace/completed/<file>.md` y actualizar `Status: COMPLETED`. Si la tarea era una issue de GitHub, recordar al usuario cerrarla (o cerrarla si el usuario lo pide explícitamente).
+   - Ruta del worktree y rama para hacer push: `cd ../<worktree> && git push -u origin <rama>`.
+4. **El usuario** hace push, abre PR, espera CI verde y mergea. NO lo hace el coordinador ni ningún subagente.
+5. Tras el merge, limpiar el worktree:
+   ```bash
+   git worktree remove ../<worktree>
+   git branch -d <rama>
+   ```
+   Mover el task file: `git mv workspace/review/<file>.md workspace/completed/<file>.md`. `Status: COMPLETED`.
+6. Si la tarea era una issue de GitHub, recordar al usuario cerrarla.
 
 ## Reglas inquebrantables
 
 - NUNCA planifiques ni implementes directamente — SIEMPRE delega en el agente correspondiente.
 - SIEMPRE clasifica la tarea ANTES de empezar.
 - SIEMPRE gestiona los task files (crear, mover con `git mv`, actualizar `Status:`).
-- SIEMPRE instruye al developer a parar en puntos naturales y avisar al usuario para que haga commits atómicos pequeños y frecuentes. **El usuario redacta sus propios mensajes de commit.** El agente no propone wording de commits.
-- NUNCA ejecutes `git commit`, `git push`, `gh pr create`, `gh pr merge` ni equivalentes en nombre del usuario.
+- El developer **ejecuta `git commit`** dentro del worktree tras cada paso natural. Mensaje: kebab-case del nombre del fichero de tarea sin `.md`. Sin prefijo, sin cuerpo, sin co-authors.
+- NUNCA ejecutes `git push`, `gh pr create` ni `gh pr merge`. Eso lo hace siempre el usuario.
 - SIEMPRE corre `npx astro check` y `npm run test:unit` después de cada fase de implementación.
 - SIEMPRE pregunta al usuario antes de pasar de planning a progress.
 - NUNCA añadas atribución a Claude o co-authors de IA en commits, PRs ni en ningún output.

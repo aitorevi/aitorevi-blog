@@ -16,6 +16,7 @@
     "test:unit": "vitest run",
     "test:a11y": "playwright test tests/a11y/",
     "test:a11y:ci": "pa11y-ci --config .pa11yci.json",
+    "test:a11y:axe": "node scripts/axe-check.mjs",
     "test:integration": "vitest run --config vitest.integration.config.js",
     "test:e2e": "playwright test",
     "test:all": "npm run test:unit && npm run test:integration && npm run test:e2e",

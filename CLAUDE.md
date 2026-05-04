@@ -65,6 +65,6 @@ Para hotfixes triviales no es necesario crear un fichero de tarea.
 
 ### Commits, push, PR y merge
 
-- **Los agentes y skills NO ejecutan `git commit`, `git push`, `gh pr create` ni `gh pr merge`.** Preparan el código, se detienen en puntos naturales de corte y avisan al usuario con un resumen.
-- **Aitor (el usuario) hace los commits, push, abre PR y mergea**, y **redacta él mismo los mensajes de commit**. Estilo: muchos commits pequeños y atómicos.
-- Excepción: la skill `/git-commit` sí ejecuta `git commit` porque el usuario la invoca explícitamente para ese fin.
+- **En flujos con worktree** (tareas no triviales via `/do-task`): el agente `astro-developer` ejecuta `git commit` dentro del worktree tras cada paso natural. Mensaje: kebab-case del nombre del fichero de tarea sin `.md` (ej. `wcag-aaa-compliance`). Sin prefijo, sin cuerpo, sin co-authors.
+- **Los agentes NO ejecutan `git push`, `gh pr create` ni hacen merge.** Eso lo hace Aitor.
+- **Para cambios fuera de worktree** (hotfixes, edits puntuales): Aitor hace los commits con `/git-commit` o manualmente.

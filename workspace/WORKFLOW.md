@@ -40,10 +40,45 @@ planning/ → progress/ → review/ → completed/
 
 ## Quién hace qué (commits y push)
 
-- **Los agentes y skills NO ejecutan `git commit`, `git push`, `gh pr create` ni hacen merge.**
-- Los agentes preparan el código, se detienen en puntos naturales de corte y avisan al usuario con un resumen de qué cambió.
-- **El usuario (Aitor) es quien hace los commits, los push, abre los PR y mergea**, y **redacta él mismo los mensajes de commit**. El objetivo son commits atómicos pequeños y frecuentes, no uno grande al final.
-- La excepción es la skill `/git-commit`, que sí ejecuta `git commit` porque la invoca explícitamente el usuario para ese propósito (y el usuario decide el mensaje en la interacción).
+El flujo usa worktrees: cada tarea vive en su propio directorio hermano del repo. Dentro del worktree **el agente hace los commits** — el usuario no necesita entrar al worktree para nada. El usuario solo hace push y abre el PR desde ahí cuando la tarea está lista.
+
+- **Los agentes ejecutan `git commit`** dentro del worktree tras cada paso natural. Mensaje: solo el nombre del fichero de tarea en kebab-case (ej. `wcag-aaa-compliance`). Sin prefijos, sin cuerpo.
+- **Los agentes NO ejecutan `git push`, `gh pr create` ni hacen merge.** Eso lo hace Aitor.
+- **Aitor hace push y abre el PR** cuando el agente avisa de que la tarea está lista.
+- La skill `/git-commit` sigue disponible para commits manuales puntuales fuera del flujo de worktrees.
+
+---
+
+## Worktrees
+
+Cada tarea se desarrolla en su propio worktree hermano del repo. El directorio principal (`aitorevi-blog/`) queda siempre en master.
+
+### Convención de nombres
+
+| Tipo    | Rama                    | Worktree                              |
+| ------- | ----------------------- | ------------------------------------- |
+| Feature | `feat/descripcion`      | `../aitorevi-blog-feat-descripcion`   |
+| Fix     | `fix/descripcion`       | `../aitorevi-blog-fix-descripcion`    |
+| Chore   | `chore/descripcion`     | `../aitorevi-blog-chore-descripcion`  |
+
+### Ciclo de vida
+
+```bash
+# Crear (desde el repo principal, en master)
+git worktree add -b feat/<nombre> ../aitorevi-blog-feat-<nombre> master
+
+# Listar worktrees activos
+git worktree list
+
+# Push y PR (el usuario, desde el worktree o desde cualquier terminal)
+cd ../aitorevi-blog-feat-<nombre>
+git push -u origin feat/<nombre>
+gh pr create
+
+# Al hacer merge del PR, limpiar
+git worktree remove ../aitorevi-blog-feat-<nombre>
+git branch -d feat/<nombre>
+```
 
 ---
 
@@ -64,7 +99,7 @@ Esperas aprobación antes de seguir.
 
 1. Mueve el fichero a `workspace/progress/` con `git mv`, actualiza `Status: IN PROGRESS`.
 2. Sigue el checklist. Escribe tests cuando aplique.
-3. Tras cada paso lógico completado, **detente y avisa al usuario** con un resumen breve para que él haga un commit atómico (el mensaje lo redacta el usuario).
+3. Tras cada paso lógico completado, **haz un commit** con el nombre del fichero de tarea (ej. `wcag-aaa-compliance`) y **avisa al usuario** con un resumen breve de qué cambió.
 4. Verifica que `npx astro check` pasa y `npm run test:unit` está verde.
 
 ### Fase 3: Revisión
@@ -73,11 +108,12 @@ Revisar con `astro-reviewer` (o el agente que aplique). Corregir críticos antes
 
 ### Fase 4: Cierre
 
-1. Mueve el fichero a `workspace/review/`, `Status: REVIEW`.
+1. Mueve el fichero a `workspace/review/`, `Status: REVIEW`. Commitea el movimiento.
 2. Ejecuta `npm run build` para verificar compilación, OG images y CV PDF.
-3. Notifica que la tarea está lista para tu revisión final, e incluye un resumen de los cambios. Si queda algo sin commitear, indícaselo al usuario.
-4. Tras tu aprobación final, **el usuario** hace commit (con sus mensajes), push, abre PR, espera CI verde y mergea. Una vez mergeada la rama, el usuario (o el agente, si se le pide) mueve el fichero a `workspace/completed/` con `Status: COMPLETED`.
-5. Si la tarea es una issue de GitHub: el usuario cierra la issue.
+3. Notifica que la tarea está lista: resumen de cambios, estado de verificación, rama y ruta del worktree para que el usuario haga push y abra el PR.
+4. **El usuario** hace `git push` y abre el PR, espera CI verde y mergea.
+5. Tras el merge, limpiar: `git worktree remove ../<worktree>` y `git branch -d <rama>`. Mover el fichero a `workspace/completed/` con `Status: COMPLETED`.
+6. Si la tarea es una issue de GitHub: el usuario cierra la issue.
 
 ---
 
@@ -107,9 +143,9 @@ Espera aprobación del Plan.
 ### Fase 3: Implementación (TDD estricto)
 
 1. Mueve a `workspace/progress/`, `Status: IN PROGRESS`.
-2. **RED**: convierte test skeletons en tests reales. Todos deben fallar. El agente se detiene y avisa al usuario con un resumen para que haga su commit atómico (el mensaje lo redacta el usuario).
-3. **GREEN**: implementa siguiendo el plan. Tras cada paso completado, el agente se detiene y avisa al usuario para que commitee. La idea son muchos commits pequeños.
-4. **Refactor** manteniendo verde. Avisa al usuario al terminar el refactor para otro commit.
+2. **RED**: convierte test skeletons en tests reales. Todos deben fallar. Commitea con el nombre del plan y avisa al usuario.
+3. **GREEN**: implementa siguiendo el plan. Tras cada paso completado, commitea con el nombre del plan y avisa brevemente.
+4. **Refactor** manteniendo verde. Commitea y avisa al terminar.
 5. Verifica que cada AC tiene al menos un test pasando.
 
 ### Fase 4 y 5: Igual que el flujo simplificado.
@@ -226,7 +262,7 @@ Qué entra y qué no.
 4. **No archivos sueltos en `workspace/`**. Auditorías y reportes van en `reports/`.
 5. **Movimientos sólo con `git mv`** para preservar historial.
 6. **Workflow opcional, no obligatorio**. Para hotfixes triviales o cambios de un par de líneas no merece la pena crear un fichero. Úsalo cuando aporta trazabilidad.
-7. **Commits y push los hace el usuario**, no los agentes ni las skills (excepto `/git-commit`, que el usuario invoca explícitamente). El usuario redacta sus propios mensajes; los agentes sólo se detienen en puntos naturales y avisan.
+7. **Dentro del worktree, el agente hace los commits** tras cada paso natural (mensaje: nombre del fichero de tarea en kebab-case). **Push, PR y merge los hace siempre el usuario.**
 
 ## Convenciones de idioma
 
