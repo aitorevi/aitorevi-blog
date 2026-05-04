@@ -308,7 +308,7 @@ export default function TechConstellation({ lang = 'es' }: Props) {
                 </span>
               </div>
               <span
-                className="mt-1 whitespace-nowrap font-mono text-slate-600/75 dark:text-slate-400/70"
+                className="mt-1 whitespace-nowrap font-mono text-slate-700 dark:text-slate-300"
                 style={{
                   fontSize: active ? 11 : 9,
                   color: active ? node.color : undefined,
