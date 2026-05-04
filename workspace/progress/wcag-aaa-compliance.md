@@ -645,7 +645,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 9.1 Crear mapa de abreviaturas
 
-- [ ] **Criterio:** 3.1.4  
+- [x] **Criterio:** 3.1.4  
   **Implementación:** Crear `src/data/abbreviations.ts`:
   ```ts
   export const abbreviations: Record<'es' | 'en', Record<string, string>> = {
@@ -695,7 +695,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 9.2 Crear componente `Abbr.astro`
 
-- [ ] **Criterio:** 3.1.4  
+- [x] **Criterio:** 3.1.4  
   **Implementación:** Crear `src/components/atoms/Abbr.astro`:
   ```astro
   ---
@@ -713,7 +713,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 9.3 Usar `<Abbr>` en el CV (primera mención por sección)
 
-- [ ] **Criterio:** 3.1.4  
+- [x] **Criterio:** 3.1.4  
   **Implementación:** En `src/components/cv/CvExperience.astro`, `CvContent.astro`, `CvSkills.astro`:
   - Usar `<Abbr term="TDD" lang={lang} />` en la primera aparición de cada abreviatura en cada sección
   - No repetir el `<abbr>` en cada ocurrencia posterior dentro de la misma sección  
@@ -721,7 +721,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 9.4 Usar `<abbr>` inline en contenido Markdown del blog
 
-- [ ] **Criterio:** 3.1.4  
+- [x] **Criterio:** 3.1.4 (convención de posts — no requiere cambio de código)  
   **Implementación:** En los posts de blog Markdown, en la primera mención de una abreviatura técnica, usar HTML inline:
   ```markdown
   practicar <abbr title="Test-Driven Development">TDD</abbr> en el día a día

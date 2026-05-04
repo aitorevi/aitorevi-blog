@@ -50,7 +50,7 @@ const jsonPath = getJsonPath(lang);
       <CvExperience label={data.labels.experience} entries={data.experience} />
       <CvEducation label={data.labels.education} entries={data.education} />
       <CvCertifications label={data.labels.certifications} entries={data.certifications} />
-      <CvSkills label={data.labels.skills} categories={data.skills} />
+      <CvSkills label={data.labels.skills} categories={data.skills} lang={lang} />
       <CvPdfDownload pdfPath={pdfPath} jsonPath={jsonPath} label={data.labels.downloadPdf} />
     </section>
   </div>

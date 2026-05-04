@@ -1,0 +1,12 @@
+---
+import { abbreviations } from '@/data/abbreviations';
+
+interface Props {
+  term: string;
+  lang: 'es' | 'en';
+}
+
+const { term, lang } = Astro.props;
+const expansion = abbreviations[lang]?.[term] ?? term;
+---
+<abbr title={expansion}>{term}</abbr>

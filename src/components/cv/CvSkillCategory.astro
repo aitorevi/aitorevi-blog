@@ -1,12 +1,18 @@
 ---
 import type { SkillCategoryData } from '@/data/cv';
 import Tag from '@/components/shared/Tag.astro';
+import Abbr from '@/components/atoms/Abbr.astro';
+import { abbreviations } from '@/data/abbreviations';
+import type { Lang } from '@/i18n/types';
 
 interface Props {
   category: SkillCategoryData;
+  lang: Lang;
 }
 
-const { category } = Astro.props;
+const { category, lang } = Astro.props;
+// Explicit cast to avoid implicit-any from dynamic key access
+const knownAbbr: Record<string, string> = abbreviations[lang as 'es' | 'en'];
 ---
 
 <div class="reveal-fade group relative rounded-xl p-4 border border-accent/15 bg-slate-50/30 dark:bg-ink-800 hover:border-accent/30 dark:hover:shadow-glow-accent-card-md transition-all duration-300">
@@ -16,7 +22,9 @@ const { category } = Astro.props;
   </div>
   <div class="flex flex-wrap gap-1.5">
     {category.skills.map((skill) => (
-      <Tag label={skill} variant="accent" />
+      knownAbbr[skill]
+        ? <Tag label={skill} variant="accent"><Abbr term={skill} lang={lang} /></Tag>
+        : <Tag label={skill} variant="accent" />
     ))}
   </div>
 </div>
