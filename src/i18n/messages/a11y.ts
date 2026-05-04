@@ -23,6 +23,9 @@ export const a11y = {
     'a11y.pillars.operable.title': 'Operable',
     'a11y.pillars.operable.desc':
       'Navegación completa por teclado, focus visible, áreas táctiles 44×44px.',
+    'a11y.pillars.understandable.title': 'Comprensible',
+    'a11y.pillars.understandable.desc':
+      'Idioma declarado, formularios con errores claros, navegación consistente entre páginas.',
     'a11y.pillars.robust.title': 'Robusto',
     'a11y.pillars.robust.desc':
       'HTML semántico, ARIA correcto, verificado con axe-core + Playwright.',
@@ -72,6 +75,9 @@ export const a11y = {
     'a11y.pillars.operable.title': 'Operable',
     'a11y.pillars.operable.desc':
       'Full keyboard navigation, visible focus, 44×44px touch targets.',
+    'a11y.pillars.understandable.title': 'Understandable',
+    'a11y.pillars.understandable.desc':
+      'Language declared, forms with clear error messages, consistent navigation across pages.',
     'a11y.pillars.robust.title': 'Robust',
     'a11y.pillars.robust.desc':
       'Semantic HTML, correct ARIA, verified with axe-core + Playwright.',
