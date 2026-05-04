@@ -47,6 +47,7 @@ const workPath = getLocalePath('/work', lang);
             <div role="group" class="flex items-center gap-1 text-sm font-semibold" aria-label={isEs ? 'Seleccionar idioma' : 'Select language'}>
                 <a href={isEs ? currentPath : alternateUrl}
                    aria-current={isEs ? 'true' : undefined}
+                   aria-label={t(lang, 'nav.langEs')}
                    title={t(lang, 'nav.langEs')}
                    class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isEs ? 'text-accent underline' : 'text-quaternary hover:text-accent'}`}>
                     ES
@@ -54,6 +55,7 @@ const workPath = getLocalePath('/work', lang);
                 <span class="text-quaternary" aria-hidden="true">|</span>
                 <a href={!isEs ? currentPath : alternateUrl}
                    aria-current={!isEs ? 'true' : undefined}
+                   aria-label={t(lang, 'nav.langEn')}
                    title={t(lang, 'nav.langEn')}
                    class={`cursor-pointer transition ease-linear delay-50 duration-200 ${!isEs ? 'text-accent underline' : 'text-quaternary hover:text-accent'}`}>
                     EN
@@ -127,9 +129,10 @@ const workPath = getLocalePath('/work', lang);
                class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isInCv ? 'text-accent font-semibold' : 'text-inherit hover:text-accent'}`}>
                 {t(lang, 'nav.about')}
             </a>
-            <div class="flex items-center justify-center gap-1 text-sm font-semibold">
+            <div role="group" class="flex items-center justify-center gap-1 text-sm font-semibold" aria-label={isEs ? 'Seleccionar idioma' : 'Select language'}>
                 <a href={isEs ? currentPath : alternateUrl}
                    aria-current={isEs ? 'true' : undefined}
+                   aria-label={t(lang, 'nav.langEs')}
                    title={t(lang, 'nav.langEs')}
                    class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isEs ? 'text-accent underline' : 'text-quaternary hover:text-accent'}`}>
                     ES
@@ -137,6 +140,7 @@ const workPath = getLocalePath('/work', lang);
                 <span class="text-quaternary" aria-hidden="true">|</span>
                 <a href={!isEs ? currentPath : alternateUrl}
                    aria-current={!isEs ? 'true' : undefined}
+                   aria-label={t(lang, 'nav.langEn')}
                    title={t(lang, 'nav.langEn')}
                    class={`cursor-pointer transition ease-linear delay-50 duration-200 ${!isEs ? 'text-accent underline' : 'text-quaternary hover:text-accent'}`}>
                     EN

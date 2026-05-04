@@ -69,6 +69,7 @@ const { lang } = Astro.props;
         tabindex="-1"
         autocomplete="off"
         aria-hidden="true"
+        aria-label="No rellenar"
         style="position:absolute;left:-9999px;opacity:0;height:0;width:0;"
       />
       <p class="mb-4 font-mono text-[10px] text-secondary dark:text-accent-blue">
@@ -273,7 +274,7 @@ const { lang } = Astro.props;
         rel="noopener noreferrer"
         class="flex items-center gap-1.5 transition-colors hover:text-secondary dark:hover:text-accent-blue"
       >
-        <Icon name="linkedin" class="w-3.5 h-3.5" />
+        <Icon name="linkedin" class="w-3.5 h-3.5" aria-hidden="true" />
         LinkedIn
       </a>
       <a
@@ -282,7 +283,7 @@ const { lang } = Astro.props;
         rel="noopener noreferrer"
         class="flex items-center gap-1.5 transition-colors hover:text-secondary dark:hover:text-accent-blue"
       >
-        <Icon name="github" class="w-3.5 h-3.5" />
+        <Icon name="github" class="w-3.5 h-3.5" aria-hidden="true" />
         GitHub
       </a>
     </div>
