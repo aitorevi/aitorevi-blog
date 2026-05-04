@@ -44,7 +44,7 @@ const workPath = getLocalePath('/work', lang);
                class={`min-h-[44px] flex items-center cursor-pointer uppercase tracking-[0.15em] text-sm transition ease-linear delay-50 duration-200 ${isInCv ? 'text-accent font-semibold' : 'text-inherit hover:text-accent'}`}>
                 {t(lang, 'nav.about')}
             </a>
-            <div class="flex items-center gap-1 text-sm font-semibold" aria-label={isEs ? 'Seleccionar idioma' : 'Select language'}>
+            <div role="group" class="flex items-center gap-1 text-sm font-semibold" aria-label={isEs ? 'Seleccionar idioma' : 'Select language'}>
                 <a href={isEs ? currentPath : alternateUrl}
                    aria-current={isEs ? 'true' : undefined}
                    title={t(lang, 'nav.langEs')}

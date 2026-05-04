@@ -40,7 +40,7 @@ const { lang } = Astro.props;
       </p>
     </div>
 
-    <p role="note" class="mt-6 text-xs text-slate-500 dark:text-slate-400 text-center">
+    <p role="note" class="mt-6 text-xs text-slate-600 dark:text-slate-300 text-center">
       {t(lang, 'home.contact.rateLimitNotice')}
     </p>
 
@@ -80,7 +80,7 @@ const { lang } = Astro.props;
           <span class="mb-1 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
             {t(lang, 'home.contact.name')}<span aria-hidden="true"> *</span>
           </span>
-          <p id="contact-name-help" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 mb-2">
+          <p id="contact-name-help" class="text-xs text-slate-600 dark:text-slate-300 mt-0.5 mb-2">
             {t(lang, 'home.contact.nameHelp')}
           </p>
           <input
@@ -101,7 +101,7 @@ const { lang } = Astro.props;
           <span class="mb-1 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
             {t(lang, 'home.contact.email')}<span aria-hidden="true"> *</span>
           </span>
-          <p id="contact-email-help" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 mb-2">
+          <p id="contact-email-help" class="text-xs text-slate-600 dark:text-slate-300 mt-0.5 mb-2">
             {t(lang, 'home.contact.emailHelp')}
           </p>
           <input
@@ -124,7 +124,7 @@ const { lang } = Astro.props;
         <span class="mb-1 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
           {t(lang, 'home.contact.subject')}<span aria-hidden="true"> *</span>
         </span>
-        <p id="contact-subject-help" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 mb-2">
+        <p id="contact-subject-help" class="text-xs text-slate-600 dark:text-slate-300 mt-0.5 mb-2">
           {t(lang, 'home.contact.subjectHelp')}
         </p>
         <input
@@ -145,7 +145,7 @@ const { lang } = Astro.props;
         <span class="mb-1 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
           {t(lang, 'home.contact.message')}<span aria-hidden="true"> *</span>
         </span>
-        <p id="contact-message-help" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 mb-2">
+        <p id="contact-message-help" class="text-xs text-slate-600 dark:text-slate-300 mt-0.5 mb-2">
           {t(lang, 'home.contact.messageHelp')}
         </p>
         <textarea
@@ -167,7 +167,7 @@ const { lang } = Astro.props;
         <p id="contact-privacy-heading" class="mb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
           {t(lang, 'home.contact.privacy.heading')}
         </p>
-        <p class="text-[11px] leading-relaxed text-slate-500 dark:text-slate-500">
+        <p class="text-[11px] leading-relaxed text-slate-600 dark:text-slate-300">
           <span class="text-slate-600 dark:text-slate-400">{t(lang, 'home.contact.privacy.responsable')}</span> {t(lang, 'home.contact.privacy.responsableValue')}{' '}
           <span class="text-slate-600 dark:text-slate-400">{t(lang, 'home.contact.privacy.finalidad')}</span> {t(lang, 'home.contact.privacy.finalidadValue')}{' '}
           <span class="text-slate-600 dark:text-slate-400">{t(lang, 'home.contact.privacy.legitimacion')}</span> {t(lang, 'home.contact.privacy.legitimacionValue')}{' '}
@@ -177,7 +177,7 @@ const { lang } = Astro.props;
       </section>
 
       <!-- Consent checkbox — required -->
-      <label class="mt-4 min-h-[44px] flex items-center gap-2 text-[11px] leading-relaxed text-slate-500 dark:text-slate-500" for="contact-consent">
+      <label class="mt-4 min-h-[44px] flex items-center gap-2 text-[11px] leading-relaxed text-slate-600 dark:text-slate-300" for="contact-consent">
         <input
           id="contact-consent"
           type="checkbox"
@@ -194,7 +194,7 @@ const { lang } = Astro.props;
             {t(lang, 'home.contact.consent.linkLabel')}
           </a>
           <span aria-hidden="true"> *</span>
-          <span class="ml-1 text-slate-500 dark:text-slate-500">
+          <span class="ml-1 text-slate-600 dark:text-slate-300">
             {t(lang, 'home.contact.consent.required')}
           </span>
         </span>
@@ -232,19 +232,19 @@ const { lang } = Astro.props;
       </h3>
       <dl class="space-y-2 text-sm">
         <div class="flex gap-2">
-          <dt class="text-slate-500 dark:text-slate-400 font-medium w-20 shrink-0">{t(lang, 'home.contact.name')}:</dt>
+          <dt class="text-slate-600 dark:text-slate-300 font-medium w-20 shrink-0">{t(lang, 'home.contact.name')}:</dt>
           <dd id="review-name" class="text-ink-900 dark:text-slate-100"></dd>
         </div>
         <div class="flex gap-2">
-          <dt class="text-slate-500 dark:text-slate-400 font-medium w-20 shrink-0">{t(lang, 'home.contact.email')}:</dt>
+          <dt class="text-slate-600 dark:text-slate-300 font-medium w-20 shrink-0">{t(lang, 'home.contact.email')}:</dt>
           <dd id="review-email" class="text-ink-900 dark:text-slate-100"></dd>
         </div>
         <div class="flex gap-2">
-          <dt class="text-slate-500 dark:text-slate-400 font-medium w-20 shrink-0">{t(lang, 'home.contact.subject')}:</dt>
+          <dt class="text-slate-600 dark:text-slate-300 font-medium w-20 shrink-0">{t(lang, 'home.contact.subject')}:</dt>
           <dd id="review-subject" class="text-ink-900 dark:text-slate-100"></dd>
         </div>
         <div class="flex gap-2">
-          <dt class="text-slate-500 dark:text-slate-400 font-medium w-20 shrink-0">{t(lang, 'home.contact.message')}:</dt>
+          <dt class="text-slate-600 dark:text-slate-300 font-medium w-20 shrink-0">{t(lang, 'home.contact.message')}:</dt>
           <dd id="review-message" class="text-ink-900 dark:text-slate-100 whitespace-pre-wrap"></dd>
         </div>
       </dl>

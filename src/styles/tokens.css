@@ -19,7 +19,7 @@
   /* ── Text ─────────────────────────────────────────────────────────── */
   --color-fg: 21 27 39;           /* primary #151b27 */
   --color-fg-muted: 71 85 105;    /* slate-600 — ≥7:1 on white (WCAG 1.4.6 AAA) */
-  --color-fg-subtle: 100 116 139; /* slate-500 — ~7.5:1 on white (WCAG 1.4.6 AAA) */
+  --color-fg-subtle: 71 85 105;   /* slate-600 — 7.58:1 on white (WCAG 1.4.6 AAA) */
 
   /* ── Accent (primary brand color) ────────────────────────────────── */
   /* Light: #4727cc (ratio ~7.5:1 over #f8fafc — WCAG AAA 1.4.6).     */

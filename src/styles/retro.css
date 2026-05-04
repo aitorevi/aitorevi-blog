@@ -38,7 +38,7 @@ html[data-retro] {
   --retro-yellow: #fcd44e;        /* heading highlight */
   --retro-red: #a83232;           /* primary button (OK red) */
   --retro-red-deep: #6a1818;      /* button border / pressed */
-  --retro-magenta: #c54fa6;       /* visited links / cover-art accent */
+  --retro-magenta: #f080e0;       /* visited links / cover-art accent — 7.85:1 on #0a1228 (AAA) */
   --retro-green: #4ca84a;         /* code / tentacle */
   --retro-link: #9fdfff;
   --retro-text: #f5e6c8;
