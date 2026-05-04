@@ -17,6 +17,7 @@ const { lang, ctaLabel, class: className = '' } = Astro.props;
   aria-label={t(lang, 'blog.search.label')}
   onsubmit="return false"
 >
+  <label for="blog-search-input" class="sr-only">{t(lang, 'blog.search.label')}</label>
   <input
     id="blog-search-input"
     type="search"
@@ -28,7 +29,7 @@ const { lang, ctaLabel, class: className = '' } = Astro.props;
     placeholder={t(lang, 'blog.search.placeholder')}
     autocomplete="off"
     spellcheck="false"
-    class="w-full rounded-lg border border-slate-300 bg-transparent px-4 py-2.5 font-mono text-sm text-slate-700 transition-colors duration-200 placeholder:text-slate-500 hover:border-slate-400 focus:border-secondary/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary dark:border-white/20 dark:text-slate-200 dark:placeholder:text-slate-600 dark:hover:border-white/30 dark:focus:border-accent-blue/50 dark:focus-visible:outline-accent-blue motion-reduce:transition-none"
+    class="w-full rounded-lg border border-slate-300 bg-transparent px-4 py-2.5 font-mono text-sm text-slate-700 transition-colors duration-200 placeholder:text-slate-600 hover:border-slate-400 focus:border-secondary/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary dark:border-white/20 dark:text-slate-200 dark:placeholder:text-slate-600 dark:hover:border-white/30 dark:focus:border-accent-blue/50 dark:focus-visible:outline-accent-blue motion-reduce:transition-none"
     aria-label={t(lang, 'blog.search.label')}
   />
 </form>

@@ -242,7 +242,7 @@ const stack = {
           <path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.75.75 0 1 1 1.06 1.06L9.06 8l3.22 3.22a.75.75 0 1 1-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 0 1-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"/>
         </svg>
       </button>
-      <img id="lightbox-img" src="" alt="" class="block max-h-[calc(90vh-3rem)] max-w-full object-contain" />
+      <img id="lightbox-img" src="" alt="" aria-hidden="true" class="block max-h-[calc(90vh-3rem)] max-w-full object-contain" />
       <p id="lightbox-caption" class="bg-ink-900 px-4 py-2.5 text-center font-mono text-xs text-slate-400"></p>
     </dialog>
 
@@ -261,6 +261,7 @@ const stack = {
       btn.addEventListener('click', () => {
         img.src = btn.dataset.lightboxSrc ?? '';
         img.alt = btn.dataset.lightboxCaption ?? '';
+        img.removeAttribute('aria-hidden');
         caption.textContent = btn.dataset.lightboxCaption ?? '';
         dialog.showModal();
       });
@@ -272,7 +273,7 @@ const stack = {
       if (e.target === dialog) dialog.close();
     });
 
-    dialog.addEventListener('close', () => { img.src = ''; });
+    dialog.addEventListener('close', () => { img.src = ''; img.setAttribute('aria-hidden', 'true'); });
   }
 
   document.addEventListener('astro:page-load', initLightbox);

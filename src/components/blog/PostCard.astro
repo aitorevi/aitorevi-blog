@@ -151,7 +151,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
   <div class="flex flex-1 flex-col p-6">
     <!-- Header: Tags + optional Crosspost badge -->
     <header class="mb-3 flex flex-wrap items-center gap-2">
-      <ul class="flex flex-wrap gap-2 list-none p-0" aria-label={t(lang, 'blog.tags')}>
+      <ul class="flex flex-wrap gap-2 list-none p-0" role="list" aria-label={t(lang, 'blog.tags')}>
         {data.tags.slice(0, 3).map((tag) => (
           <li><Tag label={tag} variant="accent" /></li>
         ))}
