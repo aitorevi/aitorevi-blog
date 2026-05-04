@@ -69,7 +69,7 @@ const { lang } = Astro.props;
         tabindex="-1"
         autocomplete="off"
         aria-hidden="true"
-        aria-label="No rellenar"
+        aria-label={t(lang, 'home.contact.honeypot')}
         style="position:absolute;left:-9999px;opacity:0;height:0;width:0;"
       />
       <p class="mb-4 font-mono text-[10px] text-secondary dark:text-accent-blue">

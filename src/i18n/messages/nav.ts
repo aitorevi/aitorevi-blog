@@ -7,6 +7,7 @@ export const nav = {
     'nav.themeToggle': 'Cambiar tema claro/oscuro',
     'nav.langEs': 'Cambiar a español',
     'nav.langEn': 'Switch to English',
+    'nav.langSelect': 'Seleccionar idioma',
     'nav.motionToggle': 'Alternar reducción de movimiento',
   },
   en: {
@@ -17,6 +18,7 @@ export const nav = {
     'nav.themeToggle': 'Toggle light/dark theme',
     'nav.langEs': 'Cambiar a español',
     'nav.langEn': 'Switch to English',
+    'nav.langSelect': 'Select language',
     'nav.motionToggle': 'Toggle reduced motion',
   },
 };
