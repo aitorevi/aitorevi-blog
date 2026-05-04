@@ -318,6 +318,16 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
         <p class="mt-10 text-center text-[11px] font-mono uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500">
           {t(lang, 'portfolio.self.scores.source')}
         </p>
+        <p class="mt-3 text-center text-[11px] font-mono uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500">
+          {t(lang, 'portfolio.self.scores.axe')}
+          {' · '}
+          <a
+            href={t(lang, 'a11y.url')}
+            class="text-accent underline underline-offset-2 hover:text-accent-violet dark:hover:text-accent-violet transition-colors duration-200"
+          >
+            {t(lang, 'portfolio.self.scores.axeLink')}
+          </a>
+        </p>
       </div>
     </section>
 
