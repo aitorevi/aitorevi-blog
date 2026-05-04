@@ -11,8 +11,7 @@ interface Props {
 }
 
 const { category, lang } = Astro.props;
-// Explicit cast to avoid implicit-any from dynamic key access
-const knownAbbr: Record<string, string> = abbreviations[lang as 'es' | 'en'];
+const knownAbbr = abbreviations[lang as keyof typeof abbreviations];
 ---
 
 <div class="reveal-fade group relative rounded-xl p-4 border border-accent/15 bg-slate-50/30 dark:bg-ink-800 hover:border-accent/30 dark:hover:shadow-glow-accent-card-md transition-all duration-300">

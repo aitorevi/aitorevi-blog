@@ -80,6 +80,14 @@ const title = lang === 'es' ? 'Reducir movimiento' : 'Reduce motion';
     }
   }
 
+  function handleClick(): void {
+    const current = (localStorage.getItem('motion-preference') ?? 'full') as 'reduce' | 'full';
+    const next: 'reduce' | 'full' = current === 'reduce' ? 'full' : 'reduce';
+    localStorage.setItem('motion-preference', next);
+    apply(next);
+    syncIcons(next);
+  }
+
   function initMotionToggle(): void {
     const btn = document.getElementById('motion-toggle');
     if (!btn) return;
@@ -88,13 +96,8 @@ const title = lang === 'es' ? 'Reducir movimiento' : 'Reduce motion';
     apply(pref);
     syncIcons(pref);
 
-    btn.addEventListener('click', () => {
-      const current = (localStorage.getItem('motion-preference') ?? 'full') as 'reduce' | 'full';
-      const next: 'reduce' | 'full' = current === 'reduce' ? 'full' : 'reduce';
-      localStorage.setItem('motion-preference', next);
-      apply(next);
-      syncIcons(next);
-    });
+    btn.removeEventListener('click', handleClick);
+    btn.addEventListener('click', handleClick);
   }
 
   document.addEventListener('astro:page-load', initMotionToggle);
