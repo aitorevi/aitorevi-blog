@@ -120,7 +120,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
   <a
     href={postUrl}
     class="relative aspect-video w-full overflow-hidden bg-white dark:bg-ink-800"
-    aria-label={`Read full post: ${data.title}`}
+    aria-label={`${t(lang, 'blog.readPost')}: ${data.title}`}
   >
     {data.coverImage ? (
       <Image

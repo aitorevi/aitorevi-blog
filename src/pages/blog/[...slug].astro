@@ -128,7 +128,7 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
         </div>
 
         <div class="mx-auto max-w-3xl">
-          <ul class="flex flex-wrap justify-center gap-2 list-none p-0" aria-label={t(lang, 'blog.tags')}>
+          <ul class="flex flex-wrap justify-center gap-2 list-none p-0" role="list" aria-label={t(lang, 'blog.tags')}>
             {data.tags.map((tag) => (
               <li><Tag label={tag} variant="accent" /></li>
             ))}

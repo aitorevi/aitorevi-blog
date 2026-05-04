@@ -323,7 +323,7 @@ const outroTitle = t(lang, 'blog.outro.title');
               <a href="${esc(post.url)}" class="blog-result-link">${esc(post.title)}</a>
             </h2>
             <p class="blog-result-desc">${esc(post.description)}</p>
-            <a href="${esc(post.url)}" class="blog-result-cta" aria-hidden="true">${esc(ctaLabel)} →</a>
+            <a href="${esc(post.url)}" class="blog-result-cta" aria-hidden="true" tabindex="-1">${esc(ctaLabel)} →</a>
           </div>
         </article>`;
     }

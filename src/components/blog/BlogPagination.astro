@@ -57,7 +57,7 @@ const range = getPaginationRange(currentPage, totalPages);
     </a>
   )}
 
-  <ol class="flex items-center gap-1 list-none p-0">
+  <ol class="flex items-center gap-1 list-none p-0" role="list">
     {range.map((item) =>
       item === '...' ? (
         <li>
