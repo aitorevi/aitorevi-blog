@@ -115,7 +115,7 @@ const preMinHeight = `${(typingLines.length * 1.422 + 0.5).toFixed(2)}rem`;
     <a
       href={workHref}
       aria-label={t(lang, 'home.workPortal.ariaLabel')}
-      class="work-portal-terminal group mt-12 block cursor-pointer overflow-hidden rounded-xl border border-slate-200 bg-slate-50 shadow-sm transition-all duration-200 hover:border-accent-blue/40 hover:shadow-lg hover:shadow-accent-blue/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-slate-700/50 dark:bg-ink-900/80 dark:backdrop-blur-sm dark:focus-visible:ring-offset-ink-900 dark:hover:border-accent-blue/40 dark:hover:shadow-accent-blue/10"
+      class="work-portal-terminal group mt-12 block cursor-pointer overflow-hidden rounded-xl border border-slate-200 bg-slate-50 shadow-sm transition-all duration-200 hover:border-accent-blue/40 hover:shadow-lg hover:shadow-accent-blue/10 focus:outline-none focus-visible:ring-[3px] focus-visible:ring-accent-blue focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-slate-700/50 dark:bg-ink-900/80 dark:backdrop-blur-sm dark:focus-visible:ring-offset-ink-900 dark:hover:border-accent-blue/40 dark:hover:shadow-accent-blue/10"
     >
       <!-- Title bar with traffic lights -->
       <div class="flex items-center gap-2 border-b border-slate-200 bg-slate-100 px-4 py-3 dark:border-slate-700/50 dark:bg-slate-800/60" aria-hidden="true">
@@ -186,7 +186,9 @@ const preMinHeight = `${(typingLines.length * 1.422 + 0.5).toFixed(2)}rem`;
     const terminals = document.querySelectorAll<HTMLElement>('.work-portal-terminal');
     if (terminals.length === 0) return;
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduced =
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      document.documentElement.hasAttribute('data-motion-reduce');
 
     terminals.forEach((terminal) => {
       const output = terminal.querySelector<HTMLElement>('.work-portal-output');
