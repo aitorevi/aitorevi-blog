@@ -1,0 +1,101 @@
+---
+/**
+ * MotionToggle — WCAG 2.3.3 Animation from Interactions (AAA).
+ *
+ * Lets users disable UI animations independently of the OS
+ * prefers-reduced-motion setting. Persists the preference in
+ * localStorage as 'motion-preference': 'reduce' | 'full'.
+ *
+ * When 'reduce' is active, adds `data-motion-reduce` to <html>.
+ * CSS in tokens.css kills all transitions/animations under that
+ * attribute. An inline script in Layout.astro applies the preference
+ * before first paint to avoid flicker.
+ */
+import { getLangFromUrl } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const ariaLabel = lang === 'es' ? 'Alternar reducción de movimiento' : 'Toggle reduced motion';
+const title = lang === 'es' ? 'Reducir movimiento' : 'Reduce motion';
+---
+
+<button
+  id="motion-toggle"
+  class="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-inherit hover:text-accent transition-colors duration-200 cursor-pointer"
+  aria-label={ariaLabel}
+  title={title}
+  aria-pressed="false"
+>
+  <!-- Icon: animation/motion (shown when motion is full — clicking will reduce) -->
+  <svg
+    id="motion-icon-full"
+    aria-hidden="true"
+    class="w-5 h-5"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="currentColor"
+  >
+    <!-- Play/motion icon: three arcs suggesting movement -->
+    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+  </svg>
+  <!-- Icon: static/no-motion (shown when motion is reduced — clicking will restore) -->
+  <svg
+    id="motion-icon-reduce"
+    aria-hidden="true"
+    class="w-5 h-5 hidden"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="currentColor"
+  >
+    <!-- Pause icon: two vertical bars = paused/static -->
+    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+  </svg>
+</button>
+
+<script>
+  function apply(pref: 'reduce' | 'full'): void {
+    if (pref === 'reduce') {
+      document.documentElement.setAttribute('data-motion-reduce', '');
+    } else {
+      document.documentElement.removeAttribute('data-motion-reduce');
+    }
+  }
+
+  function syncIcons(pref: 'reduce' | 'full'): void {
+    const btn = document.getElementById('motion-toggle');
+    const fullIcon = document.getElementById('motion-icon-full');
+    const reduceIcon = document.getElementById('motion-icon-reduce');
+    if (!btn || !fullIcon || !reduceIcon) return;
+    if (pref === 'reduce') {
+      fullIcon.classList.add('hidden');
+      reduceIcon.classList.remove('hidden');
+      btn.setAttribute('aria-pressed', 'true');
+    } else {
+      fullIcon.classList.remove('hidden');
+      reduceIcon.classList.add('hidden');
+      btn.setAttribute('aria-pressed', 'false');
+    }
+  }
+
+  function initMotionToggle(): void {
+    const btn = document.getElementById('motion-toggle');
+    if (!btn) return;
+
+    const pref = (localStorage.getItem('motion-preference') ?? 'full') as 'reduce' | 'full';
+    apply(pref);
+    syncIcons(pref);
+
+    btn.addEventListener('click', () => {
+      const current = (localStorage.getItem('motion-preference') ?? 'full') as 'reduce' | 'full';
+      const next: 'reduce' | 'full' = current === 'reduce' ? 'full' : 'reduce';
+      localStorage.setItem('motion-preference', next);
+      apply(next);
+      syncIcons(next);
+    });
+  }
+
+  document.addEventListener('astro:page-load', initMotionToggle);
+</script>

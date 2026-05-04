@@ -569,7 +569,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 8.1 Inventariar animaciones por interacción
 
-- [ ] **Criterio:** 2.3.3  
+- [x] **Criterio:** 2.3.3  
   **Implementación:** Listado de animaciones user-triggered en el proyecto:
   - Hover en cards (scale, shadow, translate)
   - TechConstellation — wobble al scroll + highlight al hover
@@ -584,7 +584,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 8.2 Crear toggle de reducción de movimiento en UI
 
-- [ ] **Criterio:** 2.3.3  
+- [x] **Criterio:** 2.3.3  
   **Implementación:** Crear `src/components/shared/MotionToggle.astro`:
   - Botón que persiste preferencia en `localStorage` como `motion-preference: 'reduce' | 'full'`
   - Añade atributo `data-motion-reduce` a `<html>` cuando activo
@@ -610,7 +610,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 8.3 Respetar `data-motion-reduce` en TechConstellation
 
-- [ ] **Criterio:** 2.3.3  
+- [x] **Criterio:** 2.3.3  
   **Implementación:** En `src/components/home/TechConstellation.tsx`:
   ```ts
   const prefersReducedMotion = 
@@ -622,7 +622,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 8.4 Respetar `data-motion-reduce` en scroll reveals
 
-- [ ] **Criterio:** 2.3.3  
+- [x] **Criterio:** 2.3.3  
   **Implementación:** En `src/components/cv/CvScrollReveal.astro` y `src/components/katas/KatasScrollReveal.astro`:
   - Antes de aplicar la animación, comprobar `document.documentElement.hasAttribute('data-motion-reduce')`
   - Si está activo, mostrar el contenido directamente sin el efecto de entrada  
@@ -630,7 +630,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 8.5 Respetar `data-motion-reduce` en el parallax del Hero
 
-- [ ] **Criterio:** 2.3.3  
+- [x] **Criterio:** 2.3.3  
   **Implementación:** En `src/components/home/HeroParallax.astro`:
   - El script de parallax debe comprobar `data-motion-reduce` antes de registrar el scroll listener
   - Si está activo, no aplicar transforms  

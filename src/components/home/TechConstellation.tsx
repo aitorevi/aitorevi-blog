@@ -115,6 +115,10 @@ function useOrbitalTime() {
       });
     };
 
+    const isReduceMotion = (): boolean =>
+      motionQuery.matches ||
+      document.documentElement.hasAttribute('data-motion-reduce');
+
     const sync = (reduce: boolean) => {
       if (reduce) {
         window.removeEventListener('scroll', onScroll);
@@ -125,14 +129,19 @@ function useOrbitalTime() {
       }
     };
 
-    sync(motionQuery.matches);
+    sync(isReduceMotion());
 
-    const onMotionChange = (e: MediaQueryListEvent) => sync(e.matches);
+    const onMotionChange = () => sync(isReduceMotion());
     motionQuery.addEventListener('change', onMotionChange);
+
+    // Also react when data-motion-reduce is toggled on <html> at runtime
+    const observer = new MutationObserver(() => sync(isReduceMotion()));
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-motion-reduce'] });
 
     return () => {
       window.removeEventListener('scroll', onScroll);
       motionQuery.removeEventListener('change', onMotionChange);
+      observer.disconnect();
       if (rafId != null) cancelAnimationFrame(rafId);
     };
   }, []);
