@@ -7,6 +7,7 @@ import { portfolio } from './messages/portfolio';
 import { cv } from './messages/cv';
 import { blog } from './messages/blog';
 import { misc } from './messages/misc';
+import { a11y } from './messages/a11y';
 
 export const ui: Record<Lang, Record<string, string>> = {
   es: {
@@ -18,6 +19,7 @@ export const ui: Record<Lang, Record<string, string>> = {
     ...cv.es,
     ...blog.es,
     ...misc.es,
+    ...a11y.es,
   },
   en: {
     ...nav.en,
@@ -28,5 +30,6 @@ export const ui: Record<Lang, Record<string, string>> = {
     ...cv.en,
     ...blog.en,
     ...misc.en,
+    ...a11y.en,
   },
 };

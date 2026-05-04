@@ -10,9 +10,8 @@ import { calculateReadingTime } from '@/lib/blog';
 import { formatDate, formatDateISO } from '@/lib/date';
 import DotField from '@/components/shared/DotField.astro';
 import Button from '@/components/shared/Button.astro';
-import { t, getBlogSlugFromId, getLocalePath } from '@/i18n/utils';
+import { t, getBlogSlugFromId } from '@/i18n/utils';
 import { safeJsonLd } from '@/lib/schema-org';
-import Breadcrumb from '@/components/shared/Breadcrumb.astro';
 
 const lang = 'en';
 
@@ -172,16 +171,6 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
       )}
 
       <div class="mx-auto max-w-screen-xl px-6 pb-2 sm:px-7 md:px-8 md:pb-4 lg:px-20">
-        <div class="mx-auto max-w-prose">
-          <Breadcrumb
-            lang={lang}
-            items={[
-              { label: t(lang, 'nav.home'), href: getLocalePath('/', lang) },
-              { label: t(lang, 'nav.blog'), href: getLocalePath('/blog', lang) },
-              { label: data.title },
-            ]}
-          />
-        </div>
         {data.summary && (
           <div
             role="note"

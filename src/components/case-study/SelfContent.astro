@@ -1,8 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import Button from '@/components/shared/Button.astro';
-import { t, getLocalePath } from '@/i18n/utils';
-import Breadcrumb from '@/components/shared/Breadcrumb.astro';
+import { t } from '@/i18n/utils';
 import type { Lang } from '@/i18n/types';
 import { fetchBuildStats } from '@/lib/build-time/build-stats';
 import StatCard from '@/components/shared/StatCard.astro';
@@ -98,19 +97,8 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
   variant="dark-radial"
 >
   <div class="relative text-ink-900 dark:bg-ink-900 dark:text-slate-100">
-    <div class="mx-auto max-w-5xl px-6 pt-24 sm:pt-28">
-      <Breadcrumb
-        lang={lang}
-        items={[
-          { label: t(lang, 'nav.home'), href: getLocalePath('/', lang) },
-          { label: t(lang, 'nav.work'), href: getLocalePath('/work', lang) },
-          { label: t(lang, 'portfolio.self.hero.title') },
-        ]}
-      />
-    </div>
-
     <!-- Hero -->
-    <section class="relative overflow-hidden py-8 sm:py-12" aria-labelledby="self-hero">
+    <section class="relative overflow-hidden pt-24 pb-8 sm:pt-28 sm:pb-12" aria-labelledby="self-hero">
       <div class="absolute inset-0 to-transparent dark:from-accent-blue/5" aria-hidden="true" />
       <div class="relative mx-auto max-w-3xl px-6 text-center">
         <EyebrowTag label={t(lang, 'portfolio.self.hero.tag')} class="px-3 py-1" />
@@ -210,16 +198,21 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
         <ul class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {decisions.map((key) => {
             const hasInlinePost = key === 'tests' || key === 'ci';
+            const isA11y = key === 'a11y';
+            const hasLink = hasInlinePost || isA11y;
             const postSlug = hasInlinePost ? t(lang, `portfolio.self.decisions.${key}.postSlug`) : '';
+            const linkHref = isA11y
+              ? t(lang, 'a11y.url')
+              : buildBlogPostPath(postSlug);
             return (
               <DecisionCard
                 heading={t(lang, `portfolio.self.decisions.${key}.heading`)}
-                text={!hasInlinePost ? t(lang, `portfolio.self.decisions.${key}.text`) : undefined}
-                postLink={hasInlinePost ? {
-                  href: buildBlogPostPath(postSlug),
+                text={!hasLink ? t(lang, `portfolio.self.decisions.${key}.text`) : undefined}
+                postLink={hasLink ? {
+                  href: linkHref,
                   label: t(lang, `portfolio.self.decisions.${key}.postLabel`),
                   textBefore: t(lang, `portfolio.self.decisions.${key}.textBefore`),
-                  textAfter: t(lang, `portfolio.self.decisions.${key}.textAfter`),
+                  textAfter: isA11y ? undefined : t(lang, `portfolio.self.decisions.${key}.textAfter`),
                 } : undefined}
               />
             );
@@ -312,6 +305,16 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
 
         <p class="mt-10 text-center text-[11px] font-mono uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500">
           {t(lang, 'portfolio.self.scores.source')}
+        </p>
+        <p class="mt-3 text-center text-[11px] font-mono uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500">
+          {t(lang, 'portfolio.self.scores.axe')}
+          {' · '}
+          <a
+            href={t(lang, 'a11y.url')}
+            class="text-accent underline underline-offset-2 hover:text-accent-violet dark:hover:text-accent-violet transition-colors duration-200"
+          >
+            {t(lang, 'portfolio.self.scores.axeLink')}
+          </a>
         </p>
       </div>
     </section>
