@@ -13,6 +13,7 @@ export const misc = {
     'misc.skipToContent': 'Saltar al contenido principal',
     'legal.updated': 'Última actualización',
     'legal.title': 'Información legal',
+    'legal.accessibility': 'Accesibilidad',
   },
   en: {
     '404.routeNoAdapters': 'has no adapters. Protect the core.',
@@ -28,5 +29,6 @@ export const misc = {
     'misc.skipToContent': 'Skip to main content',
     'legal.updated': 'Last updated',
     'legal.title': 'Legal',
+    'legal.accessibility': 'Accessibility',
   },
 };
