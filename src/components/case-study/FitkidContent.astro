@@ -1,0 +1,190 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Button from '@/components/shared/Button.astro';
+import { t } from '@/i18n/utils';
+import type { Lang } from '@/i18n/types';
+import DecisionCard from './DecisionCard.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const repoUrl = 'https://github.com/aitorevi/fitkid-schedule';
+
+const solutionKeys = ['search', 'filters', 'highlight', 'pwa'] as const;
+
+const stack = {
+  frontend: ['Astro 5 (SSR)', 'TypeScript', 'CSS puro', 'React islands'],
+  infra: ['Vercel', 'PWA / Service Worker', 'Middleware Astro'],
+  data: ['Markdown + Git', 'Zod (Content Collections)', 'Scripts TS (PDF → MD)'],
+};
+
+const decisions = ['noDb', 'auth', 'highlight'] as const;
+---
+
+<Layout
+  title={t(lang, 'portfolio.fitkid.title')}
+  description={t(lang, 'portfolio.fitkid.subtitle')}
+  lang={lang}
+>
+  <div class="relative bg-slate-50 text-ink-900 dark:bg-ink-900 dark:text-slate-100">
+
+    <!-- Hero -->
+    <section class="relative overflow-hidden py-8 pt-24 sm:py-12 sm:pt-28" aria-labelledby="fitkid-hero">
+      <div class="absolute inset-0 bg-gradient-to-b from-sky-500/5 to-transparent dark:from-sky-400/5" aria-hidden="true" />
+      <div class="relative mx-auto max-w-5xl px-6 text-center">
+        <span class="inline-flex items-center rounded-full border border-sky-500/20 bg-sky-500/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-sky-700 dark:border-sky-400/30 dark:bg-sky-400/10 dark:text-sky-400">
+          {t(lang, 'portfolio.fitkid.tag')}
+        </span>
+        <h1 id="fitkid-hero" class="mt-6 font-display text-4xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-5xl">
+          {t(lang, 'portfolio.fitkid.title')}
+        </h1>
+        <p class="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">
+          {t(lang, 'portfolio.fitkid.hero.intro')}
+        </p>
+        <div class="mt-8 flex justify-center">
+          <Button href={repoUrl} target="_blank" tone="blue">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+              <path d="M12 .5C5.37.5 0 5.87 0 12.5a12 12 0 0 0 8.21 11.41c.6.11.82-.26.82-.58v-2.23c-3.34.73-4.04-1.61-4.04-1.61-.55-1.4-1.33-1.78-1.33-1.78-1.08-.74.08-.73.08-.73 1.2.08 1.83 1.24 1.83 1.24 1.07 1.83 2.8 1.3 3.49.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.34-5.47-5.95 0-1.32.47-2.39 1.24-3.24-.13-.3-.54-1.52.11-3.18 0 0 1.01-.32 3.3 1.24a11.4 11.4 0 0 1 6 0c2.29-1.56 3.3-1.24 3.3-1.24.66 1.66.24 2.88.12 3.18.77.85 1.23 1.92 1.23 3.24 0 4.62-2.81 5.65-5.49 5.94.43.38.82 1.12.82 2.26v3.35c0 .32.22.7.83.58A12 12 0 0 0 24 12.5C24 5.87 18.63.5 12 .5Z" />
+            </svg>
+            <span>{t(lang, 'portfolio.fitkid.hero.cta.repo')}</span>
+          </Button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Problem -->
+    <section class="bg-white py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="fitkid-problem">
+      <div class="mx-auto max-w-3xl px-6">
+        <h2
+          id="fitkid-problem"
+          class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
+        >
+          {t(lang, 'portfolio.fitkid.problem.title')}
+        </h2>
+        <p class="mx-auto mt-6 max-w-2xl text-center text-base leading-relaxed text-slate-600 dark:text-slate-400">
+          {t(lang, 'portfolio.fitkid.problem.text')}
+        </p>
+      </div>
+    </section>
+
+    <!-- Solution -->
+    <section class="py-20 sm:py-24" aria-labelledby="fitkid-solution">
+      <div class="mx-auto max-w-5xl px-6">
+        <h2
+          id="fitkid-solution"
+          class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
+        >
+          {t(lang, 'portfolio.fitkid.solution.title')}
+        </h2>
+        <ul class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {solutionKeys.map((key) => (
+            <li class="rounded-xl border border-slate-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.04]">
+              <h3 class="font-display text-base font-semibold text-ink-900 dark:text-slate-100">
+                {t(lang, `portfolio.fitkid.solution.${key}`)}
+              </h3>
+              <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                {t(lang, `portfolio.fitkid.solution.${key}.desc`)}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="bg-white py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="fitkid-stack">
+      <div class="mx-auto max-w-5xl px-6">
+        <h2
+          id="fitkid-stack"
+          class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
+        >
+          {t(lang, 'portfolio.fitkid.stack.title')}
+        </h2>
+        <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
+          {Object.entries(stack).map(([category, items]) => (
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-5 dark:border-white/10 dark:bg-white/[0.04]">
+              <h3 class="font-mono text-xs font-semibold uppercase tracking-[0.15em] text-sky-700 dark:text-sky-400">
+                {t(lang, `portfolio.fitkid.stack.${category}`)}
+              </h3>
+              <ul class="mt-3 space-y-2">
+                {items.map((item) => (
+                  <li class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                    <span class="h-1.5 w-1.5 rounded-full bg-sky-500/40 dark:bg-sky-400/40" aria-hidden="true" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Decisions -->
+    <section class="py-20 sm:py-24" aria-labelledby="fitkid-decisions">
+      <div class="mx-auto max-w-5xl px-6">
+        <h2
+          id="fitkid-decisions"
+          class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
+        >
+          {t(lang, 'portfolio.fitkid.decisions.title')}
+        </h2>
+        <ul class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {decisions.map((key) => (
+            <DecisionCard
+              heading={t(lang, `portfolio.fitkid.decisions.${key}.heading`)}
+              text={t(lang, `portfolio.fitkid.decisions.${key}.text`)}
+            />
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Open Source & GDPR -->
+    <section class="bg-white py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="fitkid-opensource">
+      <div class="mx-auto max-w-3xl px-6">
+        <h2
+          id="fitkid-opensource"
+          class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
+        >
+          {t(lang, 'portfolio.fitkid.opensource.title')}
+        </h2>
+        <p class="mx-auto mt-6 max-w-2xl text-center text-base leading-relaxed text-slate-600 dark:text-slate-400">
+          {t(lang, 'portfolio.fitkid.opensource.text')}
+        </p>
+
+        <!-- TODO: screenshots — capturas de la app mostrando la búsqueda por nombre
+             y el highlight de club. Pendiente de tener imágenes reales del proyecto. -->
+        <div class="mt-8 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center dark:border-white/10 dark:bg-white/[0.02]">
+          <p class="font-mono text-xs text-slate-400 dark:text-slate-500">
+            // {lang === 'es' ? 'Capturas de pantalla próximamente' : 'Screenshots coming soon'}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-20 sm:py-24" aria-labelledby="fitkid-cta">
+      <div class="mx-auto max-w-2xl px-6 text-center">
+        <h2 id="fitkid-cta" class="font-display text-2xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-3xl">
+          {t(lang, 'portfolio.fitkid.cta.title')}
+        </h2>
+        <p class="mx-auto mt-3 text-base leading-relaxed text-slate-600 dark:text-slate-400">
+          {t(lang, 'portfolio.fitkid.cta.text')}
+        </p>
+        <div class="mt-8 flex justify-center">
+          <Button href={repoUrl} target="_blank" tone="blue">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+              <path d="M12 .5C5.37.5 0 5.87 0 12.5a12 12 0 0 0 8.21 11.41c.6.11.82-.26.82-.58v-2.23c-3.34.73-4.04-1.61-4.04-1.61-.55-1.4-1.33-1.78-1.33-1.78-1.08-.74.08-.73.08-.73 1.2.08 1.83 1.24 1.83 1.24 1.07 1.83 2.8 1.3 3.49.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.34-5.47-5.95 0-1.32.47-2.39 1.24-3.24-.13-.3-.54-1.52.11-3.18 0 0 1.01-.32 3.3 1.24a11.4 11.4 0 0 1 6 0c2.29-1.56 3.3-1.24 3.3-1.24.66 1.66.24 2.88.12 3.18.77.85 1.23 1.92 1.23 3.24 0 4.62-2.81 5.65-5.49 5.94.43.38.82 1.12.82 2.26v3.35c0 .32.22.7.83.58A12 12 0 0 0 24 12.5C24 5.87 18.63.5 12 .5Z" />
+            </svg>
+            <span>{t(lang, 'portfolio.fitkid.cta.repo')}</span>
+          </Button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</Layout>
