@@ -81,7 +81,7 @@ export const cv = {
     'portfolio.self.scores.seo': 'SEO',
     'portfolio.self.scores.source': 'Medido con PageSpeed Insights en aitorevi.dev',
     'portfolio.self.scores.axe': 'axe-core: 0 violaciones · WCAG 2.1 AA',
-    'portfolio.self.scores.axeLink': 'Ver resumen →',
+    'portfolio.self.scores.axeLink': 'Ver informe de accesibilidad',
 
     'portfolio.self.cta.title': 'El código es abierto',
     'portfolio.self.cta.text': 'Si has llegado hasta aquí, no dudes en escribirme.',
@@ -171,7 +171,7 @@ export const cv = {
     'portfolio.self.scores.seo': 'SEO',
     'portfolio.self.scores.source': 'Measured with PageSpeed Insights on aitorevi.dev',
     'portfolio.self.scores.axe': 'axe-core: 0 violations · WCAG 2.1 AA',
-    'portfolio.self.scores.axeLink': 'See summary →',
+    'portfolio.self.scores.axeLink': 'See accessibility report',
 
     'portfolio.self.cta.title': 'The code is open',
     'portfolio.self.cta.text': 'If you made it this far, feel free to reach out.',

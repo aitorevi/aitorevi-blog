@@ -308,14 +308,13 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
         </p>
         <p class="mt-3 text-center text-[11px] font-mono uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500">
           {t(lang, 'portfolio.self.scores.axe')}
-          {' · '}
-          <a
-            href={t(lang, 'a11y.url')}
-            class="text-accent underline underline-offset-2 hover:text-accent-violet dark:hover:text-accent-violet transition-colors duration-200"
-          >
-            {t(lang, 'portfolio.self.scores.axeLink')}
-          </a>
         </p>
+        <div class="mt-4 flex justify-center">
+          <Button href={t(lang, 'a11y.url')} variant="ghost" tone="blue">
+            <span>{t(lang, 'portfolio.self.scores.axeLink')}</span>
+            <span aria-hidden="true" class="transition-transform duration-300 group-hover:translate-x-1">→</span>
+          </Button>
+        </div>
       </div>
     </section>
 
@@ -337,7 +336,7 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
               ? 'Tokens de color, tipografía, sombras, animaciones y componentes. Con dark mode en vivo y modo retro.'
               : 'Color tokens, typography, shadows, animations and components. With live dark mode and retro mode.'}
           </p>
-          <div class="mt-8 flex justify-center">
+          <div class="mt-8 hidden justify-center md:flex">
             <Button href="/styleguide" tone="violet" variant="gradient">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
                 <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
@@ -415,6 +414,17 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
           </div>
         </div>
         </a>
+
+        <!-- Button below mock — mobile only -->
+        <div class="flex justify-center md:hidden">
+          <Button href="/styleguide" tone="violet" variant="gradient">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
+              <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+            </svg>
+            <span>{isES ? 'Ver design system' : 'View design system'}</span>
+          </Button>
+        </div>
       </div>
     </section>
 
