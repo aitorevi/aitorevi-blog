@@ -40,10 +40,6 @@ const { lang } = Astro.props;
       </p>
     </div>
 
-    <p role="note" class="mt-6 text-xs text-slate-600 dark:text-slate-300 text-center">
-      {t(lang, 'home.contact.rateLimitNotice')}
-    </p>
-
     <form
       class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-lg sm:p-8 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:backdrop-blur-md"
       data-contact-form
@@ -83,9 +79,6 @@ const { lang } = Astro.props;
           <span class="mb-1 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
             {t(lang, 'home.contact.name')}<span aria-hidden="true"> *</span>
           </span>
-          <p id="contact-name-help" class="text-xs text-slate-600 dark:text-slate-300 mt-0.5 mb-2">
-            {t(lang, 'home.contact.nameHelp')}
-          </p>
           <input
             id="contact-name"
             type="text"
@@ -94,7 +87,7 @@ const { lang } = Astro.props;
             autocomplete="name"
             maxlength="100"
             data-field="name"
-            aria-describedby="contact-name-help contact-name-error"
+            aria-describedby="contact-name-error"
             class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-700 transition-colors focus:border-secondary/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-1 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-400 dark:focus:border-accent-blue/60"
             placeholder={t(lang, 'home.contact.namePlaceholder')}
           />
@@ -104,9 +97,6 @@ const { lang } = Astro.props;
           <span class="mb-1 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
             {t(lang, 'home.contact.email')}<span aria-hidden="true"> *</span>
           </span>
-          <p id="contact-email-help" class="text-xs text-slate-600 dark:text-slate-300 mt-0.5 mb-2">
-            {t(lang, 'home.contact.emailHelp')}
-          </p>
           <input
             id="contact-email"
             type="email"
@@ -115,7 +105,7 @@ const { lang } = Astro.props;
             autocomplete="email"
             maxlength="254"
             data-field="email"
-            aria-describedby="contact-email-help contact-email-error"
+            aria-describedby="contact-email-error"
             class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-700 transition-colors focus:border-secondary/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-1 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-400 dark:focus:border-accent-blue/60"
             placeholder={t(lang, 'home.contact.emailPlaceholder')}
           />
@@ -127,9 +117,6 @@ const { lang } = Astro.props;
         <span class="mb-1 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
           {t(lang, 'home.contact.subject')}<span aria-hidden="true"> *</span>
         </span>
-        <p id="contact-subject-help" class="text-xs text-slate-600 dark:text-slate-300 mt-0.5 mb-2">
-          {t(lang, 'home.contact.subjectHelp')}
-        </p>
         <input
           id="contact-subject"
           type="text"
@@ -137,7 +124,7 @@ const { lang } = Astro.props;
           required
           maxlength="200"
           data-field="subject"
-          aria-describedby="contact-subject-help contact-subject-error"
+          aria-describedby="contact-subject-error"
           class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-700 transition-colors focus:border-secondary/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-1 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-400 dark:focus:border-accent-blue/60"
           placeholder={t(lang, 'home.contact.subjectPlaceholder')}
         />
@@ -148,9 +135,6 @@ const { lang } = Astro.props;
         <span class="mb-1 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
           {t(lang, 'home.contact.message')}<span aria-hidden="true"> *</span>
         </span>
-        <p id="contact-message-help" class="text-xs text-slate-600 dark:text-slate-300 mt-0.5 mb-2">
-          {t(lang, 'home.contact.messageHelp')}
-        </p>
         <textarea
           id="contact-message"
           name="message"
@@ -158,7 +142,7 @@ const { lang } = Astro.props;
           rows="5"
           maxlength="5000"
           data-field="message"
-          aria-describedby="contact-message-help contact-message-error"
+          aria-describedby="contact-message-error"
           class="w-full resize-none rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-700 transition-colors focus:border-secondary/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-1 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-400 dark:focus:border-accent-blue/60"
           placeholder={t(lang, 'home.contact.messagePlaceholder')}
         ></textarea>
@@ -222,52 +206,6 @@ const { lang } = Astro.props;
       >
       </p>
     </form>
-
-    <section
-      id="contact-review"
-      hidden
-      aria-live="polite"
-      aria-labelledby="review-heading"
-      class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-lg sm:p-8 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-2xl dark:backdrop-blur-md space-y-4"
-    >
-      <h3 id="review-heading" tabindex="-1" class="font-semibold text-ink-900 dark:text-slate-100 focus:outline-none">
-        {t(lang, 'home.contact.review.title')}
-      </h3>
-      <dl class="space-y-2 text-sm">
-        <div class="flex gap-2">
-          <dt class="text-slate-600 dark:text-slate-300 font-medium w-20 shrink-0">{t(lang, 'home.contact.name')}:</dt>
-          <dd id="review-name" class="text-ink-900 dark:text-slate-100"></dd>
-        </div>
-        <div class="flex gap-2">
-          <dt class="text-slate-600 dark:text-slate-300 font-medium w-20 shrink-0">{t(lang, 'home.contact.email')}:</dt>
-          <dd id="review-email" class="text-ink-900 dark:text-slate-100"></dd>
-        </div>
-        <div class="flex gap-2">
-          <dt class="text-slate-600 dark:text-slate-300 font-medium w-20 shrink-0">{t(lang, 'home.contact.subject')}:</dt>
-          <dd id="review-subject" class="text-ink-900 dark:text-slate-100"></dd>
-        </div>
-        <div class="flex gap-2">
-          <dt class="text-slate-600 dark:text-slate-300 font-medium w-20 shrink-0">{t(lang, 'home.contact.message')}:</dt>
-          <dd id="review-message" class="text-ink-900 dark:text-slate-100 whitespace-pre-wrap"></dd>
-        </div>
-      </dl>
-      <div class="flex gap-3 pt-2">
-        <button
-          type="button"
-          id="contact-back-btn"
-          class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-ink-900 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-1 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:hover:bg-white/[0.06]"
-        >
-          {t(lang, 'home.contact.review.edit')}
-        </button>
-        <button
-          type="button"
-          id="contact-confirm-btn"
-          class="inline-flex items-center rounded-lg bg-secondary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-secondary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-1 dark:bg-accent-blue dark:text-ink-900 dark:hover:bg-accent-blue/90"
-        >
-          {t(lang, 'home.contact.review.confirm')}
-        </button>
-      </div>
-    </section>
 
     <div class="mt-12 flex flex-wrap items-center justify-center gap-4 text-[11px] uppercase tracking-[0.2em] text-slate-600 dark:text-slate-400 font-mono">
       <a
@@ -354,9 +292,6 @@ const { lang } = Astro.props;
     const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
     if (!form) return;
 
-    const reviewSection = document.getElementById('contact-review');
-    const backBtn = document.getElementById('contact-back-btn');
-    const confirmBtn = document.getElementById('contact-confirm-btn');
     const status = form.querySelector<HTMLElement>('[data-contact-status]');
     const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
 
@@ -424,61 +359,8 @@ const { lang } = Astro.props;
       };
     };
 
-    // Show the review section populated with current field values.
-    const showReview = (fields: ReturnType<typeof collectFields>) => {
-      const nameEl    = document.getElementById('review-name');
-      const emailEl   = document.getElementById('review-email');
-      const subjectEl = document.getElementById('review-subject');
-      const messageEl = document.getElementById('review-message');
-      if (nameEl)    nameEl.textContent    = fields.name;
-      if (emailEl)   emailEl.textContent   = fields.email;
-      if (subjectEl) subjectEl.textContent = fields.subject;
-      if (messageEl) messageEl.textContent = fields.message;
-
-      form.hidden = true;
-      if (reviewSection) {
-        reviewSection.hidden = false;
-        // Move focus to the review heading for screen readers.
-        const heading = reviewSection.querySelector<HTMLElement>('#review-heading');
-        heading?.focus();
-      }
-    };
-
-    // Send the actual POST request (3.3.6: after user confirmation).
-    const sendForm = async (fields: ReturnType<typeof collectFields>) => {
-      if (confirmBtn) (confirmBtn as HTMLButtonElement).disabled = true;
-
-      try {
-        const res = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(fields),
-        });
-
-        // Hide review, show form with status — data preserved on error (12.4).
-        if (reviewSection) reviewSection.hidden = true;
-        form.hidden = false;
-
-        if (res.ok) {
-          showStatus(msgs.success, false);
-          form.reset();
-        } else if (res.status === 429) {
-          showStatus(msgs.tooMany, true);
-        } else {
-          showStatus(msgs.error, true);
-        }
-      } catch {
-        if (reviewSection) reviewSection.hidden = true;
-        form.hidden = false;
-        showStatus(msgs.networkError, true);
-      } finally {
-        if (confirmBtn) (confirmBtn as HTMLButtonElement).disabled = false;
-        if (submitBtn) submitBtn.disabled = false;
-      }
-    };
-
-    // Step 1: validate → show review (submit button now labelled "Revisar"/"Review").
-    const onSubmit = (e: SubmitEvent) => {
+    // Validate → if valid, POST directly to /api/contact.
+    const onSubmit = async (e: SubmitEvent) => {
       e.preventDefault();
       const fields = collectFields();
 
@@ -496,21 +378,29 @@ const { lang } = Astro.props;
         return;
       }
 
-      showReview(fields);
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(fields),
+        });
+
+        if (res.ok) {
+          showStatus(msgs.success, false);
+          form.reset();
+        } else if (res.status === 429) {
+          showStatus(msgs.tooMany, true);
+        } else {
+          showStatus(msgs.error, true);
+        }
+      } catch {
+        showStatus(msgs.networkError, true);
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
     };
-
-    // "Back to edit" — restore form, keep data intact.
-    backBtn?.addEventListener('click', () => {
-      if (reviewSection) reviewSection.hidden = true;
-      form.hidden = false;
-      submitBtn?.focus();
-    });
-
-    // "Confirm and send" — execute the real POST.
-    confirmBtn?.addEventListener('click', () => {
-      const fields = collectFields();
-      sendForm(fields);
-    });
 
     form.addEventListener('submit', onSubmit);
   }
