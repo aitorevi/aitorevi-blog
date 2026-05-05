@@ -3,7 +3,7 @@
 **Issue**: #199
 **Rama**: `fix/simplify-contact-form`
 **Worktree**: `../aitorevi-blog-fix-simplify-contact-form`
-**Status**: REVIEW
+**Status**: COMPLETED
 
 ## Contexto
 
