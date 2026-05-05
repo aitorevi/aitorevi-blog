@@ -1,0 +1,22 @@
+number: "06"
+name: OpenCleaner
+taglineEs: Desinstalador de apps para macOS
+taglineEn: macOS app uninstaller
+descKey: home.portfolio.opencleaner.desc
+tagKey: home.portfolio.tag.tool
+year: "2025 — present"
+stack:
+  - Electron
+  - React 19
+  - TypeScript
+  - Clean Architecture
+accent: zinc
+hrefEs: /work/opencleaner
+hrefEn: /en/work/opencleaner
+external: false
+metric:
+  value: "3"
+  labelEs: capas
+  labelEn: layers
+mockType: terminal
+order: 6

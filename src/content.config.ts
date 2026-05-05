@@ -83,7 +83,7 @@ const projectsCollection = defineCollection({
     tagKey: z.string(),
     year: z.string(),
     stack: z.array(z.string()),
-    accent: z.enum(['violet', 'blue', 'emerald', 'sky']),
+    accent: z.enum(['violet', 'blue', 'emerald', 'sky', 'zinc']),
     hrefEs: z.string(),
     hrefEn: z.string(),
     external: z.boolean().default(false),
