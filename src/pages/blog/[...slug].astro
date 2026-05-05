@@ -6,12 +6,17 @@ import DateDisplay from '@/components/shared/DateDisplay.astro';
 import ReadingTime from '@/components/shared/ReadingTime.astro';
 import CodeBlockEnhancer from '@/components/blog/CodeBlockEnhancer.astro';
 import RepublishedNotice from '@/components/blog/RepublishedNotice.astro';
+import PostNavigation from '@/components/blog/PostNavigation.astro';
 import { calculateReadingTime } from '@/lib/blog';
 import { formatDate, formatDateISO } from '@/lib/date';
 import DotField from '@/components/shared/DotField.astro';
-import Button from '@/components/shared/Button.astro';
 import { t, getBlogSlugFromId } from '@/i18n/utils';
 import { safeJsonLd } from '@/lib/schema-org';
+
+interface NavPost {
+  title: string;
+  slug: string;
+}
 
 const lang = 'es';
 
@@ -22,17 +27,28 @@ export async function getStaticPaths() {
     ? blogPosts.filter((post) => !post.data.draft)
     : blogPosts;
 
-  const esPosts = publishedPosts.filter((post) => post.id.startsWith('es/'));
+  const esPosts = publishedPosts
+    .filter((post: CollectionEntry<'blog'>) => post.id.startsWith('es/'))
+    .sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+
   const enSlugs = new Set(
-    publishedPosts.filter((p) => p.id.startsWith('en/')).map((p) => getBlogSlugFromId(p.id))
+    publishedPosts.filter((p: CollectionEntry<'blog'>) => p.id.startsWith('en/')).map((p: CollectionEntry<'blog'>) => getBlogSlugFromId(p.id))
   );
 
-  return esPosts.map((post) => {
+  return esPosts.map((post: CollectionEntry<'blog'>, i: number) => {
     const slug = getBlogSlugFromId(post.id);
     const hasTranslation = enSlugs.has(slug);
+
+    const prevPost = esPosts[i - 1]
+      ? { title: esPosts[i - 1].data.title, slug: getBlogSlugFromId(esPosts[i - 1].id) }
+      : undefined;
+    const nextPost = esPosts[i + 1]
+      ? { title: esPosts[i + 1].data.title, slug: getBlogSlugFromId(esPosts[i + 1].id) }
+      : undefined;
+
     return {
       params: { slug },
-      props: { post, alternateUrl: hasTranslation ? `/en/blog/${slug}` : '/en/blog' },
+      props: { post, alternateUrl: hasTranslation ? `/en/blog/${slug}` : '/en/blog', prevPost, nextPost },
     };
   });
 }
@@ -40,9 +56,11 @@ export async function getStaticPaths() {
 interface Props {
   post: CollectionEntry<'blog'>;
   alternateUrl: string;
+  prevPost?: NavPost;
+  nextPost?: NavPost;
 }
 
-const { post, alternateUrl } = Astro.props;
+const { post, alternateUrl, prevPost, nextPost } = Astro.props;
 const { data, body = '' } = post;
 
 const { Content } = await render(post);
@@ -198,28 +216,11 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
 
         <CodeBlockEnhancer lang={lang} />
 
-        <!-- Mini outro -->
-        <footer class="mt-24 border-t border-white/10 pt-12">
-          <div class="flex flex-col items-center gap-6">
-            <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
-              // {t(lang, 'blog.backToBlog').toLowerCase()}
-            </p>
-            <Button href="/blog" tone="violet" variant="ghost">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="2"
-                stroke="currentColor"
-                class="h-4 w-4 transition-transform group-hover:-translate-x-0.5"
-                aria-hidden="true"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-              </svg>
-              <span>{t(lang, 'blog.backToBlog')}</span>
-            </Button>
-          </div>
-        </footer>
+        <PostNavigation
+          prev={prevPost ? { title: prevPost.title, url: `/blog/${prevPost.slug}` } : undefined}
+          next={nextPost ? { title: nextPost.title, url: `/blog/${nextPost.slug}` } : undefined}
+          lang={lang}
+        />
       </div>
 
       <!-- Hidden Schema.org metadata -->

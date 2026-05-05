@@ -1,0 +1,63 @@
+---
+import { t } from '@/i18n/utils';
+import type { Lang } from '@/i18n/types';
+
+interface NavItem {
+  title: string;
+  url: string;
+}
+
+interface Props {
+  prev?: NavItem;
+  next?: NavItem;
+  lang: Lang;
+}
+
+const { prev, next, lang } = Astro.props;
+---
+
+<nav aria-label={t(lang, 'blog.nav.label')} class="mt-24 pt-12">
+  <div class="grid grid-cols-2 gap-4">
+
+    {/* Prev */}
+    {prev ? (
+      <a
+        href={prev.url}
+        class="group flex items-center gap-3 rounded-lg p-3 -m-3 transition-colors hover:bg-slate-50 dark:hover:bg-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-4 w-4 shrink-0 text-secondary dark:text-accent-blue transition-transform group-hover:-translate-x-0.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+        </svg>
+        <div class="min-w-0 flex-1">
+          <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
+            {t(lang, 'blog.nav.prev')}
+          </p>
+          <p class="mt-1 truncate text-sm font-semibold text-ink-900 dark:text-slate-100 group-hover:text-secondary dark:group-hover:text-accent-blue transition-colors">
+            {prev.title}
+          </p>
+        </div>
+      </a>
+    ) : <div />}
+
+    {/* Next */}
+    {next ? (
+      <a
+        href={next.url}
+        class="group flex items-center gap-3 rounded-lg p-3 -m-3 justify-end text-right transition-colors hover:bg-slate-50 dark:hover:bg-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      >
+        <div class="min-w-0 flex-1">
+          <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
+            {t(lang, 'blog.nav.next')}
+          </p>
+          <p class="mt-1 truncate text-sm font-semibold text-ink-900 dark:text-slate-100 group-hover:text-secondary dark:group-hover:text-accent-blue transition-colors">
+            {next.title}
+          </p>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-4 w-4 shrink-0 text-secondary dark:text-accent-blue transition-transform group-hover:translate-x-0.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+        </svg>
+      </a>
+    ) : <div />}
+
+  </div>
+</nav>
