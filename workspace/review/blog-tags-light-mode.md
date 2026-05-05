@@ -4,7 +4,7 @@
 **Issue:** #198
 **Rama:** fix/blog-tags-light-mode
 **Worktree:** ../aitorevi-blog-fix-blog-tags-light-mode
-**Status:** IN PROGRESS
+**Status:** REVIEW
 
 ## Contexto
 
