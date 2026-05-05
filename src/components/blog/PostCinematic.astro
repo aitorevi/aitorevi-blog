@@ -42,7 +42,7 @@ const featuredLabel = t(lang, 'blog.featured');
   style={`--cin-hover:rgb(var(${accent.sectionVar}))`}
   aria-labelledby={`post-${slug}`}
 >
-  <div aria-hidden="true" class={`pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b ${accent.glow} via-transparent to-transparent opacity-70`}></div>
+  <div aria-hidden="true" class={`pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b ${accent.glow} via-transparent to-transparent opacity-30 dark:hidden`}></div>
 
   <div class="mx-auto grid w-full max-w-5xl grid-cols-1 items-center gap-8 md:grid-cols-12 md:gap-10 lg:gap-12">
     <div class={`md:col-span-6 lg:col-span-6 ${flip ? 'md:order-2' : ''}`} data-cinematic-meta>
