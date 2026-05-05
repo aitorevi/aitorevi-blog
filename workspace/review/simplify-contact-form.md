@@ -3,7 +3,7 @@
 **Issue**: #199
 **Rama**: `fix/simplify-contact-form`
 **Worktree**: `../aitorevi-blog-fix-simplify-contact-form`
-**Status**: PLANNING
+**Status**: REVIEW
 
 ## Contexto
 
@@ -18,10 +18,10 @@ El formulario de contacto incluye textos de ayuda por campo (`nameHelp`, `emailH
 
 ## Checklist
 
-- [ ] Eliminar los 4 `<p id="*-help">` del markup y sus `aria-describedby` correspondientes
-- [ ] Eliminar el `<section id="contact-review">` completo del markup
-- [ ] Simplificar el script: eliminar `showReview`, `sendForm` → `onSubmit` llama directamente al fetch
-- [ ] Eliminar referencias a `backBtn`, `confirmBtn`, `reviewSection` del script
-- [ ] Limpiar en `home.ts` (ES + EN): claves `home.contact.nameHelp/emailHelp/subjectHelp/messageHelp` y `home.contact.review.*`
-- [ ] `npx astro check` — 0 errores
-- [ ] `npm run test:unit` — todos los tests pasan
+- [x] Eliminar los 4 `<p id="*-help">` del markup y sus `aria-describedby` correspondientes
+- [x] Eliminar el `<section id="contact-review">` completo del markup
+- [x] Simplificar el script: eliminar `showReview`, `sendForm` → `onSubmit` llama directamente al fetch
+- [x] Eliminar referencias a `backBtn`, `confirmBtn`, `reviewSection` del script
+- [x] Limpiar en `home.ts` (ES + EN): claves `home.contact.nameHelp/emailHelp/subjectHelp/messageHelp` y `home.contact.review.*`
+- [x] `npx astro check` — 0 errores
+- [x] `npm run test:unit` — todos los tests pasan
