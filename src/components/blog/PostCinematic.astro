@@ -17,6 +17,8 @@ interface Props {
     line: string;
     softBg: string;
     sectionVar: string;
+    tagBorder: string;
+    tagBg: string;
   };
   flip: boolean;
   number: string;
@@ -84,7 +86,7 @@ const featuredLabel = t(lang, 'blog.featured');
           <ul class="flex flex-wrap gap-2 list-none p-0" role="list" aria-label={t(lang, 'blog.tags')}>
             {tags.map((tag) => (
               <li>
-                <span class={`inline-flex items-center px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 border border-slate-200 bg-slate-50 text-slate-600 dark:border-transparent dark:ring-1 dark:${accent.ring} dark:bg-white/5 dark:${accent.textDark}`}>
+                <span class={`inline-flex items-center px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 border ${accent.tagBorder} ${accent.tagBg} ${accent.text} dark:border-transparent dark:ring-1 dark:${accent.ring} dark:bg-white/5`}>
                   {tag}
                 </span>
               </li>
