@@ -1,13 +1,10 @@
 ---
-import { Image } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
 import { t } from '@/i18n/utils';
 import type { Lang } from '@/i18n/types';
 
 interface NavItem {
   title: string;
   url: string;
-  coverImage?: ImageMetadata;
 }
 
 interface Props {
@@ -19,14 +16,14 @@ interface Props {
 const { prev, next, lang } = Astro.props;
 ---
 
-<nav aria-label={t(lang, 'blog.nav.label')} class="mt-24 border-t border-slate-200 dark:border-white/10 pt-12">
+<nav aria-label={t(lang, 'blog.nav.label')} class="mt-24 pt-12">
   <div class="grid grid-cols-2 gap-4">
 
     {/* Prev */}
     {prev ? (
       <a
         href={prev.url}
-        class="group flex items-center gap-3 rounded-lg p-3 -m-3 transition-colors hover:bg-slate-50 dark:hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        class="group flex items-center gap-3 rounded-lg p-3 -m-3 transition-colors hover:bg-slate-50 dark:hover:bg-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-4 w-4 shrink-0 text-secondary dark:text-accent-blue transition-transform group-hover:-translate-x-0.5" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
@@ -39,15 +36,6 @@ const { prev, next, lang } = Astro.props;
             {prev.title}
           </p>
         </div>
-        {prev.coverImage && (
-          <Image
-            src={prev.coverImage}
-            alt=""
-            width={80}
-            height={45}
-            class="hidden md:block w-20 h-[45px] rounded-md object-cover shrink-0 opacity-70 group-hover:opacity-100 transition-opacity"
-          />
-        )}
       </a>
     ) : <div />}
 
@@ -55,17 +43,8 @@ const { prev, next, lang } = Astro.props;
     {next ? (
       <a
         href={next.url}
-        class="group flex items-center gap-3 rounded-lg p-3 -m-3 justify-end text-right transition-colors hover:bg-slate-50 dark:hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        class="group flex items-center gap-3 rounded-lg p-3 -m-3 justify-end text-right transition-colors hover:bg-slate-50 dark:hover:bg-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
       >
-        {next.coverImage && (
-          <Image
-            src={next.coverImage}
-            alt=""
-            width={80}
-            height={45}
-            class="hidden md:block w-20 h-[45px] rounded-md object-cover shrink-0 opacity-70 group-hover:opacity-100 transition-opacity"
-          />
-        )}
         <div class="min-w-0 flex-1">
           <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
             {t(lang, 'blog.nav.next')}

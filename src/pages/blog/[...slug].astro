@@ -1,6 +1,5 @@
 ---
 import { getCollection, type CollectionEntry, render } from 'astro:content';
-import type { ImageMetadata } from 'astro';
 import Layout from '@/layouts/Layout.astro';
 import Tag from '@/components/shared/Tag.astro';
 import DateDisplay from '@/components/shared/DateDisplay.astro';
@@ -17,7 +16,6 @@ import { safeJsonLd } from '@/lib/schema-org';
 interface NavPost {
   title: string;
   slug: string;
-  coverImage?: ImageMetadata;
 }
 
 const lang = 'es';
@@ -42,10 +40,10 @@ export async function getStaticPaths() {
     const hasTranslation = enSlugs.has(slug);
 
     const prevPost = esPosts[i - 1]
-      ? { title: esPosts[i - 1].data.title, slug: getBlogSlugFromId(esPosts[i - 1].id), coverImage: esPosts[i - 1].data.coverImage }
+      ? { title: esPosts[i - 1].data.title, slug: getBlogSlugFromId(esPosts[i - 1].id) }
       : undefined;
     const nextPost = esPosts[i + 1]
-      ? { title: esPosts[i + 1].data.title, slug: getBlogSlugFromId(esPosts[i + 1].id), coverImage: esPosts[i + 1].data.coverImage }
+      ? { title: esPosts[i + 1].data.title, slug: getBlogSlugFromId(esPosts[i + 1].id) }
       : undefined;
 
     return {
@@ -219,8 +217,8 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
         <CodeBlockEnhancer lang={lang} />
 
         <PostNavigation
-          prev={prevPost ? { title: prevPost.title, url: `/blog/${prevPost.slug}`, coverImage: prevPost.coverImage } : undefined}
-          next={nextPost ? { title: nextPost.title, url: `/blog/${nextPost.slug}`, coverImage: nextPost.coverImage } : undefined}
+          prev={prevPost ? { title: prevPost.title, url: `/blog/${prevPost.slug}` } : undefined}
+          next={nextPost ? { title: nextPost.title, url: `/blog/${nextPost.slug}` } : undefined}
           lang={lang}
         />
       </div>
