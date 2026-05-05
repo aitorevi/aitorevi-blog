@@ -29,11 +29,11 @@
   /* Secondary accent. Light: accent-violet. Dark: accent-blue.        */
   --color-accent-soft: 167 139 250;
 
-  /* ── Section accent palette (cinematic sections, static across modes) ── */
-  --color-section-violet:  167 139 250;  /* #a78bfa */
-  --color-section-blue:     96 165 250;  /* #60a5fa */
-  --color-section-emerald:  52 211 153;  /* #34d399 */
-  --color-section-sky:      56 189 248;  /* #38bdf8 */
+  /* ── Section accent palette (cinematic sections, light-mode values) ─── */
+  --color-section-violet:  109  40 217;  /* violet-700 #6d28d9 */
+  --color-section-blue:     29  78 216;  /* blue-700   #1d4ed8 */
+  --color-section-emerald:   4 120  87;  /* emerald-700 #047857 */
+  --color-section-sky:       3 105 161;  /* sky-700     #0369a1 */
 
   /* ── Scrollbar ────────────────────────────────────────────────────── */
   --color-scrollbar-track: 33 39 55;
@@ -66,6 +66,12 @@
   /* ── Scrollbar ────────────────────────────────────────────────────── */
   --color-scrollbar-thumb: 167 139 250;       /* accent-violet */
   --color-scrollbar-thumb-hover: 196 181 253; /* violet-300 */
+
+  /* ── Section accent palette (cinematic sections, dark-mode values) ─── */
+  --color-section-violet:  167 139 250;  /* #a78bfa */
+  --color-section-blue:     96 165 250;  /* #60a5fa */
+  --color-section-emerald:  52 211 153;  /* #34d399 */
+  --color-section-sky:      56 189 248;  /* #38bdf8 */
 
   /* ── Glow shadows — slightly stronger in dark (lighter accent) ────── */
   --shadow-glow-line:    0 0 6px  rgb(var(--color-accent) / 0.25);
