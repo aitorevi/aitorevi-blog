@@ -101,45 +101,52 @@ const hasSlot = Astro.slots.has('default');
 </style>
 
 <script>
-  document.querySelectorAll<HTMLElement>('[data-lightbox-open]').forEach((btn) => {
-    const dialogId = btn.dataset.lightboxOpen!;
-    const dialog = document.getElementById(dialogId) as HTMLDialogElement | null;
-    if (!dialog) return;
+  function initLightboxes() {
+    document.querySelectorAll<HTMLElement>('[data-lightbox-open]').forEach((btn) => {
+      if (btn.dataset.lightboxInit) return;
+      btn.dataset.lightboxInit = '1';
 
-    const closeBtn = dialog.querySelector<HTMLElement>('[data-lightbox-close]');
-    const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const dialogId = btn.dataset.lightboxOpen!;
+      const dialog = document.getElementById(dialogId) as HTMLDialogElement | null;
+      if (!dialog) return;
 
-    const closeLightbox = () => {
-      if (prefersReduced()) {
-        dialog.close();
-        return;
-      }
-      dialog.classList.add('is-closing');
-      dialog.addEventListener('animationend', () => {
-        dialog.classList.remove('is-closing');
-        dialog.close();
-      }, { once: true });
-    };
+      const closeBtn = dialog.querySelector<HTMLElement>('[data-lightbox-close]');
+      const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    btn.addEventListener('click', () => {
-      dialog.showModal();
-      closeBtn?.focus();
+      const closeLightbox = () => {
+        if (prefersReduced()) {
+          dialog.close();
+          return;
+        }
+        dialog.classList.add('is-closing');
+        dialog.addEventListener('animationend', () => {
+          dialog.classList.remove('is-closing');
+          dialog.close();
+        }, { once: true });
+      };
+
+      btn.addEventListener('click', () => {
+        dialog.showModal();
+        closeBtn?.focus();
+      });
+
+      closeBtn?.addEventListener('click', closeLightbox);
+
+      dialog.addEventListener('click', (e) => {
+        if (e.target === dialog) closeLightbox();
+      });
+
+      // Intercept Escape so we can play the exit animation before close
+      dialog.addEventListener('cancel', (e) => {
+        e.preventDefault();
+        closeLightbox();
+      });
+
+      dialog.addEventListener('close', () => {
+        btn.focus();
+      });
     });
+  }
 
-    closeBtn?.addEventListener('click', closeLightbox);
-
-    dialog.addEventListener('click', (e) => {
-      if (e.target === dialog) closeLightbox();
-    });
-
-    // Intercept Escape so we can play the exit animation before close
-    dialog.addEventListener('cancel', (e) => {
-      e.preventDefault();
-      closeLightbox();
-    });
-
-    dialog.addEventListener('close', () => {
-      btn.focus();
-    });
-  });
+  document.addEventListener('astro:page-load', initLightboxes);
 </script>
