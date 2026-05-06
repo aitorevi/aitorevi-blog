@@ -52,12 +52,12 @@ const projects = rawProjects
     browserUrl: browserUrls[p.id] ?? p.id,
   }));
 
-const accentMap: Record<string, { text: string; textDark: string; bg: string; ring: string; glow: string; border: string; buttonTone: ButtonTone; sectionVar: string }> = {
-  violet:  { text: 'text-violet-700 dark:text-accent-violet',   textDark: 'text-accent-violet',  bg: 'bg-accent-violet',  ring: 'ring-accent-violet/40',  glow: 'from-accent-violet/30', border: 'border-accent-violet/40',  buttonTone: 'violet', sectionVar: '--color-section-violet' },
-  blue:    { text: 'text-blue-700 dark:text-accent-blue',       textDark: 'text-accent-blue',    bg: 'bg-accent-blue',    ring: 'ring-accent-blue/40',    glow: 'from-accent-blue/30',   border: 'border-accent-blue/40',    buttonTone: 'blue',   sectionVar: '--color-section-blue' },
-  emerald: { text: 'text-emerald-700 dark:text-accent-emerald', textDark: 'text-accent-emerald', bg: 'bg-accent-emerald', ring: 'ring-accent-emerald/40', glow: 'from-accent-emerald/25', border: 'border-accent-emerald/40', buttonTone: 'emerald', sectionVar: '--color-section-emerald' },
-  sky:     { text: 'text-sky-700 dark:text-accent-sky',         textDark: 'text-accent-sky',     bg: 'bg-accent-sky',     ring: 'ring-accent-sky/40',     glow: 'from-accent-sky/25',    border: 'border-accent-sky/40',     buttonTone: 'blue',   sectionVar: '--color-section-sky' },
-  zinc:    { text: 'text-zinc-700 dark:text-zinc-300',          textDark: 'text-zinc-300',       bg: 'bg-zinc-500',       ring: 'ring-zinc-500/40',       glow: 'from-zinc-500/20',      border: 'border-zinc-500/40',       buttonTone: 'blue',   sectionVar: '--color-section-blue' },
+const accentMap: Record<string, { text: string; textDark: string; bg: string; ring: string; glow: string; border: string; borderLight: string; bgLight: string; buttonTone: ButtonTone; sectionVar: string }> = {
+  violet:  { text: 'text-violet-700 dark:text-accent-violet',   textDark: 'text-accent-violet',  bg: 'bg-accent-violet',  ring: 'ring-accent-violet/40',  glow: 'from-accent-violet/30', border: 'border-accent-violet/40',  borderLight: 'border-accent-violet/40', bgLight: 'bg-accent-violet/5',  buttonTone: 'violet', sectionVar: '--color-section-violet' },
+  blue:    { text: 'text-blue-700 dark:text-accent-blue',       textDark: 'text-accent-blue',    bg: 'bg-accent-blue',    ring: 'ring-accent-blue/40',    glow: 'from-accent-blue/30',   border: 'border-accent-blue/40',    borderLight: 'border-accent-blue/40',   bgLight: 'bg-accent-blue/5',    buttonTone: 'blue',   sectionVar: '--color-section-blue' },
+  emerald: { text: 'text-emerald-700 dark:text-accent-emerald', textDark: 'text-accent-emerald', bg: 'bg-accent-emerald', ring: 'ring-accent-emerald/40', glow: 'from-accent-emerald/25', border: 'border-accent-emerald/40', borderLight: 'border-accent-emerald/40', bgLight: 'bg-accent-emerald/5', buttonTone: 'emerald', sectionVar: '--color-section-emerald' },
+  sky:     { text: 'text-sky-700 dark:text-accent-sky',         textDark: 'text-accent-sky',     bg: 'bg-accent-sky',     ring: 'ring-accent-sky/40',     glow: 'from-accent-sky/25',    border: 'border-accent-sky/40',     borderLight: 'border-accent-sky/40',    bgLight: 'bg-accent-sky/5',     buttonTone: 'blue',   sectionVar: '--color-section-sky' },
+  zinc:    { text: 'text-zinc-700 dark:text-zinc-300',          textDark: 'text-zinc-300',       bg: 'bg-zinc-500',       ring: 'ring-zinc-500/40',       glow: 'from-zinc-500/20',      border: 'border-zinc-500/40',       borderLight: 'border-zinc-300',         bgLight: 'bg-zinc-50',          buttonTone: 'blue',   sectionVar: '--color-section-blue' },
 };
 
 const ctaLabel = t(lang, 'home.work.cta.case');
@@ -164,7 +164,7 @@ const externalLabel = t(lang, 'home.work.cta.external');
 
               <ul class="flex flex-wrap gap-2 font-mono text-[10px] uppercase tracking-[0.15em]">
                 {p.stack.map((s) => (
-                  <li class={`rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-slate-600 dark:${accent.border} dark:bg-white/5 dark:${accent.textDark}`}>{s}</li>
+                  <li class={`rounded-full border px-2.5 py-1 ${accent.borderLight} ${accent.bgLight} ${accent.text} dark:${accent.border} dark:bg-white/5 dark:${accent.textDark}`}>{s}</li>
                 ))}
               </ul>
 
