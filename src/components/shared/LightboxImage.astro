@@ -1,34 +1,20 @@
 ---
-/**
- * LightboxImage — self-contained lightbox for a single image.
- *
- * Each instance manages its own <dialog> to avoid ID collisions when
- * multiple lightboxes appear on the same page.
- *
- * Module-level counter gives a deterministic ID at SSR time (randomUUID
- * is non-deterministic across renders and breaks hydration).
- */
-
 interface Props {
   src: string;
   alt: string;
   caption?: string;
   /**
    * Extra classes applied to the trigger <button>.
-   * In no-slot mode (plain image trigger), also provides the button styling.
-   * In slot mode, styles the wrapper button that receives the slotted content.
    */
   class?: string;
   /** aria-label for the trigger button. Defaults to alt text. */
   label?: string;
-  /** aria-label for the close button. Defaults to 'Close'. */
+  /** aria-label for the close button. */
   closeLabel?: string;
 }
 
-let _count = 0;
-
 const { src, alt, caption, class: btnClass, label, closeLabel = 'Close' } = Astro.props;
-const id = `lightbox-${_count++}`;
+const id = `lightbox-${src.replace(/[^a-z0-9]/gi, '-').replace(/-{2,}/g, '-').replace(/^-|-$/g, '')}`;
 const triggerLabel = label ?? alt;
 const hasSlot = Astro.slots.has('default');
 ---
@@ -82,13 +68,13 @@ const hasSlot = Astro.slots.has('default');
   )}
 </dialog>
 
-<script is:inline define:vars={{ id }}>
-  (() => {
-    const btn = document.querySelector(`[data-lightbox-open="${id}"]`);
-    const dialog = document.getElementById(id);
-    if (!btn || !dialog) return;
+<script>
+  document.querySelectorAll<HTMLElement>('[data-lightbox-open]').forEach((btn) => {
+    const dialogId = btn.dataset.lightboxOpen!;
+    const dialog = document.getElementById(dialogId) as HTMLDialogElement | null;
+    if (!dialog) return;
 
-    const closeBtn = dialog.querySelector('[data-lightbox-close]');
+    const closeBtn = dialog.querySelector<HTMLElement>('[data-lightbox-close]');
 
     btn.addEventListener('click', () => {
       dialog.showModal();
@@ -100,7 +86,6 @@ const hasSlot = Astro.slots.has('default');
       btn.focus();
     });
 
-    // Click on the backdrop (the dialog element itself, not its contents)
     dialog.addEventListener('click', (e) => {
       if (e.target === dialog) {
         dialog.close();
@@ -108,9 +93,8 @@ const hasSlot = Astro.slots.has('default');
       }
     });
 
-    // Restore focus to trigger when dialog is closed via Escape (native behavior)
     dialog.addEventListener('close', () => {
       btn.focus();
     });
-  })();
+  });
 </script>
