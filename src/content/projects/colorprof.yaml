@@ -14,8 +14,8 @@ hrefEs: https://www.colorprof.es
 hrefEn: https://www.colorprof.es
 external: true
 metric:
-  value: "100"
-  labelEs: Lighthouse
-  labelEn: Lighthouse
+  value: "98"
+  labelEs: Performance
+  labelEn: Performance
 mockType: landing
 order: 3
