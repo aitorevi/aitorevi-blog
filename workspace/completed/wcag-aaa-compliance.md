@@ -4,7 +4,7 @@
 **Rama de trabajo:** `feature/wcag-aaa-compliance`  
 **Restricción:** No merge a `master` hasta que todos los criterios estén implementados y testeados  
 **Fecha de creación:** 2026-05-03  
-**Status:** COMPLETED
+**Status:** ACTUALIZADO — nueva Fase 17 añadida (PostNavigation + correcciones técnicas)
 
 ---
 
@@ -97,24 +97,27 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 0.4 Crear test base Playwright con axe-core
 
+> ⚠️ **Corrección técnica:** El plan original mezclaba dos paquetes distintos. `axe-playwright` (comunidad) y `@axe-core/playwright` (oficial de Deque) tienen APIs distintas. Usar el oficial.
+
 - [x] **Criterio:** N/A  
-  **Implementación:** Crear `tests/a11y/pages.spec.ts`:
+  **Implementación:** Instalar `@axe-core/playwright` (ya en el paso 0.2). Crear `tests/a11y/pages.spec.ts`:
   ```typescript
   import { test, expect } from '@playwright/test';
-  import { checkA11y, injectAxe } from 'axe-playwright';
+  import AxeBuilder from '@axe-core/playwright';
 
   const pages = ['/', '/blog', '/cv', '/work', '/en', '/en/blog'];
 
   for (const path of pages) {
     test(`WCAG 2.2 AAA — ${path}`, async ({ page }) => {
       await page.goto(`http://localhost:4321${path}`);
-      await injectAxe(page);
-      await checkA11y(page, undefined, {
-        runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag2aaa', 'wcag22aa'] },
-      });
+      const results = await new AxeBuilder({ page })
+        .withTags(['wcag2a', 'wcag2aa', 'wcag2aaa', 'wcag22aa'])
+        .analyze();
+      expect(results.violations).toEqual([]);
     });
   }
   ```
+  **Nota sobre pa11y htmlcs:** el runner `htmlcs` no cubre los criterios nuevos de WCAG 2.2 (2.4.11, 2.4.12, 2.4.13). Para esos criterios sólo axe es fiable. Considerar eliminar `htmlcs` del `.pa11yci.json` y confiar en axe exclusivamente.  
   **Test:** `npm run test:a11y` corre sin error de compilación TypeScript
 
 ### 0.5 Instalar extensiones para auditoría manual
@@ -882,12 +885,20 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ### 12.3 Implementar paso de revisión previa al envío
 
+> ⚠️ **Corrección técnica:** La versión anterior del plan combinaba `role="dialog"` con `aria-live="assertive"` en el mismo elemento. Son incompatibles: un dialog mueve el foco al abrirse (focus management), un live region anuncia cambios sin mover el foco. Usar sólo `role="dialog"` con `aria-modal="true"` y gestión de foco explícita.
+
 - [x] **Criterio:** 3.3.6 Error Prevention (All) — **Nivel AAA**  
   **Implementación:** En `ContactSection.astro`, añadir lógica JS de dos pasos:
-  - **Paso 1:** Formulario rellena → botón "Revisar mensaje" (no Submit)
-  - **Paso 2:** Se muestra un resumen de los datos introducidos con:
+  - **Paso 1:** Formulario relleno → botón "Revisar mensaje" (no Submit)
+  - **Paso 2:** Se muestra un resumen con semántica correcta:
     ```html
-    <section aria-live="assertive" role="dialog" aria-labelledby="review-title">
+    <section
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="review-title"
+      tabindex="-1"
+      id="review-panel"
+    >
       <h3 id="review-title">{t(lang, 'contact.review.title')}</h3>
       <dl>
         <dt>Nombre</dt><dd>{name}</dd>
@@ -898,9 +909,10 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
       <button type="submit">{t(lang, 'contact.review.confirm')}</button>
     </section>
     ```
-  - El botón "Volver a editar" restaura el formulario con los datos prefilled
+  - Al mostrar el panel, mover el foco al `<section>`: `document.getElementById('review-panel').focus()`
+  - Al cerrar con "Volver a editar", devolver el foco al primer campo del formulario
   - El botón "Confirmar y enviar" realiza el POST  
-  **Test:** Rellenar formulario → clic "Revisar" → aparece resumen con datos → "Volver a editar" → datos siguen presentes → "Confirmar" → envío real
+  **Test:** Rellenar formulario → clic "Revisar" → foco se mueve al panel → VoiceOver anuncia el título del diálogo → "Volver a editar" devuelve el foco al formulario con datos presentes
 
 ### 12.4 Preservar datos del formulario tras error de servidor
 
@@ -1089,6 +1101,122 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 
 ---
 
+---
+
+## Fase 17 — PostNavigation.astro (nueva — rama `feat/post-navigation`)
+
+> Componente `src/components/blog/PostNavigation.astro` añadido en `feat/post-navigation`. Revisado contra los criterios AAA el 2026-05-05.
+
+### 17.1 🐛 Bug crítico: i18n labels de prev/next están intercambiados
+
+- [ ] **Criterio:** 3.2.4 Consistent Identification — **Nivel AA** + 2.4.9 Link Purpose — **Nivel AAA**  
+  **Problema encontrado:** En `src/i18n/messages/blog.ts` (rama `feat/post-navigation`), los valores de `blog.nav.prev` y `blog.nav.next` están invertidos en **ambos idiomas**:
+  ```ts
+  // ESTADO ACTUAL — INCORRECTO
+  es: {
+    'blog.nav.prev': 'Artículo siguiente',  // ❌ debería ser 'Artículo anterior'
+    'blog.nav.next': 'Artículo anterior',   // ❌ debería ser 'Artículo siguiente'
+  }
+  en: {
+    'blog.nav.prev': 'Next article',        // ❌ debería ser 'Previous article'
+    'blog.nav.next': 'Previous article',    // ❌ debería ser 'Next article'
+  }
+  ```
+  Esto hace que un usuario de screen reader navegue hacia el post "siguiente" creyendo que va al "anterior", rompiendo directamente la intención de navegación.  
+  **Fix:** En `src/i18n/messages/blog.ts`:
+  ```ts
+  // CORRECTO
+  es: {
+    'blog.nav.prev': 'Artículo anterior',
+    'blog.nav.next': 'Artículo siguiente',
+    'blog.nav.label': 'Navegación entre artículos',
+  }
+  en: {
+    'blog.nav.prev': 'Previous article',
+    'blog.nav.next': 'Next article',
+    'blog.nav.label': 'Article navigation',
+  }
+  ```
+  **Test:** Con VoiceOver, navegar al `<nav>` de PostNavigation → el label izquierdo anuncia "Artículo anterior" y apunta al post temporalmente anterior; el derecho anuncia "Artículo siguiente" y apunta al post temporalmente posterior
+
+### 17.2 Verificar propósito de enlace autónomo
+
+- [ ] **Criterio:** 2.4.9 Link Purpose (Link Only) — **Nivel AAA**  
+  **Análisis del código actual:**
+  ```html
+  <!-- El enlace "anterior" contiene visualmente: -->
+  ← (icono aria-hidden) | ARTÍCULO ANTERIOR | Título del post anterior
+  ```
+  El nombre accesible del `<a>` se computa de todo el texto interno = `"ARTÍCULO ANTERIOR Título del post"` → **descriptivo sin contexto** ✅  
+  **Caveat:** Si el título está truncado (`truncate` en la clase), el nombre accesible aún contiene el texto completo porque `truncate` es CSS visual, no afecta al DOM. ✅  
+  **Acción:** Verificar que no hay `aria-label` en el `<a>` que sobreescriba el texto visible (en el código actual no lo hay). Añadir `blog.nav.label` al `<nav>` con `aria-label` para dar contexto al landmark. Ya implementado. ✅  
+  **Test:** Screen reader en modo "lista de enlaces" → cada enlace de PostNavigation es autónomamente descriptivo
+
+### 17.3 Verificar target size 44×44px
+
+- [ ] **Criterio:** 2.5.5 Target Size Enhanced — **Nivel AAA**  
+  **Análisis:** Los enlaces usan `p-3 -m-3` (padding 12px, margen negativo -12px). El área clicable incluye el padding → altura total = contenido (eyebrow 12px + gap-1 4px + título ~20px) + padding-top 12px + padding-bottom 12px = ~60px. **Parece superar 44px** ✅  
+  **Riesgo:** En viewports muy estrechos o con títulos muy cortos, podría no alcanzar. La clase `truncate` en el título puede reducir la altura si el título es de una sola línea corta.  
+  **Verificación:** En DevTools con viewport 375px → script de medición:
+  ```js
+  document.querySelectorAll('nav[aria-label*="artículo"] a, nav[aria-label*="article"] a')
+    .forEach(el => {
+      const r = el.getBoundingClientRect();
+      console.log(r.width, r.height, el.textContent.trim().slice(0, 30));
+    });
+  ```
+  **Test:** Todos los enlaces de PostNavigation ≥ 44×44px en viewport 375px y 1280px
+
+### 17.4 Verificar focus indicator
+
+- [ ] **Criterio:** 2.4.13 Focus Appearance — **Nivel AAA**  
+  **Análisis:** El enlace tiene `focus:outline-none focus-visible:ring-2 focus-visible:ring-accent`. El patrón es correcto: elimina el outline de UA para todos los focos, lo sustituye por `ring-2` (2px) solo en foco por teclado (`focus-visible`).  
+  **Problema potencial:** `focus:outline-none` afecta también a `focus-visible` en algunos contextos. Mejor patrón:
+  ```html
+  <!-- Antes -->
+  class="... focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+
+  <!-- Mejor (más explícito, sin ambigüedad): -->
+  class="... outline-none focus-visible:ring-2 focus-visible:ring-accent"
+  ```
+  El global de `tokens.css` ya define `:focus-visible { outline: 3px solid var(--color-accent); }`, así que el `focus-visible:ring-2` en Tailwind **sobrescribe el global** con 2px en lugar de 3px. Para consistencia con el resto de la UI, cambiar a 3px:
+  ```html
+  class="... outline-none focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-accent focus-visible:outline-offset-2"
+  ```
+  O simplemente eliminar el override de Tailwind y dejar que el global de `tokens.css` se aplique:
+  ```html
+  <!-- Dejar sólo esto (el global ya cubre el resto): -->
+  class="... focus:outline-none"
+  ```
+  **Test:** Tab hasta un enlace de PostNavigation → ring visible con 3px consistente con el resto de la UI
+
+### 17.5 Verificar div vacío cuando no hay post prev/next
+
+- [ ] **Criterio:** 4.1.2 Name, Role, Value — **Nivel A**  
+  **Análisis:** Cuando no existe `prev` o `next`, el componente renderiza `<div />` vacío en el grid. Un `<div>` no es interactivo y no tiene rol implícito → no expone problemas de accesibilidad para screen readers ✅  
+  **Mejora semántica (no bloqueante):** Usar `<span />` en lugar de `<div />` para dejar claro que es un placeholder inline; o cambiar el grid a un `flex justify-between` con sólo los elementos que existen. Esto evita confusión para futuros mantenedores.  
+  **Test:** Con solo post `next` (primer artículo) → grid tiene una celda vacía a la izquierda → VoiceOver no anuncia nada para la celda vacía ✅
+
+### 17.6 Verificar que PostNavigation aparece en el test de axe-playwright
+
+- [ ] **Criterio:** Todos  
+  **Implementación:** Añadir un blog post a la lista de URLs testeadas en `tests/a11y/pages.spec.ts`:
+  ```typescript
+  const pages = [
+    '/',
+    '/blog',
+    '/blog/[slug-de-un-post-con-prev-y-next]',  // ← añadir
+    '/cv',
+    '/work',
+    '/en',
+    '/en/blog',
+  ];
+  ```
+  Elegir un post que tenga tanto `prev` como `next` para testear el componente completo.  
+  **Test:** `npm run test:a11y` → post page con PostNavigation pasa sin violaciones WCAG2AAA
+
+---
+
 ## Resumen de criterios cubiertos por fase
 
 | Fase | Criterio WCAG | Nivel |
@@ -1117,3 +1245,7 @@ Las **brechas para AAA** son las descritas en las fases siguientes.
 | 15 | 1.4.9 Images of Text No Exception | AAA |
 | 15 | 3.2.6 Consistent Help | AA (nuevo 2.2) |
 | 15 | 2.2.4 Interruptions | AAA |
+| 17 | 2.4.9 Link Purpose — PostNavigation | AAA |
+| 17 | 3.2.4 Consistent Identification — i18n labels | AA |
+| 17 | 2.5.5 Target Size — PostNavigation | AAA |
+| 17 | 2.4.13 Focus Appearance — PostNavigation | AAA |
