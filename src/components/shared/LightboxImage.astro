@@ -13,7 +13,11 @@ interface Props {
   src: string;
   alt: string;
   caption?: string;
-  /** Extra classes applied to the <img> inside the trigger button (no-slot mode only). */
+  /**
+   * Extra classes applied to the trigger <button>.
+   * In no-slot mode (plain image trigger), also provides the button styling.
+   * In slot mode, styles the wrapper button that receives the slotted content.
+   */
   class?: string;
   /** aria-label for the trigger button. Defaults to alt text. */
   label?: string;
@@ -21,7 +25,7 @@ interface Props {
 
 let _count = 0;
 
-const { src, alt, caption, class: imgClass, label } = Astro.props;
+const { src, alt, caption, class: btnClass, label } = Astro.props;
 const id = `lightbox-${_count++}`;
 const triggerLabel = label ?? alt;
 const hasSlot = Astro.slots.has('default');
@@ -30,17 +34,18 @@ const hasSlot = Astro.slots.has('default');
 <button
   type="button"
   data-lightbox-open={id}
-  aria-label={hasSlot ? undefined : triggerLabel}
+  aria-label={triggerLabel}
   class:list={[
     'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary dark:focus-visible:outline-accent-violet',
     !hasSlot && 'block cursor-pointer transition-transform motion-safe:hover:scale-[1.02]',
+    btnClass,
   ]}
 >
   {hasSlot ? <slot /> : (
     <img
       src={src}
       alt={alt}
-      class:list={['block w-full', imgClass]}
+      class="block w-full"
       loading="lazy"
     />
   )}
