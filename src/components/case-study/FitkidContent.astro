@@ -156,12 +156,39 @@ const decisions = ['noDb', 'auth', 'highlight'] as const;
           {t(lang, 'portfolio.fitkid.opensource.text')}
         </p>
 
-        <!-- TODO: screenshots — capturas de la app mostrando la búsqueda por nombre
-             y el highlight de club. Pendiente de tener imágenes reales del proyecto. -->
-        <div class="mt-8 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center dark:border-white/10 dark:bg-white/[0.02]">
-          <p class="font-mono text-xs text-slate-400 dark:text-slate-500">
-            // {lang === 'es' ? 'Capturas de pantalla próximamente' : 'Screenshots coming soon'}
-          </p>
+        <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <figure class="overflow-hidden rounded-xl border border-slate-200 shadow-sm dark:border-white/10">
+            <img
+              src="/images/portfolio/fitkid/overview.webp"
+              alt={lang === 'es' ? 'Vista general del calendario de competición' : 'General competition schedule view'}
+              class="w-full"
+              loading="lazy"
+            />
+          </figure>
+          <figure class="overflow-hidden rounded-xl border border-slate-200 shadow-sm dark:border-white/10">
+            <img
+              src="/images/portfolio/fitkid/participant.webp"
+              alt={lang === 'es' ? 'Participante destacado en el horario' : 'Highlighted participant in the schedule'}
+              class="w-full"
+              loading="lazy"
+            />
+          </figure>
+          <figure class="overflow-hidden rounded-xl border border-slate-200 shadow-sm dark:border-white/10">
+            <img
+              src="/images/portfolio/fitkid/club-highlight.webp"
+              alt={lang === 'es' ? 'Club principal resaltado en cian' : 'Primary club highlighted in cyan'}
+              class="w-full"
+              loading="lazy"
+            />
+          </figure>
+          <figure class="overflow-hidden rounded-xl border border-slate-200 shadow-sm dark:border-white/10">
+            <img
+              src="/images/portfolio/fitkid/mobile.webp"
+              alt={lang === 'es' ? 'Vista móvil del horario' : 'Mobile view of the schedule'}
+              class="w-full"
+              loading="lazy"
+            />
+          </figure>
         </div>
       </div>
     </section>
