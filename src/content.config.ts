@@ -92,7 +92,7 @@ const projectsCollection = defineCollection({
       labelEs: z.string(),
       labelEn: z.string(),
     }),
-    mockType: z.enum(['dashboard', 'terminal', 'landing', 'calculator']),
+    mockType: z.enum(['dashboard', 'terminal', 'landing', 'calculator', 'browser']),
     order: z.number(),
   }),
 });
