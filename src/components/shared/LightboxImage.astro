@@ -42,7 +42,7 @@ const hasSlot = Astro.slots.has('default');
 <dialog
   id={id}
   aria-label={caption ?? alt}
-  class="fixed inset-0 m-auto max-h-[90vh] max-w-[90vw] overflow-hidden rounded-xl border border-white/10 bg-ink-900 p-0 shadow-2xl shadow-black/60 backdrop:bg-black/75 backdrop:backdrop-blur-sm"
+  class="lightbox fixed inset-0 m-auto max-h-[90vh] max-w-[90vw] overflow-hidden rounded-xl border border-white/10 bg-ink-900 p-0 shadow-2xl shadow-black/60 backdrop:bg-black/75 backdrop:backdrop-blur-sm"
 >
   <button
     type="button"
@@ -68,6 +68,38 @@ const hasSlot = Astro.slots.has('default');
   )}
 </dialog>
 
+<style is:global>
+  @keyframes lightbox-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes lightbox-out {
+    from { opacity: 1; transform: scale(1); }
+    to   { opacity: 0; transform: scale(0.95); }
+  }
+  @keyframes backdrop-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes backdrop-out {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+  }
+
+  dialog.lightbox[open] {
+    animation: lightbox-in 220ms cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
+  }
+  dialog.lightbox[open]::backdrop {
+    animation: backdrop-in 220ms ease forwards;
+  }
+  dialog.lightbox.is-closing {
+    animation: lightbox-out 160ms ease forwards;
+  }
+  dialog.lightbox.is-closing::backdrop {
+    animation: backdrop-out 160ms ease forwards;
+  }
+</style>
+
 <script>
   document.querySelectorAll<HTMLElement>('[data-lightbox-open]').forEach((btn) => {
     const dialogId = btn.dataset.lightboxOpen!;
@@ -75,22 +107,35 @@ const hasSlot = Astro.slots.has('default');
     if (!dialog) return;
 
     const closeBtn = dialog.querySelector<HTMLElement>('[data-lightbox-close]');
+    const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const closeLightbox = () => {
+      if (prefersReduced()) {
+        dialog.close();
+        return;
+      }
+      dialog.classList.add('is-closing');
+      dialog.addEventListener('animationend', () => {
+        dialog.classList.remove('is-closing');
+        dialog.close();
+      }, { once: true });
+    };
 
     btn.addEventListener('click', () => {
       dialog.showModal();
       closeBtn?.focus();
     });
 
-    closeBtn?.addEventListener('click', () => {
-      dialog.close();
-      btn.focus();
-    });
+    closeBtn?.addEventListener('click', closeLightbox);
 
     dialog.addEventListener('click', (e) => {
-      if (e.target === dialog) {
-        dialog.close();
-        btn.focus();
-      }
+      if (e.target === dialog) closeLightbox();
+    });
+
+    // Intercept Escape so we can play the exit animation before close
+    dialog.addEventListener('cancel', (e) => {
+      e.preventDefault();
+      closeLightbox();
     });
 
     dialog.addEventListener('close', () => {
