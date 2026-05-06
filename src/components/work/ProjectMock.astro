@@ -3,7 +3,7 @@ import type { Lang } from '@/i18n/types';
 import { t } from '@/i18n/utils';
 
 interface Props {
-  type: 'dashboard' | 'terminal' | 'landing' | 'calculator';
+  type: 'dashboard' | 'terminal' | 'landing' | 'calculator' | 'browser';
   lang: Lang;
   flip: boolean;
   href: string;
@@ -100,6 +100,37 @@ const { type, lang, flip, href, external, ring, browserUrl } = Astro.props;
             <div class="aspect-square rounded bg-gradient-to-br from-emerald-400/30 to-emerald-400/5"></div>
             <div class="aspect-square rounded bg-gradient-to-br from-emerald-400/20 to-emerald-400/5"></div>
             <div class="aspect-square rounded bg-gradient-to-br from-emerald-400/15 to-emerald-400/5"></div>
+          </div>
+        </div>
+      )}
+
+      {type === 'browser' && (
+        <div class="flex h-full flex-col gap-3">
+          <div class="flex items-center gap-2 rounded-md bg-white/5 px-3 py-2">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" class="h-3 w-3 shrink-0 text-slate-500" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4"/><path d="M10 10l3 3"/></svg>
+            <div class="h-2 flex-1 rounded-full bg-cyan-400/30"></div>
+            <div class="font-mono text-[8px] uppercase tracking-[0.15em] text-cyan-400/70">buscar</div>
+          </div>
+          <div class="flex gap-2 font-mono text-[9px] uppercase tracking-[0.15em] text-slate-500">
+            <span class="rounded-full border border-cyan-400/40 bg-cyan-400/10 px-2 py-0.5 text-cyan-400">Todo</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-2 py-0.5">Alevín</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-2 py-0.5">Benjamín</span>
+          </div>
+          <div class="flex-1 space-y-1.5 overflow-hidden">
+            {[
+              { name: 'Pérez García, Lucía', time: '09:15', cat: 'Alevín F', highlight: true },
+              { name: 'Martínez López, Mario', time: '09:28', cat: 'Benjamín M', highlight: false },
+              { name: 'Rodríguez Sanz, Alba', time: '09:41', cat: 'Alevín F', highlight: true },
+              { name: 'González Ruiz, Pablo', time: '09:54', cat: 'Infantil M', highlight: false },
+            ].map(({ name, time, cat, highlight }) => (
+              <div class={`flex items-center gap-3 rounded-md px-2.5 py-1.5 ${highlight ? 'bg-cyan-400/15 ring-1 ring-cyan-400/30' : 'bg-white/[0.04]'}`}>
+                <span class={`font-display text-[11px] font-semibold ${highlight ? 'text-cyan-300' : 'text-slate-300'}`}>{time}</span>
+                <div class="min-w-0 flex-1">
+                  <div class="truncate font-mono text-[9px] text-slate-300">{name}</div>
+                  <div class="font-mono text-[8px] text-slate-500">{cat}</div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}

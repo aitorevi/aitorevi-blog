@@ -1,0 +1,23 @@
+number: "05"
+name: FitKid Schedule
+taglineEs: Horarios de competición desde el móvil
+taglineEn: Competition schedules from your phone
+descKey: home.portfolio.fitkid.desc
+tagKey: home.portfolio.tag.tool
+year: "2025 — present"
+stack:
+  - Astro 5
+  - TypeScript
+  - Vercel
+  - CSS puro
+  - PWA
+accent: sky
+hrefEs: /work/fitkid
+hrefEn: /en/work/fitkid
+external: false
+metric:
+  value: "3"
+  labelEs: competiciones
+  labelEn: competitions
+mockType: browser
+order: 5

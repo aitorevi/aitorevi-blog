@@ -1,0 +1,19 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  glowClass?: string;
+}
+
+const { src, alt, glowClass = '' } = Astro.props;
+---
+
+<div class={`overflow-hidden rounded-[2rem] border-[5px] border-slate-700 bg-slate-900 shadow-xl shadow-slate-900/40 transition-all duration-300 motion-safe:group-hover:scale-[1.03] group-hover:shadow-2xl ${glowClass} dark:border-slate-600`}>
+  <div class="flex h-6 items-center justify-center bg-slate-900" aria-hidden="true">
+    <div class="h-1.5 w-16 rounded-full bg-slate-700"></div>
+  </div>
+  <img src={src} alt={alt} loading="lazy" class="w-48 sm:w-52" />
+  <div class="flex h-5 items-center justify-center bg-slate-900" aria-hidden="true">
+    <div class="h-1 w-20 rounded-full bg-slate-700"></div>
+  </div>
+</div>
