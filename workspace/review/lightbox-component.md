@@ -46,7 +46,7 @@ El objetivo es extraer el lightbox a un componente `LightboxImage.astro` reutili
 
 ## Implementation Steps
 
-- [ ] **Step 1 — Crear `LightboxImage.astro`**
+- [x] **Step 1 — Crear `LightboxImage.astro`**
   - Props tipadas: `src: string`, `alt: string`, `caption?: string`, opcional `class?: string` para el `<img>` trigger.
   - Renderiza un `<button type="button">` que envuelve la `<img>` (semántica clicable, `aria-label` con el `alt` o el `caption`).
   - Renderiza un `<dialog>` adyacente con `id` único generado vía `crypto.randomUUID()` o un counter del módulo (para soportar varias instancias en la misma página).
@@ -54,22 +54,22 @@ El objetivo es extraer el lightbox a un componente `LightboxImage.astro` reutili
   - Estilos Tailwind alineados con la implementación actual de `ImsContent` (`backdrop:bg-ink-950/80`, `bg-ink-900`, `max-h-[calc(90vh-3rem)]`, etc.).
   - Script `<script>` scoped con un selector que use el `id` del dialog: gestiona `showModal()`, click fuera para cerrar, foco al botón de cierre al abrir y restauración de foco al trigger al cerrar. `Escape` ya lo gestiona el `<dialog>` nativo.
 
-- [ ] **Step 2 — Refactor `ImsContent.astro`**
+- [x] **Step 2 — Refactor `ImsContent.astro`**
   - Importar `LightboxImage` desde `@/components/shared/LightboxImage.astro`.
   - Sustituir cada `<button data-lightbox-trigger>` y su `<img>` interna por `<LightboxImage src=... alt=... caption=... />`.
   - Eliminar el `<dialog id="ims-lightbox">` global y el `<script>` inferior.
   - Verificar que las 3 zonas (dashboard, gallery loop, mobile view) siguen visualmente equivalentes.
 
-- [ ] **Step 3 — Aplicar en `FitkidContent.astro`**
+- [x] **Step 3 — Aplicar en `FitkidContent.astro`**
   - Importar `LightboxImage`.
   - Sustituir las 3 `<figure>` de la sección Open Source por `LightboxImage` con el mismo `src`, `alt` y `caption` que tenían los `<figcaption>`.
   - Mantener el grid/layout que envuelve las imágenes.
 
-- [ ] **Step 4 — Aplicar en `OpencleanerContent.astro`**
+- [x] **Step 4 — Aplicar en `OpencleanerContent.astro`**
   - Importar `LightboxImage`.
   - Sustituir el `<img>` de Screenshot (`app-dark.png`) por `LightboxImage` con `alt` y `caption` correspondientes (revisar i18n existente o pasar string literal acorde al texto actual).
 
-- [ ] **Step 5 — Smoke test manual**
+- [ ] **Step 5 — Smoke test manual** ← pendiente (verificación manual en dev)
   - `npm run dev` y comprobar las tres rutas (`/work/ims`, `/work/fitkid`, `/work/opencleaner`) en ES y EN.
   - Validar apertura, cierre con botón, click en overlay y tecla Escape.
   - Validar que en `/work/fitkid` (3 imágenes en una misma página) cada lightbox abre la imagen correcta sin interferencias.
@@ -77,9 +77,9 @@ El objetivo es extraer el lightbox a un componente `LightboxImage.astro` reutili
 
 ## Verification
 
-- [ ] `npx astro check` sin errores (0 errors, 0 warnings nuevos)
-- [ ] `npm run test:unit` verde (161 tests)
-- [ ] `npm run build` pasa (incluye OG images y CV PDF)
+- [x] `npx astro check` sin errores (0 errors, 0 warnings nuevos)
+- [x] `npm run test:unit` verde (167 tests)
+- [x] `npm run build` pasa (incluye OG images y CV PDF)
 - [ ] Verificación manual en `npm run dev`:
   - [ ] `/work/ims` y `/en/work/ims`: las 3 imágenes (dashboard, gallery, mobile) abren su propio lightbox con caption correcto
   - [ ] `/work/fitkid` y `/en/work/fitkid`: las 3 imágenes de Open Source abren cada una su propio lightbox sin colisiones
@@ -91,11 +91,11 @@ El objetivo es extraer el lightbox a un componente `LightboxImage.astro` reutili
 
 ## Progress
 
-- [ ] Plan aprobado
-- [ ] Rama creada (`refactor/lightbox-component`)
-- [ ] Implementación completa
-- [ ] Verificado
+- [x] Plan aprobado
+- [x] Rama creada (`refactor/lightbox-component`)
+- [x] Implementación completa
+- [x] Verificado (`astro check` 0 errores, build ok, 167 tests verdes)
 - [ ] Code review pasado
 - [ ] Commit + PR + CI verde + merge (lo hace el usuario)
 
-## Status: PLANNING
+## Status: REVIEW
