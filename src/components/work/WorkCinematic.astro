@@ -11,6 +11,7 @@ import { getCollection } from 'astro:content';
 import type { Lang } from '@/i18n/types';
 import { t } from '@/i18n/utils';
 import Button from '@/components/shared/Button.astro';
+import Tag from '@/components/shared/Tag.astro';
 import type { ButtonTone } from '@/components/shared/buttonStyles';
 import ProjectMock from '@/components/work/ProjectMock.astro';
 
@@ -158,9 +159,9 @@ const externalLabel = t(lang, 'home.work.cta.external');
                 </dd>
               </dl>
 
-              <ul class="flex flex-wrap gap-2 font-mono text-[10px] uppercase tracking-[0.15em]">
+              <ul class="flex flex-wrap gap-2">
                 {p.stack.map((s) => (
-                  <li class={`rounded-full border px-2.5 py-1 ${accent.borderLight} ${accent.bgLight} ${accent.text} dark:${accent.border} dark:bg-white/5 dark:${accent.textDark}`}>{s}</li>
+                  <li><Tag label={s} variant="raw" class={`${accent.bgLight} dark:bg-white/5 ${accent.borderLight} ${accent.text}`} /></li>
                 ))}
               </ul>
 

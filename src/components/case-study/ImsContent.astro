@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { t } from '@/i18n/utils';
+import Tag from '@/components/shared/Tag.astro';
 import PhoneMockup from './PhoneMockup.astro';
 import LightboxImage from '@/components/shared/LightboxImage.astro';
 
@@ -85,12 +86,9 @@ const stack = {
               <h3 class="font-mono text-xs font-semibold uppercase tracking-[0.15em] text-secondary dark:text-accent-blue">
                 {t(lang, `portfolio.ims.stack.${category}`)}
               </h3>
-              <ul class="mt-3 space-y-2">
+              <ul class="mt-3 flex flex-wrap gap-2">
                 {items.map((item) => (
-                  <li class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                    <span class="h-1.5 w-1.5 rounded-full bg-accent/40" aria-hidden="true" />
-                    {item}
-                  </li>
+                  <li><Tag label={item} variant="accent" /></li>
                 ))}
               </ul>
             </div>

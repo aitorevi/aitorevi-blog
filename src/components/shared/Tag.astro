@@ -24,7 +24,7 @@ interface Props {
    * Visual variant for different contexts
    * @default 'default'
    */
-  variant?: 'default' | 'accent' | 'muted' | 'crosspost';
+  variant?: 'default' | 'accent' | 'muted' | 'crosspost' | 'raw';
 
   /**
    * Additional CSS classes for customization
@@ -52,6 +52,8 @@ const variantStyles = {
   muted: 'bg-slate-50 text-slate-700 border border-slate-200 dark:bg-slate-800/50 dark:text-slate-300 dark:border-slate-700',
 
   crosspost: 'bg-slate-100 text-slate-600 border border-slate-300 dark:bg-slate-800/40 dark:text-slate-400 dark:border-slate-600',
+
+  raw: 'border',
 };
 
 const baseStyles = 'inline-flex items-center px-3 py-1 text-xs font-medium rounded-full transition-all duration-200';
