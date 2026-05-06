@@ -6,7 +6,6 @@ import type { Lang } from '@/i18n/types';
 import { fetchBuildStats } from '@/lib/build-time/build-stats';
 import StatCard from '@/components/shared/StatCard.astro';
 import SectionHeader from '@/components/shared/SectionHeader.astro';
-import EyebrowTag from '@/components/shared/EyebrowTag.astro';
 import DecisionCard from './DecisionCard.astro';
 import StackCategory from './StackCategory.astro';
 import ScoreBadge from './ScoreBadge.astro';
@@ -94,43 +93,26 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
   title={t(lang, 'portfolio.self.meta.title')}
   description={t(lang, 'portfolio.self.meta.description')}
   lang={lang}
-  variant="dark-radial"
 >
-  <div class="relative text-ink-900 dark:bg-ink-900 dark:text-slate-100">
+  <div class="self-accent relative bg-slate-50 text-ink-900 dark:bg-ink-900 dark:text-slate-100">
     <!-- Hero -->
     <section class="relative overflow-hidden pt-24 pb-8 sm:pt-28 sm:pb-12" aria-labelledby="self-hero">
-      <div class="absolute inset-0 to-transparent dark:from-accent-blue/5" aria-hidden="true" />
+      <div class="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-transparent dark:from-blue-400/5" aria-hidden="true" />
       <div class="relative mx-auto max-w-3xl px-6 text-center">
-        <EyebrowTag label={t(lang, 'portfolio.self.hero.tag')} class="px-3 py-1" />
+        <span class="inline-flex items-center rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-blue-700 dark:border-blue-400/30 dark:bg-blue-400/10 dark:text-blue-400">
+          {t(lang, 'portfolio.self.hero.tag')}
+        </span>
         <h1 id="self-hero" class="mt-6 font-display text-4xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-5xl">
           {t(lang, 'portfolio.self.hero.title')}
         </h1>
         <p class="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">
           {t(lang, 'portfolio.self.hero.subtitle')}
         </p>
-        <div class="mt-8 flex justify-center">
-          <div
-            class="inline-flex items-center gap-3 rounded-full border border-secondary/15 bg-white/70 px-4 py-2.5 backdrop-blur-sm shadow-glow-accent-card-md dark:border-accent-violet/20 dark:bg-ink-800/70"
-            role="img"
-            aria-label="aitorevi.dev"
-          >
-            <span class="flex shrink-0 items-center gap-1.5" aria-hidden="true">
-              <span class="h-2 w-2 rounded-full bg-rose-400/70 dark:bg-rose-400/60" />
-              <span class="h-2 w-2 rounded-full bg-amber-400/70 dark:bg-amber-400/60" />
-              <span class="h-2 w-2 rounded-full bg-emerald-400/70 dark:bg-emerald-400/60" />
-            </span>
-            <span class="h-4 w-px bg-secondary/15 dark:bg-accent-violet/20" aria-hidden="true" />
-            <span class="font-mono text-base sm:text-xl font-semibold tracking-tight">
-              <span class="text-fg-subtle dark:text-slate-500" aria-hidden="true">https://</span>
-              <span class="bg-home-gradient-text-light bg-clip-text text-transparent dark:bg-home-gradient-text">aitorevi.dev</span>
-            </span>
-          </div>
-        </div>
       </div>
     </section>
 
     <!-- Timeline -->
-    <section class="bg-white py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="self-timeline">
+    <section class="py-20 sm:py-24" aria-labelledby="self-timeline">
       <div class="mx-auto max-w-3xl px-6">
         <SectionHeader
           id="self-timeline"
@@ -138,7 +120,7 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
           subtitle={t(lang, 'portfolio.self.timeline.subtitle')}
         />
 
-        <ol class="mt-12">
+        <ol class="timeline-violet mt-12">
           {timelineItems.map((n, i) => {
             const isFirst = i === 0;
             const isLast = i === timelineItems.length - 1;
@@ -187,7 +169,7 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
     </section>
 
     <!-- Decisions -->
-    <section class="bg-slate-50 py-20 dark:bg-ink-900 sm:py-24" aria-labelledby="self-decisions">
+    <section class="py-20 sm:py-24" aria-labelledby="self-decisions">
       <div class="mx-auto max-w-5xl px-6">
         <SectionHeader
           id="self-decisions"
@@ -222,7 +204,7 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
     </section>
 
     <!-- Stack -->
-    <section class="bg-white py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="self-stack">
+    <section class="py-20 sm:py-24" aria-labelledby="self-stack">
       <div class="mx-auto max-w-5xl px-6">
         <SectionHeader
           id="self-stack"
@@ -242,7 +224,7 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
     </section>
 
     <!-- Numbers -->
-    <section class="bg-slate-50 py-20 dark:bg-ink-900 sm:py-24" aria-labelledby="self-numbers">
+    <section class="py-20 sm:py-24" aria-labelledby="self-numbers">
       <div class="mx-auto max-w-5xl px-6">
         <SectionHeader
           id="self-numbers"
@@ -250,7 +232,7 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
           subtitle={t(lang, 'portfolio.self.numbers.subtitle')}
         />
 
-        <div class="mt-14 flex flex-wrap justify-center gap-4 sm:gap-6" data-stats-root>
+        <div class="timeline-violet mt-14 flex flex-wrap justify-center gap-4 sm:gap-6" data-stats-root>
           {stats.map((stat) => (
             <StatCard
               value={stat.value}
@@ -264,7 +246,7 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
     </section>
 
     <!-- PageSpeed / Lighthouse scores — visual block mimicking Lighthouse badges -->
-    <section class="relative bg-white py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="self-scores">
+    <section class="relative py-20 sm:py-24" aria-labelledby="self-scores">
       <!-- Shared SVG gradient defs — referenced by every ring via url(#…). -->
       <svg class="pointer-events-none absolute h-0 w-0" aria-hidden="true" focusable="false">
         <defs>
@@ -319,7 +301,7 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
     </section>
 
     <!-- Design system -->
-    <section class="bg-slate-50 py-20 dark:bg-ink-900 sm:py-24" aria-labelledby="self-design-system">
+    <section class="py-20 sm:py-24" aria-labelledby="self-design-system">
       <div class="mx-auto grid max-w-5xl grid-cols-1 items-center gap-10 px-6 md:grid-cols-2 md:gap-14">
         <!-- Left column: heading, description, CTA. SectionHeader is centered
              by design (shared atom) — we keep that on mobile and md+ to stay
@@ -429,7 +411,7 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
     </section>
 
     <!-- Final CTA -->
-    <section class="py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="self-cta">
+    <section class="py-20 sm:py-24" aria-labelledby="self-cta">
       <div class="mx-auto max-w-2xl px-6 text-center">
         <h2 id="self-cta" class="font-display text-2xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-3xl">
           {t(lang, 'portfolio.self.cta.title')}
@@ -455,6 +437,14 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
 </Layout>
 
 <style>
+  /* Override accent to blue — matches accent: blue in self.yaml */
+  .self-accent { --color-accent: 96 165 250; }
+  :global(.dark) .self-accent { --color-accent: 96 165 250; }
+
+  /* Timeline keeps violet */
+  .timeline-violet { --color-accent: 71 39 204; }
+  :global(.dark) .timeline-violet { --color-accent: 172 145 252; }
+
   .ds-mock {
     display: block;
     transform: perspective(1400px) rotateX(2deg) rotateY(-3deg);

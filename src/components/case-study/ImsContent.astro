@@ -46,7 +46,7 @@ const stack = {
     </section>
 
     <!-- Features -->
-    <section class="bg-white py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="features-heading">
+    <section class="py-20 sm:py-24" aria-labelledby="features-heading">
       <div class="mx-auto max-w-5xl px-6">
         <h2
           id="features-heading"
@@ -99,7 +99,7 @@ const stack = {
     </section>
 
     <!-- Gallery -->
-    <section class="bg-white py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="gallery-heading">
+    <section class="py-20 sm:py-24" aria-labelledby="gallery-heading">
       <div class="mx-auto max-w-5xl px-6">
         <h2
           id="gallery-heading"
@@ -115,68 +115,46 @@ const stack = {
         <div class="mt-12">
           <button
             type="button"
-            class="group relative block w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-100 shadow-lg transition-all duration-300 motion-safe:hover:scale-[1.01] hover:border-secondary/30 hover:shadow-xl dark:border-white/10 dark:bg-ink-800 dark:hover:border-accent-violet/30 dark:hover:shadow-accent-blue/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary dark:focus-visible:outline-accent-violet"
+            class="block w-full cursor-pointer overflow-hidden rounded-2xl shadow-lg transition-transform duration-300 motion-safe:hover:scale-[1.01] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary dark:focus-visible:outline-accent-violet"
             data-lightbox-trigger
             data-lightbox-src="/images/portfolio/ims/dashboard-admin.webp"
             data-lightbox-caption={t(lang, 'portfolio.ims.gallery.dashboard')}
             aria-label={`${t(lang, 'portfolio.ims.gallery.dashboard')} — ${t(lang, 'portfolio.ims.gallery.open')}`}
           >
-            <div class="flex items-center gap-1.5 border-b border-slate-200/80 bg-slate-100 px-3 py-2 dark:border-white/5 dark:bg-ink-800" aria-hidden="true">
-              <span class="h-2.5 w-2.5 rounded-full bg-red-400/80"></span>
-              <span class="h-2.5 w-2.5 rounded-full bg-yellow-400/80"></span>
-              <span class="h-2.5 w-2.5 rounded-full bg-green-400/80"></span>
-              <div class="mx-auto flex h-5 w-64 items-center rounded-full bg-slate-200/80 px-3 dark:bg-white/5">
-                <span class="truncate font-mono text-[9px] text-slate-400 dark:text-slate-500">app.ims.dev/dashboard</span>
-              </div>
-            </div>
             <img
               src="/images/portfolio/ims/dashboard-admin.webp"
               alt={t(lang, 'portfolio.ims.gallery.dashboard')}
               loading="eager"
               width="1248"
               height="731"
-              class="w-full"
+              class="aspect-video w-full object-cover object-top"
             />
-            <div class="absolute inset-x-0 bottom-0 translate-y-full bg-gradient-to-t from-ink-900/90 to-transparent px-4 pb-4 pt-8 transition-transform duration-300 group-hover:translate-y-0" aria-hidden="true">
-              <p class="font-mono text-xs text-slate-300">{t(lang, 'portfolio.ims.gallery.dashboard')}</p>
-            </div>
           </button>
         </div>
 
         <!-- Zone 2: Secondary grid -->
-        <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
           {secondaryScreenshots.map((img) => (
             <button
               type="button"
-              class="group relative block overflow-hidden rounded-xl border border-slate-200 bg-slate-100 shadow-sm transition-all duration-300 motion-safe:hover:scale-[1.02] hover:border-secondary/30 hover:shadow-md dark:border-white/10 dark:bg-ink-800 dark:hover:border-accent-violet/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary dark:focus-visible:outline-accent-violet"
+              class="block w-full cursor-pointer overflow-hidden rounded-2xl shadow-sm transition-transform duration-300 motion-safe:hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary dark:focus-visible:outline-accent-violet"
               data-lightbox-trigger
               data-lightbox-src={img.src}
               data-lightbox-caption={t(lang, img.key)}
               aria-label={`${t(lang, img.key)} — ${t(lang, 'portfolio.ims.gallery.open')}`}
             >
-              <div class="flex items-center gap-1.5 border-b border-slate-200/80 bg-slate-100 px-3 py-1.5 dark:border-white/5 dark:bg-ink-800" aria-hidden="true">
-                <span class="h-2 w-2 rounded-full bg-red-400/80"></span>
-                <span class="h-2 w-2 rounded-full bg-yellow-400/80"></span>
-                <span class="h-2 w-2 rounded-full bg-green-400/80"></span>
-                <div class="mx-auto flex h-4 w-40 items-center rounded-full bg-slate-200/80 px-2 dark:bg-white/5">
-                  <span class="truncate font-mono text-[8px] text-slate-400 dark:text-slate-500">{img.url}</span>
-                </div>
-              </div>
               <img
                 src={img.src}
                 alt={t(lang, img.key)}
                 loading="lazy"
-                class="w-full"
+                class="aspect-video w-full object-cover object-top"
               />
-              <div class="absolute inset-x-0 bottom-0 translate-y-full bg-gradient-to-t from-ink-900/90 to-transparent px-3 pb-3 pt-6 transition-transform duration-300 group-hover:translate-y-0" aria-hidden="true">
-                <p class="font-mono text-[10px] text-slate-300">{t(lang, img.key)}</p>
-              </div>
             </button>
           ))}
         </div>
 
         <!-- Zone 3: Mobile spotlight -->
-        <div class="mt-4 flex flex-col items-center gap-8 rounded-xl border border-slate-200 bg-slate-50 p-8 sm:flex-row sm:justify-center dark:border-white/10 dark:bg-white/[0.04]">
+        <div class="mt-12 flex flex-col items-center gap-10 sm:flex-row sm:justify-center">
           <div class="max-w-xs text-center sm:text-left">
             <span class="inline-flex items-center gap-1.5 rounded-full border border-accent-violet/20 bg-accent-violet/10 px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.15em] text-accent-violet" aria-hidden="true">
               PWA
