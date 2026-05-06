@@ -244,7 +244,6 @@ export const home = {
     'home.work.outro.eyebrow': '// end of tour',
     'home.portfolio.opencleaner.desc': 'Open source macOS app uninstaller. Removes the app and all its residual files. Clean architecture with Electron and React.',
     'home.work.outro.title': 'Six projects. For now.',
-    'home.work.outro.title': 'Five projects. For now.',
     'home.work.cta.case': 'View case',
     'home.work.cta.external': 'Visit site',
     'home.contact.required': 'Required fields',
