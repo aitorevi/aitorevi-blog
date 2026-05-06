@@ -1,0 +1,107 @@
+---
+/**
+ * LightboxImage — self-contained lightbox for a single image.
+ *
+ * Each instance manages its own <dialog> to avoid ID collisions when
+ * multiple lightboxes appear on the same page.
+ *
+ * Module-level counter gives a deterministic ID at SSR time (randomUUID
+ * is non-deterministic across renders and breaks hydration).
+ */
+
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  /** Extra classes applied to the <img> inside the trigger button (no-slot mode only). */
+  class?: string;
+  /** aria-label for the trigger button. Defaults to alt text. */
+  label?: string;
+}
+
+let _count = 0;
+
+const { src, alt, caption, class: imgClass, label } = Astro.props;
+const id = `lightbox-${_count++}`;
+const triggerLabel = label ?? alt;
+const hasSlot = Astro.slots.has('default');
+---
+
+<button
+  type="button"
+  data-lightbox-open={id}
+  aria-label={hasSlot ? undefined : triggerLabel}
+  class:list={[
+    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary dark:focus-visible:outline-accent-violet',
+    !hasSlot && 'block cursor-pointer transition-transform motion-safe:hover:scale-[1.02]',
+  ]}
+>
+  {hasSlot ? <slot /> : (
+    <img
+      src={src}
+      alt={alt}
+      class:list={['block w-full', imgClass]}
+      loading="lazy"
+    />
+  )}
+</button>
+
+<dialog
+  id={id}
+  aria-label={caption ?? alt}
+  class="fixed inset-0 m-auto max-h-[90vh] max-w-[90vw] overflow-hidden rounded-xl border border-white/10 bg-ink-900 p-0 shadow-2xl shadow-black/60 backdrop:bg-black/75 backdrop:backdrop-blur-sm"
+>
+  <button
+    type="button"
+    data-lightbox-close
+    class="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-slate-300 transition-colors hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-white"
+    aria-label="Close"
+  >
+    <svg viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+      <path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.75.75 0 1 1 1.06 1.06L9.06 8l3.22 3.22a.75.75 0 1 1-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 0 1-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"/>
+    </svg>
+  </button>
+  <img
+    src={src}
+    alt={alt}
+    class="block max-h-[calc(90vh-3rem)] max-w-full object-contain"
+  />
+  {caption && (
+    <p class="bg-ink-900 px-4 py-2.5 text-center font-mono text-xs text-slate-400">
+      {caption}
+    </p>
+  )}
+</dialog>
+
+<script is:inline define:vars={{ id }}>
+  (() => {
+    const btn = document.querySelector(`[data-lightbox-open="${id}"]`);
+    const dialog = document.getElementById(id);
+    if (!btn || !dialog) return;
+
+    const closeBtn = dialog.querySelector('[data-lightbox-close]');
+
+    btn.addEventListener('click', () => {
+      dialog.showModal();
+      closeBtn?.focus();
+    });
+
+    closeBtn?.addEventListener('click', () => {
+      dialog.close();
+      btn.focus();
+    });
+
+    // Click on the backdrop (the dialog element itself, not its contents)
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) {
+        dialog.close();
+        btn.focus();
+      }
+    });
+
+    // Restore focus to trigger when dialog is closed via Escape (native behavior)
+    dialog.addEventListener('close', () => {
+      btn.focus();
+    });
+  })();
+</script>
