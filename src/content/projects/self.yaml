@@ -15,8 +15,8 @@ hrefEs: /work/aitorevi-dev
 hrefEn: /en/work/aitorevi-dev
 external: false
 metric:
-  value: "161"
-  labelEs: tests
-  labelEn: tests
+  value: "100"
+  labelEs: Performance
+  labelEn: Performance
 mockType: terminal
 order: 2
