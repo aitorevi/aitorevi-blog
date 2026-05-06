@@ -1,5 +1,6 @@
 export const misc = {
   es: {
+    'misc.close': 'Cerrar',
     '404.routeNoAdapters': 'no tiene adaptadores. Protege el core.',
     '404.tagline': 'Eres el {core} de una arquitectura hexagonal. Rota para que los {adapters} entren por los lados correctos y esquiva los {couplings}.',
     '404.keysLeft': 'izquierda',
@@ -16,6 +17,7 @@ export const misc = {
     'legal.accessibility': 'Accesibilidad',
   },
   en: {
+    'misc.close': 'Close',
     '404.routeNoAdapters': 'has no adapters. Protect the core.',
     '404.tagline': 'You are the {core} of a hexagonal architecture. Rotate so {adapters} enter through the right sides and dodge the {couplings}.',
     '404.keysLeft': 'left',
