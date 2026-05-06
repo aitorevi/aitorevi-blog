@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { t } from '@/i18n/utils';
+import PhoneMockup from './PhoneMockup.astro';
 
 const lang = 'es';
 
@@ -195,22 +196,11 @@ const stack = {
             data-lightbox-caption={t(lang, 'portfolio.ims.gallery.mobile')}
             aria-label={`${t(lang, 'portfolio.ims.gallery.mobile')} — ${t(lang, 'portfolio.ims.gallery.open')}`}
           >
-            <div class="overflow-hidden rounded-[2rem] border-[5px] border-slate-700 bg-slate-900 shadow-xl shadow-slate-900/40 transition-all duration-300 motion-safe:group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-accent-violet/20 dark:border-slate-600">
-              <div class="flex h-6 items-center justify-center bg-slate-900" aria-hidden="true">
-                <div class="h-1.5 w-16 rounded-full bg-slate-700"></div>
-              </div>
-              <img
-                src="/images/portfolio/ims/mobile-view.webp"
-                alt={t(lang, 'portfolio.ims.gallery.mobile')}
-                loading="lazy"
-                width="481"
-                height="826"
-                class="w-48 sm:w-52"
-              />
-              <div class="flex h-5 items-center justify-center bg-slate-900" aria-hidden="true">
-                <div class="h-1 w-20 rounded-full bg-slate-700"></div>
-              </div>
-            </div>
+            <PhoneMockup
+              src="/images/portfolio/ims/mobile-view.webp"
+              alt={t(lang, 'portfolio.ims.gallery.mobile')}
+              glowClass="group-hover:shadow-accent-violet/20"
+            />
           </button>
         </div>
       </div>

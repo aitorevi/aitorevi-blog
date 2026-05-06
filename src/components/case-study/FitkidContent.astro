@@ -4,6 +4,7 @@ import Button from '@/components/shared/Button.astro';
 import { t } from '@/i18n/utils';
 import type { Lang } from '@/i18n/types';
 import DecisionCard from './DecisionCard.astro';
+import PhoneMockup from './PhoneMockup.astro';
 
 interface Props {
   lang: Lang;
@@ -22,6 +23,35 @@ const stack = {
 };
 
 const decisions = ['noDb', 'auth', 'highlight'] as const;
+
+type Screenshot = { img: string; flip: boolean; mockup?: boolean; num: string; titleEs: string; titleEn: string; descEs: string; descEn: string };
+
+const screenshots: Screenshot[] = [
+  {
+    img: 'overview', flip: false, num: '01',
+    titleEs: 'Horario completo de un vistazo', titleEn: 'Full schedule at a glance',
+    descEs: 'Todos los turnos y categorías del día en una sola página, sin paginación. Diseñado para que el árbitro o el coordinador pueda escanear el horario rápidamente.',
+    descEn: 'Every time slot and category of the day on a single page, no pagination. Designed so the referee or coordinator can scan the schedule at a glance.',
+  },
+  {
+    img: 'participant', flip: true, num: '02',
+    titleEs: 'Búsqueda por nombre', titleEn: 'Search by name',
+    descEs: 'Escribe un nombre y el sistema lo resalta al instante en toda la vista. Los padres pueden encontrar el turno de su hijo sin leer fila por fila.',
+    descEn: "Type a name and the system highlights it instantly across the full view. Parents can find their child's slot without reading row by row.",
+  },
+  {
+    img: 'club-highlight', flip: false, num: '03',
+    titleEs: 'Tu club siempre visible', titleEn: 'Your club always visible',
+    descEs: 'Configura tu club con una variable de entorno y todos sus deportistas aparecen en cian automáticamente. Sin tocar el código, sin redeployar.',
+    descEn: 'Set your club via an environment variable and all its athletes appear in cyan automatically. No code changes, no redeploy needed.',
+  },
+  {
+    img: 'mobile', flip: true, mockup: true, num: '04',
+    titleEs: 'Pensado para el móvil', titleEn: 'Mobile-first',
+    descEs: 'Los deportistas y sus familias consultan el horario desde el teléfono en el propio pabellón. Sin app que instalar, funciona como PWA.',
+    descEn: 'Athletes and families check the schedule from their phone right at the venue. No app to install — it works as a PWA.',
+  },
+];
 ---
 
 <Layout
@@ -145,7 +175,7 @@ const decisions = ['noDb', 'auth', 'highlight'] as const;
 
     <!-- Open Source & GDPR -->
     <section class="bg-white py-20 dark:bg-ink-900/50 sm:py-24" aria-labelledby="fitkid-opensource">
-      <div class="mx-auto max-w-3xl px-6">
+      <div class="mx-auto max-w-5xl px-6">
         <h2
           id="fitkid-opensource"
           class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
@@ -156,39 +186,38 @@ const decisions = ['noDb', 'auth', 'highlight'] as const;
           {t(lang, 'portfolio.fitkid.opensource.text')}
         </p>
 
-        <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <figure class="overflow-hidden rounded-xl border border-slate-200 shadow-sm dark:border-white/10">
-            <img
-              src="/images/portfolio/fitkid/overview.webp"
-              alt={lang === 'es' ? 'Vista general del calendario de competición' : 'General competition schedule view'}
-              class="w-full"
-              loading="lazy"
-            />
-          </figure>
-          <figure class="overflow-hidden rounded-xl border border-slate-200 shadow-sm dark:border-white/10">
-            <img
-              src="/images/portfolio/fitkid/participant.webp"
-              alt={lang === 'es' ? 'Participante destacado en el horario' : 'Highlighted participant in the schedule'}
-              class="w-full"
-              loading="lazy"
-            />
-          </figure>
-          <figure class="overflow-hidden rounded-xl border border-slate-200 shadow-sm dark:border-white/10">
-            <img
-              src="/images/portfolio/fitkid/club-highlight.webp"
-              alt={lang === 'es' ? 'Club principal resaltado en cian' : 'Primary club highlighted in cyan'}
-              class="w-full"
-              loading="lazy"
-            />
-          </figure>
-          <figure class="overflow-hidden rounded-xl border border-slate-200 shadow-sm dark:border-white/10">
-            <img
-              src="/images/portfolio/fitkid/mobile.webp"
-              alt={lang === 'es' ? 'Vista móvil del horario' : 'Mobile view of the schedule'}
-              class="w-full"
-              loading="lazy"
-            />
-          </figure>
+        <div class="mt-16 space-y-20">
+          {screenshots.map(({ img, flip, mockup, num, titleEs, titleEn, descEs, descEn }) => (
+            <div class="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
+              {mockup ? (
+                <div class={`group flex justify-center${flip ? ' md:order-2' : ''}`}>
+                  <PhoneMockup
+                    src={`/images/portfolio/fitkid/${img}.webp`}
+                    alt={lang === 'es' ? titleEs : titleEn}
+                    glowClass="group-hover:shadow-sky-400/20"
+                  />
+                </div>
+              ) : (
+                <figure class={`overflow-hidden rounded-2xl border border-slate-200 shadow-lg dark:border-white/10${flip ? ' md:order-2' : ''}`}>
+                  <img
+                    src={`/images/portfolio/fitkid/${img}.webp`}
+                    alt={lang === 'es' ? titleEs : titleEn}
+                    class="w-full"
+                    loading="lazy"
+                  />
+                </figure>
+              )}
+              <div class={flip ? 'md:order-1' : ''}>
+                <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-sky-600 dark:text-sky-400">{num}</span>
+                <h3 class="mt-2 font-display text-xl font-bold tracking-tight text-ink-900 dark:text-slate-100">
+                  {lang === 'es' ? titleEs : titleEn}
+                </h3>
+                <p class="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                  {lang === 'es' ? descEs : descEn}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
