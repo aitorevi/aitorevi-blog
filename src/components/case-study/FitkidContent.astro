@@ -5,6 +5,7 @@ import { t } from '@/i18n/utils';
 import type { Lang } from '@/i18n/types';
 import DecisionCard from './DecisionCard.astro';
 import PhoneMockup from './PhoneMockup.astro';
+import LightboxImage from '@/components/shared/LightboxImage.astro';
 
 interface Props {
   lang: Lang;
@@ -198,14 +199,12 @@ const screenshots: Screenshot[] = [
                   />
                 </div>
               ) : (
-                <figure class={`overflow-hidden rounded-2xl border border-slate-200 shadow-lg dark:border-white/10${flip ? ' md:order-2' : ''}`}>
-                  <img
-                    src={`/images/portfolio/fitkid/${img}.webp`}
-                    alt={lang === 'es' ? titleEs : titleEn}
-                    class="w-full"
-                    loading="lazy"
-                  />
-                </figure>
+                <LightboxImage
+                  src={`/images/portfolio/fitkid/${img}.webp`}
+                  alt={lang === 'es' ? titleEs : titleEn}
+                  caption={lang === 'es' ? titleEs : titleEn}
+                  class={`overflow-hidden rounded-2xl border border-slate-200 shadow-lg dark:border-white/10${flip ? ' md:order-2' : ''}`}
+                />
               )}
               <div class={flip ? 'md:order-1' : ''}>
                 <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-sky-600 dark:text-sky-400">{num}</span>
