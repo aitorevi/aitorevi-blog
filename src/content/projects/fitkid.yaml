@@ -11,7 +11,7 @@ stack:
   - Vercel
   - CSS puro
   - PWA
-accent: sky
+accent: blue
 hrefEs: /work/fitkid
 hrefEn: /en/work/fitkid
 external: false
