@@ -147,14 +147,14 @@ const externalLabel = t(lang, 'home.work.cta.external');
                 {t(lang, p.descKey)}
               </p>
 
-              <dl class="grid grid-cols-2 items-start gap-x-6 gap-y-3 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+              <dl class="grid grid-cols-2 items-center gap-x-6 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
                 <div>
                   <dt class="text-[9px]">{t(lang, 'home.work.label.year')}</dt>
                   <dd class="mt-1 text-slate-700 dark:text-slate-200 normal-case tracking-normal text-xs">
                     {p.year}
                   </dd>
                 </div>
-                <div>
+                <div class="text-center">
                   <dt class="text-[9px]">{p.metric.label}</dt>
                   <dd class={`mt-1 font-display text-2xl font-black ${accent.text} normal-case tracking-tight`}>
                     {p.metric.value}
