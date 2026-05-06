@@ -21,11 +21,13 @@ interface Props {
   class?: string;
   /** aria-label for the trigger button. Defaults to alt text. */
   label?: string;
+  /** aria-label for the close button. Defaults to 'Close'. */
+  closeLabel?: string;
 }
 
 let _count = 0;
 
-const { src, alt, caption, class: btnClass, label } = Astro.props;
+const { src, alt, caption, class: btnClass, label, closeLabel = 'Close' } = Astro.props;
 const id = `lightbox-${_count++}`;
 const triggerLabel = label ?? alt;
 const hasSlot = Astro.slots.has('default');
@@ -60,7 +62,7 @@ const hasSlot = Astro.slots.has('default');
     type="button"
     data-lightbox-close
     class="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-slate-300 transition-colors hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-white"
-    aria-label="Close"
+    aria-label={closeLabel}
   >
     <svg viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4" aria-hidden="true">
       <path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.75.75 0 1 1 1.06 1.06L9.06 8l3.22 3.22a.75.75 0 1 1-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 0 1-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"/>
@@ -69,6 +71,8 @@ const hasSlot = Astro.slots.has('default');
   <img
     src={src}
     alt={alt}
+    loading="lazy"
+    decoding="async"
     class="block max-h-[calc(90vh-3rem)] max-w-full object-contain"
   />
   {caption && (
