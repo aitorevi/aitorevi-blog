@@ -1,0 +1,145 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  /**
+   * Extra classes applied to the trigger <button>.
+   */
+  class?: string;
+  /** aria-label for the trigger button. Defaults to alt text. */
+  label?: string;
+  /** aria-label for the close button. */
+  closeLabel?: string;
+}
+
+const { src, alt, caption, class: btnClass, label, closeLabel = 'Close' } = Astro.props;
+const id = `lightbox-${src.replace(/[^a-z0-9]/gi, '-').replace(/-{2,}/g, '-').replace(/^-|-$/g, '')}`;
+const triggerLabel = label ?? alt;
+const hasSlot = Astro.slots.has('default');
+---
+
+<button
+  type="button"
+  data-lightbox-open={id}
+  aria-label={triggerLabel}
+  class:list={[
+    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary dark:focus-visible:outline-accent-violet',
+    !hasSlot && 'block cursor-pointer transition-transform motion-safe:hover:scale-[1.02]',
+    btnClass,
+  ]}
+>
+  {hasSlot ? <slot /> : (
+    <img
+      src={src}
+      alt={alt}
+      class="block w-full"
+      loading="lazy"
+    />
+  )}
+</button>
+
+<dialog
+  id={id}
+  aria-label={caption ?? alt}
+  class="lightbox fixed inset-0 m-auto max-h-[90vh] max-w-[90vw] overflow-hidden rounded-xl border border-white/10 bg-ink-900 p-0 shadow-2xl shadow-black/60 backdrop:bg-black/75 backdrop:backdrop-blur-sm"
+>
+  <button
+    type="button"
+    data-lightbox-close
+    class="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-slate-300 transition-colors hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-white"
+    aria-label={closeLabel}
+  >
+    <svg viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+      <path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.75.75 0 1 1 1.06 1.06L9.06 8l3.22 3.22a.75.75 0 1 1-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 0 1-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"/>
+    </svg>
+  </button>
+  <img
+    src={src}
+    alt={alt}
+    loading="lazy"
+    decoding="async"
+    class="block max-h-[calc(90vh-3rem)] max-w-full object-contain"
+  />
+  {caption && (
+    <p class="bg-ink-900 px-4 py-2.5 text-center font-mono text-xs text-slate-400">
+      {caption}
+    </p>
+  )}
+</dialog>
+
+<style is:global>
+  @keyframes lightbox-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes lightbox-out {
+    from { opacity: 1; transform: scale(1); }
+    to   { opacity: 0; transform: scale(0.95); }
+  }
+  @keyframes backdrop-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes backdrop-out {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+  }
+
+  dialog.lightbox[open] {
+    animation: lightbox-in 220ms cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
+  }
+  dialog.lightbox[open]::backdrop {
+    animation: backdrop-in 220ms ease forwards;
+  }
+  dialog.lightbox.is-closing {
+    animation: lightbox-out 160ms ease forwards;
+  }
+  dialog.lightbox.is-closing::backdrop {
+    animation: backdrop-out 160ms ease forwards;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-lightbox-open]').forEach((btn) => {
+    const dialogId = btn.dataset.lightboxOpen!;
+    const dialog = document.getElementById(dialogId) as HTMLDialogElement | null;
+    if (!dialog) return;
+
+    const closeBtn = dialog.querySelector<HTMLElement>('[data-lightbox-close]');
+    const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const closeLightbox = () => {
+      if (prefersReduced()) {
+        dialog.close();
+        return;
+      }
+      dialog.classList.add('is-closing');
+      dialog.addEventListener('animationend', () => {
+        dialog.classList.remove('is-closing');
+        dialog.close();
+      }, { once: true });
+    };
+
+    btn.addEventListener('click', () => {
+      dialog.showModal();
+      closeBtn?.focus();
+    });
+
+    closeBtn?.addEventListener('click', closeLightbox);
+
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) closeLightbox();
+    });
+
+    // Intercept Escape so we can play the exit animation before close
+    dialog.addEventListener('cancel', (e) => {
+      e.preventDefault();
+      closeLightbox();
+    });
+
+    dialog.addEventListener('close', () => {
+      btn.focus();
+    });
+  });
+</script>

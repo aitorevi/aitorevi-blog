@@ -2,6 +2,7 @@
 import Layout from '@/layouts/Layout.astro';
 import { t } from '@/i18n/utils';
 import PhoneMockup from './PhoneMockup.astro';
+import LightboxImage from '@/components/shared/LightboxImage.astro';
 
 const lang = 'es';
 
@@ -113,13 +114,13 @@ const stack = {
 
         <!-- Zone 1: Hero — Admin Dashboard -->
         <div class="mt-12">
-          <button
-            type="button"
-            class="group relative block w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-100 shadow-lg transition-all duration-300 motion-safe:hover:scale-[1.01] hover:border-secondary/30 hover:shadow-xl dark:border-white/10 dark:bg-ink-800 dark:hover:border-accent-violet/30 dark:hover:shadow-accent-blue/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary dark:focus-visible:outline-accent-violet"
-            data-lightbox-trigger
-            data-lightbox-src="/images/portfolio/ims/dashboard-admin.webp"
-            data-lightbox-caption={t(lang, 'portfolio.ims.gallery.dashboard')}
-            aria-label={`${t(lang, 'portfolio.ims.gallery.dashboard')} — ${t(lang, 'portfolio.ims.gallery.open')}`}
+          <LightboxImage
+            src="/images/portfolio/ims/dashboard-admin.webp"
+            alt={t(lang, 'portfolio.ims.gallery.dashboard')}
+            caption={t(lang, 'portfolio.ims.gallery.dashboard')}
+            label={`${t(lang, 'portfolio.ims.gallery.dashboard')} — ${t(lang, 'portfolio.ims.gallery.open')}`}
+            closeLabel={t(lang, 'misc.close')}
+            class="group relative block w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-100 shadow-lg transition-all duration-300 motion-safe:hover:scale-[1.01] hover:border-secondary/30 hover:shadow-xl dark:border-white/10 dark:bg-ink-800 dark:hover:border-accent-violet/30 dark:hover:shadow-accent-blue/20"
           >
             <div class="flex items-center gap-1.5 border-b border-slate-200/80 bg-slate-100 px-3 py-2 dark:border-white/5 dark:bg-ink-800" aria-hidden="true">
               <span class="h-2.5 w-2.5 rounded-full bg-red-400/80"></span>
@@ -140,19 +141,19 @@ const stack = {
             <div class="absolute inset-x-0 bottom-0 translate-y-full bg-gradient-to-t from-ink-900/90 to-transparent px-4 pb-4 pt-8 transition-transform duration-300 group-hover:translate-y-0" aria-hidden="true">
               <p class="font-mono text-xs text-slate-300">{t(lang, 'portfolio.ims.gallery.dashboard')}</p>
             </div>
-          </button>
+          </LightboxImage>
         </div>
 
         <!-- Zone 2: Secondary grid -->
         <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {secondaryScreenshots.map((img) => (
-            <button
-              type="button"
-              class="group relative block overflow-hidden rounded-xl border border-slate-200 bg-slate-100 shadow-sm transition-all duration-300 motion-safe:hover:scale-[1.02] hover:border-secondary/30 hover:shadow-md dark:border-white/10 dark:bg-ink-800 dark:hover:border-accent-violet/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary dark:focus-visible:outline-accent-violet"
-              data-lightbox-trigger
-              data-lightbox-src={img.src}
-              data-lightbox-caption={t(lang, img.key)}
-              aria-label={`${t(lang, img.key)} — ${t(lang, 'portfolio.ims.gallery.open')}`}
+            <LightboxImage
+              src={img.src}
+              alt={t(lang, img.key)}
+              caption={t(lang, img.key)}
+              label={`${t(lang, img.key)} — ${t(lang, 'portfolio.ims.gallery.open')}`}
+              closeLabel={t(lang, 'misc.close')}
+              class="group relative block overflow-hidden rounded-xl border border-slate-200 bg-slate-100 shadow-sm transition-all duration-300 motion-safe:hover:scale-[1.02] hover:border-secondary/30 hover:shadow-md dark:border-white/10 dark:bg-ink-800 dark:hover:border-accent-violet/30"
             >
               <div class="flex items-center gap-1.5 border-b border-slate-200/80 bg-slate-100 px-3 py-1.5 dark:border-white/5 dark:bg-ink-800" aria-hidden="true">
                 <span class="h-2 w-2 rounded-full bg-red-400/80"></span>
@@ -171,7 +172,7 @@ const stack = {
               <div class="absolute inset-x-0 bottom-0 translate-y-full bg-gradient-to-t from-ink-900/90 to-transparent px-3 pb-3 pt-6 transition-transform duration-300 group-hover:translate-y-0" aria-hidden="true">
                 <p class="font-mono text-[10px] text-slate-300">{t(lang, img.key)}</p>
               </div>
-            </button>
+            </LightboxImage>
           ))}
         </div>
 
@@ -188,73 +189,23 @@ const stack = {
               {t(lang, 'portfolio.ims.gallery.mobileDesc')}
             </p>
           </div>
-          <button
-            type="button"
-            class="group relative shrink-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary dark:focus-visible:outline-accent-violet"
-            data-lightbox-trigger
-            data-lightbox-src="/images/portfolio/ims/mobile-view.webp"
-            data-lightbox-caption={t(lang, 'portfolio.ims.gallery.mobile')}
-            aria-label={`${t(lang, 'portfolio.ims.gallery.mobile')} — ${t(lang, 'portfolio.ims.gallery.open')}`}
+          <LightboxImage
+            src="/images/portfolio/ims/mobile-view.webp"
+            alt={t(lang, 'portfolio.ims.gallery.mobile')}
+            caption={t(lang, 'portfolio.ims.gallery.mobile')}
+            label={`${t(lang, 'portfolio.ims.gallery.mobile')} — ${t(lang, 'portfolio.ims.gallery.open')}`}
+            closeLabel={t(lang, 'misc.close')}
+            class="group relative shrink-0 focus-visible:outline-offset-4"
           >
             <PhoneMockup
               src="/images/portfolio/ims/mobile-view.webp"
               alt={t(lang, 'portfolio.ims.gallery.mobile')}
               glowClass="group-hover:shadow-accent-violet/20"
             />
-          </button>
+          </LightboxImage>
         </div>
       </div>
     </section>
 
-    <!-- Lightbox -->
-    <dialog
-      id="ims-lightbox"
-      aria-label={t(lang, 'portfolio.ims.gallery.title')}
-      class="fixed inset-0 m-auto max-h-[90vh] max-w-[90vw] overflow-hidden rounded-xl border border-white/10 bg-ink-900 p-0 shadow-2xl shadow-black/60 backdrop:bg-black/75 backdrop:backdrop-blur-sm"
-    >
-      <button
-        type="button"
-        id="lightbox-close"
-        class="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-slate-300 transition-colors hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-white"
-        aria-label={t(lang, 'portfolio.ims.gallery.close')}
-      >
-        <svg viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4" aria-hidden="true">
-          <path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.75.75 0 1 1 1.06 1.06L9.06 8l3.22 3.22a.75.75 0 1 1-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 0 1-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"/>
-        </svg>
-      </button>
-      <img id="lightbox-img" src="" alt="" aria-hidden="true" class="block max-h-[calc(90vh-3rem)] max-w-full object-contain" />
-      <p id="lightbox-caption" class="bg-ink-900 px-4 py-2.5 text-center font-mono text-xs text-slate-400"></p>
-    </dialog>
-
   </div>
 </Layout>
-
-<script>
-  function initLightbox() {
-    const dialog = document.getElementById('ims-lightbox') as HTMLDialogElement;
-    const img = document.getElementById('lightbox-img') as HTMLImageElement;
-    const caption = document.getElementById('lightbox-caption') as HTMLElement;
-    const closeBtn = document.getElementById('lightbox-close') as HTMLButtonElement;
-    if (!dialog || !img || !caption || !closeBtn) return;
-
-    document.querySelectorAll<HTMLButtonElement>('[data-lightbox-trigger]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        img.src = btn.dataset.lightboxSrc ?? '';
-        img.alt = btn.dataset.lightboxCaption ?? '';
-        img.removeAttribute('aria-hidden');
-        caption.textContent = btn.dataset.lightboxCaption ?? '';
-        dialog.showModal();
-      });
-    });
-
-    closeBtn.addEventListener('click', () => dialog.close());
-
-    dialog.addEventListener('click', (e) => {
-      if (e.target === dialog) dialog.close();
-    });
-
-    dialog.addEventListener('close', () => { img.src = ''; img.setAttribute('aria-hidden', 'true'); });
-  }
-
-  document.addEventListener('astro:page-load', initLightbox);
-</script>
