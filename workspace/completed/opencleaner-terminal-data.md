@@ -1,7 +1,7 @@
 # opencleaner-terminal-data
 
 **Issue:** #208 — Datos erróneos open cleaner
-**Status:** IN PROGRESS
+**Status:** COMPLETED
 **Branch:** fix/opencleaner-terminal-data
 
 ## Problema
