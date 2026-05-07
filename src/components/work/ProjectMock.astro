@@ -10,9 +10,10 @@ interface Props {
   external: boolean;
   ring: string;
   browserUrl: string;
+  projectId?: string;
 }
 
-const { type, lang, flip, href, external, ring, browserUrl } = Astro.props;
+const { type, lang, flip, href, external, ring, browserUrl, projectId } = Astro.props;
 ---
 
 <a
@@ -63,7 +64,21 @@ const { type, lang, flip, href, external, ring, browserUrl } = Astro.props;
         </div>
       )}
 
-      {type === 'terminal' && (
+      {type === 'terminal' && projectId === 'opencleaner' && (
+        <div class="flex h-full flex-col gap-2 font-mono text-[11px] leading-relaxed text-accent-blue/90">
+          <div class="text-slate-500">$ npm test</div>
+          <div class="text-emerald-400">✓ 4 use cases (3 files)</div>
+          <div class="mt-1 text-slate-500">$ npm run build:mac</div>
+          <div>building <span class="text-accent-violet">open-cleaner</span> ...</div>
+          <div class="text-emerald-400">  ✓ typecheck passed</div>
+          <div class="text-emerald-400">  ✓ main (Electron 39)</div>
+          <div class="text-emerald-400">  ✓ renderer (React 19)</div>
+          <div class="text-emerald-400">build complete in 8.3s</div>
+          <div class="mt-1 text-accent-violet">$ <span class="cinematic-cursor"></span></div>
+        </div>
+      )}
+
+      {type === 'terminal' && projectId !== 'opencleaner' && (
         <div class="flex h-full flex-col gap-2 font-mono text-[11px] leading-relaxed text-accent-blue/90">
           <div class="text-slate-500">$ npm run test:unit</div>
           <div class="text-emerald-400">✓ 161 tests passed (12 files)</div>
