@@ -8,7 +8,6 @@ import Footer from "@/components/footer/Footer.astro";
 import { getLangFromUrl, getAlternateUrl, t } from '@/i18n/utils';
 import type { Lang } from '@/i18n/types';
 import '@/styles/tokens.css';
-import '@/styles/retro.css';
 
 interface Props {
 	title: string;
@@ -54,16 +53,12 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<!-- Self-hosted fonts: JetBrains Mono (code/accents) + Outfit (display).
-		     Preloading all six weights the public site uses so they start
-		     downloading in parallel with the fonts.css parse, not chained
-		     behind it. Unicode-range in fonts.css still means only the
-		     latin subset is actually used unless a latin-ext character appears. -->
+		     Preload only the three above-the-fold weights (hero h1, hero paragraph,
+		     role label). The remaining weights are declared via @font-face below and
+		     load on demand — no blocking link to fonts.css in the request chain. -->
 		<link rel="preload" href="/fonts/outfit-900-latin.woff2" as="font" type="font/woff2" crossorigin />
-		<link rel="preload" href="/fonts/outfit-700-latin.woff2" as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href="/fonts/outfit-600-latin.woff2" as="font" type="font/woff2" crossorigin />
 		<link rel="preload" href="/fonts/jetbrains-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin />
-		<link rel="preload" href="/fonts/jetbrains-mono-600-latin.woff2" as="font" type="font/woff2" crossorigin />
-		<link rel="preload" href="/fonts/jetbrains-mono-700-latin.woff2" as="font" type="font/woff2" crossorigin />
 		<style>
 			/* Self-hosted font subsets — inlined to remove fonts.css from the critical request chain. */
 			@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/jetbrains-mono-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
@@ -113,10 +108,7 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 				if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
 					document.documentElement.classList.add('dark');
 				}
-				if (localStorage.getItem('retro') === '1') {
-					document.documentElement.dataset.retro = '';
-				}
-			})();
+				})();
 			// Swallow the benign race condition from Chrome's View Transitions
 			// API. When navigations overlap (quick clicks, back/forward during
 			// animation) the .finished promise rejects with InvalidStateError.
@@ -139,6 +131,26 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 				var m = document.cookie.match(/(?:^|; )aitorevi_consent=(granted|denied)/);
 				return m && m[1] === 'granted' ? event : null;
 			};
+		</script>
+		<!-- retro.css (~19 KiB) is only loaded when the Konami mode is active.
+		     On first activation window.__loadRetroCss() is called; on subsequent
+		     visits it is loaded only when localStorage retro === '1'. -->
+		<script is:inline>
+			(function () {
+				function loadRetro() {
+					if (document.getElementById('retro-css')) return;
+					var l = document.createElement('link');
+					l.id = 'retro-css';
+					l.rel = 'stylesheet';
+					l.href = '/retro.css';
+					document.head.appendChild(l);
+				}
+				if (localStorage.getItem('retro') === '1') {
+					document.documentElement.setAttribute('data-retro', '');
+					loadRetro();
+				}
+				window.__loadRetroCss = loadRetro;
+			})();
 		</script>
 		<ClientRouter />
 		{import.meta.env.PUBLIC_GSC_VERIFICATION && (
@@ -297,6 +309,7 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 			html.removeAttribute('data-retro');
 			localStorage.removeItem('retro');
 		} else {
+			(window as Window & { __loadRetroCss?: () => void }).__loadRetroCss?.();
 			html.setAttribute('data-retro', '');
 			localStorage.setItem('retro', '1');
 		}

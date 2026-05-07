@@ -144,7 +144,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
     <div
       class="hero-photo-wrapper mb-8 mt-2"
       data-hero-reveal
-      style="--reveal-delay: 60ms"
+      style="--reveal-delay: 40ms"
     >
       <img
         src="/avatar-light.webp"
@@ -171,7 +171,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
       class="font-display font-black leading-[0.95] tracking-tight text-ink-900 dark:text-slate-100 hero-title-glow"
       style="font-size: clamp(2.5rem, 7vw, 5rem);"
       data-hero-reveal
-      data-hero-reveal-delay="120"
+      data-hero-reveal-delay="60"
     >
       Aitor Reviriego
     </h1>
@@ -180,7 +180,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
       transition:persist="hero-tagline"
       class="mt-5 text-[11px] uppercase tracking-[0.4em] text-violet-700 dark:text-accent-violet font-mono"
       data-hero-reveal
-      data-hero-reveal-delay="260"
+      data-hero-reveal-delay="80"
     >
       {t(lang, 'home.tagline')}
     </p>
@@ -188,7 +188,7 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
     <p
       class="mt-8 max-w-xl text-base leading-relaxed text-slate-600 dark:text-slate-400 sm:text-lg"
       data-hero-reveal
-      data-hero-reveal-delay="400"
+      data-hero-reveal-delay="120"
     >
       {t(lang, 'home.p1')}
     </p>
@@ -367,12 +367,10 @@ const gridVLines = Array.from({ length: 16 }, (_, i) => i);
     currentRoot = root;
     setRevealDelays(root);
 
-    // Fade in orbit ring after hero content has appeared
+    // Show orbit ring immediately — it is decorative and should not hold up rendering.
     const orbitRing = root.querySelector<HTMLElement>('[data-orbit-ring]');
     if (orbitRing) {
-      setTimeout(() => {
-        orbitRing.style.opacity = '1';
-      }, 800);
+      orbitRing.style.opacity = '1';
     }
 
     const layerNodes = root.querySelectorAll<HTMLElement>('[data-parallax-layer]');
