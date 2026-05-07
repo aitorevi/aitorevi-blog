@@ -94,6 +94,10 @@ const projectsCollection = defineCollection({
     }),
     mockType: z.enum(['dashboard', 'terminal', 'landing', 'calculator', 'browser']),
     order: z.number(),
+    terminalLines: z.array(z.object({
+      kind: z.enum(['cmd', 'ok', 'building']),
+      text: z.string(),
+    })).optional(),
   }),
 });
 

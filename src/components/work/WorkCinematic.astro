@@ -51,6 +51,7 @@ const projects = rawProjects
     },
     mockType: p.data.mockType,
     browserUrl: browserUrls[p.id] ?? p.id,
+    terminalLines: p.data.terminalLines,
   }));
 
 const accentMap: Record<string, { text: string; textDark: string; bg: string; ring: string; glow: string; border: string; borderLight: string; bgLight: string; buttonTone: ButtonTone; sectionVar: string }> = {
@@ -189,6 +190,7 @@ const externalLabel = t(lang, 'home.work.cta.external');
               external={p.external}
               ring={accent.ring}
               browserUrl={p.browserUrl}
+              terminalLines={p.terminalLines}
             />
             <p class="mt-4 text-right font-mono text-[10px] uppercase tracking-[0.25em] text-slate-500">
               {String(i + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}

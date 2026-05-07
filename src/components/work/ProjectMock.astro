@@ -10,9 +10,10 @@ interface Props {
   external: boolean;
   ring: string;
   browserUrl: string;
+  terminalLines?: { kind: 'cmd' | 'ok' | 'building'; text: string }[];
 }
 
-const { type, lang, flip, href, external, ring, browserUrl } = Astro.props;
+const { type, lang, flip, href, external, ring, browserUrl, terminalLines } = Astro.props;
 ---
 
 <a
@@ -65,14 +66,15 @@ const { type, lang, flip, href, external, ring, browserUrl } = Astro.props;
 
       {type === 'terminal' && (
         <div class="flex h-full flex-col gap-2 font-mono text-[11px] leading-relaxed text-accent-blue/90">
-          <div class="text-slate-500">$ npm run test:unit</div>
-          <div class="text-emerald-400">✓ 161 tests passed (12 files)</div>
-          <div class="mt-1 text-slate-500">$ npm run build</div>
-          <div>building <span class="text-accent-violet">aitorevi.dev</span> ...</div>
-          <div class="text-slate-500">  ✓ 73 routes</div>
-          <div class="text-slate-500">  ✓ OG images generated</div>
-          <div class="text-slate-500">  ✓ CV PDFs (es, en)</div>
-          <div class="text-emerald-400">build complete in 9.2s</div>
+          {terminalLines?.map((line: { kind: 'cmd' | 'ok' | 'building'; text: string }, i: number) => (
+            line.kind === 'cmd' ? (
+              <div class={`text-slate-500${i > 0 ? ' mt-1' : ''}`}>$ {line.text}</div>
+            ) : line.kind === 'building' ? (
+              <div>building <span class="text-accent-violet">{line.text}</span> ...</div>
+            ) : (
+              <div class="text-emerald-400">{line.text}</div>
+            )
+          ))}
           <div class="mt-1 text-accent-violet">$ <span class="cinematic-cursor"></span></div>
         </div>
       )}

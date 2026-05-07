@@ -20,3 +20,20 @@ metric:
   labelEn: layers
 mockType: terminal
 order: 6
+terminalLines:
+  - kind: cmd
+    text: npm test
+  - kind: ok
+    text: "✓ 4 use cases (3 files)"
+  - kind: cmd
+    text: npm run build:mac
+  - kind: building
+    text: open-cleaner
+  - kind: ok
+    text: "  ✓ typecheck passed"
+  - kind: ok
+    text: "  ✓ main (Electron 39)"
+  - kind: ok
+    text: "  ✓ renderer (React 19)"
+  - kind: ok
+    text: build complete in 8.3s
