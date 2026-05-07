@@ -20,3 +20,20 @@ metric:
   labelEn: tests
 mockType: terminal
 order: 2
+terminalLines:
+  - kind: cmd
+    text: npm run test:unit
+  - kind: ok
+    text: "✓ 167 tests passed (12 files)"
+  - kind: cmd
+    text: npm run build
+  - kind: building
+    text: aitorevi.dev
+  - kind: ok
+    text: "  ✓ 73 routes"
+  - kind: ok
+    text: "  ✓ OG images generated"
+  - kind: ok
+    text: "  ✓ CV PDFs (es, en)"
+  - kind: ok
+    text: build complete in 9.2s
