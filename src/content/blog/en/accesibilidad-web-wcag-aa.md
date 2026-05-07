@@ -120,6 +120,8 @@ Manual keyboard review. This can't be automated. You have to do it. And every ti
 
 A contrast calculator — in my case one that compares both WCAG and APCA. Any one will do, but using it consistently before adding a new colour to the palette saves rewrites later.
 
+The result measured in May 2026 with PageSpeed Insights: 97 in Performance, 100 in Accessibility, 100 in Best Practices and 100 in SEO on mobile. On desktop, all four categories at 100. I didn't start this for the numbers, but seeing 100 in Accessibility confirms the work makes sense.
+
 ## The accessibility statement
 
 There's a European model, described in EN 301 549 and EU Directive 2016/2102, for how to declare the accessibility of a site. The idea is that anyone can know what level you comply with, using which technologies, and who to contact if they find a barrier.

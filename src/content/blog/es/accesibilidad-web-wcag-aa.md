@@ -120,6 +120,8 @@ La revisión manual con teclado. Esto no se puede automatizar. Hay que hacerlo. 
 
 Una calculadora de contraste, en mi caso una que compara WCAG y APCA. Cualquiera vale, pero usarla siempre antes de meter un color nuevo en la paleta ahorra reescrituras después.
 
+El resultado medido en mayo de 2026 con PageSpeed Insights: 97 en Rendimiento, 100 en Accesibilidad, 100 en Prácticas recomendadas y 100 en SEO en móvil. En escritorio, las cuatro categorías en 100. No empecé con esto para los números, pero ver el 100 en accesibilidad es una confirmación de que el trabajo tiene sentido.
+
 ## La declaración de accesibilidad
 
 Hay un modelo europeo, descrito en EN 301 549 y la Directiva UE 2016/2102, sobre cómo declarar la accesibilidad de un sitio. La idea es que cualquiera pueda saber qué nivel cumples, con qué tecnologías, y a quién dirigirse si encuentra una barrera.
