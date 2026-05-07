@@ -38,6 +38,6 @@ El score mobile de Lighthouse es 95/100. La única métrica naranja es Speed Ind
 - [x] Implementación completa
 - [x] Verificado
 - [x] Code review pasado
-- [ ] Commit + PR + CI verde + merge (lo hace el usuario)
+- [x] Commit + PR + CI verde + merge (lo hace el usuario)
 
-## Status: REVIEW
+## Status: COMPLETED
