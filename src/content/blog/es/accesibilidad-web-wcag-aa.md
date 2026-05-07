@@ -13,48 +13,59 @@ author:
   avatar: /avatar.webp
 ---
 
-La accesibilidad web tiene fama de ser ese tema que todo el mundo pospone. Se asume que es costosa, difícil de auditar y que, al fin y al cabo, «tampoco hay tantos usuarios que la necesiten». Yo mismo lo pensaba hace no mucho. Este artículo es el resultado de haberme equivocado.
+La accesibilidad es ese tema que todos posponemos. Suena costoso, suena difícil de auditar, y siempre se cuela esa idea de fondo de que tampoco hay tantos usuarios que la necesiten. No estoy de acuerdo. 
 
-Durante los últimos meses he trabajado en llevar **aitorevi.dev al cumplimiento de WCAG 2.2 Nivel AA**. No porque lo exija ninguna norma —es un blog personal, no entra en el ámbito de la Directiva UE 2016/2102— sino porque quería entender de verdad qué significa construir una web que cualquier persona pueda usar.
+Llevo unos meses trabajando en que aitorevi.dev cumpla WCAG 2.2 nivel AA. No me obliga ninguna ley. Es un blog personal, no entra dentro de la Directiva UE 2016/2102 ni de ninguna norma equivalente. Lo hice porque quería entender de verdad qué implica construir una web que cualquier persona pueda usar, y quería hacerlo mío. Hay personas para las que una web accesible no es un detalle, es la diferencia entre poder usarla o no. Eso me importa. Y lo que no anticipé del todo es que casi todo lo que mejora la experiencia para ellas acaba siendo una mejora para el resto también.
 
-## Qué es WCAG y por qué importa
+Antes de escribir una sola línea me pegué varias tardes leyendo. Las pautas, los criterios, las técnicas, los ejemplos, las quejas en foros, los artículos buenos y los regulares. Me hacía falta. La accesibilidad es uno de esos terrenos donde las cosas tienen muchos más matices de los que parece, y donde aplicar a ciegas lo primero que lees acaba siendo peor que no aplicar nada.
 
-Las **Web Content Accessibility Guidelines** (WCAG) son las pautas de accesibilidad publicadas por el W3C/WAI. La versión 2.2, publicada en octubre de 2023, organiza todos sus criterios en cuatro principios:
+## Lo que es WCAG, contado rápido
 
-- **Perceptible**: el contenido debe poder percibirse con independencia del sentido que se use.
-- **Operable**: toda la funcionalidad debe poder activarse sin ratón.
-- **Comprensible**: el idioma, la navegación y los errores deben ser claros y predecibles.
-- **Robusto**: el marcado debe ser interpretable por tecnologías de apoyo actuales y futuras.
+Las Web Content Accessibility Guidelines son las pautas que publica el W3C a través de su iniciativa WAI. La versión 2.2 salió en octubre de 2023 y agrupa los criterios alrededor de cuatro principios. Que el contenido se pueda percibir, que se pueda operar sin ratón, que se entienda, y que el marcado sea robusto. Hasta ahí, lo de siempre.
 
-El nivel AA es el estándar de referencia para la mayoría de regulaciones europeas. El nivel AAA añade criterios más estrictos, como un ratio de contraste mínimo de 7:1 para texto normal.
+Lo que no se cuenta tanto es que cada criterio tiene un nivel asignado. A es lo mínimo, AA es el estándar que casi todo el mundo usa de referencia, y AAA es el más exigente. AAA pide cosas como un contraste de 7:1 en lugar de 4,5:1, o que el texto pueda ser entendido por alguien con un nivel de lectura de educación secundaria, o que las palabras ambiguas tengan su pronunciación marcada. Cosas serias.
 
-## Lo que implementamos
+## Empecé queriendo llegar a AAA
 
-### Contraste de color
+Lo confieso. Cuando me puse con esto, mi cabeza fue directamente a por AAA. Si vas a hacerlo, hazlo bien, ¿no? Pues no. O bueno, sí, pero con matices.
 
-Es el criterio más visible y, en muchos casos, el más descuidado. WCAG 2.2 exige un ratio mínimo de **4,5:1** para texto normal y **3:1** para texto grande (≥ 18pt o ≥ 14pt en negrita).
+Fui leyendo los criterios uno por uno y al principio iba todo razonablemente bien. El contraste, los focos, las animaciones, lo que tenía sentido. El problema empezó cuando llegué a sitios donde ya no era cuestión de apretar un par de tornillos, sino de cambiar la naturaleza de lo que hago aquí.
 
-En aitorevi.dev trabajamos con dos paletas —light y dark— y cada color que aparece en pantalla pasó por el calculador. Algunos resultados:
+El que me hizo bajar los brazos fue el 3.1.5, el del nivel de lectura. Pide que el contenido se pueda entender con un nivel de educación secundaria, o que ofrezcas una versión alternativa más sencilla. Tengo artículos mas sencillos, mas accesibles pero según pasa el tiempo voy aprendiendo mas cosas, tengo mas experiencia y toco temas mas complejos, mas tecnicos y profundizo en detalles mas complejos. No es que use lenguaje complicado por gusto, es que el tema es el que es y mantener una versión simplificada de cada artículo en paralelo, además de dudosa en lo pedagógico, es directamente inviable para mí.
 
-| Elemento | Light | Dark |
-|---|---|---|
-| Texto base | 18,1:1 | 15,8:1 |
-| Acento (violet) | 5,3:1 | 7,2:1 |
-| Texto apagado | 4,7:1 | 5,9:1 |
+Cuando decidí bajar a AA, había más criterios donde me veía igual de lejos del objetivo de la AAA. Lengua de signos para vídeos, pronunciación marcada, evitar abreviaturas. Preferí centrarme en la AA, cumplirlo de verdad, y no engañar a nadie ni engañarme a mí.
 
-El modo oscuro, curiosamente, nos resultó más fácil de llevar a AAA: el fondo `#0f1419` (casi negro) da mucho margen a prácticamente cualquier color claro. El modo claro, en cambio, requirió varias iteraciones en los colores de acento.
+Eso sí, durante el camino implementé cosas que iban más allá de AA. Algunas las he dejado, porque ya estaban hechas y porque mejoran la experiencia de gente real. Las menciono cuando aparecen.
 
-Los controles del nav (selector de idioma, toggle de tema, toggle de movimiento) fueron un caso especial: queremos que tengan menor prominencia visual que los links de navegación, pero sin bajar del mínimo AA. La solución fue `text-slate-500` en light (4,6:1 ✓) y `text-slate-400` en dark (7,4:1 ✓✓).
+## Contraste y lo que me costó dejarlo bonito
 
-### Navegación por teclado y foco visible
+De todos los criterios, el contraste es el que más se nota a simple vista. WCAG pide 4,5 a 1 en texto normal y 3 a 1 en texto grande. Suena fácil hasta que abres la calculadora y empiezas a meter colores.
 
-Todo elemento interactivo debe ser alcanzable y activable con `Tab` y `Enter`/`Space`. Esto parecía trivial hasta que me di cuenta de que algunos botones personalizados no tenían el rol semántico correcto.
+Tengo dos paletas, una clara y una oscura, y al final cada color que aparece en pantalla pasó por verificación. Algunos números, por dar contexto. Se puede ver en el [Design System](https://www.aitorevi.dev/styleguide).
 
-El criterio **2.4.11** (Focus Appearance, nuevo en WCAG 2.2) exige que el indicador de foco sea visible y tenga contraste suficiente. En lugar de `outline: none` (el pecado original del frontend), mantenemos el outline nativo del navegador y le añadimos visibilidad extra con `focus-visible`.
+| Elemento        | Light  | Dark   |
+|-----------------|--------|--------|
+| Texto base      | 18,1:1 | 15,8:1 |
+| Acento (violet) | 5,3:1  | 7,2:1  |
+| Texto apagado   | 4,7:1  | 5,9:1  |
 
-### Enlace «Saltar al contenido»
+El modo oscuro me dio menos guerra. Cuando partes de un fondo casi negro como `#0f1419`, casi cualquier color claro encima cumple. El modo claro fue otra historia. Los acentos en violeta me costaron varias iteraciones porque o quedaban demasiado pálidos sobre blanco, o demasiado intensos y entonces el ojo se iba ahí en lugar de al texto. La ergonomía visual es una negociación constante entre lo bonito y lo legible.
 
-Invisible para quien usa ratón, imprescindible para quien navega con teclado. Está en el Layout y aparece al hacer foco con `Tab` en la primera interacción:
+Lo que sí hice desde el principio fue componetizar a fondo. Cada color, cada token, vive en un único sitio. Si quiero cambiar el acento del modo claro, lo cambio en una variable y el resto del blog se entera. Esto, que parece de manual, fue lo que me permitió iterar sobre la paleta sin volverme loco. Cambiar un violeta por otro y comprobar el contraste en cuarenta sitios distintos a la vez no se puede hacer a mano. Y si lo intentas, te equivocas.
+
+Los controles del nav (idioma, tema, movimiento) tienen su propia historia. Quería que pesaran menos visualmente que los enlaces principales, pero sin bajar de AA. La solución fue `text-slate-500` para light (4,6 a 1, justo por encima del mínimo) y `text-slate-400` para dark (7,4 a 1, con amplio margen).
+
+## Lectura cómoda
+
+Esto no es estrictamente WCAG, o al menos no es un criterio numerado, pero forma parte de lo mismo. Que un texto se pueda leer.
+
+Le di muchas vueltas al ancho máximo del contenido en los artículos. Demasiado estrecho cansa, demasiado ancho hace que el ojo se pierda al saltar de línea. Acabé en torno a las 70 caracteres por línea, que es la zona donde la mayoría de tipógrafos coincide. La altura de línea, los márgenes entre párrafos, el tamaño de la tipografía base, todo eso lo trabajé hasta que leer aquí no me cansaba. Si me cansa a mí, va a cansar al resto.
+
+Estas cosas son las que no se ven en una auditoría automática. No salen en `axe`, no las pilla ningún checklist pero son las que diferencian una web que cumple de una web que se lee.
+
+## El día que descubrí que mis botones no eran botones
+
+Una vez que empiezas a navegar tu propia web solo con `Tab` te das cuenta de varias cosas a la vez. La primera, que tabular por todo el menú en cada página es desesperante. Para eso existe el enlace de "saltar al contenido", que es invisible salvo cuando recibe foco. Va al principio del layout y te lleva directo al `<main>`.
 
 ```html
 <a href="#main-content" class="sr-only focus:not-sr-only ...">
@@ -62,27 +73,23 @@ Invisible para quien usa ratón, imprescindible para quien navega con teclado. E
 </a>
 ```
 
-Sin este enlace, alguien que use solo teclado tendría que tabular por todos los links del nav en cada carga de página.
+Descubrí es que muchos navegadores ya pintan un foco bastante decente si no se lo quitas. El criterio 2.4.11 de la 2.2 es nuevo y va precisamente de esto, de que el foco se vea. La solución más sensata casi siempre es no hacer `outline: none` y luego añadir lo que haga falta con `focus-visible`. Yo había caído en el pecado original del frontend. Lo arreglé.
 
-### Semántica HTML y ARIA
+## Semántica y ARIA
 
-Cada sección tiene su elemento semántico correcto: `<header>`, `<main>`, `<nav>`, `<footer>`, `<article>`. Los `<nav>` llevan `aria-label` para distinguir entre la navegación principal y los enlaces legales del footer.
+Aquí no hay mucho que contar que no se haya contado mil veces. `<header>`, `<main>`, `<nav>`, `<footer>`, `<article>` donde toca. Los `<nav>` con su `aria-label` para que se distinga la navegación principal del bloque de enlaces legales del footer. Los iconos con `aria-hidden` cuando hay texto al lado, y con `aria-label` cuando van solos.
 
-Los separadores decorativos (`·`, líneas, divisores) tienen `aria-hidden="true"` para que los lectores de pantalla no los lean. Los iconos llevan `aria-hidden="true"` cuando hay texto adyacente, y `aria-label` cuando son el único contenido del elemento interactivo.
+El detalle gracioso fue el campo honeypot del formulario, ese campo invisible que sirve para detectar bots. Resulta que tiene que ser accesible también. Suena absurdo, pero la lógica es así. Un usuario con lector de pantalla no debe encontrarse un campo huérfano sin saber qué hacer con él. Lo envolví en un `<label>` con `title`, que es lo que recomiendan las técnicas H44 y H65 del propio WCAG. Es de esas cosas que solo descubres si te lees las técnicas con calma.
 
-El formulario de contacto fue especialmente cuidadoso: cada `<input>` tiene su `<label>` explícito, y el campo honeypot —un truco anti-spam que no debe ser visto por usuarios reales— va envuelto en un `<label>` con `title` para cumplir los criterios H44 y H65 de las técnicas WCAG.
+## Idioma
 
-### Declaración del idioma
+`lang="es"` o `lang="en"` en el `<html>`, según la página. Es uno de esos atributos que la mayoría de plantillas traen ya rellenos y nadie revisa. Para un lector de pantalla es la diferencia entre leer "hello world" en inglés o en spanglish. En un blog bilingüe esto implica también que las páginas en español y en inglés no comparten URL. Cada idioma tiene su ruta. La de inglés cuelga de `/en/`.
 
-Cada página declara su idioma con `lang="es"` o `lang="en"` en el elemento `<html>`. Es un criterio simple pero fundamental: un lector de pantalla necesita saber en qué idioma pronunciar el contenido.
+## El toggle de movimiento, que no debería estar aquí
 
-En un blog bilingüe, esto también implica que las páginas en inglés y las páginas en español nunca comparten URL —cada una tiene su propia ruta bajo `/en/` o en la raíz.
+Esta sección es un residuo confeso de cuando iba a por AAA. El criterio 2.3.3 es de nivel AAA, no AA, y pide que el usuario pueda desactivar las animaciones que se disparan por interacción. El sistema operativo ya ofrece `prefers-reduced-motion`, sí, pero hay gente que ni sabe que ese ajuste existe ni cómo encontrarlo en el panel de control.
 
-### Toggle de movimiento (WCAG 2.3.3)
-
-Este fue el criterio más interesante de implementar. WCAG 2.3.3 (nivel AAA) permite a los usuarios desactivar animaciones activadas por interacción. El sistema operativo ya ofrece `prefers-reduced-motion`, pero no todos los usuarios saben configurarlo o pueden hacerlo.
-
-El `MotionToggle` del nav añade una capa adicional de control: al activarlo, escribe `data-motion-reduce` en el elemento `<html>`. En el CSS, ese atributo desactiva todas las transiciones y animaciones:
+Cuando bajé el listón a AA, este toggle dejó de ser obligatorio. Lo dejé igualmente. El código ya estaba, la utilidad para alguien sensible al movimiento es real, y arrancarlo solo porque ahora no me hace falta para la etiqueta me parecía ridículo. Funciona escribiendo un atributo `data-motion-reduce` en el `<html>` y, desde el CSS, anulando duraciones y transiciones.
 
 ```css
 [data-motion-reduce] *,
@@ -93,31 +100,38 @@ El `MotionToggle` del nav añade una capa adicional de control: al activarlo, es
 }
 ```
 
-La preferencia se persiste en `localStorage` para que no se pierda entre navegaciones.
+La preferencia se guarda en `localStorage` para que no se pierda en la navegación entre páginas.
 
-### Imágenes y alternativas textuales
+## Imágenes
 
-Cada `<img>` tiene un atributo `alt`. Las imágenes decorativas llevan `alt=""` para que el lector de pantalla las ignore. Las imágenes de contenido (covers de artículos, diagramas) llevan descripciones reales en el alt, no genéricas como «imagen del artículo».
+Cada `<img>` con su `alt`. Las decorativas con `alt=""` para que el lector de pantalla las salte. Las de contenido con descripciones de verdad, no con cosas tipo "imagen del artículo" que son peor que no poner nada.
 
-La insignia WCAG 2.2 AA del footer es un buen ejemplo: `alt="Nivel AA de las Pautas de Accesibilidad para el Contenido Web 2.2, W3C-WAI"`. Descripción precisa, sin ser redundante con el contexto.
+La insignia AA del footer la describí así: "Nivel AA de las Pautas de Accesibilidad para el Contenido Web 2.2, W3C-WAI". Larga, sí, pero tampoco se repite en mil sitios. Es la única vez que aparece.
 
-## Herramientas que usamos
+## Las herramientas que acabé usando
 
-- **axe DevTools** (extensión de navegador): análisis automatizado de la página renderizada. No detecta todo, pero elimina los errores evidentes.
-- **Script `axe-check`** personalizado con Playwright: corre axe contra las rutas principales en CI y falla el build si hay violaciones.
-- **Revisión manual con teclado**: la única forma real de comprobar el flujo de navegación.
-- **Calculadora de contraste APCA/WCAG**: para verificar cada par de colores antes de añadirlo a la paleta.
+Probé varias y al final me quedé con cuatro.
+
+`axe DevTools`, la extensión de navegador, para los errores evidentes. No detecta todo ni de lejos, pero los fallos básicos no se le escapan. Con eso me quité un montón de cosas en un par de tardes.
+
+Un script propio con Playwright que llamo `axe-check`. Corre axe contra las rutas principales en CI y, si encuentra violaciones, falla el build. Esto es lo que asegura que no metas un retroceso sin darte cuenta.
+
+La revisión manual con teclado. Esto no se puede automatizar. Hay que hacerlo. Y cada vez que lo hago descubro algo nuevo.
+
+Una calculadora de contraste, en mi caso una que compara WCAG y APCA. Cualquiera vale, pero usarla siempre antes de meter un color nuevo en la paleta ahorra reescrituras después.
 
 ## La declaración de accesibilidad
 
-Siguiendo el modelo europeo (EN 301 549 y Directiva UE 2016/2102), el sitio tiene ahora una [página de declaración de accesibilidad](/accesibilidad) donde se documenta formalmente el nivel de conformidad, las tecnologías utilizadas y el procedimiento para reportar barreras.
+Hay un modelo europeo, descrito en EN 301 549 y la Directiva UE 2016/2102, sobre cómo declarar la accesibilidad de un sitio. La idea es que cualquiera pueda saber qué nivel cumples, con qué tecnologías, y a quién dirigirse si encuentra una barrera.
 
-No es un requisito legal para un blog personal, pero sí es una señal de compromiso real —y un recordatorio para mí mismo de mantener lo que declaré.
+Como digo, a mí no me obliga nadie. Pero hice mi propia [declaración de accesibilidad](/accesibilidad) porque me parece honesto declarar lo que digo que cumplo. Y porque, sinceramente, tener esa página publicada es la mejor manera de obligarme a no aflojar dentro de seis meses.
 
-## Conclusiones
+## Lo que me llevo
 
-La accesibilidad no es una lista de requisitos que se marcan una vez y se olvidan. Es una forma de trabajar. Cada componente nuevo, cada cambio de color, cada elemento interactivo es una oportunidad de hacerlo bien o de crear una barrera para alguien.
+Empecé esto pensando que era una lista de cosas que tachar. Acabé pensando que es una manera de trabajar. Cada componente nuevo, cada color, cada interacción es una decisión que puede sumar o puede crear una barrera. No hay forma de "terminar" la accesibilidad, solo hay forma de hacerla parte de cómo desarrollas.
 
-Lo que más me sorprendió del proceso fue que **la mayoría de las mejoras de accesibilidad también mejoraron la experiencia de todos los usuarios**: mejor contraste es más legible para todo el mundo, la navegación por teclado es más rápida para usuarios avanzados, los `aria-label` correctos hacen el código más autodocumentado.
+Y por encima de las pautas, está el cariño. No he escatimado en este sitio, he pulido contrastes, reescrito componentes, ajustado anchos de lectura, repasado cada imagen, cada navegación, cada flujo. No porque me obligara nadie, sino porque me apetecía para hacer una web accesible por todas y por aprender e interiorizar el proceso. Creo que esa diferencia, la que va entre cumplir y poner cuidado, es la que se nota cuando alguien usa la web y no se da cuenta de nada raro. Que es exactamente como tiene que sentirse.
 
-El nivel AA está alcanzado. El camino hacia AAA sigue abierto.
+Lo que más me sorprendió es que la mayoría de mejoras de accesibilidad acaban siendo mejoras para todo el mundo. Un contraste mejor es más legible para cualquiera, la navegación por teclado es más rápida si te acostumbras, los `aria-label` bien puestos hacen que el HTML se lea como un buen libro.
+
+Decir que la AAA, para mí, es algo casi platónico. No creo que llegue, ni honestamente sé si quiero llegar a costa de cómo escribo pero está ahí, como referencia, como esa idea de que siempre hay un escalón más arriba al que se puede mirar cuando eliges el siguiente color o escribes el siguiente componente y además ayuda a que el AA real se mantenga firme.
