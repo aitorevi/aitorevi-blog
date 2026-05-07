@@ -762,6 +762,7 @@ console.log(greeting('aitorevi'));</code></pre>
   retroBtn?.addEventListener('click', function () {
     const h = document.documentElement;
     const isOn = h.hasAttribute('data-retro');
+    if (!isOn) (window as Window & { __loadRetroCss?: () => void }).__loadRetroCss?.();
     h.toggleAttribute('data-retro');
     this.textContent = isOn ? '▶ Activar retro mode' : '■ Desactivar retro mode';
   });
