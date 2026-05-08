@@ -34,6 +34,20 @@ export function formatDateISO(date: Date | string): string {
 }
 
 /**
+ * Formats a date to dd/mm/yyyy for legal pages and similar contexts
+ * where a locale-neutral numeric format is expected.
+ * @param date - Date object or ISO string
+ * @returns Formatted date string (e.g., "22/04/2026")
+ */
+export function formatDateShort(date: Date | string): string {
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+  const day = String(dateObj.getUTCDate()).padStart(2, '0');
+  const month = String(dateObj.getUTCMonth() + 1).padStart(2, '0');
+  const year = dateObj.getUTCFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+/**
  * Calculates relative time from now (e.g., "2 days ago")
  * @param date - Date object or ISO string
  * @param locale - BCP 47 language tag (default: 'en-US')
