@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { formatDate, formatDateISO, getRelativeTime } from '@/lib/date';
+import { formatDate, formatDateISO, formatDateShort, getRelativeTime } from '@/lib/date';
 
 describe('formatDate', () => {
   it('formats a Date object in en-US', () => {
@@ -17,6 +17,20 @@ describe('formatDate', () => {
   it('uses en-US as default locale', () => {
     const result = formatDate('2026-06-15');
     expect(result).toContain('June');
+  });
+});
+
+describe('formatDateShort', () => {
+  it('formats an ISO string to dd/mm/yyyy', () => {
+    expect(formatDateShort('2026-04-22')).toBe('22/04/2026');
+  });
+
+  it('formats a Date object to dd/mm/yyyy', () => {
+    expect(formatDateShort(new Date('2026-04-22T00:00:00Z'))).toBe('22/04/2026');
+  });
+
+  it('pads single-digit day and month', () => {
+    expect(formatDateShort('2026-01-05')).toBe('05/01/2026');
   });
 });
 

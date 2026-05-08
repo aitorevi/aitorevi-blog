@@ -1,6 +1,6 @@
 ---
 import type { Lang } from '@/i18n/types';
-import { t } from '@/i18n/utils';
+import { t, getLangLocale } from '@/i18n/utils';
 import { talks } from '@/data/talks';
 import { formatDate, formatDateISO } from '@/lib/date';
 import SectionHeader from '@/components/shared/SectionHeader.astro';
@@ -13,7 +13,7 @@ interface Props {
 
 const { lang } = Astro.props;
 
-const locale = lang === 'en' ? 'en-US' : 'es-ES';
+const locale = getLangLocale(lang);
 const sorted = [...talks].sort((a, b) => (a.date < b.date ? 1 : -1));
 const isSingle = sorted.length === 1;
 const listClass = isSingle

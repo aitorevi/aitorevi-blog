@@ -10,7 +10,7 @@ import PostNavigation from '@/components/blog/PostNavigation.astro';
 import { calculateReadingTime } from '@/lib/blog';
 import { formatDate, formatDateISO } from '@/lib/date';
 import DotField from '@/components/shared/DotField.astro';
-import { t, getBlogSlugFromId } from '@/i18n/utils';
+import { t, getBlogSlugFromId, getLangLocale } from '@/i18n/utils';
 import { safeJsonLd } from '@/lib/schema-org';
 
 interface NavPost {
@@ -176,7 +176,7 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
                   datetime={formatDateISO(data.updatedDate)}
                   class="normal-case tracking-normal text-xs text-slate-500"
                 >
-                  {t(lang, 'blog.updated')} {formatDate(data.updatedDate, 'es-ES')}
+                  {t(lang, 'blog.updated')} {formatDate(data.updatedDate, getLangLocale(lang))}
                 </time>
               </>
             )}
