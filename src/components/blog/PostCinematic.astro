@@ -5,6 +5,7 @@ import { calculateReadingTime } from '@/lib/blog';
 import { formatDate } from '@/lib/date';
 import { t, getBlogSlugFromId, getLangLocale } from '@/i18n/utils';
 import type { Lang } from '@/i18n/types';
+import Tag from '@/components/shared/Tag.astro';
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -85,9 +86,7 @@ const featuredLabel = t(lang, 'blog.featured');
           <ul class="flex flex-wrap gap-2 list-none p-0" role="list" aria-label={t(lang, 'blog.tags')}>
             {tags.map((tag) => (
               <li>
-                <span class={`inline-flex items-center px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 border ${accent.tagBorder} ${accent.tagBg} ${accent.text} dark:border-transparent dark:ring-1 dark:${accent.ring} dark:bg-white/5`}>
-                  {tag}
-                </span>
+                <Tag variant="raw" label={tag} class={`${accent.tagBorder} ${accent.tagBg} ${accent.text} dark:border-transparent dark:ring-1 dark:${accent.ring} dark:bg-white/5`} />
               </li>
             ))}
           </ul>
