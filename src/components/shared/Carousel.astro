@@ -1,0 +1,176 @@
+---
+interface Props {
+  items: { label: string }[];
+  ariaLabel: string;
+}
+
+const { items, ariaLabel } = Astro.props;
+---
+
+<div class="carousel-wrapper mx-auto max-w-[640px] px-6">
+  <div class="carousel-track">
+    <slot />
+  </div>
+
+  <div class="mt-8 flex items-center justify-center gap-3" role="tablist" aria-label={ariaLabel}>
+    {items.map((item, i) => (
+      <button
+        id={`testimonial-tab-${i}`}
+        class:list={['dot', i === 0 ? 'active' : '']}
+        role="tab"
+        aria-selected={i === 0 ? 'true' : 'false'}
+        aria-controls={`testimonial-panel-${i}`}
+        aria-label={item.label}
+        data-index={i}
+      >
+        <span class="dot-visual">
+          <span class="dot-fill" />
+        </span>
+      </button>
+    ))}
+  </div>
+</div>
+
+<style>
+  .carousel-track {
+    display: grid;
+  }
+
+  .dot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 24px;
+    min-width: 24px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .dot-visual {
+    position: relative;
+    height: 8px;
+    width: 8px;
+    border-radius: 9999px;
+    background-color: currentColor;
+    opacity: 0.2;
+    overflow: hidden;
+    transition: width 0.3s ease, height 0.3s ease, border-radius 0.3s ease, opacity 0.3s ease;
+  }
+
+  .dot.active .dot-visual {
+    opacity: 1;
+    width: 3rem;
+    height: 4px;
+    border-radius: 9999px;
+  }
+
+  .dot-fill {
+    position: absolute;
+    inset: 0;
+    background-color: rgb(var(--color-accent));
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .dot.active .dot-fill {
+    animation: dot-progress 6s linear forwards;
+  }
+
+  .carousel-wrapper.is-paused .dot.active .dot-fill {
+    animation-play-state: paused;
+  }
+
+  @keyframes dot-progress {
+    to { transform: scaleX(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dot-visual { transition: none; }
+    .dot.active .dot-fill { animation: none; transform: scaleX(1); }
+  }
+</style>
+
+<script>
+  function initFadeCarousel() {
+    const wrapper = document.querySelector<HTMLElement>('.carousel-wrapper');
+    if (!wrapper) return;
+    if (wrapper.dataset.initialized) return;
+    wrapper.dataset.initialized = 'true';
+
+    const slides = document.querySelectorAll<HTMLElement>('.carousel-slide');
+    const dots   = document.querySelectorAll<HTMLElement>('.dot');
+    if (!slides.length) return;
+
+    let current = 0;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    let paused = false;
+    let slideStartedAt = Date.now();
+    const DURATION = 6000;
+
+    function goTo(index: number) {
+      slides[current].classList.replace('opacity-100', 'opacity-0');
+      slides[current].classList.add('pointer-events-none');
+      slides[current].setAttribute('aria-hidden', 'true');
+      slides[current].setAttribute('inert', '');
+      slides[current].setAttribute('tabindex', '-1');
+      dots[current].classList.remove('active');
+      dots[current].setAttribute('aria-selected', 'false');
+
+      current = (index + slides.length) % slides.length;
+
+      slides[current].classList.replace('opacity-0', 'opacity-100');
+      slides[current].classList.remove('pointer-events-none');
+      slides[current].removeAttribute('aria-hidden');
+      slides[current].removeAttribute('inert');
+      slides[current].setAttribute('tabindex', '0');
+
+      const dot = dots[current];
+      dot.classList.remove('active');
+      dot.setAttribute('aria-selected', 'true');
+      dot.offsetWidth; // force reflow so animation restarts
+      dot.classList.add('active');
+    }
+
+    function startTimer(remaining = DURATION) {
+      if (timer) clearTimeout(timer);
+      slideStartedAt = Date.now() - (DURATION - remaining);
+      timer = setTimeout(() => {
+        if (!paused) {
+          goTo(current + 1);
+          startTimer();
+        }
+      }, remaining);
+    }
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        goTo(i);
+        startTimer();
+      });
+    });
+
+    let remainingWhenPaused = DURATION;
+
+    wrapper.addEventListener('mouseenter', () => {
+      paused = true;
+      if (timer) clearTimeout(timer);
+      remainingWhenPaused = Math.max(0, DURATION - (Date.now() - slideStartedAt));
+      wrapper.classList.add('is-paused');
+    });
+    wrapper.addEventListener('mouseleave', () => {
+      paused = false;
+      wrapper.classList.remove('is-paused');
+      startTimer(remainingWhenPaused);
+    });
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    startTimer();
+  }
+
+  document.addEventListener('astro:page-load', initFadeCarousel);
+  document.addEventListener('astro:after-swap', initFadeCarousel);
+  initFadeCarousel();
+</script>
