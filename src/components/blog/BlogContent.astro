@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
-import DotField from '@/components/shared/DotField.astro';
 import BlogPagination from '@/components/blog/BlogPagination.astro';
 import BlogSearch from '@/components/blog/BlogSearch.astro';
 import PostCinematic from '@/components/blog/PostCinematic.astro';
@@ -89,8 +88,6 @@ const outroTitle = t(lang, 'blog.outro.title');
   <script is:inline id="blog-search-index" type="application/json" set:html={searchIndexJson} />
 
   <div class="blog-cinematic relative min-h-screen">
-    <DotField />
-
     <header class="flex items-end px-6 pb-8 pt-32">
       <div class="mx-auto flex w-full max-w-5xl items-end justify-between gap-6">
         <div>
