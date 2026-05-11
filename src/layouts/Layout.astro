@@ -107,6 +107,7 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 				const theme = localStorage.getItem('theme');
 				if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
 					document.documentElement.classList.add('dark');
+					document.documentElement.style.backgroundColor = '#020617';
 				}
 				})();
 			// Swallow the benign race condition from Chrome's View Transitions

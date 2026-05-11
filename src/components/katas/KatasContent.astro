@@ -1,7 +1,6 @@
 ---
 import KataCard from './KataCard.astro';
 import KatasScrollReveal from './KatasScrollReveal.astro';
-import DotField from '@/components/shared/DotField.astro';
 import Button from '@/components/shared/Button.astro';
 import GlossaryTerm from '@/components/atoms/GlossaryTerm.astro';
 import { sortedKatas } from '@/data/katas';
@@ -31,7 +30,6 @@ const techs = [...techFrequency.entries()]
 ---
 
 <div class="relative min-h-screen">
-  <DotField position="fixed" />
   <KatasScrollReveal />
 
   <section class="katas-page mx-auto max-w-7xl mt-16 md:mt-24 mb-2 md:mb-4 p-6 sm:p-7 md:p-8 lg:px-20 lg:pt-10 lg:pb-20">

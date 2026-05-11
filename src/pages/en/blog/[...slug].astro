@@ -9,7 +9,6 @@ import RepublishedNotice from '@/components/blog/RepublishedNotice.astro';
 import PostNavigation from '@/components/blog/PostNavigation.astro';
 import { calculateReadingTime } from '@/lib/blog';
 import { formatDate, formatDateISO } from '@/lib/date';
-import DotField from '@/components/shared/DotField.astro';
 import { t, getBlogSlugFromId, getLangLocale } from '@/i18n/utils';
 import { safeJsonLd } from '@/lib/schema-org';
 
@@ -126,8 +125,6 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
   </Fragment>
 
   <div class="blog-cinematic relative min-h-screen">
-    <DotField position="fixed" />
-
     <article
       class="blog-page relative"
       itemscope
