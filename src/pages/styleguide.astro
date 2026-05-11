@@ -2,7 +2,6 @@
 import Layout from '@/layouts/Layout.astro';
 import Button from '@/components/shared/Button.astro';
 import Tag from '@/components/shared/Tag.astro';
-import EyebrowTag from '@/components/shared/EyebrowTag.astro';
 import SectionHeader from '@/components/shared/SectionHeader.astro';
 import StatCard from '@/components/shared/StatCard.astro';
 import DecisionCard from '@/components/case-study/DecisionCard.astro';
@@ -83,7 +82,7 @@ const simpleIcons = [
     <!-- ── HEADER ────────────────────────────────────────────────── -->
     <section class="space-y-3">
       <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <EyebrowTag label="Design System" />
+        <Tag variant="accent" label="Design System" />
         <a
           href="/work/aitorevi-dev"
           class="group inline-flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-accent focus:outline-none focus-visible:underline"
@@ -500,16 +499,16 @@ console.log(greeting('aitorevi'));</code></pre>
         </div>
       </div>
 
-      <!-- EyebrowTag -->
+      <!-- Tag accent (formerly EyebrowTag) -->
       <div class="space-y-4">
-        <h3 class="font-mono text-xs uppercase tracking-widest text-fg-muted border-b border-slate-200 dark:border-white/10 pb-2">EyebrowTag</h3>
+        <h3 class="font-mono text-xs uppercase tracking-widest text-fg-muted border-b border-slate-200 dark:border-white/10 pb-2">Tag — accent</h3>
         <div class="flex flex-wrap gap-3">
-          <EyebrowTag label="Design System" />
-          <EyebrowTag label="Blog Post" />
-          <EyebrowTag label="Case Study" />
+          <Tag variant="accent" label="Design System" />
+          <Tag variant="accent" label="Blog Post" />
+          <Tag variant="accent" label="Case Study" />
         </div>
         <div class="rounded-xl bg-slate-50 dark:bg-white/5 p-4 font-mono text-xs text-fg-muted">
-          {'<EyebrowTag label="Design System" />'}
+          {'<Tag variant="accent" label="Design System" />'}
         </div>
       </div>
 

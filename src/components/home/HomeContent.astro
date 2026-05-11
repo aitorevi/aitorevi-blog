@@ -1,12 +1,4 @@
 ---
-/**
- * HomeContent — orchestrator for the redesigned home page.
- *
- * Composes the home sections in order. The home respects the site-wide
- * light/dark theme toggle: every section declares both light and dark
- * variants, and the Layout/Nav behave normally over the top. Individual
- * sections handle their own animations, parallax and IntersectionObservers.
- */
 import type { Lang } from '@/i18n/types';
 import HeroParallax from './HeroParallax.astro';
 import WhatIDo from './WhatIDo.astro';
@@ -40,9 +32,6 @@ const { lang } = Astro.props;
 </div>
 
 <style is:global>
-  /* Make the page background follow the theme on the home. Layout.astro
-     already applies `bg-white dark:bg-[#0f1419]` to the body, but we tune
-     it on the home so the transition between sections feels continuous. */
   body:has(.home-redesign) {
     background-color: #f8fafc;
     background-image: none;

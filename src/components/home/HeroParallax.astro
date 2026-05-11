@@ -1,27 +1,4 @@
 ---
-/**
- * HeroParallax — redesigned home hero with layered parallax.
- *
- * Architecture:
- *   - Three background layers (dot field, grid, orbit ring) + main content
- *     translate vertically at different speeds as the user scrolls.
- *   - Vanilla JS only: one scroll listener, requestAnimationFrame throttling,
- *     IntersectionObserver to pause updates when the hero is out of viewport.
- *   - Respects `prefers-reduced-motion`: layers stay static.
- *   - Reinitialised on Astro View Transitions (`astro:page-load` + swap).
- *
- * View-transition persistence strategy:
- *   - The decorative layers (dot field, grid SVG, orbit ring) are
- *     language-independent, so they use fixed `transition:persist` names
- *     and survive ES ↔ EN navigations in place — no re-creation of the
- *     60 dots, no re-mount of the grid SVG.
- *   - The main content layer has no persist and is fully re-rendered so
- *     the role label, tagline and paragraph pick up the new locale (and
- *     replay their reveal animation).
- *
- * Dot field positions are generated at build time for stability across renders.
- */
-
 import type { Lang } from '@/i18n/types';
 import { t } from '@/i18n/utils';
 
@@ -31,9 +8,6 @@ interface Props {
 
 const { lang } = Astro.props;
 
-// Deterministic-ish dot field generated at build time.
-// We seed roughly so positions are stable per build; real randomness is fine
-// since the positions aren't semantically meaningful.
 const DOT_COUNT = 60;
 const dots = Array.from({ length: DOT_COUNT }, (_, i) => ({
   x: ((i * 37) % 100) + Math.random() * 2,

@@ -1,6 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import EyebrowTag from '@/components/shared/EyebrowTag.astro';
+import Tag from '@/components/shared/Tag.astro';
 import SectionHeader from '@/components/shared/SectionHeader.astro';
 import type { Lang } from '@/i18n/types';
 import { t, getLocalePath } from '@/i18n/utils';
@@ -63,7 +63,7 @@ const implKeys = [
     <!-- Header -->
     <section class="space-y-3">
       <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <EyebrowTag label={t(lang, 'a11y.badge')} />
+        <Tag variant="accent" label={t(lang, 'a11y.badge')} />
         <a
           href={caseStudyHref}
           class="group inline-flex items-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-accent focus:outline-none focus-visible:underline"

@@ -1,14 +1,4 @@
 ---
-/**
- * StatsCounter — three animated metrics triggered when the section enters
- * the viewport.
- *
- * Numeric values count from 0 to target over ~1400ms with an ease-out curve.
- * Non-numeric values (e.g. "∞") pulse into place.
- *
- * Single IntersectionObserver, one rAF loop per counter, cleans itself up.
- * Respects prefers-reduced-motion (shows final value immediately).
- */
 import type { Lang } from '@/i18n/types';
 import { t } from '@/i18n/utils';
 import StatCard from '@/components/shared/StatCard.astro';
@@ -20,12 +10,6 @@ interface Props {
 
 const { lang } = Astro.props;
 
-// The years stat is split into two honest buckets: professional software
-// development (Lean Mind, Mar 2023 → today) and prior business leadership
-// (Tiendas Zulima, 1998–2023). A single "20+ years of experience" card on a
-// dev portfolio was being read as "20+ years coding", which misrepresented
-// the actual timeline. Splitting the number tells the real story: a dev
-// with a long product/business background underneath.
 function yearsSince(year: number, month: number /* 1-based */): number {
   const now = new Date();
   const months = (now.getFullYear() - year) * 12 + (now.getMonth() + 1 - month);
@@ -94,7 +78,6 @@ const stats = [
   }
 
   function animateSymbol(valueEl: HTMLElement, symbol: string) {
-    // Pulse scale for non-numeric values like "∞".
     valueEl.textContent = symbol;
     valueEl.animate(
       [
