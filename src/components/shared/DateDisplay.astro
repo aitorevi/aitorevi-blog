@@ -77,7 +77,7 @@ const label = ariaLabel || `${t(lang, 'blog.publishedOn')} ${formattedDate}`;
 
 <time
   datetime={isoDate}
-  class={`inline-flex items-center gap-1.5 text-sm text-quaternary ${className}`}
+  class={`inline-flex items-center gap-1.5 text-sm text-quaternary dark:text-slate-400 ${className}`}
 >
   <span class="sr-only">{label}</span>
   {showIcon && (

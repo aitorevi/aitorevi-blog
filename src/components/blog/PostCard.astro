@@ -175,7 +175,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
       </h2>
 
       <p
-        class="mb-4 line-clamp-5 text-sm text-quaternary sm:text-base"
+        class="mb-4 line-clamp-5 text-sm text-quaternary dark:text-slate-400 sm:text-base"
         itemprop="description"
       >
         {data.description}
@@ -198,7 +198,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
       {data.updatedDate && (
         <>
           <span class="text-gray-300" aria-hidden="true">•</span>
-          <span class="text-xs text-quaternary">
+          <span class="text-xs text-quaternary dark:text-slate-400">
             {t(lang, 'blog.updated')} {formatDate(data.updatedDate, getLangLocale(lang))}
           </span>
         </>
