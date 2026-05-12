@@ -11,6 +11,9 @@ interface Props {
 
 const { text, author, role, avatar, url, index, active } = Astro.props;
 const initials = author.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase();
+const roleParts = role.split(' · ');
+const jobTitle = roleParts[0];
+const company = roleParts[1];
 ---
 
 <div
@@ -53,7 +56,9 @@ const initials = author.split(' ').map((n: string) => n[0]).join('').slice(0, 2)
         }
         <div>
           <p class="text-sm font-semibold text-ink-900 dark:text-slate-100">{author}</p>
-          <p class="font-mono text-[11px] text-accent whitespace-nowrap">{role}</p>
+          <p class="font-mono text-[11px] text-accent">
+            <span>{jobTitle}</span>{company && (<><span class="hidden min-[475px]:inline"> · </span><br class="min-[475px]:hidden" /><span>{company}</span></>)}
+          </p>
         </div>
       </a>
     ) : (
@@ -64,7 +69,9 @@ const initials = author.split(' ').map((n: string) => n[0]).join('').slice(0, 2)
         }
         <div>
           <p class="text-sm font-semibold text-ink-900 dark:text-slate-100">{author}</p>
-          <p class="font-mono text-[11px] text-accent whitespace-nowrap">{role}</p>
+          <p class="font-mono text-[11px] text-accent">
+            <span>{jobTitle}</span>{company && (<><span class="hidden min-[475px]:inline"> · </span><br class="min-[475px]:hidden" /><span>{company}</span></>)}
+          </p>
         </div>
       </div>
     )}
