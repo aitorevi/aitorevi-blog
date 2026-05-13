@@ -61,6 +61,16 @@ export const testimonials: Testimonial[] = [
   },
   {
     text: {
+      es: 'Conocí a Aitor en 2° DAW y desde el principio destacó por ser una persona muy aplicada y con un interés real por el desarrollo web. Se notaba que no solo venía con lo aprendido en la FP, sino con muchas ganas de seguir creciendo y aprendiendo por su cuenta. Aunque no he trabajado con él en empresa, siempre fue un gran compañero: dispuesto a ayudar, compartir conocimientos y aprender de cualquier situación. Además, siempre es un placer quedar a tomar un café y debatir sobre nuevas tecnologías y los proyectos en los que andamos trabajando.',
+      en: 'I met Aitor in the 2nd year of DAW and from the very beginning he stood out as someone truly dedicated, with a real passion for web development. You could tell he was not just bringing what he had learned in the vocational programme, but a genuine drive to keep growing and learning on his own. Even though we have not worked together professionally, he was always a great classmate: willing to help, share knowledge, and learn from any situation. On top of that, it is always a pleasure to meet for a coffee and discuss new technologies and the projects we are working on.',
+    },
+    author: 'Raquel V.',
+    role: 'Frontend Developer · Laberit Sistemas',
+    avatar: '/images/testimonials/raquel-vidal.webp',
+    url: 'https://www.linkedin.com/in/raquel-vidal-ramirez-0771b4241/',
+  },
+  {
+    text: {
       es: '¡Compartir equipo de desarrollo con Aitor es jugar en modo fácil! Me he sentido increíblemente cómodo a su lado gracias a su inmensa flexibilidad y su talento para aprender rapidísimo. Destaco muchísimo su forma de relacionarse: tiene una comunicación y un feedback asertivos que te impulsan a ser mejor profesional, siempre desde el cariño y la sensibilidad. Es un compañero comprometido al 100%, que siempre está dispuesto a darte su acompañamiento.',
       en: 'Sharing a development team with Aitor is like playing on easy mode! I felt incredibly comfortable alongside him thanks to his tremendous flexibility and his talent for learning incredibly fast. What stands out most is the way he connects with people: his assertive communication and feedback push you to become a better professional, always with warmth and sensitivity. He is a 100% committed teammate who is always ready to support you.',
     },
