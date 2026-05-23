@@ -127,7 +127,7 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
               <li class="flex items-stretch">
                 {/* Period column */}
                 <div class="w-28 shrink-0 pt-1 text-right pr-6">
-                  <span class="font-mono text-[11px] uppercase tracking-[0.2em] text-secondary/70 dark:text-accent-blue/60">
+                  <span class="font-mono text-[11px] 2xl:text-[13px] uppercase tracking-[0.2em] text-secondary/70 dark:text-accent-blue/60">
                     {t(lang, `portfolio.self.timeline.${n}.period`)}
                   </span>
                 </div>
@@ -284,10 +284,10 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
           ))}
         </ul>
 
-        <p class="mt-10 text-center text-[11px] font-mono uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500">
+        <p class="mt-10 text-center text-[11px] 2xl:text-[13px] font-mono uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500">
           {t(lang, 'portfolio.self.scores.source')}
         </p>
-        <p class="mt-3 text-center text-[11px] font-mono uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500">
+        <p class="mt-3 text-center text-[11px] 2xl:text-[13px] font-mono uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500">
           {t(lang, 'portfolio.self.scores.axe')}
         </p>
         <div class="mt-4 flex justify-center">
@@ -399,7 +399,7 @@ const stack: Record<'frontend' | 'content' | 'infra' | 'testing', TechItem[]> = 
         <!-- Button below mock — mobile only -->
         <div class="flex justify-center md:hidden">
           <Button href="/styleguide" tone="violet" variant="gradient">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
               <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
               <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
             </svg>

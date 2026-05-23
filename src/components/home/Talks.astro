@@ -40,18 +40,16 @@ const itemSizingClass = isSingle
       class={listClass}
       data-stagger-root
     >
-      {sorted.map((talk, i) => {
-        const articleUrl = talk.articleUrl?.[lang];
-        return (
+      {sorted.map((talk, i) => (
         <GlassCard accent="from-accent-violet/20 to-transparent" index={i} class={itemSizingClass}>
 
           <div class="relative flex h-full flex-col">
             <Tag variant="accent" label={t(lang, 'home.talks.tag.workshop')} class="mb-3" />
 
-            <h3 class="font-display text-lg font-semibold text-ink-900 dark:text-slate-100">
-              {articleUrl ? (
+            <h3 class="font-display text-lg 2xl:text-xl font-semibold text-ink-900 dark:text-slate-100">
+              {talk.articleUrl?.[lang] ? (
                 <a
-                  href={articleUrl}
+                  href={talk.articleUrl[lang]}
                   class="after:absolute after:inset-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2"
                 >
                   {talk.title[lang]}
@@ -67,7 +65,7 @@ const itemSizingClass = isSingle
               </p>
             )}
 
-            <p class="mt-3 font-mono text-[11px] uppercase tracking-[0.15em] text-secondary dark:text-accent-blue">
+            <p class="mt-3 font-mono text-[11px] 2xl:text-[13px] uppercase tracking-[0.15em] text-secondary dark:text-accent-blue">
               {talk.event} · <time datetime={formatDateISO(talk.date)}>{formatDate(talk.date, locale)}</time>
             </p>
 
@@ -87,7 +85,7 @@ const itemSizingClass = isSingle
                   href={talk.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.15em] text-secondary transition-colors hover:text-accent-violet focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 dark:text-accent-blue dark:hover:text-accent-violet"
+                  class="inline-flex items-center gap-1.5 font-mono text-[11px] 2xl:text-[13px] uppercase tracking-[0.15em] text-secondary transition-colors hover:text-accent-violet focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 dark:text-accent-blue dark:hover:text-accent-violet"
                 >
                   <Icon name="github" class="h-3.5 w-3.5" aria-hidden="true" />
                   <span>{t(lang, 'home.talks.repo')}</span>
@@ -96,8 +94,7 @@ const itemSizingClass = isSingle
             )}
           </div>
         </GlassCard>
-        );
-      })}
+      ))}
     </ul>
   </div>
 </section>

@@ -36,7 +36,7 @@ const formattedDate = new Date(kata.date).toLocaleDateString(dateLocale, {
           <span class="sr-only"> — {t(lang, 'katas.card.openOnGithub')}</span>
         </a>
       </h3>
-      <p class="mt-1 font-mono text-[11px] uppercase tracking-[0.25em] text-secondary dark:text-accent-blue">
+      <p class="mt-1 font-mono text-[11px] 2xl:text-[13px] uppercase tracking-[0.25em] text-secondary dark:text-accent-blue">
         {formattedDate}
       </p>
     </div>
@@ -51,7 +51,7 @@ const formattedDate = new Date(kata.date).toLocaleDateString(dateLocale, {
       {kata.tech.map((label) => <Tag label={label} variant="accent" />)}
     </div>
     {kata.concepts.length > 0 && (
-      <ul class="flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] tracking-wide text-quaternary/80 dark:text-slate-400">
+      <ul class="flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] 2xl:text-[13px] tracking-wide text-quaternary/80 dark:text-slate-400">
         {kata.concepts.map((label) => (
           <li class="before:mr-0.5 before:text-secondary before:content-['#'] dark:before:text-accent-blue/60">
             {label}
@@ -62,7 +62,7 @@ const formattedDate = new Date(kata.date).toLocaleDateString(dateLocale, {
   </div>
 
   <span class="pointer-events-none absolute right-4 top-4 text-quaternary opacity-60 transition-opacity duration-200 md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100 dark:text-slate-400">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" aria-hidden="true">
       <path d="M12 .5C5.37.5 0 5.87 0 12.5a12 12 0 0 0 8.21 11.41c.6.11.82-.26.82-.58v-2.23c-3.34.73-4.04-1.61-4.04-1.61-.55-1.4-1.33-1.78-1.33-1.78-1.08-.74.08-.73.08-.73 1.2.08 1.83 1.24 1.83 1.24 1.07 1.83 2.8 1.3 3.49.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.34-5.47-5.95 0-1.32.47-2.39 1.24-3.24-.13-.3-.54-1.52.11-3.18 0 0 1.01-.32 3.3 1.24a11.4 11.4 0 0 1 6 0c2.29-1.56 3.3-1.24 3.3-1.24.66 1.66.24 2.88.12 3.18.77.85 1.23 1.92 1.23 3.24 0 4.62-2.81 5.65-5.49 5.94.43.38.82 1.12.82 2.26v3.35c0 .32.22.7.83.58A12 12 0 0 0 24 12.5C24 5.87 18.63.5 12 .5Z" />
     </svg>
   </span>
