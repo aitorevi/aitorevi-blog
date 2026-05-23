@@ -89,7 +89,7 @@ const externalLabel = t(lang, 'home.work.cta.external');
       </p>
 
       <div class="mt-12 flex flex-col items-center gap-3" aria-hidden="true">
-        <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
+        <span class="font-mono text-[10px] 2xl:text-[12px] uppercase tracking-[0.3em] text-secondary dark:text-accent-blue">
           {t(lang, 'home.work.label.scroll')}
         </span>
         <div class="cinematic-scroll-line"></div>
@@ -121,7 +121,7 @@ const externalLabel = t(lang, 'home.work.cta.external');
                 <span class={`font-display text-5xl font-black tracking-tighter ${accent.text} md:text-6xl`}>
                   {p.number}
                 </span>
-                <span class={`inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] ${accent.text}`}>
+                <span class={`inline-flex items-center gap-2 font-mono text-[10px] 2xl:text-[12px] uppercase tracking-[0.25em] ${accent.text}`}>
                   <span class={`h-1.5 w-1.5 rounded-full ${accent.bg} animate-pulse`}></span>
                   {t(lang, p.tagKey)}
                 </span>
@@ -149,9 +149,9 @@ const externalLabel = t(lang, 'home.work.cta.external');
                 {t(lang, p.descKey)}
               </p>
 
-              <dl class="grid grid-cols-2 items-center gap-x-6 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
-                <dt class="text-[9px]">{t(lang, 'home.work.label.year')}</dt>
-                <dt class="text-[9px] text-center">{p.metric.label}</dt>
+              <dl class="grid grid-cols-2 items-center gap-x-6 font-mono text-[11px] 2xl:text-[13px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+                <dt class="text-[9px] 2xl:text-[11px]">{t(lang, 'home.work.label.year')}</dt>
+                <dt class="text-[9px] 2xl:text-[11px] text-center">{p.metric.label}</dt>
                 <dd class="mt-1 text-slate-700 dark:text-slate-200 normal-case tracking-normal text-xs">
                   {p.year}
                 </dd>
@@ -192,7 +192,7 @@ const externalLabel = t(lang, 'home.work.cta.external');
               browserUrl={p.browserUrl}
               terminalLines={p.terminalLines}
             />
-            <p class="mt-4 text-right font-mono text-[10px] uppercase tracking-[0.25em] text-slate-500">
+            <p class="mt-4 text-right font-mono text-[10px] 2xl:text-[12px] uppercase tracking-[0.25em] text-slate-500">
               {String(i + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
             </p>
           </div>

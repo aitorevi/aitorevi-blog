@@ -1,0 +1,40 @@
+---
+export type FilterChipVariant = 'brand' | 'neutral' | 'outlined';
+
+interface Props {
+  variant?: FilterChipVariant;
+  pressed?: boolean;
+  type?: 'button' | 'submit' | 'reset';
+  class?: string;
+  [key: `data-${string}`]: string | boolean | number | undefined;
+  [key: `aria-${string}`]: string | boolean | number | undefined;
+}
+
+const {
+  variant = 'neutral',
+  pressed,
+  type = 'button',
+  class: className,
+  ...rest
+} = Astro.props;
+
+const BASE =
+  'inline-flex items-center rounded-full font-mono text-[11px] 2xl:text-[13px] uppercase tracking-[0.15em] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 dark:focus-visible:ring-offset-ink-900';
+
+const VARIANT_CLASSES: Record<FilterChipVariant, string> = {
+  brand:
+    'px-3 py-1 border border-secondary/30 bg-secondary/10 text-secondary hover:border-secondary/50 hover:bg-secondary/15 aria-pressed:bg-secondary aria-pressed:text-white dark:border-accent-blue/30 dark:bg-accent-blue/10 dark:text-accent-blue dark:hover:border-accent-blue/50 dark:hover:bg-accent-blue/20 dark:aria-pressed:bg-accent-blue dark:aria-pressed:text-ink-900',
+  neutral:
+    'px-3 py-1 border border-slate-300 bg-white text-slate-600 hover:border-secondary/40 hover:text-secondary aria-pressed:border-secondary aria-pressed:bg-secondary aria-pressed:text-white dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300 dark:hover:border-accent-blue/40 dark:hover:text-accent-blue dark:aria-pressed:border-accent-blue dark:aria-pressed:bg-accent-blue dark:aria-pressed:text-ink-900',
+  outlined:
+    'px-4 py-1.5 border border-secondary/40 bg-secondary/5 text-secondary hover:border-secondary/70 hover:bg-secondary/10 dark:border-accent-blue/40 dark:bg-accent-blue/10 dark:text-accent-blue dark:hover:border-accent-blue/70 dark:hover:bg-accent-blue/20 dark:focus-visible:ring-accent-blue',
+};
+
+const classes = [BASE, VARIANT_CLASSES[variant], className].filter(Boolean).join(' ');
+const ariaPressed: 'true' | 'false' | undefined =
+  variant === 'outlined' || pressed === undefined ? undefined : pressed ? 'true' : 'false';
+---
+
+<button class={classes} type={type} aria-pressed={ariaPressed} {...rest}>
+  <slot />
+</button>

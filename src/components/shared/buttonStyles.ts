@@ -20,7 +20,7 @@ export type ResolvedButtonProps =
   | { tag: 'button'; type: ButtonType };
 
 const BASE_CLASSES =
-  'group inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-mono text-sm font-semibold tracking-wide transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-ink-900';
+  'group inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-mono text-sm font-semibold tracking-wide transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-ink-900 motion-safe:hover:-translate-y-px';
 
 const TONE_RING: Record<ButtonTone, string> = {
   blue: 'focus-visible:ring-accent-blue',
@@ -30,13 +30,13 @@ const TONE_RING: Record<ButtonTone, string> = {
 };
 
 const GHOST_BY_TONE: Record<ButtonTone, string> = {
-  blue: 'border border-accent-blue/40 bg-accent-blue/5 text-blue-700 dark:text-accent-blue hover:border-accent-blue/70 hover:bg-accent-blue/10 hover:shadow-[0_0_30px_rgba(96,165,250,0.2)] dark:bg-accent-blue/10 dark:hover:bg-accent-blue/20 dark:hover:shadow-[0_0_40px_rgba(96,165,250,0.3)]',
+  blue: 'border border-accent-blue/40 bg-accent-blue/5 text-blue-700 dark:text-accent-blue hover:border-accent-blue/70 hover:bg-accent-blue/15 hover:shadow-[0_0_30px_rgba(96,165,250,0.2)] dark:bg-accent-blue/10 dark:hover:bg-accent-blue/20 dark:hover:shadow-[0_0_40px_rgba(96,165,250,0.3)]',
   violet:
-    'border border-accent-violet/40 bg-accent-violet/5 text-violet-700 dark:text-accent-violet hover:border-accent-violet/70 hover:bg-accent-violet/10 hover:shadow-[0_0_30px_rgba(167,139,250,0.2)] dark:bg-accent-violet/10 dark:hover:bg-accent-violet/20 dark:hover:shadow-[0_0_40px_rgba(167,139,250,0.3)]',
+    'border border-accent-violet/40 bg-accent-violet/5 text-violet-700 dark:text-accent-violet hover:border-accent-violet/70 hover:bg-accent-violet/15 hover:shadow-[0_0_30px_rgba(167,139,250,0.2)] dark:bg-accent-violet/10 dark:hover:bg-accent-violet/20 dark:hover:shadow-[0_0_40px_rgba(167,139,250,0.3)]',
   brand:
-    'border border-secondary/40 bg-secondary/5 text-secondary hover:border-secondary/70 hover:bg-secondary/10 hover:shadow-[0_0_30px_rgba(94,58,238,0.2)] dark:border-accent-blue/40 dark:bg-accent-blue/10 dark:text-accent-blue dark:hover:border-accent-blue/70 dark:hover:bg-accent-blue/20 dark:hover:shadow-[0_0_40px_rgba(96,165,250,0.3)]',
+    'border border-secondary/40 bg-secondary/5 text-secondary hover:border-secondary/70 hover:bg-secondary/15 hover:shadow-[0_0_30px_rgba(94,58,238,0.2)] dark:border-accent-blue/40 dark:bg-accent-blue/10 dark:text-accent-blue dark:hover:border-accent-blue/70 dark:hover:bg-accent-blue/20 dark:hover:shadow-[0_0_40px_rgba(96,165,250,0.3)]',
   emerald:
-    'border border-accent-emerald/40 bg-accent-emerald/5 text-emerald-700 dark:text-accent-emerald hover:border-accent-emerald/70 hover:bg-accent-emerald/10 hover:shadow-[0_0_30px_rgba(16,185,129,0.2)] dark:bg-accent-emerald/10 dark:hover:bg-accent-emerald/20 dark:hover:shadow-[0_0_40px_rgba(16,185,129,0.3)]',
+    'border border-accent-emerald/40 bg-accent-emerald/5 text-emerald-700 dark:text-accent-emerald hover:border-accent-emerald/70 hover:bg-accent-emerald/15 hover:shadow-[0_0_30px_rgba(16,185,129,0.2)] dark:bg-accent-emerald/10 dark:hover:bg-accent-emerald/20 dark:hover:shadow-[0_0_40px_rgba(16,185,129,0.3)]',
 };
 
 const GRADIENT_BY_TONE: Record<ButtonTone, string> = {

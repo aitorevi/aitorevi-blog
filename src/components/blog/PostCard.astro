@@ -94,11 +94,8 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
 ---
 
 <article
-  class={`group relative flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-ink-800 shadow-sm transition-shadow duration-300 hover:shadow-lg ${className}`}
-  itemscope
-  itemtype="https://schema.org/BlogPosting"
+  class={`group relative flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-ink-800 shadow-sm transition-[border-color,box-shadow] duration-300 hover:shadow-lg hover:border-secondary/40 dark:hover:border-accent-blue/40 ${className}`}
 >
-  <!-- Featured Badge (conditionally rendered) -->
   {data.featured && showFeaturedBadge && (
     <div
       class="absolute left-4 top-4 z-[1] rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-white shadow-md"
@@ -107,7 +104,6 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
     </div>
   )}
 
-  <!-- Draft Badge (dev only) -->
   {data.draft && import.meta.env.DEV && (
     <div
       class="absolute right-4 top-4 z-[1] rounded-full bg-amber-400 px-3 py-1 text-xs font-semibold text-amber-900 shadow-md"
@@ -116,7 +112,6 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
     </div>
   )}
 
-  <!-- Cover Image -->
   <div class="relative aspect-video w-full overflow-hidden bg-white dark:bg-ink-800">
     {data.coverImage ? (
       <Image
@@ -134,7 +129,6 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
         class="flex h-full w-full items-center justify-center bg-home-radial transition-transform duration-500 group-hover:scale-105 transform-gpu [backface-visibility:hidden]"
         role="img"
         aria-label={data.coverImageAlt || data.title}
-        itemprop="image"
       >
         <span class="select-none font-display text-4xl font-black tracking-tight text-white md:text-5xl">
           aitorevi<span class="text-accent-violet" aria-hidden="true">.</span>
@@ -143,9 +137,7 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
     )}
   </div>
 
-  <!-- Card Content -->
   <div class="flex flex-1 flex-col p-6">
-    <!-- Header: Tags + optional Crosspost badge -->
     <header class="mb-3 flex flex-wrap items-center gap-2">
       <ul class="flex flex-wrap gap-2 list-none p-0" role="list" aria-label={t(lang, 'blog.tags')}>
         {data.tags.slice(0, 3).map((tag) => (
@@ -160,11 +152,9 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
       )}
     </header>
 
-    <!-- Main Content -->
     <div class="flex-1 overflow-hidden">
       <h2
-        class="mb-3 text-xl font-display font-bold leading-tight text-ink-900 dark:text-slate-100 sm:text-2xl"
-        itemprop="headline"
+        class="post-card-title mb-3 font-display font-bold leading-tight text-ink-900 dark:text-slate-100"
       >
         <a
           href={postUrl}
@@ -176,13 +166,11 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
 
       <p
         class="mb-4 line-clamp-5 text-sm text-quaternary dark:text-slate-400 sm:text-base"
-        itemprop="description"
       >
         {data.description}
       </p>
     </div>
 
-    <!-- Footer: Metadata -->
     <footer
       class="flex items-center justify-between border-t border-slate-200 dark:border-slate-700 pt-4 text-sm"
     >
@@ -205,20 +193,15 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
       )}
     </footer>
 
-    <!-- Schema.org metadata (invisible, for SEO) -->
-    <meta itemprop="datePublished" content={data.publishDate.toISOString()} />
+    <meta content={data.publishDate.toISOString()} />
     {data.updatedDate && (
-      <meta itemprop="dateModified" content={data.updatedDate.toISOString()} />
+      <meta content={data.updatedDate.toISOString()} />
     )}
-    <meta itemprop="author" content={data.author.name} />
+    <meta content={data.author.name} />
   </div>
 </article>
 
 <style>
-  /**
-   * line-clamp utility for description truncation
-   * Provides graceful degradation for browsers without -webkit-line-clamp
-   */
   .line-clamp-5 {
     display: -webkit-box;
     -webkit-line-clamp: 5;
@@ -226,12 +209,12 @@ const postUrl = lang === 'en' ? `/en/blog/${slug}` : `/blog/${slug}`;
     overflow: hidden;
   }
 
-  /**
-   * Ensure focus states are visible for keyboard navigation
-   * Following WCAG 2.1 Focus Visible guidelines
-   */
   a:focus-visible {
     outline: 2px solid currentColor;
     outline-offset: 2px;
+  }
+
+  .post-card-title {
+    font-size: clamp(1.25rem, 1.5vw + 0.75rem, 1.75rem);
   }
 </style>
