@@ -1,0 +1,24 @@
+number: "07"
+name: SAP Analyzer
+taglineEs: Dashboard de ventas con arquitectura hexagonal y SAP real
+taglineEn: Sales dashboard with hexagonal architecture and real SAP
+descKey: home.portfolio.sapAnalyzer.desc
+tagKey: home.portfolio.tag.experiment
+year: "2026"
+stack:
+  - .NET 10
+  - Next.js
+  - Recharts
+  - SQLite
+  - Docker
+  - OData (SAP)
+accent: sky
+hrefEs: /blog/sap-analyzer
+hrefEn: /en/blog/sap-analyzer
+external: false
+metric:
+  value: "53"
+  labelEs: tests backend
+  labelEn: backend tests
+mockType: dashboard
+order: 7
