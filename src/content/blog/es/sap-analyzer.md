@@ -258,6 +258,6 @@ Eso es todo. No hay magia ni metaprogramación: solo dos interfaces respetadas c
 - El controlador es el **único** sitio que abre el `Result` (con `Match`). El dominio nunca conoce HTTP.
 - Dobles sin librerías de mocking + `WebApplicationFactory`. Los tests son simples porque la arquitectura ya hizo el trabajo.
 
-Código: [`aitorevi/sap-analyzer`](https://github.com/aitorevi/sap-analyzer). Demo en vivo: próximamente.
+Código: [`aitorevi/sap-analyzer`](https://github.com/aitorevi/sap-analyzer). Demo en vivo: **[sap-analyzer.vercel.app](https://sap-analyzer.vercel.app)** (la primera carga puede tardar ~30 s: el backend y el mock duermen en el tier gratuito de Render).
 
 **Spoiler:** mover la agregación al puerto (que cada origen empuje el `GROUP BY` donde tenga sentido — SQL para SQLite, `$apply` para OData) es el siguiente paso del experimento. Quizá sea otro post.
