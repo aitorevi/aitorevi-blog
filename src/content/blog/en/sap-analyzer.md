@@ -261,6 +261,6 @@ That is all. No magic, no metaprogramming: just two interfaces respected with di
 - The controller is the **only** place that opens the `Result` (with `Match`). The domain never knows about HTTP.
 - Doubles without mocking libraries + `WebApplicationFactory`. The tests are simple because the architecture already did the work.
 
-Code: [`aitorevi/sap-analyzer`](https://github.com/aitorevi/sap-analyzer). Live demo: **[sap-analyzer.vercel.app](https://sap-analyzer.vercel.app)** (first load can take ~30 s: the backend and mock sleep on Render's free tier).
+Code: [`aitorevi/connect-analyzer`](https://github.com/aitorevi/connect-analyzer). Live demo: **[sap-analyzer.vercel.app](https://sap-analyzer.vercel.app)** (first load can take ~30 s: the backend and mock sleep on Render's free tier).
 
 **Spoiler:** pushing the aggregation down to the port (so each source can push the `GROUP BY` where it makes sense — SQL for SQLite, `$apply` for OData) is the next step of the experiment. Maybe another post.
