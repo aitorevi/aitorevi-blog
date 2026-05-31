@@ -114,3 +114,15 @@ html[data-motion-reduce] * {
 body {
   line-height: 1.5;
 }
+
+/* ── Large-screen typographic scale ──────────────────────────────────
+ * At ≥1536px (Tailwind '2xl') the centred layout leaves wide lateral
+ * gutters. Bumping the root from 16px → 17px (~6%) scales the entire
+ * rem-based system (text-*, h*, spacing tied to font-size) without
+ * touching any individual component. Mobile/tablet/desktop unchanged.
+ */
+@media (min-width: 1536px) {
+  :root {
+    font-size: 17px;
+  }
+}

@@ -70,13 +70,13 @@ const { lang } = Astro.props;
           title={t(lang, 'home.contact.honeypot')}
         />
       </label>
-      <p class="mb-4 font-mono text-[10px] text-secondary dark:text-accent-blue">
+      <p class="mb-4 font-mono text-[10px] 2xl:text-[12px] text-secondary dark:text-accent-blue">
         <span aria-hidden="true">* </span>{t(lang, 'home.contact.required')}
       </p>
 
       <div class="grid gap-5 sm:grid-cols-2">
         <label for="contact-name" class="block">
-          <span class="mb-1 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
+          <span class="mb-1 block font-mono text-[10px] 2xl:text-[12px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
             {t(lang, 'home.contact.name')}<span aria-hidden="true"> *</span>
           </span>
           <input
@@ -91,10 +91,10 @@ const { lang } = Astro.props;
             class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-700 transition-colors focus:border-secondary/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-1 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-400 dark:focus:border-accent-blue/60"
             placeholder={t(lang, 'home.contact.namePlaceholder')}
           />
-          <span id="contact-name-error" data-field-error="name" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
+          <span id="contact-name-error" data-field-error="name" class="mt-1 hidden text-[11px] 2xl:text-[13px] text-rose-400 font-mono" aria-live="polite"></span>
         </label>
         <label for="contact-email" class="block">
-          <span class="mb-1 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
+          <span class="mb-1 block font-mono text-[10px] 2xl:text-[12px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
             {t(lang, 'home.contact.email')}<span aria-hidden="true"> *</span>
           </span>
           <input
@@ -109,12 +109,12 @@ const { lang } = Astro.props;
             class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-700 transition-colors focus:border-secondary/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-1 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-400 dark:focus:border-accent-blue/60"
             placeholder={t(lang, 'home.contact.emailPlaceholder')}
           />
-          <span id="contact-email-error" data-field-error="email" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
+          <span id="contact-email-error" data-field-error="email" class="mt-1 hidden text-[11px] 2xl:text-[13px] text-rose-400 font-mono" aria-live="polite"></span>
         </label>
       </div>
 
       <label for="contact-subject" class="mt-5 block">
-        <span class="mb-1 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
+        <span class="mb-1 block font-mono text-[10px] 2xl:text-[12px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
           {t(lang, 'home.contact.subject')}<span aria-hidden="true"> *</span>
         </span>
         <input
@@ -128,11 +128,11 @@ const { lang } = Astro.props;
           class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-700 transition-colors focus:border-secondary/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-1 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-400 dark:focus:border-accent-blue/60"
           placeholder={t(lang, 'home.contact.subjectPlaceholder')}
         />
-        <span id="contact-subject-error" data-field-error="subject" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
+        <span id="contact-subject-error" data-field-error="subject" class="mt-1 hidden text-[11px] 2xl:text-[13px] text-rose-400 font-mono" aria-live="polite"></span>
       </label>
 
       <label for="contact-message" class="mt-5 block">
-        <span class="mb-1 block font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
+        <span class="mb-1 block font-mono text-[10px] 2xl:text-[12px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
           {t(lang, 'home.contact.message')}<span aria-hidden="true"> *</span>
         </span>
         <textarea
@@ -146,15 +146,15 @@ const { lang } = Astro.props;
           class="w-full resize-none rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-ink-900 placeholder-slate-700 transition-colors focus:border-secondary/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary/60 focus-visible:ring-offset-1 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-100 dark:placeholder-slate-400 dark:focus:border-accent-blue/60"
           placeholder={t(lang, 'home.contact.messagePlaceholder')}
         ></textarea>
-        <span id="contact-message-error" data-field-error="message" class="mt-1 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
+        <span id="contact-message-error" data-field-error="message" class="mt-1 hidden text-[11px] 2xl:text-[13px] text-rose-400 font-mono" aria-live="polite"></span>
       </label>
 
       <!-- RGPD — cláusula informativa básica -->
       <section class="mt-6 border-t border-slate-200/70 pt-4 dark:border-white/5" aria-labelledby="contact-privacy-heading">
-        <p id="contact-privacy-heading" class="mb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
+        <p id="contact-privacy-heading" class="mb-2 font-mono text-[10px] 2xl:text-[12px] uppercase tracking-[0.2em] text-secondary dark:text-accent-blue">
           {t(lang, 'home.contact.privacy.heading')}
         </p>
-        <p class="text-[11px] leading-relaxed text-slate-600 dark:text-slate-300">
+        <p class="text-[11px] 2xl:text-[13px] leading-relaxed text-slate-600 dark:text-slate-300">
           <span class="text-slate-600 dark:text-slate-400">{t(lang, 'home.contact.privacy.responsable')}</span> {t(lang, 'home.contact.privacy.responsableValue')}{' '}
           <span class="text-slate-600 dark:text-slate-400">{t(lang, 'home.contact.privacy.finalidad')}</span> {t(lang, 'home.contact.privacy.finalidadValue')}{' '}
           <span class="text-slate-600 dark:text-slate-400">{t(lang, 'home.contact.privacy.legitimacion')}</span> {t(lang, 'home.contact.privacy.legitimacionValue')}{' '}
@@ -164,7 +164,7 @@ const { lang } = Astro.props;
       </section>
 
       <!-- Consent checkbox — required -->
-      <label class="mt-4 min-h-[44px] flex items-center gap-2 text-[11px] leading-relaxed text-slate-600 dark:text-slate-300" for="contact-consent">
+      <label class="mt-4 min-h-[44px] flex items-center gap-2 text-[11px] 2xl:text-[13px] leading-relaxed text-slate-600 dark:text-slate-300" for="contact-consent">
         <input
           id="contact-consent"
           type="checkbox"
@@ -186,7 +186,7 @@ const { lang } = Astro.props;
           </span>
         </span>
       </label>
-      <span id="contact-consent-error" data-field-error="consent" class="mt-1 ml-6 hidden text-[11px] text-rose-400 font-mono" aria-live="polite"></span>
+      <span id="contact-consent-error" data-field-error="consent" class="mt-1 ml-6 hidden text-[11px] 2xl:text-[13px] text-rose-400 font-mono" aria-live="polite"></span>
 
       <div class="mt-6 flex justify-end">
         <Button type="submit" variant="gradient" tone="brand">
@@ -207,7 +207,7 @@ const { lang } = Astro.props;
       </p>
     </form>
 
-    <div class="mt-12 flex flex-wrap items-center justify-center gap-4 text-[11px] uppercase tracking-[0.2em] text-slate-600 dark:text-slate-400 font-mono">
+    <div class="mt-12 flex flex-wrap items-center justify-center gap-4 text-[11px] 2xl:text-[13px] uppercase tracking-[0.2em] text-slate-600 dark:text-slate-400 font-mono">
       <a
         href="https://www.linkedin.com/in/aitor-reviriego-amor/"
         target="_blank"

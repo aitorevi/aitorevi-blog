@@ -100,6 +100,23 @@ interface Props {
  * Returns 0 when prefers-reduced-motion is enabled, so consumers can use a
  * truthy check to skip animation math.
  */
+/**
+ * Tracks the Tailwind `2xl` breakpoint (≥1536px) so the inline-styled label
+ * sizes can be bumped on wide screens — they're set in raw px and so don't
+ * scale with the root font-size override in tokens.css.
+ */
+function useIsLargeScreen() {
+  const [isLarge, setIsLarge] = useState(false);
+  useEffect(() => {
+    const mql = window.matchMedia('(min-width: 1536px)');
+    const sync = () => setIsLarge(mql.matches);
+    sync();
+    mql.addEventListener('change', sync);
+    return () => mql.removeEventListener('change', sync);
+  }, []);
+  return isLarge;
+}
+
 function useOrbitalTime() {
   const [time, setTime] = useState(0);
 
@@ -152,6 +169,7 @@ function useOrbitalTime() {
 export default function TechConstellation({ lang = 'es' }: Props) {
   const [hovered, setHovered] = useState<string | null>(null);
   const time = useOrbitalTime();
+  const isLarge = useIsLargeScreen();
 
   // Percentage-based viewBox: cx/cy at 50, ringRadii as % of width.
   const cx = 50;
@@ -300,7 +318,7 @@ export default function TechConstellation({ lang = 'es' }: Props) {
                 <span
                   className="font-mono font-bold"
                   style={{
-                    fontSize: node.size * 0.28,
+                    fontSize: node.size * (isLarge ? 0.32 : 0.28),
                     color: node.color,
                   }}
                 >
@@ -310,7 +328,7 @@ export default function TechConstellation({ lang = 'es' }: Props) {
               <span
                 className="mt-1 whitespace-nowrap font-mono text-slate-700 dark:text-slate-300"
                 style={{
-                  fontSize: active ? 11 : 9,
+                  fontSize: active ? (isLarge ? 13 : 11) : (isLarge ? 11 : 9),
                   color: active ? node.color : undefined,
                   fontWeight: active ? 600 : 400,
                   transition: 'all 0.3s',
@@ -323,7 +341,7 @@ export default function TechConstellation({ lang = 'es' }: Props) {
                 <span
                   className="mt-0.5 rounded-full px-2 py-0.5 text-center font-mono"
                   style={{
-                    fontSize: 8,
+                    fontSize: isLarge ? 10 : 8,
                     backgroundColor: `${node.color}20`,
                     color: `${node.color}cc`,
                     border: `1px solid ${node.color}30`,
@@ -342,7 +360,7 @@ export default function TechConstellation({ lang = 'es' }: Props) {
         <div className="pointer-events-none absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center">
           <span
             className="font-display font-black uppercase tracking-[0.2em] text-slate-600 dark:text-slate-500"
-            style={{ fontSize: 14 }}
+            style={{ fontSize: isLarge ? 17 : 14 }}
           >
             Stack
           </span>

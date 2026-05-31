@@ -55,11 +55,11 @@ const featuredLabel = t(lang, 'blog.featured');
           <span class="normal-case text-xs tracking-normal font-mono text-slate-500 dark:text-slate-400">
             {formatDate(post.data.publishDate, getLangLocale(lang))}
           </span>
-          <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+          <span class="font-mono text-[10px] 2xl:text-[12px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
             · {reading.minutes} min
           </span>
           {post.data.featured && (
-            <span class={`inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.25em] ${accent.text}`}>
+            <span class={`inline-flex items-center gap-1.5 font-mono text-[10px] 2xl:text-[12px] uppercase tracking-[0.25em] ${accent.text}`}>
               <span class={`h-1.5 w-1.5 rounded-full ${accent.bg} animate-pulse`}></span>
               {featuredLabel}
             </span>
