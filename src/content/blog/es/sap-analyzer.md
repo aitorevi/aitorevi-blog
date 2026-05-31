@@ -4,14 +4,17 @@ description: >-
   Construir un dashboard de ventas con arquitectura hexagonal, Result/Error, SQLite
   y un adaptador que conecta a SAP real. La promesa del puerto, cumplida.
 publishDate: 2026-05-29
+coverImage: ../sap-analyzer/cover.webp
+coverImageAlt: >-
+  Gráfico de barras del dashboard de SAP Analyzer mostrando los totales de ventas por producto
 tags:
   - Arquitectura
   - Hexagonal
   - Testing
   - Result
   - SAP
-draft: true
-featured: false
+draft: false
+featured: true
 author:
   name: aitorevi
   avatar: /avatar.webp

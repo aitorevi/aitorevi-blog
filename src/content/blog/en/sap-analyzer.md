@@ -4,14 +4,17 @@ description: >-
   Building a sales dashboard with hexagonal architecture, Result/Error, SQLite,
   and an adapter that plugs into a real SAP. The port's promise, kept.
 publishDate: 2026-05-29
+coverImage: ../sap-analyzer/cover.webp
+coverImageAlt: >-
+  Bar chart of the SAP Analyzer dashboard showing total sales by product
 tags:
   - Architecture
   - Hexagonal
   - Testing
   - Result
   - SAP
-draft: true
-featured: false
+draft: false
+featured: true
 author:
   name: aitorevi
   avatar: /avatar.webp
