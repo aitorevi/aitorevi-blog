@@ -20,6 +20,12 @@ const postUrl = lang === 'es' ? '/blog/connect-analyzer' : '/en/blog/connect-ana
 const solutionKeys = ['port', 'sources', 'store', 'deploy'] as const;
 const decisions = ['hexagonal', 'result', 'cicd'] as const;
 
+const screenshots = [
+  { src: '/images/portfolio/connect-analyzer/dashboard-overview.png', key: 'overview' },
+  { src: '/images/portfolio/connect-analyzer/dashboard-revenue.png', key: 'revenue' },
+  { src: '/images/portfolio/connect-analyzer/dashboard-breakdown.png', key: 'breakdown' },
+] as const;
+
 const stack = {
   backend: ['.NET 10', 'C#', 'Hexagonal', 'Result/Error', 'SQLite', 'xUnit'],
   frontend: ['Next.js', 'TypeScript', 'App Router', 'Recharts'],
@@ -159,13 +165,17 @@ const githubIcon =
         >
           {t(lang, 'portfolio.connectAnalyzer.screenshot.title')}
         </h2>
-        <LightboxImage
-          src="/images/portfolio/connect-analyzer/dashboard.webp"
-          alt={t(lang, 'portfolio.connectAnalyzer.screenshot.alt')}
-          caption={t(lang, 'portfolio.connectAnalyzer.screenshot.alt')}
-          closeLabel={t(lang, 'misc.close')}
-          class="mt-10 overflow-hidden rounded-2xl border border-slate-200 shadow-xl dark:border-white/10"
-        />
+        <div class="mt-10 flex flex-col gap-6">
+          {screenshots.map((shot) => (
+            <LightboxImage
+              src={shot.src}
+              alt={t(lang, `portfolio.connectAnalyzer.screenshot.${shot.key}`)}
+              caption={t(lang, `portfolio.connectAnalyzer.screenshot.${shot.key}`)}
+              closeLabel={t(lang, 'misc.close')}
+              class="overflow-hidden rounded-2xl border border-slate-200 shadow-xl dark:border-white/10"
+            />
+          ))}
+        </div>
       </div>
     </section>
 
