@@ -37,6 +37,8 @@ export default defineConfig({
   redirects: {
     '/sitemap.xml': '/sitemap-index.xml',
     '/cv/en': '/en/cv',
+    '/blog/sap-analyzer': '/blog/connect-analyzer',
+    '/en/blog/sap-analyzer': '/en/blog/connect-analyzer',
     '/portfolio': '/work',
     '/portfolio/aitorevi-dev': '/work/aitorevi-dev',
     '/portfolio/ims': '/work/ims',

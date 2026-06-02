@@ -1,12 +1,13 @@
 ---
-title: 'SAP Analyzer: hexagonal in action (from mock to real SAP without touching the domain)'
+title: 'Connect Analyzer: hexagonal in action (one port, three adapters: mock, SAP, Shopify)'
 description: >-
-  Building a sales dashboard with hexagonal architecture, Result/Error, SQLite,
-  and an adapter that plugs into a real SAP. The port's promise, kept.
+  A sales dashboard with hexagonal architecture and Result/Error. Going from mock to SAP
+  or Shopify is just a new adapter. Deployed on Cloud Run and Vercel.
 publishDate: 2026-05-29
-coverImage: ../sap-analyzer/cover.webp
+updatedDate: 2026-06-02
+coverImage: ../connect-analyzer/cover.webp
 coverImageAlt: >-
-  Bar chart of the SAP Analyzer dashboard showing total sales by product
+  Bar chart of the Connect Analyzer dashboard showing total sales by product
 tags:
   - Architecture
   - Hexagonal
@@ -159,6 +160,12 @@ else
 
 The controller, the use case, the domain: **none of them notice**. The `APIKey` header is injected at the composition root, so the adapter does not even know the secret.
 
+### Step 5: now a real store — Shopify, the third adapter
+
+If the port keeps its promise, a *completely different* source should cost the same: another adapter. To prove it I add `ShopifyOrdersRepository`, which reads real orders from a Shopify store via the Admin REST API. The only wrinkle is auth: the Dev Dashboard no longer exposes a static token, so a `ShopifyTokenProvider` exchanges `client_id` + `client_secret` for an access token (Client Credentials Grant) and caches it. The adapter only ever sees the token; the credentials enter through the composition root, exactly like the SAP API key.
+
+The result: **three sources** (the `.txt` mock, SAP S/4HANA over OData, Shopify over REST) behind **the same interface**, with `SalesSource=Mock|Sap|Shopify` picking which one is wired. The domain still has no idea Shopify exists.
+
 ## Persistence with a second port
 
 The next step of the experiment: add a DB. But **properly**, not inside the source adapter.
@@ -248,10 +255,18 @@ Back to the start: "when the source changes, the only thing that should change i
 
 - `Domain/` does not know what HTTP, OData, SAP, SQLite, or anything else is. I check with `grep`.
 - `Application/` (`SalesAnalytics`, `IngestSales`) only knows its ports.
-- Going from mock to real SAP = **one environment variable** (`SalesSource=Sap`) plus a secret.
+- Going from mock to SAP or Shopify = **one environment variable** (`SalesSource=Sap|Shopify`) plus its secrets.
 - Going from SQLite to Postgres = **one new adapter** implementing `ISalesStore` + swapping its registration in `Program.cs`.
 
 That is all. No magic, no metaprogramming: just two interfaces respected with discipline.
+
+## From experiment to something deployed
+
+An experiment that only runs on `localhost` is only half-convincing. The live demo runs on **Google Cloud Run** (backend + mock, each with its own Dockerfile) and **Vercel** (the Next.js frontend). The frontend hits the backend **server-side**, so the browser never calls the API directly and CORS never even comes into play.
+
+Why Cloud Run instead of Render? Render's free tier sleeps services after ~15 min and returns a 502 while they wake, which left the demo blank. Cloud Run scales to zero too, but the cold start is ~1-2 s and the request **waits** for the container instead of failing.
+
+Deployment is **automated with GitHub Actions**: a push to `main` touching `backend/` rebuilds and deploys backend + mock, authenticating against Google Cloud with **Workload Identity Federation** — no service-account key stored as a repo secret.
 
 ## TL;DR
 
@@ -261,6 +276,6 @@ That is all. No magic, no metaprogramming: just two interfaces respected with di
 - The controller is the **only** place that opens the `Result` (with `Match`). The domain never knows about HTTP.
 - Doubles without mocking libraries + `WebApplicationFactory`. The tests are simple because the architecture already did the work.
 
-Code: [`aitorevi/sap-analyzer`](https://github.com/aitorevi/sap-analyzer). Live demo: **[sap-analyzer.vercel.app](https://sap-analyzer.vercel.app)** (first load can take ~30 s: the backend and mock sleep on Render's free tier).
+Code: [`aitorevi/connect-analyzer`](https://github.com/aitorevi/connect-analyzer). Live demo: **[connect-analyzer.vercel.app](https://connect-analyzer.vercel.app)** (first load can take ~1-2 s if the backend was asleep on Cloud Run; it never goes blank).
 
 **Spoiler:** pushing the aggregation down to the port (so each source can push the `GROUP BY` where it makes sense — SQL for SQLite, `$apply` for OData) is the next step of the experiment. Maybe another post.

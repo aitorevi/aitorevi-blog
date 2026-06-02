@@ -1,0 +1,26 @@
+number: "07"
+name: Connect Analyzer
+taglineEs: Dashboard de ventas multi-fuente con arquitectura hexagonal
+taglineEn: Multi-source sales dashboard with hexagonal architecture
+descKey: home.portfolio.connectAnalyzer.desc
+tagKey: home.portfolio.tag.experiment
+year: "2026"
+stack:
+  - .NET 10
+  - Next.js
+  - Recharts
+  - SQLite
+  - Docker
+  - OData (SAP)
+  - Shopify
+  - Cloud Run
+accent: emerald
+hrefEs: /work/connect-analyzer
+hrefEn: /en/work/connect-analyzer
+external: false
+metric:
+  value: "67"
+  labelEs: tests backend
+  labelEn: backend tests
+mockType: analytics
+order: 7
