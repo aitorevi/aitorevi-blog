@@ -3,7 +3,7 @@ import type { Lang } from '@/i18n/types';
 import { t } from '@/i18n/utils';
 
 interface Props {
-  type: 'dashboard' | 'terminal' | 'landing' | 'calculator' | 'browser';
+  type: 'dashboard' | 'analytics' | 'terminal' | 'landing' | 'calculator' | 'browser';
   lang: Lang;
   flip: boolean;
   href: string;
@@ -59,6 +59,37 @@ const { type, lang, flip, href, external, ring, browserUrl, terminalLines } = As
               <div class="h-2 rounded-full bg-white/10" style="width:78%"></div>
               <div class="h-2 rounded-full bg-white/10" style="width:54%"></div>
               <div class="h-2 rounded-full bg-white/10" style="width:91%"></div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {type === 'analytics' && (
+        <div class="grid h-full grid-cols-3 gap-3">
+          <div class="col-span-2 row-span-2 flex flex-col rounded-md bg-gradient-to-br from-accent-emerald/40 via-accent-emerald/10 to-transparent">
+            <div class="p-3 font-mono text-[9px] uppercase tracking-[0.2em] text-accent-emerald/80">
+              {t(lang, 'home.work.mock.connectAnalyzer.status')}
+            </div>
+            <div class="mx-3 mb-3 mt-auto flex items-end gap-1.5">
+              {[26, 22, 19, 16, 14, 11, 9, 7].map((h) => (
+                <div class="flex-1 rounded-sm bg-accent-emerald/40" style={`height:${h * 4}px`}></div>
+              ))}
+            </div>
+          </div>
+          <div class="rounded-md bg-accent-emerald/15 p-2">
+            <div class="font-mono text-[9px] text-accent-emerald">€</div>
+            <div class="mt-2 font-display text-lg font-black text-accent-emerald/90">214k</div>
+          </div>
+          <div class="rounded-md bg-emerald-300/15 p-2">
+            <div class="font-mono text-[9px] text-emerald-300">SKU</div>
+            <div class="mt-2 font-display text-lg font-black text-emerald-300/90">48</div>
+          </div>
+          <div class="col-span-3 rounded-md bg-white/5 p-2">
+            <div class="flex flex-wrap items-center gap-1.5 font-mono text-[8px] uppercase tracking-[0.15em]">
+              <span class="text-slate-500">{t(lang, 'home.work.mock.connectAnalyzer.sources')}</span>
+              <span class="rounded-full border border-accent-emerald/40 bg-accent-emerald/10 px-2 py-0.5 text-accent-emerald">Mock</span>
+              <span class="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-slate-400">SAP</span>
+              <span class="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-slate-400">Shopify</span>
             </div>
           </div>
         </div>
