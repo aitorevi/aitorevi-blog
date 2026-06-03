@@ -2,6 +2,8 @@
 title: "Web accessibility: how we applied WCAG 2.2 AA to aitorevi.dev"
 description: "A practical walkthrough of the technical decisions that brought aitorevi.dev to WCAG 2.2 Level AA compliance: contrast, focus, semantics, motion and more."
 publishDate: 2026-05-05
+coverImage: ../accesibilidad-web-wcag-aa/cover.webp
+coverImageAlt: Universal accessibility symbol surrounded by eye, keyboard and contrast icons connected by circuit traces
 tags:
   - Accessibility
   - WCAG
