@@ -1,0 +1,9 @@
+---
+// Redirige las URLs antiguas /portfolio(/...) → /work(/...) con 301,
+// cubriendo también la barra final (que los redirects de config dedup-eaban).
+export const prerender = false;
+
+const { rest } = Astro.params;
+const target = rest ? `/work/${rest}` : '/work';
+return Astro.redirect(target, 301);
+---
