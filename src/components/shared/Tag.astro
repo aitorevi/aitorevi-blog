@@ -2,10 +2,12 @@
 interface Props {
   label: string;
   variant?: 'default' | 'accent' | 'muted' | 'crosspost' | 'raw';
+  /** When provided, the tag renders as a link to this URL. */
+  href?: string;
   class?: string;
 }
 
-const { label, variant = 'default', class: className = '' } = Astro.props;
+const { label, variant = 'default', href, class: className = '' } = Astro.props;
 
 const variantStyles = {
   default: 'bg-grayLight text-quaternary',
@@ -16,9 +18,12 @@ const variantStyles = {
 };
 
 const baseStyles = 'inline-flex w-fit items-center px-2.5 py-0.5 rounded-full font-mono text-[10px] 2xl:text-[12px] uppercase tracking-[0.15em]';
-const combinedClasses = `${baseStyles} ${variantStyles[variant]} ${className}`;
+const interactive = href ? ' transition-colors duration-200 hover:text-accent hover:border-accent/50 cursor-pointer' : '';
+const combinedClasses = `${baseStyles} ${variantStyles[variant]}${interactive} ${className}`;
 ---
 
-<span class={combinedClasses}>
-  {label}
-</span>
+{href ? (
+  <a href={href} class={combinedClasses}>{label}</a>
+) : (
+  <span class={combinedClasses}>{label}</span>
+)}
