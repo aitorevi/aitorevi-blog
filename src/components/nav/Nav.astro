@@ -44,6 +44,12 @@ const workPath = getLocalePath('/work', lang);
                class={`min-h-[44px] flex items-center cursor-pointer uppercase tracking-[0.15em] text-sm transition ease-linear delay-50 duration-200 ${isInCv ? 'text-accent font-semibold' : 'text-inherit hover:text-accent hover:underline hover:underline-offset-4 hover:decoration-accent/70'}`}>
                 {t(lang, 'nav.about')}
             </a>
+            <a href="https://tools.aitorevi.dev"
+               target="_blank"
+               rel="noopener"
+               class="min-h-[44px] flex items-center cursor-pointer uppercase tracking-[0.15em] text-sm transition ease-linear delay-50 duration-200 text-inherit hover:text-accent hover:underline hover:underline-offset-4 hover:decoration-accent/70">
+                {t(lang, 'nav.tools')}
+            </a>
 
             <!-- Visual divider between nav links and user-preference controls -->
             <span aria-hidden="true" class="h-5 w-px bg-secondary/20 dark:bg-white/10"></span>
@@ -135,6 +141,12 @@ const workPath = getLocalePath('/work', lang);
                aria-current={isInCv ? 'page' : undefined}
                class={`cursor-pointer transition ease-linear delay-50 duration-200 ${isInCv ? 'text-accent font-semibold' : 'text-inherit hover:text-accent hover:underline hover:underline-offset-4 hover:decoration-accent/70'}`}>
                 {t(lang, 'nav.about')}
+            </a>
+            <a href="https://tools.aitorevi.dev"
+               target="_blank"
+               rel="noopener"
+               class="cursor-pointer transition ease-linear delay-50 duration-200 text-inherit hover:text-accent hover:underline hover:underline-offset-4 hover:decoration-accent/70">
+                {t(lang, 'nav.tools')}
             </a>
             <div role="group" class="flex items-center justify-center gap-1 text-sm font-semibold" aria-label={t(lang, 'nav.langSelect')}>
                 <a href={isEs ? currentPath : alternateUrl}

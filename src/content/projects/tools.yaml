@@ -1,0 +1,33 @@
+number: "08"
+name: aitorevi Tools
+taglineEs: Hub de mini-herramientas que corren 100% en tu navegador
+taglineEn: Hub of mini-tools that run 100% in your browser
+descKey: home.portfolio.tools.desc
+tagKey: home.portfolio.tag.tools
+year: "2026"
+stack:
+  - Vanilla JS
+  - pdf-lib
+  - JSZip
+  - Vitest
+  - Playwright
+  - Vercel
+accent: violet
+hrefEs: /work/tools
+hrefEn: /en/work/tools
+external: false
+metric:
+  value: "100%"
+  labelEs: en el navegador
+  labelEn: client-side
+mockType: terminal
+order: 8
+terminalLines:
+  - kind: cmd
+    text: npm test
+  - kind: ok
+    text: 19 passed · vitest + playwright
+  - kind: cmd
+    text: deploy → tools.aitorevi.dev
+  - kind: ok
+    text: 100% cliente · sin subidas
