@@ -39,10 +39,6 @@ export default defineConfig({
     '/cv/en': '/en/cv',
     '/blog/sap-analyzer': '/blog/connect-analyzer',
     '/en/blog/sap-analyzer': '/en/blog/connect-analyzer',
-    '/portfolio': '/work',
-    '/portfolio/[...rest]': '/work/[...rest]',
-    '/en/portfolio': '/en/work',
-    '/en/portfolio/[...rest]': '/en/work/[...rest]',
   },
   i18n: {
     defaultLocale: 'es',
