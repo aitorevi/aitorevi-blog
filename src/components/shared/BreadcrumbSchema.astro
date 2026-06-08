@@ -1,0 +1,31 @@
+---
+// Emite SOLO el structured data BreadcrumbList (invisible). Da la "miga"
+// del breadcrumb en el resultado de búsqueda, sin pintar nada en la página.
+import { safeJsonLd } from '@/lib/schema-org';
+
+interface Crumb {
+  label: string;
+  /** Ruta interna; el último elemento (actual) se deja sin href. */
+  href?: string;
+}
+
+interface Props {
+  items: Crumb[];
+}
+
+const { items } = Astro.props;
+const site = 'https://www.aitorevi.dev';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((crumb, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: crumb.label,
+    ...(crumb.href ? { item: `${site}${crumb.href}` } : {}),
+  })),
+};
+---
+
+<script is:inline type="application/ld+json" set:html={safeJsonLd(jsonLd)} />

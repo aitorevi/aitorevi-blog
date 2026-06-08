@@ -37,6 +37,11 @@ export const blog = {
     'blog.search.results': 'resultados',
     'blog.readPost': 'Leer artículo',
     'blog.summary.label': 'Resumen accesible',
+    'blog.tag.eyebrow': '// etiqueta',
+    'blog.tag.metaDesc': 'Artículos etiquetados como',
+    'blog.tag.count.one': 'artículo',
+    'blog.tag.count.other': 'artículos',
+    'blog.related.title': 'Artículos relacionados',
   },
   en: {
     'blog.copyCode': 'Copy',
@@ -76,5 +81,10 @@ export const blog = {
     'blog.outro.title': 'Every article, a lesson.',
     'blog.readPost': 'Read post',
     'blog.summary.label': 'Accessible summary',
+    'blog.tag.eyebrow': '// tag',
+    'blog.tag.metaDesc': 'Articles tagged',
+    'blog.tag.count.one': 'article',
+    'blog.tag.count.other': 'articles',
+    'blog.related.title': 'Related posts',
   },
 };

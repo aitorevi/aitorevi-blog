@@ -1,0 +1,68 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import PostCard from '@/components/blog/PostCard.astro';
+import BreadcrumbSchema from '@/components/shared/BreadcrumbSchema.astro';
+import { sortPostsByDate, filterDrafts } from '@/lib/blog';
+import { getAllTags, getPostsByTagSlug } from '@/lib/tags';
+import { t } from '@/i18n/utils';
+
+const lang = 'en';
+
+export async function getStaticPaths() {
+  const all = await getCollection('blog');
+  const enPosts = sortPostsByDate(filterDrafts(all)).filter((p) => p.id.startsWith('en/'));
+  return getAllTags(enPosts).map((info) => ({
+    params: { tag: info.slug },
+    props: { tagName: info.tag, posts: getPostsByTagSlug(enPosts, info.slug) },
+  }));
+}
+
+const { tagName, posts } = Astro.props;
+const tagSlug = Astro.params.tag;
+const count = posts.length;
+const countLabel = count === 1 ? t(lang, 'blog.tag.count.one') : t(lang, 'blog.tag.count.other');
+
+const title = `${tagName} — Blog · aitorevi`;
+const description = `${t(lang, 'blog.tag.metaDesc')} "${tagName}". ${count} ${countLabel}.`;
+const alternateUrl = `https://www.aitorevi.dev/blog/tag/${tagSlug}`;
+
+const breadcrumb = [
+  { label: t(lang, 'nav.home'), href: '/en' },
+  { label: t(lang, 'nav.blog'), href: '/en/blog' },
+  { label: tagName },
+];
+---
+
+<Layout
+  title={title}
+  description={description}
+  lang={lang}
+  alternateUrl={alternateUrl}
+  alternateLang="es"
+  variant="dark-radial"
+>
+  <main class="mx-auto w-full max-w-5xl px-6 pb-20 pt-24 md:pt-32">
+    <BreadcrumbSchema items={breadcrumb} />
+
+    <header class="mb-12">
+      <p class="mb-3 font-mono text-sm text-accent">{t(lang, 'blog.tag.eyebrow')}</p>
+      <h1 class="font-display text-4xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-5xl">
+        {tagName}
+      </h1>
+      <p class="mt-3 font-mono text-sm text-slate-600 dark:text-slate-400">{count} {countLabel}</p>
+    </header>
+
+    <ul class="m-0 grid list-none grid-cols-1 gap-6 p-0 sm:grid-cols-2">
+      {posts.map((post) => (
+        <li><PostCard post={post} lang={lang} /></li>
+      ))}
+    </ul>
+
+    <div class="mt-14">
+      <a href="/en/blog" class="font-mono text-sm text-accent transition-colors hover:underline">
+        ← {t(lang, 'blog.backToBlog')}
+      </a>
+    </div>
+  </main>
+</Layout>

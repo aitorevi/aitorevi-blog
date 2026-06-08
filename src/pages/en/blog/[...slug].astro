@@ -7,7 +7,11 @@ import ReadingTime from '@/components/shared/ReadingTime.astro';
 import CodeBlockEnhancer from '@/components/blog/CodeBlockEnhancer.astro';
 import RepublishedNotice from '@/components/blog/RepublishedNotice.astro';
 import PostNavigation from '@/components/blog/PostNavigation.astro';
+import RelatedPosts from '@/components/blog/RelatedPosts.astro';
+import BreadcrumbSchema from '@/components/shared/BreadcrumbSchema.astro';
 import { calculateReadingTime } from '@/lib/blog';
+import { getRelatedPosts } from '@/lib/tags';
+import { slugify } from '@/lib/strings';
 import { formatDate, formatDateISO } from '@/lib/date';
 import { t, getBlogSlugFromId, getLangLocale } from '@/i18n/utils';
 import { safeJsonLd } from '@/lib/schema-org';
@@ -47,7 +51,13 @@ export async function getStaticPaths() {
 
     return {
       params: { slug },
-      props: { post, alternateUrl: hasTranslation ? `/blog/${slug}` : '/blog', prevPost, nextPost },
+      props: {
+        post,
+        alternateUrl: hasTranslation ? `/blog/${slug}` : '/blog',
+        prevPost,
+        nextPost,
+        relatedPosts: getRelatedPosts(post, enPosts, 3),
+      },
     };
   });
 }
@@ -57,14 +67,21 @@ interface Props {
   alternateUrl: string;
   prevPost?: NavPost;
   nextPost?: NavPost;
+  relatedPosts: CollectionEntry<'blog'>[];
 }
 
-const { post, alternateUrl, prevPost, nextPost } = Astro.props;
+const { post, alternateUrl, prevPost, nextPost, relatedPosts } = Astro.props;
 const { data, body = '' } = post;
 const { Content } = await render(post);
 
 const readingTime = calculateReadingTime(body, lang);
 const canonicalUrl = data.canonicalUrl || new URL(Astro.url.pathname, Astro.site).href;
+
+const breadcrumbItems = [
+  { label: t(lang, 'nav.home'), href: '/en' },
+  { label: t(lang, 'nav.blog'), href: '/en/blog' },
+  { label: data.title },
+];
 const DEFAULT_COVER_IMAGE = '/logo.webp';
 const coverImageUrl = data.coverImage?.src || DEFAULT_COVER_IMAGE;
 const ogImageUrl = data.ogImage || coverImageUrl;
@@ -122,6 +139,8 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
       },
       "keywords": data.tags.join(", "),
     })} />
+
+    <BreadcrumbSchema items={breadcrumbItems} />
   </Fragment>
 
   <div class="blog-cinematic relative min-h-screen">
@@ -138,7 +157,7 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
         <div class="mx-auto max-w-3xl">
           <ul class="flex flex-wrap justify-center gap-2 list-none p-0" role="list" aria-label={t(lang, 'blog.tags')}>
             {data.tags.map((tag) => (
-              <li><Tag label={tag} variant="accent" /></li>
+              <li><Tag label={tag} variant="accent" href={`/en/blog/tag/${slugify(tag)}`} /></li>
             ))}
           </ul>
 
@@ -212,6 +231,8 @@ const coverImageAbsolute = toAbsoluteUrl(coverImageUrl);
           lang={lang}
         />
       </div>
+
+      <RelatedPosts posts={relatedPosts} lang={lang} />
 
       <meta itemprop="datePublished" content={data.publishDate.toISOString()} />
       {data.updatedDate && (
