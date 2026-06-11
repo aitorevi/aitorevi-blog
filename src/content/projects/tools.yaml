@@ -26,7 +26,7 @@ terminalLines:
   - kind: cmd
     text: npm test
   - kind: ok
-    text: 19 passed · vitest + playwright
+    text: 42 passed · vitest + playwright
   - kind: cmd
     text: deploy → tools.aitorevi.dev
   - kind: ok

@@ -9,7 +9,7 @@ stack:
   - Astro 5
   - Sheets API
   - TypeScript
-accent: violet
+accent: sky
 hrefEs: https://www.perjuicioirph.com
 hrefEn: https://www.perjuicioirph.com
 external: true

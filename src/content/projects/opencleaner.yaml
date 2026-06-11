@@ -10,7 +10,7 @@ stack:
   - React 19
   - TypeScript
   - Clean Architecture
-accent: zinc
+accent: emerald
 hrefEs: /work/opencleaner
 hrefEn: /en/work/opencleaner
 external: false
