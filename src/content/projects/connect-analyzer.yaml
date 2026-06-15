@@ -1,4 +1,4 @@
-number: "07"
+number: "03"
 name: Connect Analyzer
 taglineEs: Dashboard de ventas multi-fuente con arquitectura hexagonal
 taglineEn: Multi-source sales dashboard with hexagonal architecture
@@ -23,4 +23,4 @@ metric:
   labelEs: tests backend
   labelEn: backend tests
 mockType: analytics
-order: 7
+order: 3

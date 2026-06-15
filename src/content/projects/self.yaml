@@ -1,4 +1,4 @@
-number: "02"
+number: "08"
 name: aitorevi.dev
 taglineEs: Blog que también es laboratorio
 taglineEn: A blog that is also a lab
@@ -19,7 +19,7 @@ metric:
   labelEs: tests
   labelEn: tests
 mockType: terminal
-order: 2
+order: 8
 terminalLines:
   - kind: cmd
     text: npm run test:unit

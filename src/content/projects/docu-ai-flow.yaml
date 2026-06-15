@@ -1,0 +1,40 @@
+number: "02"
+name: docu-ai-flow
+taglineEs: Procesador de facturas PDF con IA y workflow de agentes
+taglineEn: AI-powered PDF invoice processor with agent-driven workflow
+descKey: home.portfolio.docuaiflow.desc
+tagKey: home.portfolio.tag.aiflow
+year: "2026"
+stack:
+  - .NET 10
+  - C#
+  - LlamaParse
+  - SQLite
+  - ClosedXML
+  - Resend
+  - Claude Code
+accent: emerald
+hrefEs: /work/docu-ai-flow
+hrefEn: /en/work/docu-ai-flow
+external: false
+metric:
+  value: "102"
+  labelEs: tests
+  labelEn: tests
+mockType: terminal
+order: 2
+terminalLines:
+  - kind: cmd
+    text: dotnet run
+  - kind: ok
+    text: Watcher started · ./data/inbox
+  - kind: building
+    text: "[PDF] factura-repsol-2026-06.pdf"
+  - kind: building
+    text: "[AI] LlamaParse · confidence 0.91"
+  - kind: ok
+    text: "[SQLite] Saved · archived /2026/06/repsol/"
+  - kind: cmd
+    text: dotnet run -- send 2026 2
+  - kind: ok
+    text: ZIP (4 facturas) · Sent via Resend

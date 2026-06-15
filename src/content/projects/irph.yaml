@@ -1,4 +1,4 @@
-number: "04"
+number: "07"
 name: IRPH Calculator
 taglineEs: Calculadora financiera conectada a Sheets
 taglineEn: Financial calculator wired to Sheets
@@ -18,4 +18,4 @@ metric:
   labelEs: perjuicio medio
   labelEn: avg damage
 mockType: calculator
-order: 4
+order: 7

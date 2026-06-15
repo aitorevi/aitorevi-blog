@@ -1,4 +1,4 @@
-number: "08"
+number: "04"
 name: aitorevi Tools
 taglineEs: Hub de mini-herramientas que corren 100% en tu navegador
 taglineEn: Hub of mini-tools that run 100% in your browser
@@ -21,7 +21,7 @@ metric:
   labelEs: en el navegador
   labelEn: client-side
 mockType: terminal
-order: 8
+order: 4
 terminalLines:
   - kind: cmd
     text: npm test
