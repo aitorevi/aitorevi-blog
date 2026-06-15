@@ -49,7 +49,7 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content={description} />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, viewport-fit=cover" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<!-- Self-hosted fonts: JetBrains Mono (code/accents) + Outfit (display).
@@ -188,6 +188,12 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `https://www.aitorevi.
 	@media (min-width: 768px) {
 		html {
 			scroll-padding-top: 80px;
+		}
+	}
+	/* Bottom nav on mobile: reserve space so footer and content are never hidden under it */
+	@media (max-width: 767px) {
+		body {
+			padding-bottom: calc(4rem + env(safe-area-inset-bottom));
 		}
 	}
 
