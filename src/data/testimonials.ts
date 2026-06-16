@@ -51,6 +51,16 @@ export const testimonials: Testimonial[] = [
   },
   {
     text: {
+      es: 'Aitor es ese compañero al que sabes que siempre puedes recurrir, porque siempre está dispuesto a ayudar. Es una persona bondadosa, respetuosa, curiosa y profesional, a la que admiro enormemente por su capacidad de aprendizaje, adaptación y constancia. Es alguien que reescribió su camino profesional y que, gracias a sus ganas de aprender y a su perseverancia, ha construido una trayectoria admirable. Estoy segura de que le espera un largo camino lleno de éxitos. Me enorgullece y agradezco muchísimo haber podido compartir parte de su camino.',
+      en: 'Aitor is the kind of colleague you know you can always turn to, because he is always willing to help. He is a kind, respectful, curious, and professional person whom I admire enormously for his capacity to learn, adapt, and persevere. He is someone who rewrote his own professional path and, through his drive to learn and his perseverance, has built an admirable career. I am certain a long road full of success awaits him. I am proud of and deeply grateful to have shared part of that journey with him.',
+    },
+    author: 'María Blé Jurado',
+    role: 'Digital Strategy & Communication · Lean Mind',
+    avatar: '/images/testimonials/maria-ble.webp',
+    url: '',
+  },
+  {
+    text: {
       es: 'Aitor es una persona que destaca por su constancia, curiosidad y compromiso con el trabajo bien hecho. Tiene un interés genuino por seguir aprendiendo, algo que se refleja claramente en cómo aplica ese conocimiento en su día a día cuando escribe código siguiendo buenas prácticas y patrones. No se queda en lo superficial y le gusta trabajar con criterio; el TDD es su guía. Además, es una persona muy colaborativa: comparte lo que aprende, ayuda al equipo y contribuye a mantener un entorno de trabajo equilibrado y enfocado. Sin duda, aporta desde el primer momento, tanto por su forma de trabajar como por su conocimiento, y es muy fácil colaborar con él en el día a día.',
       en: 'Aitor stands out for his consistency, curiosity, and commitment to doing things right. He has a genuine interest in continuous learning, something clearly reflected in how he applies that knowledge day to day — writing code that follows good practices and patterns. He goes beyond the surface and likes to work with real judgement; TDD is his guide. He is also highly collaborative: he shares what he learns, helps the team, and contributes to a balanced, focused work environment. He brings value from day one, both in how he works and in what he knows, and collaborating with him is genuinely easy.',
     },
@@ -58,6 +68,16 @@ export const testimonials: Testimonial[] = [
     role: 'Software Developer · Lean Mind',
     avatar: '/images/testimonials/luis-rodriguez.webp',
     url: 'https://www.linkedin.com/in/luis-gabriel-rodr%C3%ADguez-alejos-8ba69237/',
+  },
+  {
+    text: {
+      es: '¡Compartir equipo de desarrollo con Aitor es jugar en modo fácil! Me he sentido increíblemente cómodo a su lado gracias a su inmensa flexibilidad y su talento para aprender rapidísimo. Destaco muchísimo su forma de relacionarse: tiene una comunicación y un feedback asertivos que te impulsan a ser mejor profesional, siempre desde el cariño y la sensibilidad. Es un compañero comprometido al 100%, que siempre está dispuesto a darte su acompañamiento.',
+      en: 'Sharing a development team with Aitor is like playing on easy mode! I felt incredibly comfortable alongside him thanks to his tremendous flexibility and his talent for learning incredibly fast. What stands out most is the way he connects with people: his assertive communication and feedback push you to become a better professional, always with warmth and sensitivity. He is a 100% committed teammate who is always ready to support you.',
+    },
+    author: 'Ricardo García',
+    role: 'Software Developer · Lean Mind',
+    avatar: '/images/testimonials/ricardo-garcia.webp',
+    url: 'https://www.linkedin.com/in/ricardo-garc%C3%ADa-dorta-815844165/',
   },
   {
     text: {
@@ -71,12 +91,12 @@ export const testimonials: Testimonial[] = [
   },
   {
     text: {
-      es: '¡Compartir equipo de desarrollo con Aitor es jugar en modo fácil! Me he sentido increíblemente cómodo a su lado gracias a su inmensa flexibilidad y su talento para aprender rapidísimo. Destaco muchísimo su forma de relacionarse: tiene una comunicación y un feedback asertivos que te impulsan a ser mejor profesional, siempre desde el cariño y la sensibilidad. Es un compañero comprometido al 100%, que siempre está dispuesto a darte su acompañamiento.',
-      en: 'Sharing a development team with Aitor is like playing on easy mode! I felt incredibly comfortable alongside him thanks to his tremendous flexibility and his talent for learning incredibly fast. What stands out most is the way he connects with people: his assertive communication and feedback push you to become a better professional, always with warmth and sensitivity. He is a 100% committed teammate who is always ready to support you.',
+      es: 'Coincidí con Aitor en su etapa como consultor en Airzone. Un trabajador muy competente que se involucra al máximo y además, una gran persona siempre en aprendizaje y mejora continua.',
+      en: 'I crossed paths with Aitor during his time as a consultant at Airzone. A highly competent professional who gives everything he has, and on top of that, a great person always learning and striving for continuous improvement.',
     },
-    author: 'Ricardo García',
-    role: 'Software Developer · Lean Mind',
-    avatar: '/images/testimonials/ricardo-garcia.webp',
-    url: 'https://www.linkedin.com/in/ricardo-garc%C3%ADa-dorta-815844165/',
+    author: 'Alberto Moreno Ayala',
+    role: 'Software Developer · Airzone Control',
+    avatar: '/images/testimonials/alberto-moreno.webp',
+    url: 'https://www.linkedin.com/in/alberto-moreno-ayala/',
   },
 ];
