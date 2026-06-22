@@ -1,0 +1,45 @@
+---
+import Tag from '@/components/shared/Tag.astro';
+
+interface Props {
+  /** Already-translated category title. */
+  title: string;
+  items: string[];
+  /** Accent color classes for the title (per case study). The leading dot
+   *  inherits this color via `bg-current`. */
+  titleClass?: string;
+  /** Per-case-study color classes for the tags. When omitted, tags fall back
+   *  to the global accent (violet) via the `accent` variant. */
+  tagClass?: string;
+}
+
+const {
+  title,
+  items,
+  titleClass = 'text-secondary dark:text-accent-violet',
+  tagClass,
+} = Astro.props;
+---
+
+<div class="rounded-xl border border-slate-200 bg-slate-50 p-5 dark:border-white/10 dark:bg-white/[0.04]">
+  <h3
+    class:list={[
+      'flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-[0.15em]',
+      titleClass,
+    ]}
+  >
+    <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-current" aria-hidden="true" />
+    {title}
+  </h3>
+  <ul class="mt-3 flex flex-wrap gap-2">
+    {items.map((item) => (
+      <li>
+        {tagClass ? (
+          <Tag label={item} variant="raw" class={tagClass} />
+        ) : (
+          <Tag label={item} variant="accent" />
+        )}
+      </li>
+    ))}
+  </ul>
+</div>

@@ -4,7 +4,7 @@ import Button from '@/components/shared/Button.astro';
 import Tag from '@/components/shared/Tag.astro';
 import SectionHeader from '@/components/shared/SectionHeader.astro';
 import StatCard from '@/components/shared/StatCard.astro';
-import DecisionCard from '@/components/case-study/DecisionCard.astro';
+import FeatureCard from '@/components/case-study/FeatureCard.astro';
 import ScoreBadge from '@/components/case-study/ScoreBadge.astro';
 import { Icon } from 'astro-icon/components';
 
@@ -536,16 +536,16 @@ console.log(greeting('aitorevi'));</code></pre>
         </div>
       </div>
 
-      <!-- DecisionCard -->
+      <!-- FeatureCard -->
       <div class="space-y-4">
-        <h3 class="font-mono text-xs uppercase tracking-widest text-fg-muted border-b border-slate-200 dark:border-white/10 pb-2">DecisionCard</h3>
+        <h3 class="font-mono text-xs uppercase tracking-widest text-fg-muted border-b border-slate-200 dark:border-white/10 pb-2">FeatureCard</h3>
         <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <DecisionCard
-            heading="SSG con Astro"
+          <FeatureCard
+            title="SSG con Astro"
             text="Genera HTML estático en build time. Sin JS por defecto — solo se hidrata lo que lo necesita explícitamente."
           />
-          <DecisionCard
-            heading="Tests que usan blog posts reales"
+          <FeatureCard
+            title="Tests que usan blog posts reales"
             postLink={{
               href: '/blog/ejemplo',
               label: 'ver el post',
@@ -555,7 +555,7 @@ console.log(greeting('aitorevi'));</code></pre>
           />
         </ul>
         <div class="rounded-xl bg-slate-50 dark:bg-white/5 p-4 font-mono text-xs text-fg-muted">
-          {'<DecisionCard heading="SSG con Astro" text="..." />'}
+          {'<FeatureCard title="SSG con Astro" text="..." />'}
         </div>
       </div>
 
