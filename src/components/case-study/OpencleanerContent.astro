@@ -3,9 +3,10 @@ import { Icon } from 'astro-icon/components';
 import Layout from '@/layouts/Layout.astro';
 import Button from '@/components/shared/Button.astro';
 import Tag from '@/components/shared/Tag.astro';
+import StackCard from '@/components/case-study/StackCard.astro';
+import FeatureCard from '@/components/case-study/FeatureCard.astro';
 import { t } from '@/i18n/utils';
 import type { Lang } from '@/i18n/types';
-import DecisionCard from './DecisionCard.astro';
 import LightboxImage from '@/components/shared/LightboxImage.astro';
 
 interface Props {
@@ -46,7 +47,7 @@ const decisions = ['cleanarch', 'nocodesign', 'trash'] as const;
           {t(lang, 'portfolio.opencleaner.hero.intro')}
         </p>
         <div class="mt-8 flex justify-center">
-          <Button href={repoUrl} target="_blank" tone="blue">
+          <Button href={repoUrl} target="_blank" tone="zinc">
             <Icon name="github" class="h-4 w-4" aria-hidden="true" />
             <span>{t(lang, 'portfolio.opencleaner.hero.cta.repo')}</span>
           </Button>
@@ -80,14 +81,10 @@ const decisions = ['cleanarch', 'nocodesign', 'trash'] as const;
         </h2>
         <ul class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {solutionKeys.map((key) => (
-            <li class="rounded-xl border border-slate-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.04]">
-              <h3 class="font-display text-base font-semibold text-ink-900 dark:text-slate-100">
-                {t(lang, `portfolio.opencleaner.solution.${key}`)}
-              </h3>
-              <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                {t(lang, `portfolio.opencleaner.solution.${key}.desc`)}
-              </p>
-            </li>
+            <FeatureCard
+              title={t(lang, `portfolio.opencleaner.solution.${key}`)}
+              text={t(lang, `portfolio.opencleaner.solution.${key}.desc`)}
+            />
           ))}
         </ul>
       </div>
@@ -104,16 +101,12 @@ const decisions = ['cleanarch', 'nocodesign', 'trash'] as const;
         </h2>
         <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
           {Object.entries(stack).map(([category, items]) => (
-            <div class="rounded-xl border border-slate-200 bg-slate-50 p-5 dark:border-white/10 dark:bg-white/[0.04]">
-              <h3 class="font-mono text-xs font-semibold uppercase tracking-[0.15em] text-zinc-700 dark:text-zinc-400">
-                {t(lang, `portfolio.opencleaner.stack.${category}`)}
-              </h3>
-              <ul class="mt-3 flex flex-wrap gap-2">
-                {items.map((item) => (
-                  <li><Tag label={item} variant="accent" /></li>
-                ))}
-              </ul>
-            </div>
+            <StackCard
+              title={t(lang, `portfolio.opencleaner.stack.${category}`)}
+              items={items}
+              titleClass="text-zinc-700 dark:text-zinc-400"
+              tagClass="border-zinc-500/20 bg-zinc-500/10 text-zinc-700 dark:border-zinc-400/30 dark:bg-zinc-400/10 dark:text-zinc-400"
+            />
           ))}
         </div>
       </div>
@@ -130,8 +123,8 @@ const decisions = ['cleanarch', 'nocodesign', 'trash'] as const;
         </h2>
         <ul class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {decisions.map((key) => (
-            <DecisionCard
-              heading={t(lang, `portfolio.opencleaner.decisions.${key}.heading`)}
+            <FeatureCard
+              title={t(lang, `portfolio.opencleaner.decisions.${key}.heading`)}
               text={t(lang, `portfolio.opencleaner.decisions.${key}.text`)}
             />
           ))}
@@ -168,7 +161,7 @@ const decisions = ['cleanarch', 'nocodesign', 'trash'] as const;
           {t(lang, 'portfolio.opencleaner.cta.text')}
         </p>
         <div class="mt-8 flex justify-center">
-          <Button href={repoUrl} target="_blank" tone="blue">
+          <Button href={repoUrl} target="_blank" tone="zinc">
             <Icon name="github" class="h-4 w-4" aria-hidden="true" />
             <span>{t(lang, 'portfolio.opencleaner.cta.repo')}</span>
           </Button>
