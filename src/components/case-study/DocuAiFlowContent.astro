@@ -15,11 +15,11 @@ const { lang } = Astro.props;
 const repoUrl = 'https://github.com/aitorevi/docu-ai-flow';
 
 const solutionKeys = ['watcher', 'ai', 'export', 'dispatch'] as const;
-const decisions = ['hexagonal', 'result', 'agents'] as const;
+const decisions = ['hexagonal', 'extraction', 'result', 'agents'] as const;
 const workflowKeys = ['orchestrator', 'agents', 'skills', 'tdd'] as const;
 
 const stack = {
-  backend: ['.NET 10', 'C#', 'Hexagonal', 'Result/Error', 'SQLite', 'LlamaParse', 'Resend', 'Polly'],
+  backend: ['.NET 10', 'C#', 'Hexagonal', 'Result/Error', 'SQLite', 'Google Document AI', 'Resend', 'Polly'],
   tests: ['xUnit', 'NSubstitute', 'WireMock.Net', 'NetArchTest'],
   workflow: ['Claude Code', 'Agents', 'Skills', 'TDD'],
 };

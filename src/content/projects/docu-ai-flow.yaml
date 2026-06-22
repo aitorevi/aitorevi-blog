@@ -8,7 +8,7 @@ year: "2026"
 stack:
   - .NET 10
   - C#
-  - LlamaParse
+  - Document AI
   - SQLite
   - ClosedXML
   - Resend
@@ -18,7 +18,7 @@ hrefEs: /work/docu-ai-flow
 hrefEn: /en/work/docu-ai-flow
 external: false
 metric:
-  value: "102"
+  value: "111"
   labelEs: tests
   labelEn: tests
 mockType: terminal
@@ -31,7 +31,7 @@ terminalLines:
   - kind: building
     text: "[PDF] factura-repsol-2026-06.pdf"
   - kind: building
-    text: "[AI] LlamaParse · confidence 0.91"
+    text: "[AI] Document AI · confidence 0.96"
   - kind: ok
     text: "[SQLite] Saved · archived /2026/06/repsol/"
   - kind: cmd
