@@ -1,0 +1,30 @@
+---
+/**
+ * Spinner — indicador de carga primitivo (SVG inline, sin estado).
+ *
+ * Usa `currentColor`, así que hereda el color del texto del contenedor
+ * (p. ej. dentro de un Button). Tamaño por defecto 1rem; sobreescribible
+ * con clases de tamaño en `class`. Acepta data-attrs para togglearlo por script.
+ */
+interface Props {
+  class?: string;
+  /** Si se pasa, se anuncia a lectores de pantalla; si no, es decorativo. */
+  label?: string;
+  [key: `data-${string}`]: string | boolean | number | undefined;
+}
+
+const { class: className, label, ...rest } = Astro.props;
+---
+
+<svg
+  class:list={['animate-spin h-4 w-4', className]}
+  viewBox="0 0 24 24"
+  fill="none"
+  role={label ? 'status' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  {...rest}
+>
+  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+  <path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4z"></path>
+</svg>
