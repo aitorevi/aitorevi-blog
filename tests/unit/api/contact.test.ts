@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { escapeHtml, buildConfirmationHtml, POST } from '@/pages/api/contact';
 
 // ---------------------------------------------------------------------------
@@ -110,6 +110,14 @@ function makeRequest(body: Record<string, unknown>, headers: Record<string, stri
   });
 }
 
+// Mock Cloudflare's siteverify endpoint.
+function mockSiteverify(success: boolean) {
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockResolvedValue({ json: () => Promise.resolve({ success }) }),
+  );
+}
+
 const validBody = {
   name: 'Alice',
   email: 'alice@example.com',
@@ -122,6 +130,11 @@ const validBody = {
 describe('POST /api/contact — handler', () => {
   beforeEach(() => {
     vi.stubEnv('RESEND_API_KEY', 'test-key');
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
   });
 
   it('returns 200 when honeypot (_trap) is filled', async () => {
@@ -169,6 +182,34 @@ describe('POST /api/contact — handler', () => {
     expect((await res.json()).error).toBe('invalid_input');
   });
 
+  it('returns 400 when message is shorter than 20 characters (spam guard)', async () => {
+    // Server-side min-length mirrors the client so a direct POST can't send one-liners.
+    const req = makeRequest({ ...validBody, message: 'x'.repeat(19) });
+    const res = await POST({ request: req } as any);
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toBe('invalid_input');
+  });
+
+  it('returns 400 when name is shorter than 2 characters', async () => {
+    const req = makeRequest({ ...validBody, name: 'A' });
+    const res = await POST({ request: req } as any);
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toBe('invalid_input');
+  });
+
+  it('returns 403 when Origin is a foreign host', async () => {
+    const req = makeRequest(validBody, { Origin: 'https://evil.example.com' });
+    const res = await POST({ request: req } as any);
+    expect(res.status).toBe(403);
+    expect((await res.json()).error).toBe('forbidden');
+  });
+
+  it('allows requests from the aitorevi.dev origin', async () => {
+    const req = makeRequest(validBody, { Origin: 'https://www.aitorevi.dev' });
+    const res = await POST({ request: req } as any);
+    expect(res.status).toBe(200);
+  });
+
   it('returns 400 for malformed JSON', async () => {
     const req = new Request('http://localhost/api/contact', {
       method: 'POST',
@@ -207,5 +248,51 @@ describe('POST /api/contact — handler', () => {
     const res = await POST({ request: req } as any);
     expect(res.status).toBe(500);
     expect((await res.json()).error).toBe('send_failed');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Cloudflare Turnstile verification
+// ---------------------------------------------------------------------------
+describe('POST /api/contact — Turnstile', () => {
+  beforeEach(() => {
+    vi.stubEnv('RESEND_API_KEY', 'test-key');
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
+  });
+
+  it('fails open (proceeds) when TURNSTILE_SECRET_KEY is not configured', async () => {
+    const req = makeRequest(validBody); // no secret → captcha skipped
+    const res = await POST({ request: req } as any);
+    expect(res.status).toBe(200);
+  });
+
+  it('returns 400 captcha_failed when token is missing and secret is set', async () => {
+    vi.stubEnv('TURNSTILE_SECRET_KEY', 'secret');
+    const req = makeRequest(validBody); // no cf-turnstile-response
+    const res = await POST({ request: req } as any);
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toBe('captcha_failed');
+  });
+
+  it('returns 400 captcha_failed when Cloudflare rejects the token', async () => {
+    vi.stubEnv('TURNSTILE_SECRET_KEY', 'secret');
+    mockSiteverify(false);
+    const req = makeRequest({ ...validBody, 'cf-turnstile-response': 'bad-token' });
+    const res = await POST({ request: req } as any);
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toBe('captcha_failed');
+  });
+
+  it('returns 200 when Cloudflare accepts the token', async () => {
+    vi.stubEnv('TURNSTILE_SECRET_KEY', 'secret');
+    mockSiteverify(true);
+    const req = makeRequest({ ...validBody, 'cf-turnstile-response': 'good-token' });
+    const res = await POST({ request: req } as any);
+    expect(res.status).toBe(200);
+    expect((await res.json()).ok).toBe(true);
   });
 });

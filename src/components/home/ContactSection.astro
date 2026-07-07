@@ -20,6 +20,10 @@ interface Props {
 }
 
 const { lang } = Astro.props;
+
+// Cloudflare Turnstile — public site key (empty in dev if not configured; the server
+// fails open in that case so the form still works locally).
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
 ---
 
 <section
@@ -56,6 +60,7 @@ const { lang } = Astro.props;
       data-msg-too-many={t(lang, 'home.contact.status.tooMany')}
       data-msg-error={t(lang, 'home.contact.status.error')}
       data-msg-network-error={t(lang, 'home.contact.status.networkError')}
+      data-msg-captcha-error={t(lang, 'home.contact.status.captchaError')}
       data-lang={lang}
     >
       <!-- Honeypot: oculto para humanos, los bots lo rellenan -->
@@ -188,6 +193,11 @@ const { lang } = Astro.props;
       </label>
       <span id="contact-consent-error" data-field-error="consent" class="mt-1 ml-6 hidden text-[11px] 2xl:text-[13px] text-rose-400 font-mono" aria-live="polite"></span>
 
+      <!-- Cloudflare Turnstile — captcha invisible/adaptativo. Explicit render en el script. -->
+      {turnstileSiteKey && (
+        <div class="mt-6 flex justify-center sm:justify-start" data-turnstile data-sitekey={turnstileSiteKey}></div>
+      )}
+
       <div class="mt-6 flex justify-end">
         <Button type="submit" variant="gradient" tone="brand">
           <span>{t(lang, 'home.contact.submit')}</span>
@@ -230,8 +240,17 @@ const { lang } = Astro.props;
   </div>
 </section>
 
+<!-- Cloudflare Turnstile — explicit render so it survives Astro View Transitions -->
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+
 <script>
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  interface TurnstileApi {
+    render: (el: HTMLElement, opts: { sitekey: string }) => string;
+    getResponse: (id?: string) => string | undefined;
+    reset: (id?: string) => void;
+  }
 
   interface Msgs {
     nameRequired: string;
@@ -246,6 +265,7 @@ const { lang } = Astro.props;
     tooMany: string;
     error: string;
     networkError: string;
+    captchaError: string;
   }
 
   function validate(name: string, value: string, msgs: Msgs): string | null {
@@ -288,12 +308,35 @@ const { lang } = Astro.props;
     }
   }
 
+  // Render the Turnstile widget once its script is ready. Guarded against double render
+  // so it plays well with Astro View Transitions (initContactForm may run several times).
+  let turnstileWidgetId: string | undefined;
+  function getTurnstile(): TurnstileApi | undefined {
+    return (window as unknown as { turnstile?: TurnstileApi }).turnstile;
+  }
+  function renderTurnstile(container: HTMLElement, attempt = 0) {
+    const sitekey = container.getAttribute('data-sitekey');
+    if (!sitekey || container.dataset.rendered === 'true') return;
+    const turnstile = getTurnstile();
+    if (!turnstile) {
+      // The api.js script loads async — retry briefly until it's ready (cap ~10s).
+      if (attempt < 50) setTimeout(() => renderTurnstile(container, attempt + 1), 200);
+      return;
+    }
+    turnstileWidgetId = turnstile.render(container, { sitekey });
+    container.dataset.rendered = 'true';
+  }
+
   function initContactForm() {
     const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
     if (!form) return;
 
     const status = form.querySelector<HTMLElement>('[data-contact-status]');
     const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const turnstileEl = form.querySelector<HTMLElement>('[data-turnstile]');
+
+    // Render now if the script is loaded; otherwise the global onload callback handles it.
+    if (turnstileEl) renderTurnstile(turnstileEl);
 
     const d = form.dataset;
     const msgs: Msgs = {
@@ -309,6 +352,7 @@ const { lang } = Astro.props;
       tooMany:         d.msgTooMany         || '',
       error:           d.msgError           || '',
       networkError:    d.msgNetworkError    || '',
+      captchaError:    d.msgCaptchaError    || '',
     };
 
     const showStatus = (msg: string, isError: boolean) => {
@@ -349,6 +393,8 @@ const { lang } = Astro.props;
     const collectFields = () => {
       const fd = new FormData(form);
       const consentEl = form.querySelector<HTMLInputElement>('[data-field="consent"]');
+      const token = getTurnstile()?.getResponse(turnstileWidgetId)
+        ?? (fd.get('cf-turnstile-response') || '').toString();
       return {
         name:    (fd.get('name')    || '').toString().trim(),
         email:   (fd.get('email')   || '').toString().trim(),
@@ -356,6 +402,7 @@ const { lang } = Astro.props;
         message: (fd.get('message') || '').toString().trim(),
         consent: consentEl?.checked ? 'true' : '',
         lang:    form.dataset.lang ?? 'es',
+        'cf-turnstile-response': token,
       };
     };
 
@@ -366,7 +413,7 @@ const { lang } = Astro.props;
 
       let firstInvalid: HTMLElement | null = null;
       for (const [fieldName, value] of Object.entries(fields)) {
-        if (fieldName === 'lang') continue;
+        if (fieldName === 'lang' || fieldName === 'cf-turnstile-response') continue;
         const err = validate(fieldName, value, msgs);
         setFieldError(form, fieldName, err);
         if (err && !firstInvalid) {
@@ -375,6 +422,12 @@ const { lang } = Astro.props;
       }
       if (firstInvalid) {
         firstInvalid.focus();
+        return;
+      }
+
+      // Require the captcha token when the widget is present (skipped in dev if unconfigured).
+      if (turnstileEl && !fields['cf-turnstile-response']) {
+        showStatus(msgs.captchaError, true);
         return;
       }
 
@@ -392,6 +445,9 @@ const { lang } = Astro.props;
           form.reset();
         } else if (res.status === 429) {
           showStatus(msgs.tooMany, true);
+        } else if (res.status === 400) {
+          const body = await res.json().catch(() => ({}));
+          showStatus(body?.error === 'captcha_failed' ? msgs.captchaError : msgs.error, true);
         } else {
           showStatus(msgs.error, true);
         }
@@ -399,6 +455,8 @@ const { lang } = Astro.props;
         showStatus(msgs.networkError, true);
       } finally {
         if (submitBtn) submitBtn.disabled = false;
+        // Turnstile tokens are single-use — reset so the next attempt gets a fresh one.
+        getTurnstile()?.reset(turnstileWidgetId);
       }
     };
 

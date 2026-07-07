@@ -23,11 +23,20 @@
  *    - Campo oculto que los bots rellenan automáticamente; los humanos no.
  *    - Si llega con valor, se devuelve 200 silencioso (el bot no sabe que fue bloqueado).
  *
- * 3. Límites de longitud
- *    - name ≤ 100 · email ≤ 254 · subject ≤ 200 · message ≤ 5000 caracteres.
- *    - Evita payloads abusivos y agotamiento de cuota en Resend.
+ * 3. Cloudflare Turnstile (captcha invisible)
+ *    - El navegador obtiene un token que se verifica contra Cloudflare.
+ *    - Un bot que hace POST directo (sin navegador) no tiene token válido → 400.
+ *    - Fail-open si TURNSTILE_SECRET_KEY no está configurada (dev local).
  *
- * 4. Limpieza de errores
+ * 4. Origin check
+ *    - Si llega cabecera Origin/Referer y su host no pertenece a aitorevi.dev
+ *      (ni es localhost), se rechaza con 403. Defensa blanda (lenient si no hay header).
+ *
+ * 5. Límites de longitud
+ *    - name: 2–100 · email ≤ 254 · subject ≤ 200 · message: 20–5000 caracteres.
+ *    - Evita payloads abusivos, spam de una línea y agotamiento de cuota en Resend.
+ *
+ * 6. Limpieza de errores
  *    - Los errores de Resend nunca se exponen al cliente (sin detail: error.message).
  *
  * ─────────────────────────────────────────────
@@ -45,12 +54,20 @@
  *   - Las variables deben estar en .env (dev) y en Vercel → Settings → Environment Variables (prod)
  *   - Librería: @upstash/ratelimit + @upstash/redis
  *
+ * Cloudflare Turnstile (captcha anti-spam)
+ *   - Dashboard : https://dash.cloudflare.com → Turnstile
+ *   - Sitio: aitorevi.dev (+ localhost para dev)
+ *   - Variables: PUBLIC_TURNSTILE_SITE_KEY (cliente) · TURNSTILE_SECRET_KEY (servidor)
+ *   - Verificación: POST a https://challenges.cloudflare.com/turnstile/v0/siteverify
+ *
  * ─────────────────────────────────────────────
  * VARIABLES DE ENTORNO NECESARIAS
  * ─────────────────────────────────────────────
  * RESEND_API_KEY              → clave API de Resend
  * UPSTASH_REDIS_REST_URL      → endpoint REST de la bbdd Upstash
  * UPSTASH_REDIS_REST_TOKEN    → token de autenticación de Upstash
+ * PUBLIC_TURNSTILE_SITE_KEY   → site key pública del widget Turnstile
+ * TURNSTILE_SECRET_KEY        → secret key de Turnstile (verificación server-side)
  */
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
@@ -167,13 +184,63 @@ function getRatelimiter(): Ratelimit | null {
   });
 }
 
+const CLOUDFLARE_SITEVERIFY = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+
+// Cloudflare Turnstile verification.
+// Fail-open when TURNSTILE_SECRET_KEY is missing (dev/local) so the form keeps working;
+// in production the secret is always set, so a request without a valid token is rejected.
+export async function verifyTurnstile(token: string, ip: string): Promise<boolean> {
+  const secret = import.meta.env.TURNSTILE_SECRET_KEY ?? process.env.TURNSTILE_SECRET_KEY;
+  if (!secret) return true; // not configured → skip (fail-open)
+  if (!token) return false;
+
+  try {
+    const body = new URLSearchParams({ secret, response: token });
+    if (ip) body.append('remoteip', ip);
+    const res = await fetch(CLOUDFLARE_SITEVERIFY, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body,
+    });
+    const data = (await res.json()) as { success?: boolean };
+    return data.success === true;
+  } catch {
+    // Cloudflare unreachable — block rather than let spam through (the captcha is our main gate)
+    return false;
+  }
+}
+
+// Origin/Referer check — lenient: only reject when a header is present and its host
+// does not belong to aitorevi.dev (nor is localhost for dev). Requests without the
+// header (some privacy setups strip it) are allowed through.
+export function isAllowedOrigin(request: Request): boolean {
+  const source = request.headers.get('origin') ?? request.headers.get('referer');
+  if (!source) return true;
+  try {
+    const host = new URL(source).hostname;
+    return host === 'aitorevi.dev' || host.endsWith('.aitorevi.dev') || host === 'localhost';
+  } catch {
+    return false;
+  }
+}
+
 export const POST: APIRoute = async ({ request }) => {
+  const forwarded = request.headers.get('x-forwarded-for') ?? '';
+  const clientIp = forwarded.split(',')[0].trim();
+
+  // Origin check — reject cross-origin POSTs (lenient when no header is present)
+  if (!isAllowedOrigin(request)) {
+    return new Response(JSON.stringify({ error: 'forbidden' }), {
+      status: 403,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   // Rate limiting (skipped if Upstash is not configured or unreachable)
   const ratelimiter = getRatelimiter();
   if (ratelimiter) {
     try {
-      const forwarded = request.headers.get('x-forwarded-for') ?? '';
-      const ip = forwarded.split(',')[0].trim() || 'anonymous';
+      const ip = clientIp || 'anonymous';
       const { success } = await ratelimiter.limit(ip);
       if (!success) {
         return new Response(JSON.stringify({ error: 'too_many_requests' }), {
@@ -205,6 +272,16 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
+  // Cloudflare Turnstile — a direct-POST bot has no valid token
+  const turnstileToken = (data['cf-turnstile-response'] ?? data.turnstileToken ?? '').toString();
+  const humanVerified = await verifyTurnstile(turnstileToken, clientIp);
+  if (!humanVerified) {
+    return new Response(JSON.stringify({ error: 'captcha_failed' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   const name = (data.name ?? '').toString().trim();
   const email = (data.email ?? '').toString().trim();
   const subject = (data.subject ?? '').toString().trim();
@@ -226,8 +303,13 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  // Length limits
-  if (name.length > 100 || email.length > 254 || subject.length > 200 || message.length > 5000) {
+  // Length limits (min + max) — mirrors client-side validation so direct POSTs can't bypass it
+  const invalidLength =
+    name.length < 2 || name.length > 100 ||
+    email.length > 254 ||
+    subject.length > 200 ||
+    message.length < 20 || message.length > 5000;
+  if (invalidLength) {
     return new Response(JSON.stringify({ error: 'invalid_input' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' },
