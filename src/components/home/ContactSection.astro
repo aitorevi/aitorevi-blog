@@ -13,6 +13,7 @@ import { Icon } from 'astro-icon/components';
 import type { Lang } from '@/i18n/types';
 import { t } from '@/i18n/utils';
 import Button from '@/components/shared/Button.astro';
+import Spinner from '@/components/shared/Spinner.astro';
 import SectionHeader from '@/components/shared/SectionHeader.astro';
 
 interface Props {
@@ -203,8 +204,10 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
           <span>{t(lang, 'home.contact.submit')}</span>
           <span
             aria-hidden="true"
+            data-submit-arrow
             class="transition-transform duration-300 group-hover:translate-x-1"
           >→</span>
+          <Spinner class="hidden ml-1" data-submit-spinner />
         </Button>
       </div>
 
@@ -333,7 +336,19 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
 
     const status = form.querySelector<HTMLElement>('[data-contact-status]');
     const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const submitArrow = form.querySelector<HTMLElement>('[data-submit-arrow]');
+    const submitSpinner = form.querySelector<HTMLElement>('[data-submit-spinner]');
     const turnstileEl = form.querySelector<HTMLElement>('[data-turnstile]');
+
+    // Toggle the button's loading state: disable it and swap the arrow for a spinner.
+    const setLoading = (loading: boolean) => {
+      if (submitBtn) {
+        submitBtn.disabled = loading;
+        submitBtn.setAttribute('aria-busy', String(loading));
+      }
+      submitArrow?.classList.toggle('hidden', loading);
+      submitSpinner?.classList.toggle('hidden', !loading);
+    };
 
     // Render now if the script is loaded; otherwise the global onload callback handles it.
     if (turnstileEl) renderTurnstile(turnstileEl);
@@ -431,7 +446,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
         return;
       }
 
-      if (submitBtn) submitBtn.disabled = true;
+      setLoading(true);
 
       try {
         const res = await fetch('/api/contact', {
@@ -454,7 +469,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
       } catch {
         showStatus(msgs.networkError, true);
       } finally {
-        if (submitBtn) submitBtn.disabled = false;
+        setLoading(false);
         // Turnstile tokens are single-use — reset so the next attempt gets a fresh one.
         getTurnstile()?.reset(turnstileWidgetId);
       }
