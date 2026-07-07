@@ -6,7 +6,7 @@ import LegalPageLayout from '@/components/legal/LegalPageLayout.astro';
   lang="en"
   title="Privacy Policy"
   description="Privacy policy for aitorevi.dev: what personal data we process, processors involved, legal basis, and how to exercise your rights."
-  updatedDate="2026-04-22"
+  updatedDate="2026-07-07"
 >
   <p>
     This page explains what personal data is processed through aitorevi.dev, the purposes,
@@ -43,11 +43,23 @@ import LegalPageLayout from '@/components/legal/LegalPageLayout.astro';
     abuse. A hash of your IP is stored temporarily in Upstash Redis for up to 1 hour.
   </p>
 
+  <h3>2.4 Anti-spam protection (Cloudflare Turnstile)</h3>
+  <p>
+    To verify that the form is submitted by a person and not a bot, the site uses
+    <strong>Cloudflare Turnstile</strong>, an anti-spam system that runs invisibly, with no
+    visual challenges and no advertising-tracking cookies. During verification, Cloudflare
+    may process technical data such as your IP address and browser signals. This processing
+    is governed by Cloudflare's
+    <a href="https://www.cloudflare.com/turnstile-privacy-policy/" target="_blank" rel="noopener noreferrer">Turnstile Privacy Addendum</a>,
+    supplemental to its Privacy Policy.
+  </p>
+
   <h2>3. Legal basis</h2>
   <ul>
     <li><strong>Contact form</strong>: your consent when submitting the message (GDPR art. 6.1.a).</li>
     <li><strong>Analytics</strong>: consent via the cookie banner (GDPR art. 6.1.a and LSSI-CE art. 22).</li>
     <li><strong>Rate limiting</strong>: legitimate interest in preventing abuse (GDPR art. 6.1.f).</li>
+    <li><strong>Anti-spam protection (Turnstile)</strong>: legitimate interest in preventing automated submissions and form abuse (GDPR art. 6.1.f).</li>
   </ul>
 
   <h2>4. Processors and recipients</h2>
@@ -57,6 +69,7 @@ import LegalPageLayout from '@/components/legal/LegalPageLayout.astro';
     <li><strong>Google LLC</strong> — Google Analytics 4 (only with consent) and Google Search Console (aggregated indexing data only, no personal data). US-based, SCCs.</li>
     <li><strong>Resend, Inc.</strong> — transactional email sending (contact form confirmation). US-based, SCCs.</li>
     <li><strong>Upstash Inc.</strong> — ephemeral storage of IP hashes for rate limiting. US-based, SCCs.</li>
+    <li><strong>Cloudflare, Inc.</strong> — anti-spam form verification via Turnstile. US-based, SCCs.</li>
     <li><strong>GitHub, Inc.</strong> — source code and editable content storage (via Keystatic). US-based, SCCs.</li>
   </ul>
   <p>
