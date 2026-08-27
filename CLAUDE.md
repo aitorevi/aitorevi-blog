@@ -8,7 +8,7 @@ Blog personal bilingüe (ES/EN) construido con Astro 6, Tailwind v3, TypeScript 
 npm run dev              # dev server en localhost:4321
 npm run test:unit        # vitest (161 tests)
 npx astro check          # type-check (0 errores esperados)
-npm run build            # check + build + OG images + CV PDF
+npm run build            # check + build + CV PDF (las OG NO, ver abajo)
 npm run og:generate      # genera public/og/og-image.png
 npm run og:katas         # genera public/og/og-katas.png
 ```
@@ -48,6 +48,11 @@ npm run og:katas         # genera public/og/og-katas.png
 - **Componentes**: los compartidos entre secciones van en `src/components/shared/`.
 - **Tests**: `tests/unit/` con vitest. Ejecutar antes de cada PR.
 - **OG images**: generadas con satori + resvg. Commitear el PNG resultante.
+  **No se generan en `build`, y es a propósito**: `astro build` copia `public/` → `dist/client/`
+  (lo que despliega Vercel) *antes* de que corran los scripts, que escriben solo en `public/`.
+  Regenerarlas durante el build ensuciaba el árbol de git sin llegar nunca al despliegue.
+  Si cambias el diseño de una OG: `npm run og:generate` / `og:katas`, y commitea la PNG.
+  (El PDF del CV sí va en `build` porque escribe en `dist/client/`.)
 - **Fuentes CDN en scripts**: siempre pinear versión exacta (e.g., `@5.2.8`), nunca `@latest`.
 - **GitHub Actions**: SHA pinning obligatorio, `permissions: contents: read` mínimo.
 

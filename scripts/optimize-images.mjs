@@ -34,7 +34,10 @@ const PUBLIC_DIR = join(ROOT, 'public');
 // - images/portfolio/ → gallery lightbox enlarges them to near-full-viewport,
 //   so we keep the originals. If this grows, add per-project rules here.
 const RULES = [
-  { name: 'og-social', match: (p) => /^og-.*\.(png|jpe?g|webp)$/.test(p), skip: true },
+  // La ruta llega relativa a public/, y las OG viven en public/og/ — el patrón anterior
+  // (^og-) estaba anclado al inicio, dejó de casar al moverlas a esa carpeta y el build las
+  // venía encogiendo a 960×504 pese al «never downsize» de arriba.
+  { name: 'og-social', match: (p) => /^og\/.*\.(png|jpe?g|webp)$/.test(p), skip: true },
   { name: 'portfolio-gallery', match: (p) => p.startsWith('images/portfolio/'), skip: true },
   { name: 'avatar', match: (p) => /^avatar(-light)?\.(webp|png|jpe?g)$/.test(p), maxSide: 440 },
   { name: 'testimonial', match: (p) => p.startsWith('images/testimonials/'), maxSide: 112 },
