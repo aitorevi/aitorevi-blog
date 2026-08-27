@@ -6,8 +6,13 @@ import StackCard from '@/components/case-study/StackCard.astro';
 import FeatureCard from '@/components/case-study/FeatureCard.astro';
 import PhoneMockup from './PhoneMockup.astro';
 import LightboxImage from '@/components/shared/LightboxImage.astro';
+import type { Lang } from '@/i18n/types';
 
-const lang = 'es';
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
 
 const featureKeys = ['dashboard', 'installations', 'measurements', 'quotes', 'suppliers', 'roles', 'pwa', 'responsive'] as const;
 
@@ -31,6 +36,7 @@ const stack = {
 <Layout
   title="IMS — Installation Management System"
   description={t(lang, 'portfolio.ims.subtitle')}
+  lang={lang}
   ogImage="/og/work/ims.png"
 >
   <div class="relative bg-slate-50 text-ink-900 dark:bg-ink-900 dark:text-slate-100">
