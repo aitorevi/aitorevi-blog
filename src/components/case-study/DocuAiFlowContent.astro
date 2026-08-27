@@ -4,6 +4,8 @@ import Button from '@/components/shared/Button.astro';
 import Tag from '@/components/shared/Tag.astro';
 import StackCard from '@/components/case-study/StackCard.astro';
 import FeatureCard from '@/components/case-study/FeatureCard.astro';
+import CopyButton from '@/components/shared/CopyButton.astro';
+import LightboxImage from '@/components/shared/LightboxImage.astro';
 import { t } from '@/i18n/utils';
 import type { Lang } from '@/i18n/types';
 
@@ -14,6 +16,12 @@ interface Props {
 const { lang } = Astro.props;
 
 const repoUrl = 'https://github.com/aitorevi/docu-ai-flow';
+const packageUrl = 'https://github.com/aitorevi/docu-ai-flow/pkgs/container/docu-ai-flow';
+
+// Los comandos que la sección "Pruébalo" muestra tal cual. Se copian con CopyButton, que
+// busca `.code-block-wrapper > pre > code`, así que el marcado de abajo respeta esa estructura.
+const seedCommand = 'docker run --rm -v "$PWD/data:/app/data" \\\n  ghcr.io/aitorevi/docu-ai-flow:latest make-samples /app/data/inbox';
+const runCommand = 'docker run --rm -p 8080:8080 -v "$PWD/data:/app/data" \\\n  ghcr.io/aitorevi/docu-ai-flow:latest';
 
 const solutionKeys = ['watcher', 'extraction', 'ocr', 'review', 'export', 'dispatch'] as const;
 const decisions = ['hexagonal', 'extraction', 'trust', 'result', 'runnable', 'agents'] as const;
@@ -90,6 +98,87 @@ const githubIcon =
             />
           ))}
         </ul>
+
+        <figure class="mt-12">
+          <LightboxImage
+            src="/images/portfolio/docu-ai-flow/review.png"
+            alt={t(lang, 'portfolio.docuaiflow.shot.review')}
+            caption={t(lang, 'portfolio.docuaiflow.shot.review')}
+            closeLabel={t(lang, 'misc.close')}
+            class="overflow-hidden rounded-2xl border border-slate-200 shadow-xl dark:border-white/10"
+          />
+          <figcaption class="mt-3 text-center text-sm text-slate-500 dark:text-slate-400">
+            {t(lang, 'portfolio.docuaiflow.shot.review')}
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Try it -->
+    <section class="py-20 sm:py-24" aria-labelledby="daf-try">
+      <div class="mx-auto max-w-3xl px-6">
+        <h2
+          id="daf-try"
+          class="text-center font-display text-3xl font-bold tracking-tight text-ink-900 dark:text-slate-200 sm:text-4xl"
+        >
+          {t(lang, 'portfolio.docuaiflow.try.title')}
+        </h2>
+        <p class="mx-auto mt-6 max-w-2xl text-center text-base leading-relaxed text-slate-600 dark:text-slate-400">
+          {t(lang, 'portfolio.docuaiflow.try.intro')}
+        </p>
+
+        <ol class="mt-10 space-y-6">
+          {[
+            { n: '1', label: t(lang, 'portfolio.docuaiflow.try.step1'), cmd: seedCommand },
+            { n: '2', label: t(lang, 'portfolio.docuaiflow.try.step2'), cmd: runCommand },
+          ].map((step) => (
+            <li>
+              <div class="flex items-baseline gap-3">
+                <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 font-mono text-xs font-bold text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-400">
+                  {step.n}
+                </span>
+                <span class="text-sm text-slate-600 dark:text-slate-400">{step.label}</span>
+              </div>
+              <div class="code-block-wrapper relative mt-2.5 overflow-hidden rounded-xl border border-slate-200 bg-ink-900 dark:border-white/10">
+                <div class="absolute right-2 top-2 z-10">
+                  <CopyButton
+                    copyLabel={t(lang, 'portfolio.docuaiflow.try.copy')}
+                    copiedLabel={t(lang, 'portfolio.docuaiflow.try.copied')}
+                  />
+                </div>
+                <pre class="overflow-x-auto px-4 py-3.5 pr-12"><code class="font-mono text-[12.5px] leading-relaxed text-slate-200">{step.cmd}</code></pre>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <p class="mx-auto mt-8 max-w-2xl rounded-xl border border-emerald-500/20 bg-emerald-500/5 px-5 py-4 text-center text-sm leading-relaxed text-slate-700 dark:border-emerald-400/20 dark:bg-emerald-400/5 dark:text-slate-300">
+          {t(lang, 'portfolio.docuaiflow.try.payoff')}
+        </p>
+
+        <figure class="mt-10">
+          <LightboxImage
+            src="/images/portfolio/docu-ai-flow/panel.png"
+            alt={t(lang, 'portfolio.docuaiflow.shot.panel')}
+            caption={t(lang, 'portfolio.docuaiflow.shot.panel')}
+            closeLabel={t(lang, 'misc.close')}
+            class="overflow-hidden rounded-2xl border border-slate-200 shadow-xl dark:border-white/10"
+          />
+          <figcaption class="mt-3 text-center text-sm text-slate-500 dark:text-slate-400">
+            {t(lang, 'portfolio.docuaiflow.shot.panel')}
+          </figcaption>
+        </figure>
+
+        <div class="mt-8 flex justify-center">
+          <Button href={packageUrl} target="_blank" tone="emerald" variant="ghost">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
+              <path d="M21 8v8a2 2 0 0 1-1 1.73l-7 4a2 2 0 0 1-2 0l-7-4A2 2 0 0 1 3 16V8a2 2 0 0 1 1-1.73l7-4a2 2 0 0 1 2 0l7 4A2 2 0 0 1 21 8Z" />
+              <path d="m3.3 7 8.7 5 8.7-5" />
+              <path d="M12 22V12" />
+            </svg>
+            <span>{t(lang, 'portfolio.docuaiflow.try.package')}</span>
+          </Button>
+        </div>
       </div>
     </section>
 
