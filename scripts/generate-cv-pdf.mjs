@@ -48,7 +48,7 @@
  */
 import { chromium } from 'playwright-core';
 import { createServer } from 'node:http';
-import { readFile, mkdir, copyFile } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, copyFile } from 'node:fs/promises';
 import { join, extname, resolve as resolvePath } from 'node:path';
 import { existsSync } from 'node:fs';
 
@@ -134,6 +134,25 @@ async function launchBrowser() {
   });
 }
 
+// Chromium sella cada PDF con la hora de generación en /CreationDate y /ModDate. Eso hace que
+// dos builds del MISMO CV produzcan ficheros distintos byte a byte, y como public/cv/*.pdf está
+// commiteado, git los marca como modificados en cada `npm run build` aunque no haya cambiado
+// nada. Fijar ambas fechas hace la salida determinista: el PDF solo cambia cuando cambia el CV.
+//
+// La fecha es constante a propósito. Usar la de hoy reintroduciría el problema, y derivarla del
+// contenido no aporta nada: lo que importa es que el fichero sea estable, no cuándo se generó.
+const PDF_TIMESTAMP = "D:20260101000000+00'00'";
+
+async function normalizePdfDates(path) {
+  const bytes = await readFile(path);
+  // Se opera sobre latin1 para no corromper los bytes binarios del PDF al ir y volver de string.
+  const normalized = bytes
+    .toString('latin1')
+    .replace(/\/CreationDate\s*\((?:[^)\\]|\\.)*\)/g, `/CreationDate (${PDF_TIMESTAMP})`)
+    .replace(/\/ModDate\s*\((?:[^)\\]|\\.)*\)/g, `/ModDate (${PDF_TIMESTAMP})`);
+  await writeFile(path, Buffer.from(normalized, 'latin1'));
+}
+
 async function generatePdf(url, filename) {
   const browser = await launchBrowser();
   try {
@@ -153,6 +172,8 @@ async function generatePdf(url, filename) {
       preferCSSPageSize: true,
       margin: { top: '0', bottom: '0', left: '0', right: '0' },
     });
+
+    await normalizePdfDates(deployPath);
 
     // Fallback copy: public/cv/ → committed to git, always available
     const publicPath = join(PUBLIC_CV_DIR, filename);
