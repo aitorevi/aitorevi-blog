@@ -22,6 +22,7 @@
     "test:all": "npm run test:unit && npm run test:integration && npm run test:e2e",
     "og:generate": "node scripts/generate-og-image.mjs",
     "og:katas": "node scripts/generate-og-katas.mjs",
+    "og:work": "node scripts/generate-og-work.mjs",
     "check:katas": "node scripts/check-kata-links.mjs",
     "optimize:images": "node scripts/optimize-images.mjs",
     "optimize:images:dry": "node scripts/optimize-images.mjs --dry-run",
@@ -69,6 +70,7 @@
     "satori": "^0.26.0",
     "serve": "^14.2.6",
     "sharp": "^0.34.5",
-    "vitest": "^4.1.5"
+    "vitest": "^4.1.5",
+    "yaml": "2.9.0"
   }
 }
